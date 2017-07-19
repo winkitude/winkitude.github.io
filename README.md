@@ -1,2 +1,2 @@
-# simpsons.github.io
+# winkitude.github.io
 Simpsons Final Project

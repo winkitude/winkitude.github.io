@@ -4,7 +4,7 @@
 }
 
 #simp-table {
-	
+	width:800px;
 }
 
 .input {
@@ -12,33 +12,30 @@
 }
 
 header {
-background-color: #48A2FC;
-padding: 5em 0 5em 0;
-color:#FFD90F;
-text-shadow: .25em .25em black;
+	background-color: #48A2FC;
+	padding: 5em 0 5em 0;
+	color:#FFD90F;
+	text-shadow: .25em .25em black;
 }
 
-h1{ font-family: "verveine",sans-serif;
+h1 { font-family: sans-serif;
 	margin:none;
-	font-size: 10em;
+	font-size: 5em;
 	text-align: center;
  }
 
-h2{ font-family: sans-serif;
+h2 { font-family: sans-serif;
 	margin:none;
 	font-size: 2em;
 	text-align: center;
 	text-transform: uppercase;
  }
 
-
 table {
 	font-family: sans-serif;
 	font-size:10px;
 	font-weight:normal;
-	align: center;
-	
-	
+	align: center;	
 }
 
 table, th, td {
@@ -54,7 +51,6 @@ th, td {
 tr:hover {
 	background-color: #f5f5f5;
 }
-
 
 th {
     background-color: #FFD90F;  

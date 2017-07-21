@@ -8,14 +8,29 @@ body,html {
   padding: 0;
   font-family: serif;
 }
+body{
+  min-height: 100vh;
+  display: flex;
+  flex: 1;
+ float:left;
+  align-items: center;
+  justify-content: center;
+}
+
+h1 {
+  font-family: monospace;
+  font-size: 2rem;
+  color: white;
+  text-align: center;
+  justify-content: center;
+}
 
 .keys {
   display: flex;
   flex: 1;
-  min-height: 100vh;
   align-items: center;
   justify-content: center;
-
+ float:left;
 }
 
 .key {
@@ -32,6 +47,7 @@ body,html {
   background: rgba(0,0,0,0.4);
   text-shadow: 0 0 .5rem black;
   cursor: pointer; 
+  float:left;
 }
 
 .key:hover { 
@@ -55,4 +71,29 @@ kbd {
   text-transform: uppercase;
   letter-spacing: .1rem;
   color: #00A3E0;
+}
+
+@media only screen and (max-width: 650px) {
+    .key {
+  border: .2rem solid;
+  border-color: #00205B;
+  border-radius: .25rem;
+  margin: .5rem;
+  font-size: .75rem;
+  padding: .5rem .25rem;
+  transition: all .07s ease;
+  width: 5rem;
+  text-align: center;
+  color: white;
+  background: rgba(0,0,0,0.4);
+  text-shadow: 0 0 .25rem black;
+  cursor: pointer; 
+  float:left;
+}
+h1 {
+  
+  font-size: 1rem;
+
+}
+
 }

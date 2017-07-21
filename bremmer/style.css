@@ -18,6 +18,7 @@ body{
 }
 
 h1 {
+  margin-left:10rem;
   font-family: monospace;
   font-size: 2rem;
   color: white;
@@ -26,8 +27,7 @@ h1 {
 }
 
 .keys {
-  display: flex;
-  flex: 1;
+  
   align-items: center;
   justify-content: center;
  float:left;
@@ -91,7 +91,7 @@ kbd {
   float:left;
 }
 h1 {
-  
+  margin-left:2.5em;
   font-size: 1rem;
 
 }

@@ -15,6 +15,7 @@ body,html {
   min-height: 100vh;
   align-items: center;
   justify-content: center;
+
 }
 
 .key {
@@ -30,6 +31,11 @@ body,html {
   color: white;
   background: rgba(0,0,0,0.4);
   text-shadow: 0 0 .5rem black;
+  cursor: pointer; 
+}
+
+.key:hover { 
+     border-color: #00A3E0;
 }
 
 .playing {

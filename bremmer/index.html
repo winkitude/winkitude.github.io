@@ -9,31 +9,31 @@
 
 
   <div class="keys">
-    <div data-key="65" class="key">
+    <div  onclick="document.getElementById('sound1').play();" data-key="65" class="key">
       <kbd>A</kbd>
       <span class="sound">ready</span>
     </div>
-    <div data-key="83" class="key">
+    <div onclick="document.getElementById('sound2').play();" data-key="83" class="key">
       <kbd>S</kbd>
       <span class="sound">no</span>
     </div>
-    <div data-key="68" class="key">
+    <div onclick="document.getElementById('sound3').play();" data-key="68" class="key">
       <kbd>D</kbd>
       <span class="sound">g-zero</span>
     </div>
-    <div data-key="70" class="key">
+    <div onclick="document.getElementById('sound4').play();" data-key="70" class="key">
       <kbd>F</kbd>
       <span class="sound">hey</span>
     </div>
-    <div data-key="71" class="key">
+    <div onclick="document.getElementById('sound5').play();" data-key="71" class="key">
       <kbd>G</kbd>
       <span class="sound">geo</span>
     </div>
-   <div data-key="72" class="key">
+   <div onclick="document.getElementById('sound6').play();" data-key="72" class="key">
     <kbd>H</kbd>
       <span class="sound">us</span>
     </div>
-     <div data-key="74" class="key">
+     <div onclick="document.getElementById('sound7').play();" data-key="74" class="key">
       <kbd>J</kbd>
       <span class="sound">get</span>
     </div>
@@ -47,13 +47,13 @@
     </div> -->
   </div>
 
-  <audio data-key="65" src="ian/ready-lets-go.wav"></audio>
-  <audio data-key="83" src="ian/no-no-no.wav"></audio>
-  <audio data-key="68" src="ian/gzero-world.wav"></audio>
-  <audio data-key="70" src="ian/hey-everybody.wav"></audio>
-  <audio data-key="71" src="ian/geopolitically.wav"></audio>
-  <audio data-key="72" src="ian/wheres-the-us.wav"></audio>
- <audio data-key="74" src="ian/get-through-it.wav"></audio>
+  <audio id="sound1" data-key="65" src="ian/ready-lets-go.wav"></audio>
+  <audio id="sound2" data-key="83" src="ian/no-no-no.wav"></audio>
+  <audio id="sound3" data-key="68" src="ian/gzero-world.wav"></audio>
+  <audio id="sound4" data-key="70" src="ian/hey-everybody.wav"></audio>
+  <audio id="sound5" data-key="71" src="ian/geopolitically.wav"></audio>
+  <audio id="sound6" data-key="72" src="ian/wheres-the-us.wav"></audio>
+  <audio id="sound7" data-key="74" src="ian/get-through-it.wav"></audio>
  <!-- <audio data-key="75" src=""></audio>
    <audio data-key="76" src="sounds/tink.wav"></audio> -->
 
@@ -80,6 +80,7 @@ function playSound(e){
 	const keys = Array.from(document.querySelectorAll('.key'));
 	keys.forEach(key => key.addEventListener('transitionend', removeTransition));
 window.addEventListener('keydown', playSound);
+
 
 </script>
 

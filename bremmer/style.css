@@ -6,7 +6,7 @@ html {
 body,html {
   margin: 0;
   padding: 0;
-  font-family: sans-serif;
+  font-family: serif;
 }
 
 .keys {
@@ -15,10 +15,12 @@ body,html {
   min-height: 100vh;
   align-items: center;
   justify-content: center;
+
 }
 
 .key {
-  border: .4rem solid black;
+  border: .4rem solid;
+  border-color: #00205B;
   border-radius: .5rem;
   margin: 1rem;
   font-size: 1.5rem;
@@ -29,16 +31,22 @@ body,html {
   color: white;
   background: rgba(0,0,0,0.4);
   text-shadow: 0 0 .5rem black;
+  cursor: pointer; 
+}
+
+.key:hover { 
+     border-color: #00A3E0;
 }
 
 .playing {
   transform: scale(1.1);
-  border-color: #ffc600;
-  box-shadow: 0 0 1rem #ffc600;
+  border-color: #00A3E0;
+  box-shadow: 0 0 1rem #00A3E0;
 }
 
 kbd {
   display: block;
+  font-family: monospace;
   font-size: 4rem;
 }
 
@@ -46,5 +54,5 @@ kbd {
   font-size: 1.2rem;
   text-transform: uppercase;
   letter-spacing: .1rem;
-  color: #ffc600;
+  color: #00A3E0;
 }

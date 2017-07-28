@@ -12,17 +12,33 @@
    crossorigin=""></script>
 
 <style>
-#mapid { height: 300px; }
+#mapid { height: 300px;
+width:70%;
+float:left; }
+#mapkey { float:left;
+  margin:10px;
+  width: 25%; }
 </style>
 </head>
 <body>
-
+<div id="mapkey">
+ <h2>Key</h2>
+ <svg  float="left" height="25" width="25">
+  <circle cx="10" cy="10" r="5" fill="red" />
+</svg>
+Kaanta <br>
+<svg  float="left" height="25" width="25">
+  <circle cx="10" cy="10" r="5" fill="blue" />
+</svg>
+Richard
+</div>
  <div id="mapid"></div>
 
 <script>
 var mymap = L.map('mapid').setView([44.4759, -73.2121], 12);
-var marker = L.marker([44.4794518,-73.206501]).addTo(mymap);
-marker.bindPopup("47 South Williams St <br> Unit 101, 106, 107, 201, 208, 303, 304, 308")
+
+// var marker = L.marker([44.4794518,-73.206501]).addTo(mymap);
+// marker.bindPopup("47 South Williams St <br> Unit 101, 106, 107, 201, 208, 303, 304, 308")
 
 L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=sk.eyJ1IjoidGhlZHVja21hbnoiLCJhIjoiY2o1bXNiZ3ljM3A1bjJ3bzg5bjB0dHc2OCJ9.cyhA6Dp1KO7-KMAFCoSTBw', 
 {
@@ -32,13 +48,94 @@ L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=s
     accessToken: 'sk.eyJ1IjoidGhlZHVja21hbnoiLCJhIjoiY2o1bXNiZ3ljM3A1bjJ3bzg5bjB0dHc2OCJ9.cyhA6Dp1KO7-KMAFCoSTBw'
 }).addTo(mymap);
 
+function onEachFeature(feature, layer) {
+    // does this feature have a property named popupContent?
+    if (feature.properties && feature.properties.popupContent) {
+        layer.bindPopup(feature.properties.popupContent);
+    }
+}
+
+var geojsonFeature = [{
+    "type": "Feature",
+    "properties": {
+        "name": "47 South Williams St",
+        "amenity": "Apt",
+        "popupContent": "<strong>47 South Williams St</strong> <br> Unit 101, 106, 107, 201, 208, 303, 304, 308"
+      },
+    "geometry": {
+        "type": "Point",
+        "coordinates": [-73.2042274, 44.4794518]
+    }},
+    {
+      "type": "Feature",
+    "properties": {
+        "name": "47 South Williams St",
+        "amenity": "Apt",
+        "popupContent": "<strong>47 South Williams St</strong> <br> Unit 101, 106, 107, 201, 208, 303, 304, 308"
+      },
+    "geometry": {
+        "type": "Point",
+        "coordinates": [-73.206, 44.4794518]
+    }
+}];
+
+var geojsonMarkerOptions = {
+    radius: 8,
+    fillColor: "red",
+    color: "",
+    weight: 1,
+    opacity: 1,
+    fillOpacity: 0.8
+};
+
+L.geoJSON(geojsonFeature, {
+  onEachFeature: onEachFeature,
+    pointToLayer: function (feature, latlng) {
+        return L.circleMarker(latlng, geojsonMarkerOptions);
+    }
+}).addTo(mymap);
 
 
 
-console.log("test")
+var geojsonRichard = [{
+    "type": "Feature",
+    "properties": {
+        "name": "2 Ave B",
+        "amenity": "House",
+        "popupContent": "<strong>2 Ave B</strong>"
+      },
+    "geometry": {
+        "type": "Point",
+        "coordinates": [-73.2453027, 44.5067218]
+    }},
+    {
+      "type": "Feature",
+    "properties": {
+        "name": "123 Archibald St",
+        "amenity": "House",
+        "popupContent": "<strong>123 Archibald St</strong>"
+      },
+    "geometry": {
+        "type": "Point",
+        "coordinates": [-73.2110959, 44.4877972]
+    }
+}];
 
+var geojsonMarkerRichard = {
+    radius: 8,
+    fillColor: "blue",
+    color: "",
+    weight: 1,
+    opacity: 1,
+    fillOpacity: 0.8
+};
 
-
+L.geoJSON(geojsonRichard, {
+  onEachFeature: onEachFeature,
+    pointToLayer: function (feature, latlng) {
+        return L.circleMarker(latlng, geojsonMarkerRichard);
+    }
+}).addTo(mymap);
 // L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
 //     attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
 // }).addTo(map);

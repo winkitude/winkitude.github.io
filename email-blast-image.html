@@ -1,0 +1,666 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title>*|MC:SUBJECT|*</title>
+<style type="text/css">
+	
+			/* /\/\/\/\/\/\/\/\/ CLIENT-SPECIFIC STYLES /\/\/\/\/\/\/\/\/ */
+			#outlook a{padding:0;} /* Force Outlook to provide a "view in browser" message */
+			.ReadMsgBody{width:100%;} .ExternalClass{width:100%;} /* Force Hotmail to display emails at full width */
+			.ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClass td, .ExternalClass div {line-height: 100%;} /* Force Hotmail to display normal line spacing */
+			body, table, td, p, a, li, blockquote{-webkit-text-size-adjust:100%; -ms-text-size-adjust:100%;} /* Prevent WebKit and Windows mobile changing default text sizes */
+			table, td{mso-table-lspace:0pt; mso-table-rspace:0pt;} /* Remove spacing between tables in Outlook 2007 and up */
+			img{-ms-interpolation-mode:bicubic;} /* Allow smoother rendering of resized image in Internet Explorer */
+
+			/* /\/\/\/\/\/\/\/\/ RESET STYLES /\/\/\/\/\/\/\/\/ */
+			body{margin:0; padding:0;}
+			img{border:0; height:auto; line-height:100%; outline:none; text-decoration:none;}
+			table{border-collapse:collapse !important;}
+			body, #bodyTable, #bodyCell{height:100% !important; margin:0; padding:0; width:100% !important;}
+
+			/* /\/\/\/\/\/\/\/\/ TEMPLATE STYLES /\/\/\/\/\/\/\/\/ */
+
+			#bodyCell{padding:20px;}
+			#templateContainer{width:600px;}
+
+			/* ========== Page Styles ========== */
+
+			/**
+			* @tab Page
+			* @section background style
+			* @tip Set the background color and top border for your email. You may want to choose colors that match your company's branding.
+			* @theme page
+			*/
+			body, #bodyTable{
+				/*@editable*/ background-color:#DEE0E2;
+			}
+
+			/**
+			* @tab Page
+			* @section background style
+			* @tip Set the background color and top border for your email. You may want to choose colors that match your company's branding.
+			* @theme page
+			*/
+			#bodyCell{
+				/*@editable*/ border-top:4px solid #BBBBBB;
+			}
+
+			/**
+			* @tab Page
+			* @section email border
+			* @tip Set the border for your email.
+			*/
+			#templateContainer{
+				/*@editable*/ border:1px solid #BBBBBB;
+			}
+
+			/**
+			* @tab Page
+			* @section heading 1
+			* @tip Set the styling for all first-level headings in your emails. These should be the largest of your headings.
+			* @style heading 1
+			*/
+			h1{
+				/*@editable*/ color:#202020 !important;
+				display:block;
+				/*@editable*/ font-family:roboto,helvetica neue,helvetica,arial,sans-serif;
+				/*@editable*/ font-size:26px;
+				/*@editable*/ font-style:bold;
+				/*@editable*/ font-weight:900;
+				/*@editable*/ line-height:100%;
+				/*@editable*/ letter-spacing:normal;
+				margin-top:0;
+				margin-right:0;
+				margin-bottom:10px;
+				margin-left:0;
+				/*@editable*/ text-align:left;
+			}
+
+			/**
+			* @tab Page
+			* @section heading 2
+			* @tip Set the styling for all second-level headings in your emails.
+			* @style heading 2
+			*/
+			h2{
+				/*@editable*/ color:#d50f1d !important;
+				display:block;
+				/*@editable*/ font-family:roboto Black,helvetica neue,helvetica,arial,sans-serif;
+				/*@editable*/ font-size:20px;
+				/*@editable*/ font-style:normal;
+				/*@editable*/ font-weight:bold;
+				/*@editable*/ line-height:100%;
+				/*@editable*/ letter-spacing:normal;
+				margin-top:0;
+				margin-right:0;
+				margin-bottom:10px;
+				margin-left:0;
+				/*@editable*/ text-align:left;
+			}
+
+			/**
+			* @tab Page
+			* @section heading 3
+			* @tip Set the styling for all third-level headings in your emails.
+			* @style heading 3
+			*/
+			h3{
+				/*@editable*/ color:#606060 !important;
+				display:block;
+				/*@editable*/ font-family:roboto Black,helvetica neue,helvetica,arial,sans-serif;
+				/*@editable*/ font-size:16px;
+				/*@editable*/ font-style:italic;
+				/*@editable*/ font-weight:normal;
+				/*@editable*/ line-height:100%;
+				/*@editable*/ letter-spacing:normal;
+				margin-top:15px;
+				margin-right:0;
+				margin-bottom:5px;
+				margin-left:0;
+				/*@editable*/ text-align:left;
+			}
+
+			/**
+			* @tab Page
+			* @section heading 4
+			* @tip Set the styling for all fourth-level headings in your emails. These should be the smallest of your headings.
+			* @style heading 4
+			*/
+			h4{
+				/*@editable*/ color:#808080 !important;
+				display:block;
+				/*@editable*/ font-family:roboto Black,helvetica neue,helvetica,arial,sans-serif;
+				/*@editable*/ font-size:14px;
+				/*@editable*/ font-style:italic;
+				/*@editable*/ font-weight:normal;
+				/*@editable*/ line-height:140%;
+				/*@editable*/ letter-spacing:normal;
+				margin-top:15px;
+				margin-right:0;
+				margin-bottom:5px;
+				margin-left:0;
+				/*@editable*/ text-align:left;
+			}
+
+			p{
+				/*@editable*/ font-family:roboto,helvetica neue,helvetica,arial,sans-serif;
+				/*@editable*/ font-weight:bold;
+			}
+
+			/* ========== Header Styles ========== */
+
+			/**
+			* @tab Header
+			* @section preheader style
+			* @tip Set the background color and bottom border for your email's preheader area.
+			* @theme header
+			*/
+			#templatePreheader{
+				/*@editable*/ background-color:#F4F4F4;
+				/*@editable*/ border-bottom:1px solid #CCCCCC;
+			}
+
+			/**
+			* @tab Header
+			* @section preheader text
+			* @tip Set the styling for your email's preheader text. Choose a size and color that is easy to read.
+			*/
+			.preheaderContent{
+				/*@editable*/ color:#808080;
+				/*@editable*/ font-family:Helvetica;
+				/*@editable*/ font-size:10px;
+				/*@editable*/ line-height:125%;
+				/*@editable*/ text-align:left;
+			}
+
+			/**
+			* @tab Header
+			* @section preheader link
+			* @tip Set the styling for your email's preheader links. Choose a color that helps them stand out from your text.
+			*/
+			.preheaderContent a:link, .preheaderContent a:visited, /* Yahoo! Mail Override */ .preheaderContent a .yshortcuts /* Yahoo! Mail Override */{
+				/*@editable*/ color:#606060;
+				/*@editable*/ font-weight:normal;
+				/*@editable*/ text-decoration:underline;
+			}
+
+			/**
+			* @tab Header
+			* @section header style
+			* @tip Set the background color and borders for your email's header area.
+			* @theme header
+			*/
+			#templateHeader{
+				/*@editable*/ background-color:#F4F4F4;
+				/*@editable*/ border-top:1px solid #FFFFFF;
+				/*@editable*/ border-bottom:1px solid #CCCCCC;
+			}
+
+			/**
+			* @tab Header
+			* @section header text
+			* @tip Set the styling for your email's header text. Choose a size and color that is easy to read.
+			*/
+			.headerContent{
+				/*@editable*/ color:#505050;
+				/*@editable*/ font-family:roboto,helvetica neue,helvetica,arial,sans-serif;
+				/*@editable*/ font-size:20px;
+				/*@editable*/ font-weight:bold;
+				/*@editable*/ line-height:100%;
+				/*@editable*/ padding-top:0;
+				/*@editable*/ padding-right:0;
+				/*@editable*/ padding-bottom:0;
+				/*@editable*/ padding-left:0;
+				/*@editable*/ text-align:left;
+				/*@editable*/ vertical-align:middle;
+			}
+
+			/**
+			* @tab Header
+			* @section header link
+			* @tip Set the styling for your email's header links. Choose a color that helps them stand out from your text.
+			*/
+			.headerContent a:link, .headerContent a:visited, /* Yahoo! Mail Override */ .headerContent a .yshortcuts /* Yahoo! Mail Override */{
+				/*@editable*/ color:#d50f1d;
+				/*@editable*/ font-weight:normal;
+				/*@editable*/ text-decoration:underline;
+			}
+
+			#headerImage{
+				height:auto;
+				max-width:600px;
+			}
+
+			/* ========== Body Styles ========== */
+
+			/**
+			* @tab Body
+			* @section body style
+			* @tip Set the background color and borders for your email's body area.
+			*/
+			#templateBody{
+				/*@editable*/ background-color:#F4F4F4;
+				/*@editable*/ border-top:1px solid #FFFFFF;
+				/*@editable*/ border-bottom:1px solid #CCCCCC;
+			}
+
+			/**
+			* @tab Body
+			* @section body text
+			* @tip Set the styling for your email's main content text. Choose a size and color that is easy to read.
+			* @theme main
+			*/
+			.bodyContent{
+				/*@editable*/ color:#020202;
+				/*@editable*/ font-family:roboto,helvetica neue,helvetica,arial,sans-serif;
+				/*@editable*/ font-size:14px;
+				/*@editable*/ line-height:150%;
+				padding-top:20px;
+				padding-right:20px;
+				padding-bottom:20px;
+				padding-left:20px;
+				/*@editable*/ text-align:left;
+			}
+
+			/**
+			* @tab Body
+			* @section body link
+			* @tip Set the styling for your email's main content links. Choose a color that helps them stand out from your text.
+			*/
+			.bodyContent a:link, .bodyContent a:visited, /* Yahoo! Mail Override */ .bodyContent a .yshortcuts /* Yahoo! Mail Override */{
+				/*@editable*/ color:#d50f1d;
+				/*@editable*/ font-weight:normal;
+				/*@editable*/ text-decoration:underline;
+			}
+
+			.bodyContent img{
+				display:inline;
+				height:auto;
+				max-width:560px;
+			}
+
+			.promo {
+				background-color:#d3d3d3;
+				padding-top:20px !important;
+				padding-bottom:40px !important;
+			
+			}
+
+			/* ========== Footer Styles ========== */
+
+			/**
+			* @tab Footer
+			* @section footer style
+			* @tip Set the background color and borders for your email's footer area.
+			* @theme footer
+			*/
+			#templateFooter{
+				/*@editable*/ background-color:#F4F4F4;
+				/*@editable*/ border-top:1px solid #FFFFFF;
+			}
+
+			/**
+			* @tab Footer
+			* @section footer text
+			* @tip Set the styling for your email's footer text. Choose a size and color that is easy to read.
+			* @theme footer
+			*/
+			.footerContent{
+				/*@editable*/ color:#808080;
+				/*@editable*/ font-family:roboto,helvetica neue,helvetica,arial,sans-serif;
+				/*@editable*/ font-size:10px;
+				/*@editable*/ line-height:150%;
+				padding-top:20px;
+				padding-right:20px;
+				padding-bottom:20px;
+				padding-left:20px;
+				/*@editable*/ text-align:left;
+			}
+
+			/**
+			* @tab Footer
+			* @section footer link
+			* @tip Set the styling for your email's footer links. Choose a color that helps them stand out from your text.
+			*/
+			.footerContent a:link, .footerContent a:visited, /* Yahoo! Mail Override */ .footerContent a .yshortcuts, .footerContent a span /* Yahoo! Mail Override */{
+				/*@editable*/ color:#606060;
+				/*@editable*/ font-weight:normal;
+				/*@editable*/ text-decoration:none;
+			}
+
+			/* /\/\/\/\/\/\/\/\/ MOBILE STYLES /\/\/\/\/\/\/\/\/ */
+
+            @media only screen and (max-width: 480px){
+				/* /\/\/\/\/\/\/ CLIENT-SPECIFIC MOBILE STYLES /\/\/\/\/\/\/ */
+				body, table, td, p, a, li, blockquote{-webkit-text-size-adjust:none !important;} /* Prevent Webkit platforms from changing default text sizes */
+                body{width:100% !important; min-width:100% !important;} /* Prevent iOS Mail from adding padding to the body */
+
+				/* /\/\/\/\/\/\/ MOBILE RESET STYLES /\/\/\/\/\/\/ */
+				#bodyCell{padding:10px !important;}
+
+				/* /\/\/\/\/\/\/ MOBILE TEMPLATE STYLES /\/\/\/\/\/\/ */
+
+				/* ======== Page Styles ======== */
+
+				/**
+				* @tab Mobile Styles
+				* @section template width
+				* @tip Make the template fluid for portrait or landscape view adaptability. If a fluid layout doesn't work for you, set the width to 300px instead.
+				*/
+				#templateContainer{
+					max-width:600px !important;
+					/*@editable*/ width:100% !important;
+				}
+
+				/**
+				* @tab Mobile Styles
+				* @section heading 1
+				* @tip Make the first-level headings larger in size for better readability on small screens.
+				*/
+				h1{
+					/*@editable*/ font-size:24px !important;
+					/*@editable*/ line-height:100% !important;
+					
+				}
+
+				/**
+				* @tab Mobile Styles
+				* @section heading 2
+				* @tip Make the second-level headings larger in size for better readability on small screens.
+				*/
+				h2{
+					/*@editable*/ font-size:20px !important;
+					/*@editable*/ line-height:100% !important;
+					/*@editable*/ color:#d50f1d;
+				}
+
+				/**
+				* @tab Mobile Styles
+				* @section heading 3
+				* @tip Make the third-level headings larger in size for better readability on small screens.
+				*/
+				h3{
+					/*@editable*/ font-size:18px !important;
+					/*@editable*/ line-height:100% !important;
+					
+				}
+
+				/**
+				* @tab Mobile Styles
+				* @section heading 4
+				* @tip Make the fourth-level headings larger in size for better readability on small screens.
+				*/
+				h4{
+					/*@editable*/ font-size:13px !important;
+					/*@editable*/ line-height:100% !important;
+				}
+
+				/* ======== Header Styles ======== */
+
+				#templatePreheader{display:none !important;} /* Hide the template preheader to save space */
+
+				/**
+				* @tab Mobile Styles
+				* @section header image
+				* @tip Make the main header image fluid for portrait or landscape view adaptability, and set the image's original width as the max-width. If a fluid setting doesn't work, set the image width to half its original size instead.
+				*/
+				#headerImage{
+					height:auto !important;
+					/*@editable*/ max-width:600px !important;
+					/*@editable*/ width:100% !important;
+				}
+
+				/**
+				* @tab Mobile Styles
+				* @section header text
+				* @tip Make the header content text larger in size for better readability on small screens. We recommend a font size of at least 16px.
+				*/
+				.headerContent{
+					/*@editable*/ font-size:20px !important;
+					/*@editable*/ line-height:125% !important;
+				}
+
+				/* ======== Body Styles ======== */
+
+				/**
+				* @tab Mobile Styles
+				* @section body image
+				* @tip Make the main body image fluid for portrait or landscape view adaptability, and set the image's original width as the max-width. If a fluid setting doesn't work, set the image width to half its original size instead.
+				*/
+				#bodyImage{
+					height:auto !important;
+					/*@editable*/ max-width:560px !important;
+					/*@editable*/ width:100% !important;
+				}
+
+				/**
+				* @tab Mobile Styles
+				* @section body text
+				* @tip Make the body content text larger in size for better readability on small screens. We recommend a font size of at least 16px.
+				*/
+				.bodyContent{
+					/*@editable*/ font-size:18px !important;
+					/*@editable*/ line-height:125% !important;
+				}
+
+
+
+				/* ======== Footer Styles ======== */
+
+				/**
+				* @tab Mobile Styles
+				* @section footer text
+				* @tip Make the body content text larger in size for better readability on small screens.
+				*/
+				.footerContent{
+					/*@editable*/ font-size:14px !important;
+					/*@editable*/ line-height:115% !important;
+				}
+
+				.footerContent a{display:block !important;} /* Place footer social and utility links on their own lines, for easier access */
+			}
+		
+	
+</style>
+
+    </head>
+    <body leftmargin="0" marginwidth="0" topmargin="0" marginheight="0" offset="0">
+    	<center>
+        	<table align="center" border="0" cellpadding="0" cellspacing="0" height="100%" width="100%" id="bodyTable">
+            	<tr>
+                	<td align="center" valign="top" id="bodyCell">
+                    	<!-- BEGIN TEMPLATE // -->
+                    	<table border="0" cellpadding="0" cellspacing="0" id="templateContainer">
+                        	<tr>
+                            	<td align="center" valign="top">
+                                	<!-- BEGIN PREHEADER // -->
+                                    <table border="0" cellpadding="0" cellspacing="0" width="100%" id="templatePreheader">
+                                        <tr>
+                                            <td valign="top" class="preheaderContent" style="padding-top:10px; padding-right:20px; padding-bottom:10px; padding-left:20px;" mc:edit="preheader_content00">
+                                            </td>
+                                            <!-- *|IFNOT:ARCHIVE_PAGE|* -->
+                                            <td valign="top" width="180" class="preheaderContent" style="padding-top:10px; padding-right:20px; padding-bottom:10px; padding-left:0;" mc:edit="preheader_content01">
+                                                <a href="*|ARCHIVE|*" target="_blank">View it in your browser</a>.
+                                            </td>
+                                            <!-- *|END:IF|* -->
+                                        </tr>
+                                    </table>
+                                    <!-- // END PREHEADER -->
+                                </td>
+                            </tr>
+                        	<tr>
+                            	<td align="center" valign="top">
+                                	<!-- BEGIN HEADER // -->
+                                    <table border="0" cellpadding="0" cellspacing="0" width="100%" id="templateHeader">
+                                        <tr>
+                                            <td valign="top" class="headerContent">
+                                            	<img src="images/SIGNAL_header2.png" style="max-width:600px;" id="headerImage" mc:label="header_image" mc:edit="header_image" mc:allowdesigner mc:allowtext />
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <!-- // END HEADER -->
+                                </td>
+                            </tr>
+                        	<tr>
+                            	<td align="center" valign="top">
+                                	<!-- BEGIN BODY // -->
+                                    <table border="0" cellpadding="0" cellspacing="0" width="100%" id="templateBody">
+                                        <tr>
+                                            <td valign="top" class="bodyContent" mc:edit="body_content00">
+                                                
+                                                <h4>Eurasia Group is home to the greatest collection of international politics nerds the private sector has ever seen. Signal is your window on our wonkery. Signal is written by <a href="https://www.eurasiagroup.net/people/wsparks">Willis Sparks</a> with editorial support from Gabe Lipton (<a href="https://twitter.com/gflipton">@gflipton</a>).</h4>  
+                                                <h2 style="color: #d50f1d"><img style="width:25px; height:25px;" src="images/word.svg" />The Word</h2>
+                                                <h3>Let’s start with this…</h3>
+                                                <p>A good analyst questions his assumptions. Continuously. That’s especially true when it comes to assumptions about Donald Trump, but it also applies to our understanding of the people who support him. On the one hand, Trump distinguished himself in a ginormous field of Republican candidates as an unapologetic hell-raiser. His refusal to give an inch carried him a thousand miles.<br>
+ <br>
+But Morning Consult/Politico published a <a href="https://morningconsult.com/wp-content/uploads/2017/09/170904_crosstabs_Politico_v4_AP.pdf" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #d50f1d;font-weight: normal;text-decoration: none;">national poll</a> this week that we need to read closely. The survey found that 57 percent of Republicans said Trump should work with both Democratic and Republican lawmakers to get things done. Just 31 percent of Republicans said that Trump should work “primarily with Republicans,” and eight percent actually said he should work “primarily with Democrats.” Among respondents who voted for Trump in 2016, demand for a bipartisan approach was even higher. Some 64 percent said the president should work with lawmakers of both parties. Is that the Trump voter we think we know?<br>
+ <br>
+Then a new <a href="http://www.huffingtonpost.com/entry/republicans-pick-trump-over-ryan-and-mcconnell-even-if-that-means-siding-with-democrats_us_59b83f99e4b0edff97173cdd?y99">HuffPost/YouGov poll</a> reported that 62 percent of Republicans and 69 percent of Trump voters approved of the president’s <a href="https://www.nytimes.com/2017/09/06/us/politics/house-vote-harvey-aid-debt-ceiling.html" target="_blank">decision</a> to side with Democratic leaders Chuck Schumer and Nancy Pelosi over the Republican leadership on a deal over managing US debt.<br>
+ <br>
+Assuming these polls accurately reflect something in the national mood, what do these numbers mean? Is this a fleeting moment of cooperative feeling that follows two natural disasters in the US in a year with no national election? Does it reflect public exhaustion with petty partisanship in Washington? The better question: Could numbers like these persuade the president and members of Congress to change their approach to one another, even if only tactically, with implications for both foreign and domestic policy? The cynical answer is the easy one. Maybe Trump is just angry at his party’s congressional leadership. It’s hard to believe that Trump’s deal with Democrats on the debt ceiling signals more bipartisan deals to come.<br>
+ <br>
+But let’s question our assumptions and keep an open mind—about US voters if not US politicians.<br></p>
+<div style="text-align: center;"><a href="https://twitter.com/ianbremmer/status/907969269778059266" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #d50f1d;font-weight: normal;text-decoration: none;"><img data-file-id="1806117" height="274" src="https://gallery.mailchimp.com/7404e6dcdc8018f49c82e941d/images/3814e4ba-1ec6-4cde-bba4-69a9388f8792.png" style="border: 0px initial;width: 550px;height: 274px;margin: 0px;outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;" width="550" id="bodyImage" mc:label="body_image" mc:edit="body_image" mc:allowtext></a><br></div><br><br><br>
+
+<h3>Elsewhere...</h3>
+<p>More <a href="https://www.theguardian.com/world/2017/sep/12/north-korea-sanctions-un-security-council-unanimously-agrees-new-measures" target="_blank">sanctions </a>this week on North Korea, which <a href="http://www.bbc.com/news/world-asia-41275614" target="_blank">answered</a> with yet another fish-killing missile. EU Commission President Jean-Claude Juncker <a href="http://www.politico.eu/article/junckers-uni-vision-for-europe/" target="_blank">doubled down</a> this week on deeper European integration<strong>, </strong>former South African president Kgalema Motlanthe <a href="http://www.bbc.com/news/world-africa-41239488" target="_blank">told an interviewer</a> that the ruling African National Congress would be better off if it lost the 2019 election, Russia sent a <a href="https://www.rferl.org/a/russia-belarus-kick-off-military-exercises-amid-tensions-with-west/28734556.html" target="_blank">strong signal</a> to NATO, future Saudi king Mohammad bin Salman sent a <a href="https://www.thenational.ae/opinion/new-saudi-policy-will-ensure-clerics-fall-in-line-1.628123" target="_blank">strong signal</a> to the kingdom’s clerical establishment, and a <a href="http://www.bbc.com/news/av/world-us-canada-41251896/hurricane-irma-chainsaw-nun-takes-internet-by-storm" target="_blank">nun with a chainsaw</a> sent a strong signal to Hurricane Irma.<br></p>
+ 
+<div style="text-align: center;"><a href="https://twitter.com/ianbremmer/status/907969269778059266" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #d50f1d;font-weight: normal;text-decoration: none;"><img data-file-id="1806117" height="274" src="https://gallery.mailchimp.com/7404e6dcdc8018f49c82e941d/images/fb442854-679c-4457-b485-e8b0aa1157fd.png" style="border: 0px initial;width: 550px;height: 274px;margin: 0px;outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;" width="550" id="bodyImage" mc:label="body_image" mc:edit="body_image" mc:allowtext></a><br></div><br><br><br>
+
+<h3>Next Up...</h3>
+<p>Turkey <a href="https://www.bloomberg.com/news/articles/2017-07-13/turkey-is-said-to-agree-to-pay-2-5b-for-4-russian-s-400-sams" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #d50f1d;font-weight: normal;text-decoration: none;">announced</a> this week that it will purchase a Russian-designed air defense system, perturbing its NATO partners, who warn that the Russian product is not compatible with NATO systems. President Erdogan then took yet another opportunity to poke his Western allies for not offering Turkey a sweet-enough deal. There’s a lot going on here. First, Erdogan remains angry that the Trump administration has not <a href="https://www.reuters.com/article/us-turkey-security/turkey-orders-former-intelligence-personnel-detained-in-gulen-probe-aa-idUSKCN1BN0G3" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #d50f1d;font-weight: normal;text-decoration: none;">extradited</a> Fethullah Gulen, whom Erdogan accuses of a thousand forms of treachery, from his adopted home in Pennsylvania. He’s also unhappy about US support for Kurds in Syria, and he knows that spitting at the US and Europe keeps him popular with some at home.<br>
+ <br>
+He should bear a couple of things in mind. The Russians are happy to sell him some product and sow some division in NATO, but they won’t prove the most reliable ally. Less than two years ago, Putin squeezed Turkey’s economy after Turkey’s air force shot down a Russian fighter plane near the Turkish-Syrian border. And Erdogan can learn from Putin’s experience about what happens when you’re forced to lean on an opportunistic temporary friend. When Putin grabbed Crimea in 2014, Europeans sanctioned Russia, and Putin turned to China for some energy deals. Russia’s president then found out what it’s like to get squeezed (on price, in this case) by a partner who knows that you need him more than he needs you.<br></p>
+ 
+<div style="text-align: center;"><a href="http://www.businessinsider.com/r-philippine-congress-backs-annual-budget-of-just-20-for-agency-probing-drugs-war-2017-9" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #d50f1d;font-weight: normal;text-decoration: none;"><img data-file-id="1806125" height="340" src="https://gallery.mailchimp.com/7404e6dcdc8018f49c82e941d/images/f9d769d3-ec37-4a0d-a9f2-6643050deb07.png" style="border: 0px;width: 550px;height: 340px;margin: 0px;outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;" width="550" id="bodyImage" mc:label="body_image" mc:edit="body_image" mc:allowtext></a><br>
+ </div>
+<br><br><br>
+
+<h3>Finally...</h3>
+<p>I’m not saying that the current Philippine government isn’t serious about human rights. I’m just saying that Philippine lawmakers <a href="http://www.businessinsider.com/r-philippine-congress-backs-annual-budget-of-just-20-for-agency-probing-drugs-war-2017-9">voted this week</a> by a margin of 119 to 32 to provide the country’s Commission on Human Rights with a budget for the year of 1,000 Philippine pesos. By my calculation, that’s US$19.61. The Commission had requested 1.72 billion pesos (US$34 million). In a country where the president encourages police and local vigilantes to kill people they suspect of involvement in the drug trade, the government will lay out $19.61 to safeguard human rights. That’s enough money to take human rights to the movies and buy it a box of popcorn, but human rights will have to bring its own drink.</p>
+                                            </td>
+                                        </tr>
+                                    	<tr>
+                                        	<td class="promo bodyContent" style="padding-top:0; padding-bottom:0;">
+                                            	<h3>Self-Promotion Interlude:</h3>
+                                            	<p>Eurasia Group's Chris Garman and Daniel Kerner <a href="https://www.facebook.com/eurasiagroup/videos/10155781788141133/" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #d50f1d;font-weight: normal;text-decoration: none;">discuss</a> the upcoming round of elections in Latin America.</p>
+                                            	<a href="https://www.facebook.com/eurasiagroup/videos/10155781788141133/" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #d50f1d;font-weight: normal;text-decoration: none;"><img data-file-id="1806101" height="268" src="https://gallery.mailchimp.com/7404e6dcdc8018f49c82e941d/images/f200875e-5573-447d-ac36-34ea230a2e3e.gif" style="border: 0px;width: 550px;height: 268px;margin: 0px;outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;" width="550"></a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td valign="top" class="bodyContent" mc:edit="body_content01">
+                                                <h2><img style="width:25px; height:25px;" src="images/binoculars.svg" />What we're watching</h2>
+                                                <h3>Ethnic cleansing in Myanmar</h3>
+                                                <p>The not-so-well-kept secret is out. The UN’s top human rights official has denounced Myanmar’s assault on Rohingya Muslim’s as a “<a href="https://www.theguardian.com/world/2017/sep/11/un-myanmars-treatment-of-rohingya-textbook-example-of-ethnic-cleansing" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #d50f1d;font-weight: normal;text-decoration: none;">textbook example</a>” of ethnic cleansing. He said government attacks are “clearly disproportionate” to insurgent attacks carried out last month. A few brave journalists have entered Rakhine province to corroborate the stories that Rohingya refugees have told aid workers in Bangladesh. Later in the week, Myanmar’s de facto leader Aung San Suu Kyi <a href="http://www.npr.org/sections/thetwo-way/2017/09/13/550672141/aung-san-suu-kyi-to-skip-u-n-meeting-as-criticism-over-rohingya-crisis-grows" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #d50f1d;font-weight: normal;text-decoration: none;">skipped </a>a UN meeting on this subject.<br><br></p>
+
+                                                <h3>Venezuela’s opposition election participation</h3>
+                                                <p>If the battle between Nicolas “<a href="http://www.bbc.com/news/world-latin-america-41265474" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #d50f1d;font-weight: normal;text-decoration: none;">Let Them Eat Rabbits</a>” Maduro and the various opposition groups is an endurance contest, score one for the opposition this week. Well aware that the ruling party will try to steal/manipulate the outcome of regional elections on October 15, some 1.5 million voters turned out for primaries to choose opposition candidates anyway. That’s about three times the average turnout for party primaries. The message: “We’re still here. We’re still fighting. And rabbits are pets, not food.”<br><br>
+                                               </p>
+
+												<h3>Cat tattoos</h3>
+                                                <p>Speaking of pets, a woman in Winnipeg was <a href="http://www.huffingtonpost.com/entry/freda-watson-missing-cat_us_5947ee95e4b07499199d6db2?section=us_weird-news" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #d50f1d;font-weight: normal;text-decoration: none;">reunited</a> with a cat she lost 12 years ago after workers at the local Humane Society discovered a faded tattoo on the cat’s body that identified the woman’s address.<br><br>
+                                               </p>
+
+                                            </td>
+                                        </tr>
+
+                                         <tr>
+                                            <td valign="top" class="bodyContent" mc:edit="body_content01">
+                                                <h2><img style="width:25px;" src="images/ignore.svg" />What we're ignoring</h2>
+                                                <h3>Russians being Russians</h3>
+                                              <p>Local air quality investigators have <a href="http://www.bbc.com/news/world-us-canada-41251020" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #d50f1d;font-weight: normal;text-decoration: none;">issued</a> a notice of violation against the Russian government following an alleged “burning [of] inappropriate materials,” in a fireplace inside the (now shuttered) Russian consulate in San Francisco. Late last month, the State Department ordered the consulate closed as part of a diplomatic tit for tat that’s been going on for weeks. Don’t worry about the Russians, their secret papers, and their geopolitical ambitions. San Francisco environmentalists have this fire under control. <br><br></p>
+
+                                              <h3>Russians being Russians – I Still Know What You Did Last Summe</h3>
+                                              <p>Later in the week, the Russian government <a href="https://www.apnews.com/bbbebd185ddc4d348eb49263e7bc2dc9/Russia-reduces-parking-spaces-at-US-consulates" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #d50f1d;font-weight: normal;text-decoration: none;">painted over</a> US diplomatic parking spaces outside the US consulate in St Petersburg and removed parking signs outside the US consulate in Yekaterinburg. Next week, the Russian security services will probably prank call an order of vegetarian pizzas for the US consulate in Vladivostok.<br><br></p>
+
+                                              <h3>People who say the cat tattoo story happened in June</h3>
+                                              <p>OK, it happened in June, but I just heard about it on Wednesday. <br><br></p>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td valign="top" class="bodyContent" mc:edit="body_content01">
+                                                <h2><img style="width:25px;" src="images/video.svg" />Your Weekly Bremmer</h2>
+                                                <div style="text-align: center;"><a href="https://www.facebook.com/gzeroworld/videos/122307228494867/" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #d50f1d;font-weight: normal;text-decoration: none;"><img data-file-id="1806105" height="309" src="https://gallery.mailchimp.com/7404e6dcdc8018f49c82e941d/images/b252de2f-578b-4c06-8176-ab10d892d14e.gif" style="border: 0px initial;width: 550px;height: 309px;margin: 0px;outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;" width="550"></a></div>
+
+												<div style="text-align: left;"><a href="https://www.facebook.com/gzeroworld/videos/122307228494867/" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #d50f1d;font-weight: normal;text-decoration: none;">Watch</a> the G-Zero World with Ian Bremmer and Senator Cory Booker. The Muppet goes to Washington.</div>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td valign="top" class="bodyContent" mc:edit="body_content01">
+                                                <h2><img style="width:25px;" src="images/facts.svg" />Hard Numbers</h2>
+                                                <p><strong>5 days:</strong> A US National Security memo aimed at addressing the unprecedented level of leaks coming out of the West Wing <a href="https://www.buzzfeed.com/chrisgeidner/trump-administration-launches-broad-new-anti-leak-program?utm_term=.hn6XMRMkbK#.bcOm1A1yx9" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #d50f1d;font-weight: normal;text-decoration: none;">lasted</a> only five days before it was leaked to the press. #PracticeMakesPerfect<br>
+<br>
+<strong>500:</strong> The US Airforce <a href="http://www.military.com/daily-news/2017/09/12/air-forces-monthly-bombing-campaign-afghanistan-5-year-high.html" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #d50f1d;font-weight: normal;text-decoration: none;">dropped</a> 500 bombs in Afghanistan during the month of August, the highest count for a single month since 2012. #AmericaFirst<br>
+ <br>
+<strong>60K/24K:</strong> Protests in Paris this week against the proposed labor reforms of Emanuel Macron <a href="https://www.nytimes.com/2017/09/12/world/europe/france-labor-law-protests.html?_r=0" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #d50f1d;font-weight: normal;text-decoration: none;">attracted</a> 60,000 people, according to a trade union involved. But police placed the total at just 24,000, and two of the country’s biggest unions didn’t participate.<br>
+ <br>
+<strong>712: </strong>Spain’s public prosecutor has <a href="http://www.dw.com/en/spain-threatens-to-arrest-700-catalan-mayors-over-independence-vote/a-40491262" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #d50f1d;font-weight: normal;text-decoration: none;">summoned</a> 712 mayors from the autonomous region Catalonia in response to their support for an upcoming independence referendum.<br>
+ <br>
+<strong>1,333:</strong> Iraqi forces are currently <a href="http://hosted.ap.org/dynamic/stories/M/ML_IRAQ_ISLAMIC_STATE_FAMILIES?SITE=AP&SECTION=HOME&TEMPLATE=DEFAULT" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #d50f1d;font-weight: normal;text-decoration: none;">holding</a> 1,333 foreign women and children suspected of being the family members of ISIS fighters. The group includes Japanese and South Korean citizens.<br>
+ <br>
+<strong>75:</strong> Uganda’s ruling party is trying to <a href="https://www.voanews.com/a/uganda-presidential-age-limit/4025740.html" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #d50f1d;font-weight: normal;text-decoration: none;">overturn</a> a constitutional provision that prohibits the president from serving beyond the age of 75. Easier solution?  <a href="https://qz.com/1076199/uganda-to-scrap-age-limits-gets-closer-to-having-a-president-for-life/" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #d50f1d;font-weight: normal;text-decoration: none;">Change</a> 73-year-old President Yoweri Museveni’s birth certificate.
+</p>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td valign="top" class="bodyContent" mc:edit="body_content01">
+                                                <h2><img style="width:25px;" src="images/wisdom.svg" />Words of Wisdom</h2>
+                                             <h1 class="null" style="text-align: center;display: block;margin: 0;padding: 0;color: #202020;font-size: 26px;font-style: normal;font-weight: bold;line-height: 125%;letter-spacing: normal;">“Never have I lost my love for the European Union. As we all know there is no love without disappointment.”<br>
+ </h1>
+– European Commission President Jean-Claude Juncker <a href="http://eurasiagroup.us12.list-manage.com/track/click?u=7404e6dcdc8018f49c82e941d&id=6152a42e8b&e=f561c3059e" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #d50f1d;font-weight: normal;text-decoration: none;">reminded</a> us in his annual State of the Union address this week that sometimes love hurts. 
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td valign="top" class="bodyContent" mc:edit="body_content01">
+                                                <h2>Styling Your Content</h2>
+                                                <h4>Make your email easy to read</h4>
+                                                After you enter your content, highlight the text you want to style and select the options you set in the style editor in the "<em>styles</em>" drop down box. Want to <a href="http://www.mailchimp.com/kb/article/im-using-the-style-designer-and-i-cant-get-my-formatting-to-change" target="_blank">get rid of styling on a bit of text</a>, but having trouble doing it? Just use the "<em>remove formatting</em>" button to strip the text of any formatting and reset your style. 
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <!-- // END BODY -->
+                                </td>
+                            </tr>
+                        	<tr>
+                            	<td align="center" valign="top">
+                                	<!-- BEGIN FOOTER // -->
+                                    <table border="0" cellpadding="0" cellspacing="0" width="100%" id="templateFooter">
+                                        <tr>
+                                            <td valign="top" class="footerContent" mc:edit="footer_content00">
+                                                <a href="*|TWITTER:PROFILEURL|*">Follow on Twitter</a>&nbsp;&nbsp;&nbsp;<a href="*|FACEBOOK:PROFILEURL|*">Friend on Facebook</a>&nbsp;&nbsp;&nbsp;<a href="*|FORWARD|*">Forward to Friend</a>&nbsp;
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td valign="top" class="footerContent" style="padding-top:0;" mc:edit="footer_content01">
+                                                <em>Copyright &copy; *|CURRENT_YEAR|* *|LIST:COMPANY|*, All rights reserved.</em>
+                                                <br />
+                                                *|IFNOT:ARCHIVE_PAGE|* *|LIST:DESCRIPTION|*
+                                                <br />
+                                                <br />
+                                                <strong>Our mailing address is:</strong>
+                                                <br />
+                                                *|HTML:LIST_ADDRESS_HTML|* *|END:IF|* 
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td valign="top" class="footerContent" style="padding-top:0;" mc:edit="footer_content02">
+                                            	<a href="*|UNSUB|*">unsubscribe from this list</a>&nbsp;&nbsp;&nbsp;<a href="*|UPDATE_PROFILE|*">update subscription preferences</a>&nbsp;
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <!-- // END FOOTER -->
+                                </td>
+                            </tr>
+                        </table>
+                        <!-- // END TEMPLATE -->
+                    </td>
+                </tr>
+            </table>
+        </center>
+    </body>
+</html>

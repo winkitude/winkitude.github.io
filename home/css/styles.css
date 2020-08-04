@@ -1,0 +1,20 @@
+@charset "UTF-8";
+/* CSS Document */
+h1 {
+	font-family: 'Abril Fatface', Cambria, 'Hoefler Text', 'Liberation Serif', Times, 'Times New Roman', 'serif';
+	font-size:1em;
+	font-weight:normal;
+}
+
+p {
+	font-family: 'Open Sans', Gotham, "Helvetica Neue", Helvetica, Arial, "sans-serif";
+	font-size:1em;
+}
+
+@media (min-width: 600px)
+{
+	.col-6 {
+  -ms-flex: 0 0 100%;
+  flex: 0 0 100%;
+  max-width: 100%;
+	}}

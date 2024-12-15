@@ -1,0 +1,32 @@
+@charset "UTF-8";
+/* CSS Document */
+h1 {
+	font-family: 'Abril Fatface', Cambria, 'Hoefler Text', 'Liberation Serif', Times, 'Times New Roman', 'serif';
+	font-size:4em;
+	font-weight:normal;
+}
+
+h1 a:link { text-decoration: none; }
+h1 a:visited { text-decoration: none; }
+h1 a:hover { text-decoration: none; }
+h1 a:active { text-decoration: none; }
+h1 a {font-weight:  normal;}
+
+footer a:link { text-decoration: none; }
+footer a:visited { text-decoration: none; }
+footer a:hover { text-decoration: none; }
+footer a:active { text-decoration: none; }
+footer a {font-weight:  normal;}
+
+p {
+	font-family: 'Open Sans', Gotham, "Helvetica Neue", Helvetica, Arial, "sans-serif";
+	font-size:1em;
+}
+
+@media (min-width: 600px)
+{
+	.col-6 {
+  -ms-flex: 0 0 100%;
+  flex: 0 0 100%;
+  max-width: 100%;
+	}}

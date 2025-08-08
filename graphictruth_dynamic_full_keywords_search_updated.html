@@ -99,10 +99,11 @@
     wrapper.innerHTML = '';
 
     data
-      .filter(item => 
-        item.headline.toLowerCase().includes(filter.toLowerCase()) ||
-        (item.keywords && item.keywords.toLowerCase().includes(filter.toLowerCase()))
-      )
+      .filter(item => {
+        const headlineMatch = item.headline?.toLowerCase().includes(filter.toLowerCase());
+        const keywordMatch = item.keywords?.toLowerCase().includes(filter.toLowerCase());
+        return headlineMatch || keywordMatch;
+      })
       .forEach(item => {
         const link = document.createElement('a');
         link.href = item.url;

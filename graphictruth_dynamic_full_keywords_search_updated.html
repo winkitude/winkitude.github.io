@@ -27,6 +27,34 @@
       border: 1px solid #ccc;
       border-radius: 4px;
     }
+
+    /* Responsive grid for clickable image squares */
+    #articles-wrapper {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 10px;
+      margin-top: 30px;
+    }
+
+    #articles-wrapper a {
+      display: block;
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      overflow: hidden;
+      border-radius: 6px;
+      transition: transform 0.2s ease-in-out;
+    }
+
+    #articles-wrapper a:hover {
+      transform: scale(1.05);
+    }
+
+    #articles-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
   </style>
 </head>
 <body>
@@ -36,7 +64,7 @@
       <h1><a href="http://winkitude.com">Ari Winkleman</a></h1>
       <hr><br>
 
-      <!-- Original header area with description preserved -->
+      <!-- Original header area with description -->
       <div class="grid_4 photo">
         <a href="https://www.gzeromedia.com/the-graphic-truth-whos-spending-what-nato-wants" target="_blank">
           <img alt="The Graphic Truth chart titled Who's Spending what NATO wants?" src="images/graphic_truth/GT1.png">
@@ -59,7 +87,7 @@
         <input type="text" id="searchInput" placeholder="Search articles...">
       </div>
 
-      <!-- Dynamic articles will load here -->
+      <!-- Responsive grid for articles -->
       <div id="articles-wrapper" class="grid_12"></div>
     </div>
   </div>
@@ -73,37 +101,16 @@
     data
       .filter(item => item.headline.toLowerCase().includes(filter.toLowerCase()))
       .forEach(item => {
-        const articleContainer = document.createElement('div');
-        articleContainer.classList.add('grid_12', 'clearfix');
-
-        const imgDiv = document.createElement('div');
-        imgDiv.classList.add('grid_4', 'photo');
-
         const link = document.createElement('a');
         link.href = item.url;
         link.target = '_blank';
 
         const img = document.createElement('img');
         img.alt = item.headline;
-        img.src = `images/graphic_truth/${item.image}`;
+        img.src = `images/graphic_truth/${item.image}`; // change to item.url if needed
 
         link.appendChild(img);
-        imgDiv.appendChild(link);
-
-        const textDiv = document.createElement('div');
-        textDiv.classList.add('grid_7');
-
-        const title = document.createElement('p');
-        title.style.fontFamily = "'Open Sans', Gotham, 'Helvetica Neue', Helvetica, Arial, 'sans-serif'";
-        title.style.fontSize = '1.5em';
-        title.style.lineHeight = '1.25em';
-        title.textContent = item.headline;
-
-        textDiv.appendChild(title);
-
-        articleContainer.appendChild(imgDiv);
-        articleContainer.appendChild(textDiv);
-        wrapper.appendChild(articleContainer);
+        wrapper.appendChild(link);
       });
   }
 

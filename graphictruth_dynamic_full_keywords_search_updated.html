@@ -31,7 +31,7 @@
     /* Responsive grid for clickable image squares */
     #articles-wrapper {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
       gap: 10px;
       margin-top: 30px;
     }
@@ -99,18 +99,15 @@
     wrapper.innerHTML = '';
 
     data
-      .filter(item => 
-        item.headline.toLowerCase().includes(filter.toLowerCase()) ||
-        (item.keywords && item.keywords.toLowerCase().includes(filter.toLowerCase()))
-      )
+      .filter(item => item.headline.toLowerCase().includes(filter.toLowerCase()))
       .forEach(item => {
         const link = document.createElement('a');
-        link.href = item.url;
+        link.href = item.article_url;
         link.target = '_blank';
 
         const img = document.createElement('img');
         img.alt = item.headline;
-        img.src = `images/graphic_truth/${item.image}`;
+        img.src = `images/graphic_truth/${item.image}`; // change to item.article_url if needed
 
         link.appendChild(img);
         wrapper.appendChild(link);
@@ -127,7 +124,5 @@
     })
     .catch(err => console.error("Error loading articles:", err));
 </script>
-
-
 </body>
 </html>

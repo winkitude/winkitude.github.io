@@ -1,0 +1,58 @@
+const imagesArray = [
+  {
+    "headline": "Graphic Truth: The Trump effect on Canada’s US-bound exports",
+    "image": "image_8.jpg",
+    "article_url": "https://www.gzeromedia.com/gzero-north/the-trump-effect-on-canadas-us-bound-exports",
+    "keywords": [
+      "graphic",
+      "truth:",
+      "trump",
+      "effect",
+      "canada’s",
+      "us-bound",
+      "exports"
+    ]
+  },
+  {
+    "headline": "Graphic Truth: Over 60 ridings flip as Liberals retain power",
+    "image": "image_9.jpg",
+    "article_url": "https://www.gzeromedia.com/gzero-north/graphic-truth-electoral-shifts-in-canada",
+    "keywords": [
+      "graphic",
+      "truth:",
+      "over",
+      "ridings",
+      "flip",
+      "liberals",
+      "retain",
+      "power"
+    ]
+  },
+  {
+    "headline": "Graphic Truth: Canada is winning the real wage war",
+    "image": "image_10.jpg",
+    "article_url": "https://www.gzeromedia.com/gzero-north/canada-is-winning-the-real-wage-war",
+    "keywords": [
+      "graphic",
+      "truth:",
+      "canada",
+      "winning",
+      "real",
+      "wage"
+    ]
+  },
+  {
+    "headline": "Exclusive Echelon/GZERO poll: What would Americans annex?",
+    "image": "image_11.jpg",
+    "article_url": "https://www.gzeromedia.com/news/analysis/exclusive-echelon-gzero-poll-what-would-americans-annex",
+    "keywords": [
+      "exclusive",
+      "echelon/gzero",
+      "poll:",
+      "what",
+      "would",
+      "americans",
+      "annex"
+    ]
+  }
+];

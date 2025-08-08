@@ -99,7 +99,10 @@
     wrapper.innerHTML = '';
 
     data
-      .filter(item => item.headline.toLowerCase().includes(filter.toLowerCase()))
+      .filter(item => 
+        item.headline.toLowerCase().includes(filter.toLowerCase()) ||
+        (item.keywords && item.keywords.toLowerCase().includes(filter.toLowerCase()))
+      )
       .forEach(item => {
         const link = document.createElement('a');
         link.href = item.url;
@@ -107,7 +110,7 @@
 
         const img = document.createElement('img');
         img.alt = item.headline;
-        img.src = `images/graphic_truth/${item.image}`; // change to item.url if needed
+        img.src = `images/${item.image}`;
 
         link.appendChild(img);
         wrapper.appendChild(link);
@@ -124,5 +127,6 @@
     })
     .catch(err => console.error("Error loading articles:", err));
 </script>
+
 </body>
 </html>

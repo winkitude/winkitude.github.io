@@ -100,9 +100,12 @@
 
     data
       .filter(item => 
-    item.headline.toLowerCase().includes(filter.toLowerCase()) ||
-    (item.keywords && item.keywords.some(k => k.toLowerCase().includes(filter.toLowerCase())))
+  item.headline.toLowerCase().includes(filter.toLowerCase()) ||
+  (Array.isArray(item.keywords) 
+    ? item.keywords.some(k => k.toLowerCase().includes(filter.toLowerCase()))
+    : String(item.keywords).toLowerCase().includes(filter.toLowerCase()))
 )
+
 
       .forEach(item => {
         const link = document.createElement('a');
@@ -111,7 +114,7 @@
 
         const img = document.createElement('img');
         img.alt = item.headline;
-        img.src = `images/graphic_truth/${item.image}`; // change to item.article_url if needed
+        img.src = item.image.startsWith('http') ? item.image : `images/graphic_truth/${item.image}`;
 
         link.appendChild(img);
         wrapper.appendChild(link);

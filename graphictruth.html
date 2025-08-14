@@ -55,6 +55,26 @@
       object-fit: cover;
       display: block;
     }
+
+     .sticky-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: white; /* match site background */
+    padding: 10px 0;
+    text-align: center;
+    border-top: 1px solid #ccc;
+    z-index: 1000;
+  }
+  .sticky-footer a {
+    text-decoration: none;
+    color: inherit;
+  }
+  .sticky-footer p {
+    margin: 0;
+    font-family: 'Open Sans', sans-serif;
+  }
   </style>
 </head>
 <body>
@@ -89,6 +109,10 @@
 
       <!-- Responsive grid for articles -->
       <div id="articles-wrapper" class="grid_12"></div>
+
+      <footer class="grid_12 sticky-footer">
+  <a href="index.html"><p>Back to homepage &rarr;</p></a>
+</footer>
     </div>
   </div>
 </div>

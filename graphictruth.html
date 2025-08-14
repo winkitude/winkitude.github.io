@@ -99,7 +99,11 @@
     wrapper.innerHTML = '';
 
     data
-      .filter(item => item.headline.toLowerCase().includes(filter.toLowerCase()))
+      .filter(item => 
+    item.headline.toLowerCase().includes(filter.toLowerCase()) ||
+    (item.keywords && item.keywords.some(k => k.toLowerCase().includes(filter.toLowerCase())))
+)
+
       .forEach(item => {
         const link = document.createElement('a');
         link.href = item.article_url;
@@ -117,6 +121,7 @@
   fetch('articles_data.json')
     .then(res => res.json())
     .then(data => {
+      data.sort((a, b) => a.headline.localeCompare(b.headline));
       renderArticles(data);
       document.getElementById('searchInput').addEventListener('input', (e) => {
         renderArticles(data, e.target.value);

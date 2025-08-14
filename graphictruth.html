@@ -124,7 +124,12 @@
   fetch('articles_data.json')
     .then(res => res.json())
     .then(data => {
-      data.sort((a, b) => a.headline.localeCompare(b.headline));
+      data.sort((a, b) => {
+  const numA = parseInt(a.image.match(/\d+/));
+  const numB = parseInt(b.image.match(/\d+/));
+  return numA - numB;
+});
+
       renderArticles(data);
       document.getElementById('searchInput').addEventListener('input', (e) => {
         renderArticles(data, e.target.value);

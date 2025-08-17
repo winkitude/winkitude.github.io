@@ -221,6 +221,25 @@
       .lb-meta { flex-basis: auto; max-height: none; }
       .lb-media img { max-height: 56vh; }
     }
+
+
+    /* iOS-friendly sizing for the main lightbox image */
+.lb-media img{
+  max-width: 100%;
+  height: auto;
+  max-height: 70vh;
+  object-fit: contain;
+}
+
+/* iOS Safari dynamic viewport fallback */
+@supports (height: 1dvh) {
+  .lb-media img { max-height: 72dvh; }
+}
+
+/* make sure the media area can shrink instead of overlapping the sidebar */
+.lb-media { min-width: 0; }
+.lb-body { overflow: hidden; }
+
   </style>
 </head>
 
@@ -406,110 +425,141 @@
 </div>
 
 <script>
-  // --- State ---
+  // --- Cache DOM ---
   const covers = Array.from(document.querySelectorAll('.cover-card'));
-  let currentYearIndex = -1;         // which cover (year) is open
-  let currentImages = [];            // images for the open year (strings)
-  let currentImageIndex = 0;         // which image within the year is shown
+  const lb       = document.getElementById('lightbox');
+  const lbImg    = document.getElementById('lbImage');
+  const lbYearEl = document.getElementById('lbYear');
+  const lbBlurb  = document.getElementById('lbBlurb');
+  const lbLink   = document.getElementById('lbLink');
+  const lbThumbs = document.getElementById('lbThumbs');
 
-  // --- Helpers ---
-  const $ = (s) => document.querySelector(s);
-  const lb = $('#lightbox');
-  const lbImg = $('#lbImage');
-  const lbYear = $('#lbYear');
-  const lbBlurb = $('#lbBlurb');
-  const lbLink = $('#lbLink');
-  const lbThumbs = $('#lbThumbs');
+  let currentYearIndex = -1;   // which cover/year is open
+  let currentImages = [];      // image list for that year (strings)
+  let currentImageIndex = 0;   // which image is visible
 
-  function baseName(p){ return (p || '').split('/').pop(); }
+  // --- Utilities ---
+  const $  = (s, root=document) => root.querySelector(s);
+  const $$ = (s, root=document) => Array.from(root.querySelectorAll(s));
+  const fileName = p => (p || '').split('/').pop();
 
-  // Build thumbs and attach events (click + touch)
-  function renderThumbs() {
+  // Resolve a data-images entry to a usable URL:
+  // - absolute (http/https) -> use as-is
+  // - relative path with folders -> use as-is
+  // - bare filename -> place it next to the cover's src folder
+  function resolvePath(imgEntry, coverSrc){
+    const trimmed = (imgEntry || '').trim();
+    if (/^https?:\/\//i.test(trimmed)) return trimmed;         // absolute URL
+    if (trimmed.includes('/')) return trimmed;                  // has a path already
+    // build from cover's folder
+    try {
+      const a = document.createElement('a');
+      a.href = coverSrc;
+      const parts = a.pathname.split('/');
+      parts.pop(); // remove cover file
+      return parts.join('/') + '/' + trimmed;                   // same folder as cover
+    } catch(e) {
+      // fallback to your default folder
+      return 'images/top_risks/' + trimmed;
+    }
+  }
+
+  function setActiveThumb(i){
+    $$('.lb-thumbs img', document).forEach((t, idx) => {
+      t.classList.toggle('active', idx === i);
+    });
+  }
+
+  function showImage(i){
+    currentImageIndex = i;
+    const src = currentImages[currentImageIndex];
+    lbImg.src = src;
+    lbImg.alt = `${lbYearEl.textContent} detail ${currentImageIndex+1}`;
+    setActiveThumb(currentImageIndex);
+  }
+
+  function buildThumbs(){
     lbThumbs.innerHTML = '';
-    currentImages.forEach((src, i) => {
-      const img = new Image();
-      img.src = `images/top_risks/${src}`;
-      img.alt = `${lbYear.textContent} thumbnail ${i+1}`;
-      if (i === currentImageIndex) img.classList.add('active');
+    currentImages.forEach((src,i) => {
+      const t = new Image();
+      t.src = src;
+      t.alt = `${lbYearEl.textContent} thumbnail ${i+1}`;
+      if (i === currentImageIndex) t.classList.add('active');
 
       const show = () => showImage(i);
-      img.addEventListener('click', show, {passive: true});
-      img.addEventListener('touchstart', show, {passive: true});
-      img.addEventListener('pointerdown', show, {passive: true});
+      t.addEventListener('click', show, { passive:true });
+      t.addEventListener('touchstart', show, { passive:true });
+      t.addEventListener('pointerdown', show, { passive:true });
 
-      lbThumbs.appendChild(img);
+      lbThumbs.appendChild(t);
     });
   }
 
-  function showImage(i) {
-    currentImageIndex = i;
-    lbImg.src = `images/top_risks/${currentImages[currentImageIndex]}`;
-    lbImg.alt = `${lbYear.textContent} detail ${currentImageIndex + 1}`;
-    // update active thumb state
-    Array.from(lbThumbs.querySelectorAll('img')).forEach((t, idx) => {
-      t.classList.toggle('active', idx === currentImageIndex);
-    });
-  }
-
-  // Open lightbox for a given cover index
-  function openLightbox(yearIdx) {
+  function openLightbox(yearIdx){
     currentYearIndex = yearIdx;
 
-    const card = covers[yearIdx];
-    const year   = card.getAttribute('data-year') || '';
-    const report = card.getAttribute('data-report') || '#';
-    const blurb  = card.getAttribute('data-blurb') || '';
-    const coverSrc = baseName(card.querySelector('img')?.getAttribute('src'));
-    const images = (card.getAttribute('data-images') || '')
-                    .split(',').map(s => s.trim()).filter(Boolean);
+    const card    = covers[yearIdx];
+    const year    = card.getAttribute('data-year') || '';
+    const report  = card.getAttribute('data-report') || '#';
+    const blurb   = card.getAttribute('data-blurb') || '';
+    const coverEl = $('img', card);
+    const coverSrc= coverEl ? coverEl.getAttribute('src') : '';
+    const coverFile = fileName(coverSrc);
 
-    // Pick first non-cover as initial if present
+    // Build list of images for this year
+    let imgs = (card.getAttribute('data-images') || '')
+                .split(',').map(s => s.trim()).filter(Boolean);
+
+    // Map to full paths safely
+    const resolved = imgs.length
+      ? imgs.map(entry => resolvePath(entry, coverSrc))
+      : [coverSrc]; // fallback to the visible cover if none provided
+
+    // Choose initial slide: first non-cover if possible
     let start = 0;
-    if (images.length) {
-      const firstIsCover = images[0] === coverSrc;
-      if (firstIsCover && images.length > 1) start = 1;
+    if (resolved.length > 0) {
+      const firstIsCover = fileName(resolved[0]) === coverFile;
+      if (firstIsCover && resolved.length > 1) start = 1;
       if (!firstIsCover) {
-        const nonCoverIdx = images.findIndex(x => x !== coverSrc);
+        const nonCoverIdx = resolved.findIndex(x => fileName(x) !== coverFile);
         start = nonCoverIdx === -1 ? 0 : nonCoverIdx;
       }
     }
 
-    // Fallback to the visible cover if no data-images
-    currentImages = images.length ? images : [coverSrc];
-    currentImageIndex = Math.min(Math.max(start, 0), currentImages.length - 1);
+    currentImages = resolved;
+    currentImageIndex = Math.min(Math.max(start,0), currentImages.length-1);
 
     // Fill UI
-    lbYear.textContent = year;
-    lbBlurb.textContent = blurb;
-    lbLink.href = report;
+    lbYearEl.textContent = year;
+    lbBlurb.textContent  = blurb;
+    lbLink.href          = report;
 
     showImage(currentImageIndex);
-    renderThumbs();
+    buildThumbs();
 
-    // Show modal
+    // Open
     lb.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
     document.addEventListener('keydown', onKey);
   }
 
-  function closeLightbox() {
+  function closeLightbox(){
     lb.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
     document.removeEventListener('keydown', onKey);
   }
 
-  // Swipe within current year's images
+  // --- Swipe to change image within the same year (mobile) ---
   (function attachSwipe(){
-    let startX = 0, startY = 0, moved = false;
+    let startX=0, startY=0, moved=false;
+    const media = $('.lb-media');
 
     const onStart = (e) => {
-      moved = false;
+      moved=false;
       const t = e.touches ? e.touches[0] : e;
       startX = t.clientX; startY = t.clientY;
     };
-    const onMove = (e) => {
-      moved = true;
-    };
+    const onMove = () => { moved=true; };
     const onEnd = (e) => {
       if (!moved) return;
       const t = e.changedTouches ? e.changedTouches[0] : e;
@@ -521,38 +571,45 @@
       }
     };
 
-    const media = document.querySelector('.lb-media');
-    media.addEventListener('touchstart', onStart, {passive: true});
-    media.addEventListener('touchmove', onMove, {passive: true});
-    media.addEventListener('touchend', onEnd, {passive: true});
-    media.addEventListener('pointerdown', onStart, {passive: true});
-    media.addEventListener('pointerup', onEnd, {passive: true});
+    media.addEventListener('touchstart', onStart, {passive:true});
+    media.addEventListener('touchmove',  onMove,  {passive:true});
+    media.addEventListener('touchend',   onEnd,   {passive:true});
+    media.addEventListener('pointerdown',onStart, {passive:true});
+    media.addEventListener('pointerup',  onEnd,   {passive:true});
   })();
 
-  function prevImage() {
+  function prevImage(){
     if (!currentImages.length) return;
-    const i = (currentImageIndex - 1 + currentImages.length) % currentImages.length;
-    showImage(i);
+    showImage((currentImageIndex - 1 + currentImages.length) % currentImages.length);
   }
-  function nextImage() {
+  function nextImage(){
     if (!currentImages.length) return;
-    const i = (currentImageIndex + 1) % currentImages.length;
-    showImage(i);
+    showImage((currentImageIndex + 1) % currentImages.length);
   }
 
-  // Keyboard
-  function onKey(e) {
+  // --- ARROWS: go to PREV/NEXT YEAR (your original expected behavior) ---
+  function prevYear(){
+    if (currentYearIndex <= 0) return;
+    openLightbox(currentYearIndex - 1);
+  }
+  function nextYear(){
+    if (currentYearIndex >= covers.length - 1) return;
+    openLightbox(currentYearIndex + 1);
+  }
+
+  // Keyboard support
+  function onKey(e){
     if (e.key === 'Escape') closeLightbox();
-    if (e.key === 'ArrowLeft') prevImage();
-    if (e.key === 'ArrowRight') nextImage();
+    if (e.key === 'ArrowLeft')  prevYear();
+    if (e.key === 'ArrowRight') nextYear();
   }
 
-  // Backdrop close (but not dialog)
-  document.getElementById('lightbox').addEventListener('click', (e) => {
+  // Backdrop close
+  lb.addEventListener('click', (e) => {
     if (e.target.id === 'lightbox') closeLightbox();
   });
 
-  // Wire “View report” and card opens
+  // Wire cards + “View report” chip
   covers.forEach((card, idx) => {
     const chip = card.querySelector('[data-link]');
     if (chip) chip.addEventListener('click', () => {
@@ -565,17 +622,13 @@
     });
   });
 
-  // Expose openLightbox for the “Open light box” helper link
+  // Expose functions the page already calls
   window.openLightbox = openLightbox;
-
-  // Optional: repurpose the existing nav arrows to move images (not years)
-  window.prevItem = prevImage;
-  window.nextItem = nextImage;
-
-  // Close button hook
   window.closeLightbox = closeLightbox;
-  document.getElementById('lbLink').addEventListener('click', e => e.stopPropagation());
+  window.prevItem = prevYear;   // arrows now change YEAR
+  window.nextItem = nextYear;   // arrows now change YEAR
 </script>
+
 
 
 <!-- Original analytics snippet -->

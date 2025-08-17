@@ -29,216 +29,192 @@
   <link rel="preload" as="image" href="images/top_risks/2025TR.png">
 
   <style>
-    /* --- Enhancements layered on top of original CSS --- */
+   /* ── Layout & grid tweaks (keeps original framework) ───────────────────────── */
+#content { max-width: 1000px; margin: 0 auto; }
 
-    /* Constrain content width as in original screen.css */
-    #content { max-width: 1000px; margin: 0 auto; }
+.tr-covers { margin-top: 10px; }
+/* 5-up on desktop with your float grid */
+.tr-covers .tr-cover.grid_2 { width: 18%; }
 
-    /* Cover grid: keep 12-col system; size each to ~5-up on desktop */
-    .tr-covers .tr-cover.grid_2 { width: 18%; } /* 5 per row in your float grid */
-    .tr-covers { margin-top: 10px; }
-
-    /* Card wrapper for overlays */
-    .cover-card {
-      position: relative;
-      display: block;
-      overflow: hidden;
-      border-radius: 4px;
-    }
-    .cover-card img { width: 100%; height: auto; display: block; }
-
-    /* Always-visible year label */
-    .year-tag {
-      position: absolute;
-      left: 6px;
-      bottom: 6px;
-      font-family: 'Open Sans', Arial, sans-serif;
-      font-size: 12px;
-      line-height: 1;
-      letter-spacing: .02em;
-      background: rgba(255,255,255,0.9);
-      color: #000;
-      border: 1px solid #e5e5e5;
-      border-radius: 3px;
-      padding: 4px 6px;
-      pointer-events: none;
-    }
-
-    /* Small "View report" chip (top-right) */
-    .view-report {
-      position: absolute;
-      right: 6px;
-      top: 6px;
-      font-family: 'Open Sans', Arial, sans-serif;
-      font-size: 11px;
-      line-height: 1;
-      background: rgba(255,255,255,0.95);
-      color: #000;
-      border: 1px solid #e5e5e5;
-      border-radius: 3px;
-      padding: 4px 6px;
-      text-decoration: none;
-    }
-    .view-report:focus, .view-report:hover { text-decoration: underline; }
-
-    /* Utility labels */
-    .section-label {
-      font-family: 'Open Sans', Arial, sans-serif;
-      font-size: 1.2em;
-      font-weight: 700;
-      margin: 20px 0 8px;
-    }
-    .open-lb {
-      display: inline-block;
-      margin: 10px 0 6px;
-      font-family: 'Open Sans', Arial, sans-serif;
-      font-size: 13px;
-      text-decoration: underline;
-    }
-
-    /* Lightbox (white background, safe sizing) */
-    .lb-overlay {
-      position: fixed; inset: 0;
-      background: rgba(255,255,255,0.98);
-      display: none;
-      align-items: center; justify-content: center;
-      z-index: 9999;
-    }
-    .lb-overlay[aria-hidden="false"] { display: flex; }
-
-    .lb-dialog {
-      width: 92vw; max-width: 980px;
-      max-height: 92vh;
-      display: flex; flex-direction: column;
-      border: 1px solid #e5e5e5;
-      border-radius: 8px;
-      background: #fff;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-      position: relative;
-    }
-
-    .lb-header {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 10px 14px;
-      border-bottom: 1px solid #eee;
-      font-family: 'Open Sans', Arial, sans-serif;
-    }
-    .lb-title { font-size: 14px; font-weight: 700; }
-    .lb-close {
-      background: none; border: 0; font-size: 20px; cursor: pointer;
-      line-height: 1; padding: 4px 6px;
-    }
-
-    /* Overflow-safe body (prevents 900px images from overlapping sidebar) */
-    .lb-body {
-      display: flex; gap: 16px;
-      padding: 14px;
-      overflow: hidden;
-    }
-    .lb-media {
-      flex: 1 1 0;
-      min-width: 0;                /* allows shrink */
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-    }
-    .lb-media img {
-      max-width: 100%;             /* key: scale down on narrow viewports */
-      height: auto;
-      max-height: 70vh;
-      object-fit: contain;
-      border: 1px solid #eee;
-      border-radius: 4px;
-      background: #fff;
-    }
-
-    .lb-meta {
-      flex: 0 0 250px;
-      min-width: 0;
-      font-family: 'Open Sans', Arial, sans-serif;
-      font-size: 14px; line-height: 1.4;
-      overflow: auto;
-      max-height: calc(92vh - 110px);
-    }
-    .lb-meta .lb-year { font-weight: 800; margin-bottom: 6px; }
-    .lb-meta .lb-blurb { font-size: 13px; color: #333; margin: 8px 0 12px; }
-    .lb-meta .lb-link {
-      display: inline-block; margin-top: 6px;
-      text-decoration: underline; font-weight: 700;
-    }
-
-    .lb-thumbs {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 6px;
-      margin-top: 12px;
-    }
-    .lb-thumbs img {
-      width: 100%; height: 80px; object-fit: cover;
-      border: 1px solid #eee; border-radius: 3px; cursor: pointer;
-    }
-
-    /* Nav arrows (optional) */
-    .lb-nav {
-      position: absolute; inset: 0; pointer-events: none;
-      display: flex; align-items: center; justify-content: space-between;
-    }
-    .lb-nav button {
-      pointer-events: auto;
-      background: rgba(0,0,0,0.04);
-      border: 1px solid #ddd;
-      width: 36px; height: 36px; border-radius: 18px;
-      margin: 10px;
-      cursor: pointer;
-    }
-
-    /* Mobile-friendly thumbs */
-.lb-thumbs {
-  -webkit-overflow-scrolling: touch;
+/* ── Cover cards ───────────────────────────────────────────────────────────── */
+.cover-card {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  border-radius: 4px;
 }
-.lb-thumbs img {
-  touch-action: manipulation;         /* remove tap delay */
-  border-radius: 6px;
-}
-.lb-thumbs img.active {
-  outline: 2px solid #111;
+.cover-card img { width: 100%; height: auto; display: block; }
+
+.year-tag {
+  position: absolute;
+  left: 6px;
+  bottom: 6px;
+  font-family: 'Open Sans', Arial, sans-serif;
+  font-size: 12px;
+  line-height: 1;
+  letter-spacing: .02em;
+  background: rgba(255,255,255,0.9);
+  color: #000;
+  border: 1px solid #e5e5e5;
+  border-radius: 3px;
+  padding: 4px 6px;
+  pointer-events: none;
 }
 
-/* Make the media area capture swipes cleanly */
+.view-report {
+  position: absolute;
+  right: 6px;
+  top: 6px;
+  font-family: 'Open Sans', Arial, sans-serif;
+  font-size: 11px;
+  line-height: 1;
+  background: rgba(255,255,255,0.95);
+  color: #000;
+  border: 1px solid #e5e5e5;
+  border-radius: 3px;
+  padding: 4px 6px;
+  text-decoration: none;
+}
+.view-report:focus,
+.view-report:hover { text-decoration: underline; }
+
+.section-label {
+  font-family: 'Open Sans', Arial, sans-serif;
+  font-size: 1.2em;
+  font-weight: 700;
+  margin: 20px 0 8px;
+}
+.open-lb {
+  display: inline-block;
+  margin: 10px 0 6px;
+  font-family: 'Open Sans', Arial, sans-serif;
+  font-size: 13px;
+  text-decoration: underline;
+}
+
+/* ── Lightbox container (white sheet) ─────────────────────────────────────── */
+.lb-overlay {
+  position: fixed; inset: 0;
+  background: rgba(255,255,255,0.98);
+  display: none;
+  align-items: center; justify-content: center;
+  z-index: 9999;
+}
+.lb-overlay[aria-hidden="false"] { display: flex; }
+
+.lb-dialog {
+  width: 92vw; max-width: 980px;
+  max-height: 92vh;
+  display: flex; flex-direction: column;
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  position: relative;
+}
+
+.lb-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 14px;
+  border-bottom: 1px solid #eee;
+  font-family: 'Open Sans', Arial, sans-serif;
+}
+.lb-title { font-size: 14px; font-weight: 700; }
+.lb-close {
+  background: none; border: 0; font-size: 20px; cursor: pointer;
+  line-height: 1; padding: 4px 6px;
+}
+
+/* ── Lightbox body (flex) + media pane safe sizing ────────────────────────── */
+.lb-body {
+  display: flex;
+  gap: 16px;
+  padding: 14px;
+  overflow: hidden;
+}
 .lb-media {
-  touch-action: pan-y;                /* allow vertical scroll, capture horizontal swipe */
+  flex: 1 1 0;
+  min-width: 0;                 /* allow shrink so it won't overlap sidebar */
+  min-height: 48vh;             /* ensures visible area before image loads */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  touch-action: pan-y;          /* vertical scrolling allowed; capture horizontal swipes */
 }
-
-
-    /* Responsive fallbacks consistent with screen.css */
-    @media screen and (max-width: 1024px) {
-      .tr-covers .tr-cover.grid_2 { width: 23.5%; } /* ~4-up on tablet */
-    }
-    @media screen and (max-width: 750px) {
-      .tr-covers .tr-cover.grid_2 { width: 48%; }   /* 2-up on phones */
-      .lb-body { flex-direction: column; }
-      .lb-meta { flex-basis: auto; max-height: none; }
-      .lb-media img { max-height: 56vh; }
-    }
-
-
-    /* iOS-friendly sizing for the main lightbox image */
-.lb-media img{
+.lb-media img {
+  display: block;
   max-width: 100%;
   height: auto;
   max-height: 70vh;
   object-fit: contain;
+  border: 1px solid #eee;
+  border-radius: 4px;
+  background: #fff;
+  visibility: hidden;           /* revealed when onload fires (JS adds .is-ready) */
+}
+.lb-media img.is-ready { visibility: visible; }
+
+.lb-meta {
+  flex: 0 0 250px;
+  min-width: 0;
+  font-family: 'Open Sans', Arial, sans-serif;
+  font-size: 14px; line-height: 1.4;
+  overflow: auto;
+  max-height: calc(92vh - 110px);
+}
+.lb-meta .lb-year { font-weight: 800; margin-bottom: 6px; }
+.lb-meta .lb-blurb { font-size: 13px; color: #333; margin: 8px 0 12px; }
+.lb-meta .lb-link {
+  display: inline-block; margin-top: 6px;
+  text-decoration: underline; font-weight: 700;
 }
 
-/* iOS Safari dynamic viewport fallback */
+/* ── Thumbnails ───────────────────────────────────────────────────────────── */
+.lb-thumbs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  margin-top: 12px;
+  -webkit-overflow-scrolling: touch;
+}
+.lb-thumbs img {
+  width: 100%; height: 80px; object-fit: cover;
+  border: 1px solid #eee; border-radius: 6px; cursor: pointer;
+  touch-action: manipulation;
+}
+.lb-thumbs img.active { outline: 2px solid #111; }
+
+/* ── Optional nav arrows (positioned over sheet) ─────────────────────────── */
+.lb-nav {
+  position: absolute; inset: 0; pointer-events: none;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.lb-nav button {
+  pointer-events: auto;
+  background: rgba(0,0,0,0.04);
+  border: 1px solid #ddd;
+  width: 36px; height: 36px; border-radius: 18px;
+  margin: 10px;
+  cursor: pointer;
+}
+
+/* ── iOS dynamic viewport tweak ───────────────────────────────────────────── */
 @supports (height: 1dvh) {
+  .lb-media { min-height: 52dvh; }
   .lb-media img { max-height: 72dvh; }
 }
 
-/* make sure the media area can shrink instead of overlapping the sidebar */
-.lb-media { min-width: 0; }
-.lb-body { overflow: hidden; }
+/* ── Responsive (aligns with your screen.css breakpoints) ─────────────────── */
+@media screen and (max-width: 1024px) {
+  .tr-covers .tr-cover.grid_2 { width: 23.5%; } /* ~4-up on tablet */
+}
+@media screen and (max-width: 750px) {
+  .tr-covers .tr-cover.grid_2 { width: 48%; }   /* 2-up on phones */
+  .lb-body { flex-direction: column; }
+  .lb-meta { flex-basis: auto; max-height: none; }
+  .lb-media img { max-height: 56vh; }
+}
 
   </style>
 </head>
@@ -471,12 +447,28 @@
   }
 
   function showImage(i){
-    currentImageIndex = i;
-    const src = currentImages[currentImageIndex];
-    lbImg.src = src;
-    lbImg.alt = `${lbYearEl.textContent} detail ${currentImageIndex+1}`;
+  currentImageIndex = i;
+  const src = currentImages[currentImageIndex];
+
+  // Hide until we know it rendered, then show (prevents blank flashes)
+  lbImg.classList.remove('is-ready');
+
+  // iOS Safari sometimes ignores re-setting the same src; cache-bust it
+  const bust = src + (src.includes('?') ? '&' : '?') + 'ts=' + Date.now();
+
+  // Set alt first (accessibility)
+  lbImg.alt = `${lbYearEl.textContent} detail ${currentImageIndex + 1}`;
+
+  // When it loads, reveal it and update the active thumbnail state
+  lbImg.onload = () => {
+    lbImg.classList.add('is-ready');
     setActiveThumb(currentImageIndex);
-  }
+  };
+
+  // Finally set the (busted) source
+  lbImg.src = bust;
+}
+
 
   function buildThumbs(){
     lbThumbs.innerHTML = '';

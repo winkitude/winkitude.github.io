@@ -193,6 +193,24 @@
       cursor: pointer;
     }
 
+    /* Mobile-friendly thumbs */
+.lb-thumbs {
+  -webkit-overflow-scrolling: touch;
+}
+.lb-thumbs img {
+  touch-action: manipulation;         /* remove tap delay */
+  border-radius: 6px;
+}
+.lb-thumbs img.active {
+  outline: 2px solid #111;
+}
+
+/* Make the media area capture swipes cleanly */
+.lb-media {
+  touch-action: pan-y;                /* allow vertical scroll, capture horizontal swipe */
+}
+
+
     /* Responsive fallbacks consistent with screen.css */
     @media screen and (max-width: 1024px) {
       .tr-covers .tr-cover.grid_2 { width: 23.5%; } /* ~4-up on tablet */
@@ -388,108 +406,177 @@
 </div>
 
 <script>
-  // Helpers
+  // --- State ---
   const covers = Array.from(document.querySelectorAll('.cover-card'));
-  let currentIndex = -1;
+  let currentYearIndex = -1;         // which cover (year) is open
+  let currentImages = [];            // images for the open year (strings)
+  let currentImageIndex = 0;         // which image within the year is shown
 
-  covers.forEach((card, idx) => {
-    // "View report" chip opens external link without triggering lightbox
-    const chip = card.querySelector('[data-link]');
-    if (chip) chip.addEventListener('click', () => {
-      const url = card.getAttribute('data-report') || '#';
-      if (url && url !== '#') window.open(url, '_blank', 'noopener');
-    });
+  // --- Helpers ---
+  const $ = (s) => document.querySelector(s);
+  const lb = $('#lightbox');
+  const lbImg = $('#lbImage');
+  const lbYear = $('#lbYear');
+  const lbBlurb = $('#lbBlurb');
+  const lbLink = $('#lbLink');
+  const lbThumbs = $('#lbThumbs');
 
-    // Open lightbox from card
-    card.addEventListener('click', (e) => {
-      e.preventDefault();
-      openLightbox(idx);
-    });
-  });
-
-  // Util: get file name from full path
   function baseName(p){ return (p || '').split('/').pop(); }
 
-  function openLightbox(idx) {
-    currentIndex = idx;
-    const card = covers[idx];
+  // Build thumbs and attach events (click + touch)
+  function renderThumbs() {
+    lbThumbs.innerHTML = '';
+    currentImages.forEach((src, i) => {
+      const img = new Image();
+      img.src = `images/top_risks/${src}`;
+      img.alt = `${lbYear.textContent} thumbnail ${i+1}`;
+      if (i === currentImageIndex) img.classList.add('active');
+
+      const show = () => showImage(i);
+      img.addEventListener('click', show, {passive: true});
+      img.addEventListener('touchstart', show, {passive: true});
+      img.addEventListener('pointerdown', show, {passive: true});
+
+      lbThumbs.appendChild(img);
+    });
+  }
+
+  function showImage(i) {
+    currentImageIndex = i;
+    lbImg.src = `images/top_risks/${currentImages[currentImageIndex]}`;
+    lbImg.alt = `${lbYear.textContent} detail ${currentImageIndex + 1}`;
+    // update active thumb state
+    Array.from(lbThumbs.querySelectorAll('img')).forEach((t, idx) => {
+      t.classList.toggle('active', idx === currentImageIndex);
+    });
+  }
+
+  // Open lightbox for a given cover index
+  function openLightbox(yearIdx) {
+    currentYearIndex = yearIdx;
+
+    const card = covers[yearIdx];
     const year   = card.getAttribute('data-year') || '';
     const report = card.getAttribute('data-report') || '#';
-    const images = (card.getAttribute('data-images') || '')
-                    .split(',').map(s => s.trim()).filter(Boolean);
     const blurb  = card.getAttribute('data-blurb') || '';
     const coverSrc = baseName(card.querySelector('img')?.getAttribute('src'));
+    const images = (card.getAttribute('data-images') || '')
+                    .split(',').map(s => s.trim()).filter(Boolean);
 
-    // Choose initial image:
-    // If there are extra images and the first equals the cover, jump to the next.
-    // If the cover exists later in the list, also skip to the first non-cover.
-    let startIndex = 0;
-    if (images.length > 0) {
+    // Pick first non-cover as initial if present
+    let start = 0;
+    if (images.length) {
       const firstIsCover = images[0] === coverSrc;
-      if (firstIsCover && images.length > 1) startIndex = 1;
+      if (firstIsCover && images.length > 1) start = 1;
       if (!firstIsCover) {
         const nonCoverIdx = images.findIndex(x => x !== coverSrc);
-        startIndex = nonCoverIdx === -1 ? 0 : nonCoverIdx;
+        start = nonCoverIdx === -1 ? 0 : nonCoverIdx;
       }
     }
 
-    // Fallback if no data-images provided
-    const initial = images.length ? `images/top_risks/${images[startIndex]}` : card.querySelector('img')?.src;
+    // Fallback to the visible cover if no data-images
+    currentImages = images.length ? images : [coverSrc];
+    currentImageIndex = Math.min(Math.max(start, 0), currentImages.length - 1);
 
-    document.getElementById('lbYear').textContent = year;
-    document.getElementById('lbBlurb').textContent = blurb;
-    document.getElementById('lbImage').src = initial;
-    document.getElementById('lbImage').alt = `Top Risks ${year} image`;
-    document.getElementById('lbLink').href = report;
+    // Fill UI
+    lbYear.textContent = year;
+    lbBlurb.textContent = blurb;
+    lbLink.href = report;
 
-    // Build thumbnails
-    const thumbs = document.getElementById('lbThumbs');
-    thumbs.innerHTML = '';
-    images.forEach(src => {
-      const img = document.createElement('img');
-      img.src = `images/top_risks/${src}`;
-      img.alt = `${year} thumbnail`;
-      img.addEventListener('click', () => {
-        document.getElementById('lbImage').src = `images/top_risks/${src}`;
-        document.getElementById('lbImage').alt = `${year} detail`;
-      });
-      thumbs.appendChild(img);
-    });
+    showImage(currentImageIndex);
+    renderThumbs();
 
-    // Show lightbox
-    const lb = document.getElementById('lightbox');
+    // Show modal
     lb.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
     document.addEventListener('keydown', onKey);
   }
 
   function closeLightbox() {
-    const lb = document.getElementById('lightbox');
     lb.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
     document.removeEventListener('keydown', onKey);
   }
 
+  // Swipe within current year's images
+  (function attachSwipe(){
+    let startX = 0, startY = 0, moved = false;
+
+    const onStart = (e) => {
+      moved = false;
+      const t = e.touches ? e.touches[0] : e;
+      startX = t.clientX; startY = t.clientY;
+    };
+    const onMove = (e) => {
+      moved = true;
+    };
+    const onEnd = (e) => {
+      if (!moved) return;
+      const t = e.changedTouches ? e.changedTouches[0] : e;
+      const dx = t.clientX - startX;
+      const dy = t.clientY - startY;
+      if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 30) {
+        if (dx < 0) nextImage();
+        else prevImage();
+      }
+    };
+
+    const media = document.querySelector('.lb-media');
+    media.addEventListener('touchstart', onStart, {passive: true});
+    media.addEventListener('touchmove', onMove, {passive: true});
+    media.addEventListener('touchend', onEnd, {passive: true});
+    media.addEventListener('pointerdown', onStart, {passive: true});
+    media.addEventListener('pointerup', onEnd, {passive: true});
+  })();
+
+  function prevImage() {
+    if (!currentImages.length) return;
+    const i = (currentImageIndex - 1 + currentImages.length) % currentImages.length;
+    showImage(i);
+  }
+  function nextImage() {
+    if (!currentImages.length) return;
+    const i = (currentImageIndex + 1) % currentImages.length;
+    showImage(i);
+  }
+
+  // Keyboard
   function onKey(e) {
     if (e.key === 'Escape') closeLightbox();
-    if (e.key === 'ArrowLeft') prevItem();
-    if (e.key === 'ArrowRight') nextItem();
+    if (e.key === 'ArrowLeft') prevImage();
+    if (e.key === 'ArrowRight') nextImage();
   }
 
-  function prevItem() {
-    if (currentIndex <= 0) return;
-    openLightbox(currentIndex - 1);
-  }
-  function nextItem() {
-    if (currentIndex >= covers.length - 1) return;
-    openLightbox(currentIndex + 1);
-  }
-
-  // Close when clicking backdrop (but not the dialog)
+  // Backdrop close (but not dialog)
   document.getElementById('lightbox').addEventListener('click', (e) => {
     if (e.target.id === 'lightbox') closeLightbox();
   });
+
+  // Wire “View report” and card opens
+  covers.forEach((card, idx) => {
+    const chip = card.querySelector('[data-link]');
+    if (chip) chip.addEventListener('click', () => {
+      const url = card.getAttribute('data-report') || '#';
+      if (url && url !== '#') window.open(url, '_blank', 'noopener');
+    });
+    card.addEventListener('click', (e) => {
+      e.preventDefault();
+      openLightbox(idx);
+    });
+  });
+
+  // Expose openLightbox for the “Open light box” helper link
+  window.openLightbox = openLightbox;
+
+  // Optional: repurpose the existing nav arrows to move images (not years)
+  window.prevItem = prevImage;
+  window.nextItem = nextImage;
+
+  // Close button hook
+  window.closeLightbox = closeLightbox;
+  document.getElementById('lbLink').addEventListener('click', e => e.stopPropagation());
 </script>
+
 
 <!-- Original analytics snippet -->
 <script type="text/javascript">

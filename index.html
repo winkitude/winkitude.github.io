@@ -32,15 +32,26 @@
 .home-tiles {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
+  gap: 36px 16px;   /* 36px between rows, 16px between columns */
 }
 .home-tiles .grid_4 { float: none; width: auto; margin: 0; } /* cancels float grid */
 .home-tiles img { display: block; width: 100%; height: auto; }
 /* Lock copy height to ~3 lines to prevent overlap jitter */
 .home-tiles p { margin-top: 6px; min-height: 3.6em; }
 
+
 /* create a hard stop after the hero so tiles don't float up beside it */
 .clearfix-break { clear: both; height: 0; }
+
+/* spacing under each tile */
+#content .grid_4 { margin-bottom: 24px; }
+
+/* start a new row every 3 tiles */
+#content .grid_4:nth-of-type(3n+1) { clear: left; }
+
+/* image hygiene */
+#content .grid_4 img { display: block; width: 100%; height: auto; }
+
 
 @media (max-width: 1024px) { .home-tiles { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 700px)  { .home-tiles { grid-template-columns: 1fr; } }
@@ -67,12 +78,12 @@
 
       <div class="grid_7">
         <p style="font-family:'Open Sans', Gotham, 'Helvetica Neue', Helvetica, Arial, 'sans-serif'; font-size:1.5em; line-height:1.25em ">
-          I’m Ari Winkleman, Lead Designer at <a href="https://eurasiagroup.net">Eurasia Group</a> and Senior Designer at <a href="https://www.gzeromedia.com/u/ari_winkleman_old">GZERO Media</a>. <br><br>
+          I’m Ari Winkleman, Lead Designer at <a href="https://eurasiagroup.net" target="_blank">Eurasia Group</a> and Senior Designer at <a href="https://www.gzeromedia.com/u/ari_winkleman_old" target="_blank">GZERO Media</a>. <br><br>
           My focus is brand identity, information design, and data visualization—turning complicated ideas into clear, impactful visuals.
           
  <br><br>
        Please feel free to email me at ariswinkleman {at} gmail {dot} com<br><br>
-        Or you can find me on <a href="https://www.linkedin.com/in/ari-winkleman/">Linkedin</a>.</p> 
+        Or you can find me on <a href="https://www.linkedin.com/in/ari-winkleman/" target="_blank">Linkedin</a>.</p> 
       </div>
 		
 	</div>
@@ -91,25 +102,26 @@
   <div class="grid_4 home-block">
     <a href="gzero.html"><img alt="GZERO projects" src="images/gzero/gzero_homepage.gif"></a>
     <p><strong>GZERO Media</strong><br>
-    Brand development, video & brand guidelines, digital products, and The Graphic Truth.</p>
+    Brand development, video & brand guidelines, digital products, and The Graphic Truth</p>
   </div>
 
   <div class="grid_4 home-block">
     <a href="tr.html"><img alt="Top Risks report project" src="images/top_risks/TR_homepage.png"></a>
-    <p><strong>Top Risks (flagship)</strong><br>
-    Annual outlook: report, charts, launch assets.</p>
+    <p><strong>Top Risks</strong><br>
+    Flagship annual outlook: Report, charts, launch assets</p>
   </div>
+  
 
   <div class="grid_4 home-block">
     <a href="graphictruth.html"><img alt="Graphic Truth project" src="images/graphic_truth/GT_homepage.png"></a>
-    <p><strong>Graphic Truth</strong><br>
-    Charts, data collection, scraping, and information graphics.</p>
+    <p><strong>The Graphic Truth</strong><br>
+    Charts, data collection, scraping, and information graphics</p>
   </div>
 
   <div class="grid_4 home-block">
     <a href="guidelines.html"><img alt="Guidelines project" src="images/guidelines/GL_homepage.png"></a>
     <p><strong>Guidelines & Systems</strong><br>
-    Living standards for brand, charts, and video—used by teams and freelancers.</p>
+    Living standards for brand, charts, and video—used by teams and freelancers</p>
   </div>
 </div>
 

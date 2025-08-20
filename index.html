@@ -26,13 +26,32 @@
   <link href="css/grid.css" rel="stylesheet" />
   <link href="css/screen.css" rel="stylesheet" />
 
+<style>
+  .grid_4 > p { margin-top: 6px; }
 
+.home-tiles {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+.home-tiles .grid_4 { float: none; width: auto; margin: 0; } /* cancels float grid */
+.home-tiles img { display: block; width: 100%; height: auto; }
+/* Lock copy height to ~3 lines to prevent overlap jitter */
+.home-tiles p { margin-top: 6px; min-height: 3.6em; }
+
+/* create a hard stop after the hero so tiles don't float up beside it */
+.clearfix-break { clear: both; height: 0; }
+
+@media (max-width: 1024px) { .home-tiles { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 700px)  { .home-tiles { grid-template-columns: 1fr; } }
+
+</style>
 </head>
 
 <body>
 <div class="container clearfix">
 	<div id="content">
-		<div class="grid_12">
+		<div class="grid_12 cf">
 			<h1><a href="http://winkitude.com">Ari Winkleman</a></h1>
 		
 		<hr>
@@ -57,26 +76,41 @@
       </div>
 		
 	</div>
-		
-	<div class="grid_12">
-		<hr>
-		</div>
-	<br>
-<div class="grid_4">
-	<a href="eg.html"><img alt="Eurasia Group projects" src="images/eg/eg_homepage.gif"></a>
-</div>
 
-<div class="grid_4">
-	<a href="gzero.html"><img alt="GZERO projects" src="images/gzero/gzero_homepage.gif"></a>
-</div>
-  <div class="grid_4">
-	<a href="tr.html"><img alt="Top Risks report project" src="images/top_risks/TR_homepage.png"></a>
-</div>
-<div class="grid_4">
-	<a href="graphictruth.html"><img alt="Graphic Truth project" src="images/graphic_truth/GT_homepage.png"></a>
-</div>
-<div class="grid_4">
-	<a href="guidelines.html"><img alt="Guidelines project" src="images/guidelines/GL_homepage.png"></a>
+ <div class="grid_12"><hr></div>
+<br>
+<!-- add this line -->
+<div class="clearfix-break" aria-hidden="true"></div>
+<div class="home-tiles">
+  <div class="grid_4 home-block">
+    <a href="eg.html"><img src="images/eg/eg_homepage.gif" alt="Eurasia Group projects"></a>
+    <p><strong>Eurasia Group</strong><br>
+    Brand leadership, information design & data viz, templates/tooling, and digital products.</p>
+  </div>
+
+  <div class="grid_4 home-block">
+    <a href="gzero.html"><img alt="GZERO projects" src="images/gzero/gzero_homepage.gif"></a>
+    <p><strong>GZERO Media</strong><br>
+    Brand development, video & brand guidelines, digital products, and The Graphic Truth.</p>
+  </div>
+
+  <div class="grid_4 home-block">
+    <a href="tr.html"><img alt="Top Risks report project" src="images/top_risks/TR_homepage.png"></a>
+    <p><strong>Top Risks (flagship)</strong><br>
+    Annual outlook: report, charts, launch assets.</p>
+  </div>
+
+  <div class="grid_4 home-block">
+    <a href="graphictruth.html"><img alt="Graphic Truth project" src="images/graphic_truth/GT_homepage.png"></a>
+    <p><strong>Graphic Truth</strong><br>
+    Charts, data collection, scraping, and information graphics.</p>
+  </div>
+
+  <div class="grid_4 home-block">
+    <a href="guidelines.html"><img alt="Guidelines project" src="images/guidelines/GL_homepage.png"></a>
+    <p><strong>Guidelines & Systems</strong><br>
+    Living standards for brand, charts, and video—used by teams and freelancers.</p>
+  </div>
 </div>
 
 		<footer class="grid_12">

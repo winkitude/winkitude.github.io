@@ -227,3 +227,21 @@ h1 {
 
 
 
+/* simple clearfix helper */
+.cf::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* (optional) make sure the tiles section is self-contained */
+.home-tiles::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* if your homepage tiles are 3-up, start a new row every 3rd item */
+.home-tiles > .grid_4:nth-of-type(3n+1) {
+  clear: both;
+}

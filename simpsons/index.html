@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Simpsons Relationship Network — Interactive</title>
+  <style>
+    html, body { height: 100%; margin: 0; font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji"; }
+    .app { display: grid; grid-template-columns: 280px 1fr; grid-template-rows: auto 1fr; height: 100%; }
+    header { grid-column: 1 / -1; display: flex; align-items: center; gap: 12px; padding: 10px 14px; border-bottom: 1px solid #eee; position: sticky; top: 0; background: #fff; z-index: 2; }
+    header .title { font-weight: 600; }
+    aside { border-right: 1px solid #eee; padding: 14px; overflow: auto; }
+    main { position: relative; overflow: hidden; background: #fff; }
+    .section { margin-bottom: 14px; }
+    .section h3 { margin: 0 0 8px; font-size: 14px; font-weight: 600; }
+    .row { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 8px 0; }
+    .legend { display: grid; grid-template-columns: auto 1fr; grid-auto-rows: minmax(24px, auto); gap: 6px 8px; max-height: 220px; overflow: auto; padding-right: 4px; }
+    .chip { width: 14px; height: 14px; border-radius: 3px; }
+    .small { font-size: 12px; color: #5a5a5a; }
+    .toolbar button { padding: 6px 10px; border: 1px solid #ddd; background: #fff; border-radius: 8px; cursor: pointer; }
+    .toolbar button + button { margin-left: 8px; }
+    .badge { position: absolute; bottom: 10px; left: 10px; background: rgba(255,255,255,0.92); border: 1px solid #eee; padding: 8px 10px; border-radius: 10px; font-size: 13px; box-shadow: 0 2px 10px rgba(0,0,0,0.06); }
+    .controls { display: flex; gap: 8px; align-items: center; }
+    input[type="range"] { width: 160px; }
+    .hint { color: #777; font-size: 12px; }
+  </style>
+  <script src="https://unpkg.com/force-graph"></script>
+  <script src="https://unpkg.com/papaparse@5.4.1/papaparse.min.js"></script>
+</head>
+<body>
+  <div class="app">
+    <header>
+      <div class="title">Simpsons Relationship Network</div>
+      <div class="toolbar" style="margin-left:auto;">
+        <button id="fitBtn">Fit</button>
+        <button id="zinBtn">Zoom +</button>
+        <button id="zoutBtn">Zoom −</button>
+      </div>
+    </header>
+
+    <aside>
+      <div class="section">
+        <h3>Data</h3>
+        <div class="row"><label class="small">Bundled CSV: <code>data/simpsons.csv</code></label></div>
+        <div class="controls">
+          <input id="csvFile" type="file" accept=".csv" />
+          <button id="reloadBundled">Reload bundled</button>
+        </div>
+      </div>
+
+      <div class="section">
+        <h3>Portraits</h3>
+        <div class="small">Bundled map: <code>image_map.csv</code> → <code>/portraits/*</code></div>
+        <input id="imgMapFile" type="file" accept=".csv" />
+        <div class="small" style="margin-top:8px;">Or upload images (filenames should match names)</div>
+        <input id="imgFiles" type="file" accept="image/*" multiple />
+      </div>
+
+      <div class="section">
+        <h3>Display</h3>
+        <div class="row"><label class="small">Show labels <input id="labelsToggle" type="checkbox" checked/></label></div>
+        <div class="row"><label class="small">Node size</label><input id="sizeRange" type="range" min="0.6" max="2" value="1" step="0.1" /></div>
+      </div>
+
+      <div class="section">
+        <h3>Relationship Types</h3>
+        <div id="legend" class="legend small"></div>
+      </div>
+
+      <div class="small hint">
+        Click a bubble to highlight direct connections. Pan with drag, zoom with wheel or buttons. Episode column is ignored.
+      </div>
+    </aside>
+
+    <main>
+      <div id="graph"></div>
+      <div id="badge" class="badge" style="display:none;"></div>
+    </main>
+  </div>
+
+<script>
+(() => {
+  const tab20 = [
+    "#1f77b4","#ff7f0e","#2ca02c","#d62728","#9467bd",
+    "#8c564b","#e377c2","#7f7f7f","#bcbd22","#17becf",
+    "#393b79","#637939","#8c6d31","#843c39","#7b4173",
+    "#6b6ecf","#b5cf6b","#e7ba52","#d6616b","#ce6dbd"
+  ];
+
+  const elGraph = document.getElementById('graph');
+  const badge = document.getElementById('badge');
+  const labelsToggle = document.getElementById('labelsToggle');
+  const sizeRange = document.getElementById('sizeRange');
+  const legendEl = document.getElementById('legend');
+  const reloadBundledBtn = document.getElementById('reloadBundled');
+
+  const Graph = ForceGraph()(elGraph)
+    .nodeRelSize(4)
+    .backgroundColor('#ffffff')
+    .zoom(1)
+    .linkDirectionalParticles(0)
+    .linkCurvature(0.15);
+
+  const resize = () => {
+    const rect = elGraph.getBoundingClientRect();
+    Graph.width(rect.width).height(rect.height);
+  };
+  const resizeObserver = new ResizeObserver(resize);
+  resizeObserver.observe(elGraph);
+
+  let graph = { nodes: [], links: [] };
+  let filtered = { nodes: [], links: [] };
+  let counts = new Map();
+  let typeList = [];
+  let activeTypes = {};
+  let nodeScale = 1.0;
+  let highlightNode = null;
+  let highlightNodes = new Set();
+  let highlightLinks = new Set();
+
+  // Images
+  const imageMap = new Map(); // name -> url
+  const imageCache = new Map();
+
+  function preload(url) {
+    if (!url || imageCache.has(url)) return;
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.onload = () => { imageCache.set(url, img); Graph.refresh(); };
+    img.onerror = () => {};
+    img.src = url;
+  }
+
+  function buildGraph(rows) {
+    counts = new Map();
+    const nodesMap = new Map();
+    const links = [];
+    const typeSet = new Set();
+
+    rows.forEach(r => {
+      const p = (r.Person||'').trim();
+      const l = (r.Lover||'').trim();
+      const t = (r.Type||'').trim();
+      if (!p || !l) return;
+      counts.set(p, (counts.get(p)||0)+1);
+      counts.set(l, (counts.get(l)||0)+1);
+      if (!nodesMap.has(p)) nodesMap.set(p, { id: p, val: 1 });
+      if (!nodesMap.has(l)) nodesMap.set(l, { id: l, val: 1 });
+      links.push({ source: p, target: l, type: t });
+      if (t) typeSet.add(t);
+    });
+
+    nodesMap.forEach((n, id) => { n.val = counts.get(id)||1; });
+    graph = { nodes: Array.from(nodesMap.values()), links };
+    typeList = Array.from(typeSet.values());
+    activeTypes = {}; typeList.forEach(t => activeTypes[t] = true);
+    renderLegend();
+    applyFilters();
+  }
+
+  function renderLegend() {
+    legendEl.innerHTML = '';
+    typeList.forEach((t, i) => {
+      const chip = document.createElement('div'); chip.className = 'chip'; chip.style.background = tab20[i % tab20.length];
+      const box = document.createElement('input'); box.type = 'checkbox'; box.checked = !!activeTypes[t];
+      box.addEventListener('change', () => { activeTypes[t] = box.checked; applyFilters(); });
+      const text = document.createElement('div'); text.textContent = t; text.className = 'small';
+      legendEl.appendChild(chip); legendEl.appendChild(box); legendEl.appendChild(text);
+    });
+  }
+
+  function applyFilters() {
+    const pass = (l) => (l.type ? activeTypes[l.type] : true);
+    const links = graph.links.filter(pass);
+    const keep = new Set();
+    links.forEach(l => {
+      keep.add(typeof l.source==='object'? l.source.id:l.source);
+      keep.add(typeof l.target==='object'? l.target.id:l.target);
+    });
+    const nodes = graph.nodes.filter(n => keep.has(n.id));
+    filtered = { nodes, links };
+    highlightNode = null; highlightNodes.clear(); highlightLinks.clear();
+    Graph.graphData(filtered);
+    setDrawers();
+    setTimeout(() => Graph.zoomToFit(600, 50), 30);
+  }
+
+  function colorOfType(type) {
+    if (!type) return '#999';
+    const idx = typeList.indexOf(type);
+    return tab20[idx % tab20.length];
+  }
+
+  function nodeRadius(n) {
+    const base = 3 + Math.pow(n.val||1, 0.9) * 1.4;
+    return base * nodeScale;
+  }
+
+  function setDrawers() {
+    Graph.nodeCanvasObject((node, ctx, scale) => {
+      const r = nodeRadius(node);
+      if (highlightNodes.size && !highlightNodes.has(node)) ctx.globalAlpha = 0.18; else ctx.globalAlpha = 1;
+      ctx.beginPath(); ctx.arc(node.x, node.y, r, 0, 2*Math.PI);
+      ctx.fillStyle = '#fff'; ctx.fill();
+      ctx.lineWidth = highlightNodes.has(node) ? 2.2 : 1;
+      ctx.strokeStyle = highlightNodes.has(node) ? '#111' : '#333';
+      ctx.stroke();
+      const url = imageMap.get(node.id);
+      const img = url ? imageCache.get(url) : null;
+      if (img) {
+        ctx.save();
+        ctx.beginPath(); ctx.arc(node.x, node.y, r - 1, 0, 2*Math.PI); ctx.clip();
+        const side = Math.min(img.naturalWidth, img.naturalHeight);
+        const sx = (img.naturalWidth - side)/2;
+        const sy = (img.naturalHeight - side)/2;
+        ctx.drawImage(img, sx, sy, side, side, node.x - r, node.y - r, r*2, r*2);
+        ctx.restore();
+      }
+      if (labelsToggle.checked) {
+        const fontSize = Math.max(8, 10/scale);
+        ctx.font = `${fontSize}px Inter, ui-sans-serif, system-ui`;
+        ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+        ctx.fillStyle = 'rgba(0,0,0,0.85)';
+        ctx.fillText(node.id, node.x, node.y + r + 2);
+      }
+      ctx.globalAlpha = 1;
+    })
+    .linkWidth(l => highlightLinks.size && !highlightLinks.has(l) ? 1 : 2.2)
+    .linkColor(l => {
+      const c = colorOfType(l.type);
+      return (highlightLinks.size && !highlightLinks.has(l)) ? c + '55' : c;
+    });
+  }
+
+  function onNodeClick(node) {
+    highlightNode = node;
+    highlightNodes = new Set([node]);
+    highlightLinks = new Set();
+    filtered.links.forEach(l => {
+      const s = typeof l.source==='object' ? l.source.id : l.source;
+      const t = typeof l.target==='object' ? l.target.id : l.target;
+      if (s === node.id || t === node.id) {
+        highlightLinks.add(l);
+        highlightNodes.add(typeof l.source==='object' ? l.source : filtered.nodes.find(n => n.id === s));
+        highlightNodes.add(typeof l.target==='object' ? l.target : filtered.nodes.find(n => n.id === t));
+      }
+    });
+    setDrawers();
+    Graph.centerAt(node.x, node.y, 600);
+    Graph.zoom(4, 800);
+    badge.style.display = 'block';
+    badge.innerHTML = `<div><b>${node.id}</b></div><div class="small">Connections: ${highlightLinks.size}</div>`;
+  }
+
+  function clearHighlight() {
+    highlightNode = null; highlightNodes.clear(); highlightLinks.clear();
+    setDrawers();
+    badge.style.display = 'none';
+  }
+
+  Graph.onNodeClick(onNodeClick);
+  Graph.onBackgroundClick(clearHighlight);
+
+  document.getElementById('fitBtn').onclick = () => Graph.zoomToFit(800, 50);
+  document.getElementById('zinBtn').onclick = () => Graph.zoom(Graph.zoom()*1.2, 400);
+  document.getElementById('zoutBtn').onclick = () => Graph.zoom(Graph.zoom()/1.2, 400);
+  sizeRange.addEventListener('input', e => { nodeScale = parseFloat(e.target.value || '1'); Graph.refresh(); });
+
+  // Upload handlers (optional)
+  document.getElementById('csvFile').addEventListener('change', e => {
+    const file = e.target.files && e.target.files[0];
+    if (!file) return;
+    Papa.parse(file, { header: true, skipEmptyLines: true, complete: (res) => {
+      const rows = (res.data||[]).map(r => ({ Person: (r.Person||'').trim(), Lover: (r.Lover||'').trim(), Type: (r.Type||'').trim() }))
+        .filter(r => r.Person && r.Lover);
+      buildGraph(rows);
+    }});
+  });
+
+  document.getElementById('imgMapFile').addEventListener('change', e => {
+    const file = e.target.files && e.target.files[0];
+    if (!file) return;
+    Papa.parse(file, { header: true, skipEmptyLines: true, complete: (res) => {
+      (res.data||[]).forEach(r => {
+        const name = (r.name || r.Name || '').trim();
+        const url = (r.url || r.URL || r.image || r.image_url || '').trim();
+        if (name && url) { imageMap.set(name, url); preload(url); }
+      });
+      Graph.refresh();
+    }});
+  });
+
+  document.getElementById('imgFiles').addEventListener('change', (e) => {
+    const files = Array.from(e.target.files||[]);
+    files.forEach(f => {
+      const name = f.name.replace(/\.[^.]+$/, '');
+      const url = URL.createObjectURL(f);
+      imageMap.set(name, url); preload(url);
+    });
+    Graph.refresh();
+  });
+
+  // Auto-load bundled CSV + image map
+  async function autoloadBundled() {
+    try {
+      const csvText = await fetch('data/simpsons.csv').then(r => r.text());
+      Papa.parse(csvText, { header: true, skipEmptyLines: true, complete: (res) => {
+        const rows = (res.data||[]).map(r => ({ Person: (r.Person||'').trim(), Lover: (r.Lover||'').trim(), Type: (r.Type||'').trim() }))
+          .filter(r => r.Person && r.Lover);
+        buildGraph(rows);
+      }});
+    } catch (e) { /* ignore */ }
+
+    try {
+      const imgMapText = await fetch('image_map.csv').then(r => r.text());
+      Papa.parse(imgMapText, { header: true, skipEmptyLines: true, complete: (res) => {
+        (res.data||[]).forEach(r => {
+          const name = (r.name || r.Name || '').trim();
+          const url = (r.url || r.URL || r.image || r.image_url || '').trim();
+          if (name && url) { imageMap.set(name, url); preload(url); }
+        });
+        Graph.refresh();
+      }});
+    } catch (e) { /* ignore */ }
+  }
+
+  reloadBundledBtn.addEventListener('click', autoloadBundled);
+
+  // init
+  setTimeout(() => { resize(); autoloadBundled(); }, 0);
+})();
+</script>
+</body>
+</html>

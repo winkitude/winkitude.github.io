@@ -14,7 +14,10 @@
     .section { margin-bottom: 14px; }
     .section h3 { margin: 0 0 8px; font-size: 14px; font-weight: 600; }
     .row { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 8px 0; }
-    .legend { display: grid; grid-template-columns: auto 1fr; grid-auto-rows: minmax(24px, auto); gap: 6px 8px; max-height: 220px; overflow: auto; padding-right: 4px; }
+    .legend { display: flex; flex-direction: column; gap: 6px; }
+.legend-row { display: flex; align-items: center; gap: 8px; }
+.chip { width: 14px; height: 14px; border-radius: 3px; flex: 0 0 14px; }
+.legend-row input[type="checkbox"] { margin: 0; }
     .chip { width: 14px; height: 14px; border-radius: 3px; }
     .small { font-size: 12px; color: #5a5a5a; }
     .toolbar button { padding: 6px 10px; border: 1px solid #ddd; background: #fff; border-radius: 8px; cursor: pointer; }
@@ -39,26 +42,19 @@
     </header>
 
     <aside>
-      <div class="section">
-        <h3>Data</h3>
-        <div class="row"><label class="small">Bundled CSV: <code>data/simpsons.csv</code></label></div>
-        <div class="controls">
+      <div class="controls">
           <input id="csvFile" type="file" accept=".csv" />
-          <button id="reloadBundled">Reload bundled</button>
+          <button id="loadSample">Sample</button>
         </div>
       </div>
 
-      <div class="section">
-        <h3>Portraits</h3>
-        <div class="small">Bundled map: <code>image_map.csv</code> → <code>/portraits/*</code></div>
-        <input id="imgMapFile" type="file" accept=".csv" />
-        <div class="small" style="margin-top:8px;">Or upload images (filenames should match names)</div>
+      <input id="imgMapFile" type="file" accept=".csv" />
+        <div class="small" style="margin-top:8px;">Option B: Upload images (filenames should match character names)</div>
         <input id="imgFiles" type="file" accept="image/*" multiple />
       </div>
 
       <div class="section">
         <h3>Display</h3>
-        <div class="row"><label class="small">Show labels <input id="labelsToggle" type="checkbox" checked/></label></div>
         <div class="row"><label class="small">Node size</label><input id="sizeRange" type="range" min="0.6" max="2" value="1" step="0.1" /></div>
       </div>
 
@@ -89,11 +85,10 @@
 
   const elGraph = document.getElementById('graph');
   const badge = document.getElementById('badge');
-  const labelsToggle = document.getElementById('labelsToggle');
-  const sizeRange = document.getElementById('sizeRange');
+    const sizeRange = document.getElementById('sizeRange');
   const legendEl = document.getElementById('legend');
-  const reloadBundledBtn = document.getElementById('reloadBundled');
 
+  // Graph instance
   const Graph = ForceGraph()(elGraph)
     .nodeRelSize(4)
     .backgroundColor('#ffffff')
@@ -101,6 +96,7 @@
     .linkDirectionalParticles(0)
     .linkCurvature(0.15);
 
+  // Resize handling
   const resize = () => {
     const rect = elGraph.getBoundingClientRect();
     Graph.width(rect.width).height(rect.height);
@@ -108,11 +104,13 @@
   const resizeObserver = new ResizeObserver(resize);
   resizeObserver.observe(elGraph);
 
+  // State
+  let rawRows = [];
   let graph = { nodes: [], links: [] };
   let filtered = { nodes: [], links: [] };
   let counts = new Map();
   let typeList = [];
-  let activeTypes = {};
+  let activeTypes = {}; // type -> bool
   let nodeScale = 1.0;
   let highlightNode = null;
   let highlightNodes = new Set();
@@ -120,14 +118,18 @@
 
   // Images
   const imageMap = new Map(); // name -> url
-  const imageCache = new Map();
+  const imageCache = new Map(); // url -> HTMLImageElement
+
+  function sanitize(text) {
+    return (text||'').toLowerCase().replace(/&/g,'and').replace(/[^\w\s-]+/g,'').trim().replace(/\s+/g,'_');
+  }
 
   function preload(url) {
     if (!url || imageCache.has(url)) return;
     const img = new Image();
     img.crossOrigin = 'anonymous';
     img.onload = () => { imageCache.set(url, img); Graph.refresh(); };
-    img.onerror = () => {};
+    img.onerror = () => { /* ignore */ };
     img.src = url;
   }
 
@@ -150,9 +152,13 @@
       if (t) typeSet.add(t);
     });
 
+    // fill node vals
     nodesMap.forEach((n, id) => { n.val = counts.get(id)||1; });
+
     graph = { nodes: Array.from(nodesMap.values()), links };
     typeList = Array.from(typeSet.values());
+
+    // reset active types (all ON)
     activeTypes = {}; typeList.forEach(t => activeTypes[t] = true);
     renderLegend();
     applyFilters();
@@ -161,11 +167,14 @@
   function renderLegend() {
     legendEl.innerHTML = '';
     typeList.forEach((t, i) => {
+      const row = document.createElement('div');
+      row.className = 'legend-row';
       const chip = document.createElement('div'); chip.className = 'chip'; chip.style.background = tab20[i % tab20.length];
       const box = document.createElement('input'); box.type = 'checkbox'; box.checked = !!activeTypes[t];
       box.addEventListener('change', () => { activeTypes[t] = box.checked; applyFilters(); });
       const text = document.createElement('div'); text.textContent = t; text.className = 'small';
-      legendEl.appendChild(chip); legendEl.appendChild(box); legendEl.appendChild(text);
+      row.appendChild(chip); row.appendChild(box); row.appendChild(text);
+      legendEl.appendChild(row);
     });
   }
 
@@ -173,10 +182,7 @@
     const pass = (l) => (l.type ? activeTypes[l.type] : true);
     const links = graph.links.filter(pass);
     const keep = new Set();
-    links.forEach(l => {
-      keep.add(typeof l.source==='object'? l.source.id:l.source);
-      keep.add(typeof l.target==='object'? l.target.id:l.target);
-    });
+    links.forEach(l => { keep.add(typeof l.source==='object'? l.source.id:l.source); keep.add(typeof l.target==='object'? l.target.id:l.target); });
     const nodes = graph.nodes.filter(n => keep.has(n.id));
     filtered = { nodes, links };
     highlightNode = null; highlightNodes.clear(); highlightLinks.clear();
@@ -199,12 +205,17 @@
   function setDrawers() {
     Graph.nodeCanvasObject((node, ctx, scale) => {
       const r = nodeRadius(node);
+      // fade non-highlight when active
       if (highlightNodes.size && !highlightNodes.has(node)) ctx.globalAlpha = 0.18; else ctx.globalAlpha = 1;
+
+      // circle background & stroke
       ctx.beginPath(); ctx.arc(node.x, node.y, r, 0, 2*Math.PI);
       ctx.fillStyle = '#fff'; ctx.fill();
       ctx.lineWidth = highlightNodes.has(node) ? 2.2 : 1;
       ctx.strokeStyle = highlightNodes.has(node) ? '#111' : '#333';
       ctx.stroke();
+
+      // image clip (cover)
       const url = imageMap.get(node.id);
       const img = url ? imageCache.get(url) : null;
       if (img) {
@@ -216,20 +227,24 @@
         ctx.drawImage(img, sx, sy, side, side, node.x - r, node.y - r, r*2, r*2);
         ctx.restore();
       }
-      if (labelsToggle.checked) {
+
+      // label
+      if (highlightNode && node.id === highlightNode.id) {
         const fontSize = Math.max(8, 10/scale);
         ctx.font = `${fontSize}px Inter, ui-sans-serif, system-ui`;
         ctx.textAlign = 'center'; ctx.textBaseline = 'top';
-        ctx.fillStyle = 'rgba(0,0,0,0.85)';
+        ctx.fillStyle = 'rgba(0,0,0,0.9)';
         ctx.fillText(node.id, node.x, node.y + r + 2);
       }
       ctx.globalAlpha = 1;
-    })
-    .linkWidth(l => highlightLinks.size && !highlightLinks.has(l) ? 1 : 2.2)
-    .linkColor(l => {
-      const c = colorOfType(l.type);
-      return (highlightLinks.size && !highlightLinks.has(l)) ? c + '55' : c;
     });
+
+    Graph.linkWidth(l => highlightLinks.size && !highlightLinks.has(l) ? 1 : 2.2)
+         .linkColor(l => {
+            const c = colorOfType(l.type);
+            if (highlightLinks.size && !highlightLinks.has(l)) return c + '55';
+            return c;
+          });
   }
 
   function onNodeClick(node) {
@@ -246,6 +261,7 @@
       }
     });
     setDrawers();
+    const distance = 80; // closer zoom
     Graph.centerAt(node.x, node.y, 600);
     Graph.zoom(4, 800);
     badge.style.display = 'block';
@@ -258,6 +274,7 @@
     badge.style.display = 'none';
   }
 
+  // Wire events
   Graph.onNodeClick(onNodeClick);
   Graph.onBackgroundClick(clearHighlight);
 
@@ -266,68 +283,20 @@
   document.getElementById('zoutBtn').onclick = () => Graph.zoom(Graph.zoom()/1.2, 400);
   sizeRange.addEventListener('input', e => { nodeScale = parseFloat(e.target.value || '1'); Graph.refresh(); });
 
-  // Upload handlers (optional)
-  document.getElementById('csvFile').addEventListener('change', e => {
-    const file = e.target.files && e.target.files[0];
-    if (!file) return;
-    Papa.parse(file, { header: true, skipEmptyLines: true, complete: (res) => {
-      const rows = (res.data||[]).map(r => ({ Person: (r.Person||'').trim(), Lover: (r.Lover||'').trim(), Type: (r.Type||'').trim() }))
-        .filter(r => r.Person && r.Lover);
-      buildGraph(rows);
+  // CSV upload
+    // Image map CSV (name,url)
+    // Local images (multiple)
+    // Sample data for quick demo
+  document.getElementById('loadSample').addEventListener('click', () => {
+    const sample = `Person,Lover,Type,Episode\nHomer Simpson,Marge Simpson,Married,\nHomer Simpson,Lurleen Lumpkin,Crush,\nMarge Simpson,Artie Ziff,Ex,\nBart Simpson,Jessica Lovejoy,Crush,\nLisa Simpson,Milhouse Van Houten,Crush,\nLisa Simpson,Nelson Muntz,Dated,`;
+    Papa.parse(sample, { header: true, skipEmptyLines: true, complete: (res) => {
+      rawRows = res.data;
+      buildGraph(rawRows);
     }});
   });
 
-  document.getElementById('imgMapFile').addEventListener('change', e => {
-    const file = e.target.files && e.target.files[0];
-    if (!file) return;
-    Papa.parse(file, { header: true, skipEmptyLines: true, complete: (res) => {
-      (res.data||[]).forEach(r => {
-        const name = (r.name || r.Name || '').trim();
-        const url = (r.url || r.URL || r.image || r.image_url || '').trim();
-        if (name && url) { imageMap.set(name, url); preload(url); }
-      });
-      Graph.refresh();
-    }});
-  });
-
-  document.getElementById('imgFiles').addEventListener('change', (e) => {
-    const files = Array.from(e.target.files||[]);
-    files.forEach(f => {
-      const name = f.name.replace(/\.[^.]+$/, '');
-      const url = URL.createObjectURL(f);
-      imageMap.set(name, url); preload(url);
-    });
-    Graph.refresh();
-  });
-
-  // Auto-load bundled CSV + image map
-  async function autoloadBundled() {
-    try {
-      const csvText = await fetch('data/simpsons.csv').then(r => r.text());
-      Papa.parse(csvText, { header: true, skipEmptyLines: true, complete: (res) => {
-        const rows = (res.data||[]).map(r => ({ Person: (r.Person||'').trim(), Lover: (r.Lover||'').trim(), Type: (r.Type||'').trim() }))
-          .filter(r => r.Person && r.Lover);
-        buildGraph(rows);
-      }});
-    } catch (e) { /* ignore */ }
-
-    try {
-      const imgMapText = await fetch('image_map.csv').then(r => r.text());
-      Papa.parse(imgMapText, { header: true, skipEmptyLines: true, complete: (res) => {
-        (res.data||[]).forEach(r => {
-          const name = (r.name || r.Name || '').trim();
-          const url = (r.url || r.URL || r.image || r.image_url || '').trim();
-          if (name && url) { imageMap.set(name, url); preload(url); }
-        });
-        Graph.refresh();
-      }});
-    } catch (e) { /* ignore */ }
-  }
-
-  reloadBundledBtn.addEventListener('click', autoloadBundled);
-
-  // init
-  setTimeout(() => { resize(); autoloadBundled(); }, 0);
+  // Initial size
+  setTimeout(() => resize(), 0);
 })();
 </script>
 </body>

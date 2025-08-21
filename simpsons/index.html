@@ -25,7 +25,6 @@
     input[type="range"] { width: 160px; }
     .hint { color: #777; font-size: 12px; }
 
-    /* Mobile: stack sidebar on top, make it horizontally scrollable, graph full-screen below */
     @media (max-width: 900px) {
       .app { grid-template-columns: 1fr; grid-template-rows: auto auto 1fr; }
       aside { grid-column: 1 / -1; border-right: none; border-bottom: 1px solid #eee; display: flex; gap: 12px; align-items: center; overflow-x: auto; overflow-y: hidden; white-space: nowrap; padding: 10px 12px; }
@@ -43,7 +42,7 @@
 <body>
   <div class="app">
     <header>
-      <div class="title">Simpsons Relationship Network (Seasons 1-10)</div>
+      <div class="title">Simpsons Relationship Network</div>
       <div class="toolbar" style="margin-left:auto;">
         <button id="fitBtn">Fit</button>
         <button id="zinBtn">Zoom +</button>
@@ -212,7 +211,6 @@
         ctx.drawImage(img, sx, sy, side, side, node.x - r, node.y - r, r*2, r*2);
         ctx.restore();
       }
-      // Names only on click
       if (highlightNode && node.id === highlightNode.id) {
         const fontSize = Math.max(8, 10/scale);
         ctx.font = `${fontSize}px Inter, ui-sans-serif, system-ui`;
@@ -287,7 +285,6 @@
     } catch (e) { /* ignore */ }
   }
 
-  // init
   setTimeout(() => { resize(); autoloadBundled(); }, 0);
 })();
 </script>

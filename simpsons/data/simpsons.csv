@@ -26,7 +26,7 @@ Lisa,Mr Bergstrom,Crush,S02E19
 Girl from Apt Building,Mr Bergstrom,Flirts,S02E19
 Edna,Mr Bergstrom,Flirts,S02E19
 Homer,Maude,Flirts,S02E20
-Lois Pennycandy,Krusty,Flirts,S03E06
+Lois Pennycandy,Krusy,Flirts,S03E06
 Apu,Princess Kashmir,Dated,S03E08
 Mendoza,Mendoza's Wife,Married,S03E09
 Quimby,Girl with rack in the 4th row,Flirts,S03E09
@@ -46,7 +46,7 @@ Lurleen,Homer,Affair,S03E20
 Selma,Sideshow Bob,Married,S03E21
 Otto,Topless Dancer,Dated,S03E23
 Samantha,Milhouse,Dated,S03E23
-Luanne,Kirk,Married,S03E23
+Luann,Kirk,Married,S03E23
 Fuzzy Bunny,Fluffy Bunny,Married,S03E23
 Martin,Martha,Married,S04E01
 Boys at school,Lisa,Flirts,S04E04
@@ -57,7 +57,7 @@ Mr Burns Father,Mr Burns Mother,Married,S04E05
 Scratchy,Bomb Girl,Married,S04E06
 Mr Burns,Marge,Flirts,S04E07
 Bart,Laura,Crush,S04E08
-Laura,Jimbo Jones,Dated,S04E08
+Laura Powers,Jimbo Jones,Dated,S04E08
 Barney,Linda Ronstadt,Dated,S04E09
 Arnie Pie,Arnie Pie Wife,Married,S04E09
 Selma,Supermarket Bagger,Flirts,S04E13
@@ -122,8 +122,8 @@ Larry Burns,Larry Burns Wife,Married,S08E04
 Skinner,Roxanne,Crush,S08E05
 Quimby,Quimby Wife,Married,S08E05
 Kirk,Starla,Dated,S08E06
-Kearney,Kearney's ex wife,Divorced,S08E06
-Luanne,"Chase ""Pyro""",Dated,S08E06
+Kerny,Kerny's ex wife,Divorced,S08E06
+Luann,"Chase ""Pyro""",Dated,S08E06
 Lisa,Nelson,Dated,S08E07
 Janie,Milhouse,Crush,S08E07
 Uter,Janie,Crush,S08E07
@@ -138,7 +138,7 @@ Lou,Another Random Girl,Dated,S08E20
 Moe,Lady that yells in front of drug store,Flirts,S08E24
 Barney,Lady that yells in front of drug store,Dated,S08E24
 Moe,Girl who got in car accident,Dated,S08E24
-Abe,Agnes Skinner,Flirts,S09E02
+Abe,Agnus Skinner,Flirts,S09E02
 Krusty,Mia Farrow,Married,S09E03
 Selma,TV Repair Guy,Flirts,S09E05
 Quimby,Red Headed girl,Flirts,S09E05
@@ -146,7 +146,7 @@ Apu,Manjula,Married,S09E07
 Simpsons Neighbor,Apu,Dated,S09E07
 Selma,Apu,Dated,S09E07
 Ms Hoover,Apu,Dated,S09E07
-Luanne,Apu,Dated,S09E07
+Luann,Apu,Dated,S09E07
 Krusty's secretary,Apu,Dated,S09E07
 Apu,4 random girls in his car,Dated,S09E07
 Sideshow Mel,Barbara,Dated,S09E08
@@ -154,7 +154,7 @@ Santas Little Helper,Greyhound,Lovers,S09E11
 Carney Boy,Lisa,Flirts,S09E12
 Comic Book Guy,Super hot red head,Married,S09E13
 Barney,Otto,Married,S09E13
-Skinner,Agnes Skinner,Married,S09E13
+Skinner,Agnus,Married,S09E13
 Canyonaro Guy 1,Canyonaro Guy 2,Flirts,S09E15
 Moe,Two girls at club,Flirts,S09E16
 Moe,Renae,Dated,S09E16
@@ -176,8 +176,8 @@ Quimby,broad,Flirts,S10E09
 Old man,Bart,Flirts,S10E09
 Ned,Vegas girl,Married,S10E10
 Homer,Amber,Married,S10E10
-Luanne,Gyro,Affair,S10E11
-Chalmers,Agnes Skinner,Dated,S10E11
+Luann,Gyro,Affair,S10E11
+Chalmers,Agnus,Dated,S10E11
 Krusty,Dolly Parton,Crush,S10E12
 Bill Clinton,Marge,Flirts,S10E13
 Captain,Crew,Lovers,S10E14

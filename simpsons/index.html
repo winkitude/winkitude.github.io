@@ -265,29 +265,87 @@
   document.getElementById('zoutBtn').onclick = () => Graph.zoom(Graph.zoom()/1.2, 400);
   sizeRange.addEventListener('input', e => { nodeScale = parseFloat(e.target.value || '1'); Graph.refresh(); });
 
-  // Auto-load bundled CSV + image map
-  async function autoloadBundled() {
-    try {
-      const csvText = await fetch('data/simpsons.csv').then(r => r.text());
-      Papa.parse(csvText, { header: true, skipEmptyLines: true, complete: (res) => {
-        const rows = (res.data||[]).map(r => ({ Person: (r.Person||'').trim(), Lover: (r.Lover||'').trim(), Type: (r.Type||'').trim() }))
+
+// --- Drop-in replacement for autoloadBundled() with portrait fallback ---
+
+// Helpers to match filenames to names: "C. Montgomery Burns" -> "c_montgomery_burns"
+function sanitizeName(s) {
+  return (s || "")
+    .toLowerCase()
+    .replace(/&/g, "and")
+    .replace(/[^\w\s-]+/g, "")
+    .trim()
+    .replace(/\s+/g, "_");
+}
+const PORTRAIT_EXTS = [".webp", ".png", ".jpg", ".jpeg"];
+function tryLoadImage(url) {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.onload = () => resolve(url);
+    img.onerror = () => resolve(null);
+    img.src = url;
+  });
+}
+async function guessPortraitURL(name) {
+  const stem = sanitizeName(name);
+  for (const ext of PORTRAIT_EXTS) {
+    const url = `portraits/${stem}${ext}`;
+    if (await tryLoadImage(url)) return url;
+  }
+  return "";
+}
+
+// REPLACE your old autoloadBundled() with this:
+async function autoloadBundled() {
+  // 1) Load CSV and build graph as usual
+  let rows = [];
+  try {
+    const csvText = await fetch('data/simpsons.csv').then(r => r.text());
+    Papa.parse(csvText, {
+      header: true,
+      skipEmptyLines: true,
+      complete: (res) => {
+        rows = (res.data || [])
+          .map(r => ({ Person: (r.Person||'').trim(), Lover: (r.Lover||'').trim(), Type: (r.Type||'').trim() }))
           .filter(r => r.Person && r.Lover);
         buildGraph(rows);
-      }});
-    } catch (e) { /* ignore */ }
+      }
+    });
+  } catch (e) { /* ignore */ }
 
-    try {
-      const imgMapText = await fetch('image_map.csv').then(r => r.text());
-      Papa.parse(imgMapText, { header: true, skipEmptyLines: true, complete: (res) => {
-        (res.data||[]).forEach(r => {
-          const name = (r.name || r.Name || '').trim();
-          const url = (r.url || r.URL || r.image || r.image_url || '').trim();
-          if (name && url) { imageMap.set(name, url); preload(url); }
-        });
-        Graph.refresh();
-      }});
-    } catch (e) { /* ignore */ }
-  }
+  // 2) Try to load image_map.csv if present
+  const names = Array.from(new Set(rows.flatMap(r => [r.Person, r.Lover])));
+  const hasEntry = new Map(); // name -> boolean
+
+  try {
+    const imgMapText = await fetch('image_map.csv').then(r => r.ok ? r.text() : "");
+    if (imgMapText) {
+      Papa.parse(imgMapText, {
+        header: true,
+        skipEmptyLines: true,
+        complete: (res) => {
+          (res.data || []).forEach(r => {
+            const name = (r.name || r.Name || '').trim();
+            const url  = (r.url  || r.URL  || r.image || r.image_url || '').trim();
+            if (name && url) { imageMap.set(name, url); preload(url); hasEntry.set(name, true); }
+          });
+        }
+      });
+    }
+  } catch (e) { /* ignore */ }
+
+  // 3) Fallback: auto-guess portraits by filename for any names still missing
+  await Promise.all(names.map(async (name) => {
+    if (!hasEntry.get(name) && !imageMap.get(name)) {
+      const url = await guessPortraitURL(name);
+      if (url) { imageMap.set(name, url); preload(url); }
+    }
+  }));
+
+  // 4) Refresh the canvas so newly found portraits render
+  if (typeof Graph !== 'undefined') Graph.refresh();
+}
+// --- End drop-in replacement ---
 
   setTimeout(() => { resize(); autoloadBundled(); }, 0);
 })();

@@ -3,10 +3,10 @@ Homer Simpson,Marge Simpson,Married,S01E01
 Barney Gumble,Christmas Lady Friend,?,S01E01
 Marge Simpson,Jacques,Affair,S01E09
 Rev Timothy Lovejoy,Helen Lovejoy,Married,S01E09
-Smithers,Twins,Dated,S01E10
-Mr Burns,Twins,Dated,S01E10
+Waylon Smithers,Twins,Dated,S01E10
+Charles Montgomery Burns,Twins,Dated,S01E10
 Homer Simpson,Princess Kashmir,Flirts,S01E10
-Eugene,Mrs Fisk,Married,S01E10
+Eugene Fisk,woman from valve maintenance,Married,S01E10
 Karl,Homer Simpson,Flirts,S02E02
 Flash Baylor,Marge Simpson,Flirts,S02E05
 Ned,Maude,Married,S02E06
@@ -55,7 +55,7 @@ Krusty Doll,Malibu Stacy Doll,Married,S04E05
 Marge Simpson,Ape Homer,Married,S04E05
 Mr Burns Father,Mr Burns Mother,Married,S04E05
 Scratchy,Bomb Girl,Married,S04E06
-Mr Burns,Marge Simpson,Flirts,S04E07
+Charles Montgomery Burns,Marge Simpson,Flirts,S04E07
 Bart,Laura,Crush,S04E08
 Laura,Jimbo Jones,Dated,S04E08
 Barney Gumble,Linda Ronstadt,Dated,S04E09
@@ -80,8 +80,8 @@ Marge Simpson,Lee Majors,Dreams About,S05E18
 Ned's Dad,Ned's Mom,Married,S05E19
 Fred Quimby,Girl he's dating,Dated,S05E20
 Abe,Jacqueline,Dated,S05E21
-Mr Burns,Jacqueline,Dated,S05E21
-Smithers,Smithers Wife,Divorced,S05E22
+Charles Montgomery Burns,Jacqueline,Dated,S05E21
+Waylon Smithers,Waylon Smithers Wife,Divorced,S05E22
 Moe,Marge Simpson,Flirts,S05E22
 Edna,Lionel Hutz,Dated,S05E22
 Charming Pool Boy,Lisa,Flirts,S06E01
@@ -116,8 +116,8 @@ Selma,Lionel Hutz,Married,S07E23
 Apu's Father,Apu's Mother,Married,S07E23
 Abe Simpson Mother,Abe Simpson Father,Married,S07E23
 Otto,Crystal,Dated,S08E02
-Mr Burns,Mimsy Bankroft,Dated,S08E04
-Mr Burns,Lily Bankroft,Dated,S08E04
+Charles Montgomery Burns,Mimsy Bankroft,Dated,S08E04
+Charles Montgomery Burns,Lily Bankroft,Dated,S08E04
 Larry Burns,Larry Burns Wife,Married,S08E04
 Skinner,Roxanne,Crush,S08E05
 Quimby,Quimby Wife,Married,S08E05
@@ -130,7 +130,7 @@ Uter,Janie,Crush,S08E07
 Dr Nick,Some random girl,Flirts,S08E09
 Willie,Sherrie Bobbins,Dated,S08E13
 Nelson,Sherrie Bobbins,Crush,S08E13
-John Waters,Smithers,Dated,S08E15
+John Waters,Waylon Smithers,Dated,S08E15
 Sideshow Bob,Edna,Dated,S08E16
 Chief Wiggum,Princess Kashmir,Flirts,S08E18
 Skinner,Edna,Dated,S08E19

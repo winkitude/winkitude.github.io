@@ -1,19 +1,19 @@
 Person,Lover,Type,Episode
-Homer,Marge,Married,S01E01
-Barney,Christmas Lady Friend,?,S01E01
-Marge,Jacques,Affair,S01E09
-Rev Lovejoy,Helen,Married,S01E09
+Homer Simpson,Marge Simpson,Married,S01E01
+Barney Gumble,Christmas Lady Friend,?,S01E01
+Marge Simpson,Jacques,Affair,S01E09
+Rev Timothy Lovejoy,Helen Lovejoy,Married,S01E09
 Smithers,Twins,Dated,S01E10
 Mr Burns,Twins,Dated,S01E10
-Homer,Princess Kashmir,Flirts,S01E10
+Homer Simpson,Princess Kashmir,Flirts,S01E10
 Eugene,Mrs Fisk,Married,S01E10
-Karl,Homer,Flirts,S02E02
-Flash Baylor,Marge,Flirts,S02E05
+Karl,Homer Simpson,Flirts,S02E02
+Flash Baylor,Marge Simpson,Flirts,S02E05
 Ned,Maude,Married,S02E06
 Edna,Master Sushi Chef,Dated,S02E11
 John S,Gloria S,Married,S02E12
 Jacqueline,Clancy,Married,S02E12
-Marge,Artie,Dated,S02E12
+Marge Simpson,Artie,Dated,S02E12
 Selma,Stanley Peterson,Flirts,S02E14
 Skinner,Patty,Dated,S02E14
 Abe,World's oldest woman,?,S02E15
@@ -25,7 +25,7 @@ Abe,Beatrice,Dated,S02E17
 Lisa,Mr Bergstrom,Crush,S02E19
 Girl from Apt Building,Mr Bergstrom,Flirts,S02E19
 Edna,Mr Bergstrom,Flirts,S02E19
-Homer,Maude,Flirts,S02E20
+Homer Simpson,Maude,Flirts,S02E20
 Lois Pennycandy,Krusty,Flirts,S03E06
 Apu,Princess Kashmir,Dated,S03E08
 Mendoza,Mendoza's Wife,Married,S03E09
@@ -33,7 +33,7 @@ Quimby,Girl with rack in the 4th row,Flirts,S03E09
 Edna,Sailors,Flirts,S03E10
 Kent,Lizard Lady,Date,S03E10
 Edna,Joey Ramone,Flirts,S03E10
-Edna,Homer,Flirts,S03E10
+Edna,Homer Simpson,Flirts,S03E10
 Moe,Colette,Dated,S03E10
 Krusty,2 Girls on his arm,Dated,S03E10
 Cletus,Ailene,Married,S03E11
@@ -41,8 +41,8 @@ Lisa,Corey,Crush,S03E13
 Edna,Woodrow,Crush,S03E16
 Edna,Mr. Krabappel,Married,S03E16
 Quimby,Girl in the red dress,Flirts,S03E18
-Homer,Rejecting Girls,Flirts,S03E20
-Lurleen,Homer,Affair,S03E20
+Homer Simpson,Rejecting Girls,Flirts,S03E20
+Lurleen,Homer Simpson,Affair,S03E20
 Selma,Sideshow Bob,Married,S03E21
 Otto,Topless Dancer,Dated,S03E23
 Samantha,Milhouse,Dated,S03E23
@@ -50,51 +50,51 @@ Luanne,Kirk,Married,S03E23
 Fuzzy Bunny,Fluffy Bunny,Married,S03E23
 Martin,Martha,Married,S04E01
 Boys at school,Lisa,Flirts,S04E04
-Marge,Jack Nicklaus,Dreams About,S04E04
+Marge Simpson,Jack Nicklaus,Dreams About,S04E04
 Krusty Doll,Malibu Stacy Doll,Married,S04E05
-Marge,Ape Homer,Married,S04E05
+Marge Simpson,Ape Homer,Married,S04E05
 Mr Burns Father,Mr Burns Mother,Married,S04E05
 Scratchy,Bomb Girl,Married,S04E06
-Mr Burns,Marge,Flirts,S04E07
+Mr Burns,Marge Simpson,Flirts,S04E07
 Bart,Laura,Crush,S04E08
 Laura,Jimbo Jones,Dated,S04E08
-Barney,Linda Ronstadt,Dated,S04E09
+Barney Gumble,Linda Ronstadt,Dated,S04E09
 Arnie Pie,Arnie Pie Wife,Married,S04E09
 Selma,Supermarket Bagger,Flirts,S04E13
 Selma,Moleman,Dated,S04E13
 Mr Muntz,Mrs Muntz,Married,S04E14
 Chief Wiggum,Wiggum's Wife,Married,S04E15
 Ralph,Lisa,Crush,S04E15
-Barney,Philip,Dated,S04E21
-Barney,Japanese Conceptual Artist,Dated,S05E01
+Barney Gumble,Philip,Dated,S04E21
+Barney Gumble,Japanese Conceptual Artist,Dated,S05E01
 Jasper,Abe,Flirts,S05E02
 Quimby,Blonde Girl,Flirts,S05E07
-Mindy,Homer,Affair,S05E09
+Mindy,Homer Simpson,Affair,S05E09
 Stacy,Husband 5,Married,S05E14
 Stacy,Husband 4,Married,S05E14
 Stacy,Husband 3,Married,S05E14
 Stacy,Husband 2,Married,S05E14
 Stacy,Husband 1,Married,S05E14
 Quimby,Young Girl,Flirts,S05E18
-Marge,Lee Majors,Dreams About,S05E18
+Marge Simpson,Lee Majors,Dreams About,S05E18
 Ned's Dad,Ned's Mom,Married,S05E19
 Fred Quimby,Girl he's dating,Dated,S05E20
 Abe,Jacqueline,Dated,S05E21
 Mr Burns,Jacqueline,Dated,S05E21
 Smithers,Smithers Wife,Divorced,S05E22
-Moe,Marge,Flirts,S05E22
+Moe,Marge Simpson,Flirts,S05E22
 Edna,Lionel Hutz,Dated,S05E22
 Charming Pool Boy,Lisa,Flirts,S06E01
-Marge,Pirate,Dreams About,S06E02
+Marge Simpson,Pirate,Dreams About,S06E02
 Bart,Sarah Plain and Tall,Dated,S06E07
 Bart,Jessica,Dated,S06E07
 Jessica,Cool Boy,Dated,S06E07
 Lisa,Boy who works at library,Crush,S06E07
 Quimby,Brunette,Flirts,S06E09
-Homer,Babysitter,Nothing,S06E09
+Homer Simpson,Babysitter,Nothing,S06E09
 Prof Frink,Mrs Frink,Married,S06E10
 Santas Little Helper,Snowball II,Living in Sin,S06E11
-Barney,Mobster Sister,Crush,S06E15
+Barney Gumble,Mobster Sister,Crush,S06E15
 Scratchy,Girl Cat,Engaged,S06E18
 Milhouse,Lisa,Crush,S06E19
 Lisa,Hugh Hawkfield,Engaged,S06E19
@@ -136,7 +136,7 @@ Chief Wiggum,Princess Kashmir,Flirts,S08E18
 Skinner,Edna,Dated,S08E19
 Lou,Another Random Girl,Dated,S08E20
 Moe,Lady that yells in front of drug store,Flirts,S08E24
-Barney,Lady that yells in front of drug store,Dated,S08E24
+Barney Gumble,Lady that yells in front of drug store,Dated,S08E24
 Moe,Girl who got in car accident,Dated,S08E24
 Abe,Agnes Skinner,Flirts,S09E02
 Krusty,Mia Farrow,Married,S09E03
@@ -153,7 +153,7 @@ Sideshow Mel,Barbara,Dated,S09E08
 Santas Little Helper,Greyhound,Lovers,S09E11
 Carney Boy,Lisa,Flirts,S09E12
 Comic Book Guy,Super hot red head,Married,S09E13
-Barney,Otto,Married,S09E13
+Barney Gumble,Otto,Married,S09E13
 Skinner,Agnes Skinner,Married,S09E13
 Canyonaro Guy 1,Canyonaro Guy 2,Flirts,S09E15
 Moe,Two girls at club,Flirts,S09E16
@@ -164,9 +164,9 @@ Girl playing violin,Husband in crowd,Married,S09E17
 Wendel,Red head at dance,Dated,S10E01
 Milhouse,girl with head gear,Dated,S10E01
 Scratchy,Snowball II,Flirts,S10E04
-Kang,Marge,?,S10E04
+Kang,Marge Simpson,?,S10E04
 Kim Basinger,Alec Baldwin,Married,S10E05
-Homer,Two hippie chicks,Dreams About,S10E06
+Homer Simpson,Two hippie chicks,Dreams About,S10E06
 Seth,Mona,Dated,S10E06
 Munchie,Mona,Dated,S10E06
 Willie,Fergie,?,S10E06
@@ -175,11 +175,11 @@ Quimby,intern in bathroom,Flirts,S10E09
 Quimby,broad,Flirts,S10E09
 Old man,Bart,Flirts,S10E09
 Ned,Vegas girl,Married,S10E10
-Homer,Amber,Married,S10E10
+Homer Simpson,Amber,Married,S10E10
 Luanne,Gyro,Affair,S10E11
 Chalmers,Agnes Skinner,Dated,S10E11
 Krusty,Dolly Parton,Crush,S10E12
-Bill Clinton,Marge,Flirts,S10E13
+Bill Clinton,Marge Simpson,Flirts,S10E13
 Captain,Crew,Lovers,S10E14
 Gil,Gil's wife,Married,S10E15
 Krusty,Transgender guy,Lovers,S10E16

@@ -25,9 +25,9 @@ Abe Simpson,Beatrice Simmons,Dated,S02E17
 Lisa Simpson,Mr Bergstrom,Crush,S02E19
 Girl from Apt Building,Mr Bergstrom,Flirts,S02E19
 Edna Krabappel,Mr Bergstrom,Flirts,S02E19
-Homer Simpson,Maude,Flirts,S02E20
-Lois Pennycandy,Krusty,Flirts,S03E06
-Apu,Princess Kashmir,Dated,S03E08
+Homer Simpson,Maude Flanders,Flirts,S02E20
+Lois Pennycandy,Krusty Krustofsky,Flirts,S03E06
+Apu Nahasapeemapetilon,Princess Kashmir,Dated,S03E08
 Mendoza,Mendoza's Wife,Married,S03E09
 Quimby,Girl with rack in the 4th row,Flirts,S03E09
 Edna Krabappel,Sailors,Flirts,S03E10
@@ -35,7 +35,7 @@ Kent,Lizard Lady,Date,S03E10
 Edna Krabappel,Joey Ramone,Flirts,S03E10
 Edna Krabappel,Homer Simpson,Flirts,S03E10
 Moe,Colette,Dated,S03E10
-Krusty,2 Girls on his arm,Dated,S03E10
+Krusty Krustofsky,2 Girls on his arm,Dated,S03E10
 Cletus,Ailene,Married,S03E11
 Lisa Simpson,Corey,Crush,S03E13
 Edna Krabappel,Woodrow,Crush,S03E16
@@ -43,7 +43,7 @@ Edna Krabappel,Mr. Krabappel,Married,S03E16
 Quimby,Girl in the red dress,Flirts,S03E18
 Homer Simpson,Rejecting Girls,Flirts,S03E20
 Lurleen,Homer Simpson,Affair,S03E20
-Selma,Sideshow Bob,Married,S03E21
+Selma Bouvier,Sideshow Bob,Married,S03E21
 Otto,Topless Dancer,Dated,S03E23
 Samantha,Milhouse,Dated,S03E23
 Luanne,Kirk,Married,S03E23
@@ -60,8 +60,8 @@ Bart,Laura,Crush,S04E08
 Laura,Jimbo Jones,Dated,S04E08
 Barney Gumble,Linda Ronstadt,Dated,S04E09
 Arnie Pie,Arnie Pie Wife,Married,S04E09
-Selma,Supermarket Bagger,Flirts,S04E13
-Selma,Moleman,Dated,S04E13
+Selma Bouvier,Supermarket Bagger,Flirts,S04E13
+Selma Bouvier,Moleman,Dated,S04E13
 Mr Muntz,Mrs Muntz,Married,S04E14
 Chief Wiggum,Wiggum's Wife,Married,S04E15
 Ralph,Lisa Simpson,Crush,S04E15
@@ -102,17 +102,17 @@ Cletus Slack Jaw,Brandine,Married,S07E03
 Snake,Shoshana,Dated,S07E04
 Sherry Terry dad,Sherry Terry mom,Married,S07E04
 Paul McCartney,Linda McCartney,Married,S07E05
-Selma,FBI Agent,Flirts,S07E08
+Selma Bouvier,FBI Agent,Flirts,S07E08
 George Bush,Barbara Bush,Married,S07E13
 Mrs Burns,Taft,Affair,S07E17
-Krusty,Estranged Wife,Married,S07E18
-Troy McClure,Selma,Married,S07E19
+Krusty Krustofsky,Estranged Wife,Married,S07E18
+Troy McClure,Selma Bouvier,Married,S07E19
 Troy McClure,Ms Piggy,In Love,S07E19
 Troy McClure,Fish,Kink,S07E19
 Lisa Simpson,Landon Alger,Crush,S07E20
 Bumblebee Man,Mrs Bumblebee Man,Married,S07E21
-Apu,Indian Girl,Flirts,S07E21
-Selma,Lionel Hutz,Married,S07E23
+Apu Nahasapeemapetilon,Indian Girl,Flirts,S07E21
+Selma Bouvier,Lionel Hutz,Married,S07E23
 Apu's Father,Apu's Mother,Married,S07E23
 Abe Simpson Mother,Abe Simpson Father,Married,S07E23
 Otto,Crystal,Dated,S08E02
@@ -134,21 +134,21 @@ John Waters,Waylon Smithers,Dated,S08E15
 Sideshow Bob,Edna Krabappel,Dated,S08E16
 Chief Wiggum,Princess Kashmir,Flirts,S08E18
 Seymour Skinner,Edna Krabappel,Dated,S08E19
-Lou,Another Random Girl,Dated,S08E20
+Random Police Officer,Another Random Girl,Dated,S08E20
 Moe,Lady that yells in front of drug store,Flirts,S08E24
 Barney Gumble,Lady that yells in front of drug store,Dated,S08E24
 Moe,Girl who got in car accident,Dated,S08E24
 Abe Simpson,Agnes Skinner,Flirts,S09E02
-Krusty,Mia Farrow,Married,S09E03
-Selma,TV Repair Guy,Flirts,S09E05
+Krusty Krustofsky,Mia Farrow,Married,S09E03
+Selma Bouvier,TV Repair Guy,Flirts,S09E05
 Quimby,Red Headed girl,Flirts,S09E05
-Apu,Manjula,Married,S09E07
-Simpsons Neighbor,Apu,Dated,S09E07
-Selma,Apu,Dated,S09E07
-Ms Hoover,Apu,Dated,S09E07
-Luanne,Apu,Dated,S09E07
-Krusty's secretary,Apu,Dated,S09E07
-Apu,4 random girls in his car,Dated,S09E07
+Apu Nahasapeemapetilon,Manjula,Married,S09E07
+Simpsons Neighbor,Apu Nahasapeemapetilon,Dated,S09E07
+Selma Bouvier,Apu Nahasapeemapetilon,Dated,S09E07
+Ms Hoover,Apu Nahasapeemapetilon,Dated,S09E07
+Luanne,Apu Nahasapeemapetilon,Dated,S09E07
+Lois Pennycandy,Apu Nahasapeemapetilon,Dated,S09E07
+Apu Nahasapeemapetilon,4 random girls in his car,Dated,S09E07
 Sideshow Mel,Barbara,Dated,S09E08
 Santas Little Helper,Greyhound,Lovers,S09E11
 Carney Boy,Lisa Simpson,Flirts,S09E12
@@ -178,11 +178,11 @@ Ned,Vegas girl,Married,S10E10
 Homer Simpson,Amber,Married,S10E10
 Luanne,Gyro,Affair,S10E11
 Chalmers,Agnes Skinner,Dated,S10E11
-Krusty,Dolly Parton,Crush,S10E12
+Krusty Krustofsky,Dolly Parton,Crush,S10E12
 Bill Clinton,Marge Simpson,Flirts,S10E13
 Captain,Crew,Lovers,S10E14
 Gil,Gil's wife,Married,S10E15
-Krusty,Some chick maybe,Lovers,S10E16
+Krusty Krustofsky,Some chick maybe,Lovers,S10E16
 Willie,Mail ordered bride,Married,S10E16
 Bart,Milhouse,Crush,S10E19
 Greasy haired teen,key girl,Dated,S10E19

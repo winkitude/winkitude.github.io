@@ -10,12 +10,12 @@ Eugene Fisk,Woman from valve maintenance,Married,S01E10
 Karl,Homer Simpson,Flirts,S02E02
 Flash Baylor,Marge Simpson,Flirts,S02E05
 Ned Flanders,Maude Flanders,Married,S02E06
-Edna,Master Sushi Chef,Dated,S02E11
+Edna Krabappel,Master Sushi Chef,Dated,S02E11
 John S,Gloria S,Married,S02E12
-Jacqueline,Clancy,Married,S02E12
-Marge Simpson,Artie,Dated,S02E12
-Selma,Stanley Peterson,Flirts,S02E14
-Skinner,Patty,Dated,S02E14
+Jacqueline Bouvier,Clancy Bouvier,Married,S02E12
+Marge Simpson,Artie Ziff,Dated,S02E12
+Selma Bouvier,Stanley Peterson,Flirts,S02E14
+Seymour Skinner,Patty,Dated,S02E14
 Abe,World's oldest woman,?,S02E15
 Abe,Mona,Married,S02E15
 Abe,Galy,Dated,S02E15
@@ -79,8 +79,8 @@ Quimby,Young Girl,Flirts,S05E18
 Marge Simpson,Lee Majors,Dreams About,S05E18
 Ned's Dad,Ned's Mom,Married,S05E19
 Fred Quimby,Girl he's dating,Dated,S05E20
-Abe,Jacqueline,Dated,S05E21
-Charles Montgomery Burns,Jacqueline,Dated,S05E21
+Abe,Jacqueline Bouvier,Dated,S05E21
+Charles Montgomery Burns,Jacqueline Bouvier,Dated,S05E21
 Waylon Smithers,Waylon Smithers Wife,Divorced,S05E22
 Moe,Marge Simpson,Flirts,S05E22
 Edna,Lionel Hutz,Dated,S05E22
@@ -119,7 +119,7 @@ Otto,Crystal,Dated,S08E02
 Charles Montgomery Burns,Mimsy Bankroft,Dated,S08E04
 Charles Montgomery Burns,Lily Bankroft,Dated,S08E04
 Larry Burns,Larry Burns Wife,Married,S08E04
-Skinner,Roxanne,Crush,S08E05
+Seymour Skinner,Roxanne,Crush,S08E05
 Quimby,Quimby Wife,Married,S08E05
 Kirk,Starla,Dated,S08E06
 Kearney,Kearney's ex wife,Divorced,S08E06
@@ -133,7 +133,7 @@ Nelson,Sherrie Bobbins,Crush,S08E13
 John Waters,Waylon Smithers,Dated,S08E15
 Sideshow Bob,Edna,Dated,S08E16
 Chief Wiggum,Princess Kashmir,Flirts,S08E18
-Skinner,Edna,Dated,S08E19
+Seymour Skinner,Edna,Dated,S08E19
 Lou,Another Random Girl,Dated,S08E20
 Moe,Lady that yells in front of drug store,Flirts,S08E24
 Barney Gumble,Lady that yells in front of drug store,Dated,S08E24
@@ -154,7 +154,7 @@ Santas Little Helper,Greyhound,Lovers,S09E11
 Carney Boy,Lisa,Flirts,S09E12
 Comic Book Guy,Super hot red head,Married,S09E13
 Barney Gumble,Otto,Married,S09E13
-Skinner,Agnes Skinner,Married,S09E13
+Seymour Skinner,Agnes Skinner,Married,S09E13
 Canyonaro Guy 1,Canyonaro Guy 2,Flirts,S09E15
 Moe,Two girls at club,Flirts,S09E16
 Moe,Renae,Dated,S09E16

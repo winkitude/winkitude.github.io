@@ -29,7 +29,7 @@ Homer Simpson,Maude Flanders,Flirts,S02E20
 Lois Pennycandy,Krusty Krustofsky,Flirts,S03E06
 Apu Nahasapeemapetilon,Princess Kashmir,Dated,S03E08
 Mendoza,Mendoza's Wife,Married,S03E09
-Quimby,Girl with rack in the 4th row,Flirts,S03E09
+Joe Quimby,Girl with rack in the 4th row,Flirts,S03E09
 Edna Krabappel,Sailors,Flirts,S03E10
 Kent,Lizard Lady,Date,S03E10
 Edna Krabappel,Joey Ramone,Flirts,S03E10
@@ -40,7 +40,7 @@ Cletus,Ailene,Married,S03E11
 Lisa Simpson,Corey,Crush,S03E13
 Edna Krabappel,Woodrow,Crush,S03E16
 Edna Krabappel,Mr. Krabappel,Married,S03E16
-Quimby,Girl in the red dress,Flirts,S03E18
+Joe Quimby,Girl in the red dress,Flirts,S03E18
 Homer Simpson,Rejecting Girls,Flirts,S03E20
 Lurleen,Homer Simpson,Affair,S03E20
 Selma Bouvier,Sideshow Bob,Married,S03E21
@@ -68,14 +68,14 @@ Ralph,Lisa Simpson,Crush,S04E15
 Barney Gumble,Philip,Dated,S04E21
 Barney Gumble,Japanese Conceptual Artist,Dated,S05E01
 Jasper,Abe Simpson,Flirts,S05E02
-Quimby,Blonde Girl,Flirts,S05E07
+Joe Quimby,Blonde Girl,Flirts,S05E07
 Mindy,Homer Simpson,Affair,S05E09
 Stacy,Husband 5,Married,S05E14
 Stacy,Husband 4,Married,S05E14
 Stacy,Husband 3,Married,S05E14
 Stacy,Husband 2,Married,S05E14
 Stacy,Husband 1,Married,S05E14
-Quimby,Young Girl,Flirts,S05E18
+Joe Quimby,Young Girl,Flirts,S05E18
 Marge Simpson,Lee Majors,Dreams About,S05E18
 Ned's Dad,Ned's Mom,Married,S05E19
 Fred Quimby,Girl he's dating,Dated,S05E20
@@ -90,7 +90,7 @@ Bart,Sarah Plain and Tall,Dated,S06E07
 Bart,Jessica,Dated,S06E07
 Jessica,Cool Boy,Dated,S06E07
 Lisa Simpson,Boy who works at library,Crush,S06E07
-Quimby,Brunette,Flirts,S06E09
+Joe Quimby,Brunette,Flirts,S06E09
 Homer Simpson,Babysitter,Nothing,S06E09
 Prof Frink,Mrs Frink,Married,S06E10
 Santas Little Helper,Snowball II,Living in Sin,S06E11
@@ -120,7 +120,7 @@ Charles Montgomery Burns,Mimsy Bankroft,Dated,S08E04
 Charles Montgomery Burns,Lily Bankroft,Dated,S08E04
 Larry Burns,Larry Burns Wife,Married,S08E04
 Seymour Skinner,Roxanne,Crush,S08E05
-Quimby,Quimby Wife,Married,S08E05
+Joe Quimby,Martha Quimby,Married,S08E05
 Kirk,Starla,Dated,S08E06
 Kearney,Kearney's ex wife,Divorced,S08E06
 Luanne,"Chase ""Pyro""",Dated,S08E06
@@ -141,7 +141,7 @@ Moe,Girl who got in car accident,Dated,S08E24
 Abe Simpson,Agnes Skinner,Flirts,S09E02
 Krusty Krustofsky,Mia Farrow,Married,S09E03
 Selma Bouvier,TV Repair Guy,Flirts,S09E05
-Quimby,Red Headed girl,Flirts,S09E05
+Joe Quimby,Red Headed girl,Flirts,S09E05
 Apu Nahasapeemapetilon,Manjula,Married,S09E07
 Simpsons Neighbor,Apu Nahasapeemapetilon,Dated,S09E07
 Selma Bouvier,Apu Nahasapeemapetilon,Dated,S09E07
@@ -171,8 +171,8 @@ Seth,Mona Simpson,Dated,S10E06
 Munchie,Mona Simpson,Dated,S10E06
 Willie,Fergie,?,S10E06
 Comic Book Guy,Nerd Girl,Flirts,S10E09
-Quimby,intern in bathroom,Flirts,S10E09
-Quimby,broad,Flirts,S10E09
+Joe Quimby,intern in bathroom,Flirts,S10E09
+Joe Quimby,broad,Flirts,S10E09
 Old man,Bart,Flirts,S10E09
 Ned,Vegas girl,Married,S10E10
 Homer Simpson,Amber,Married,S10E10

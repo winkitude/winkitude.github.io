@@ -29,6 +29,9 @@
 <style>
   .grid_4 > p { margin-top: 6px; }
 
+  .masthead { text-align:center; margin: 28px 0 8px; }
+    .masthead a { font-family:'Abril Fatface', serif; font-size:3.1rem; text-decoration:none; color:var(--ink); letter-spacing:.5px; }
+    .masthead a:hover { color:var(--accent); }
 .home-tiles {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -39,6 +42,14 @@
 /* Lock copy height to ~3 lines to prevent overlap jitter */
 .home-tiles p { margin-top: 6px; min-height: 3.6em; }
 
+
+.home-block{
+  line-height: 1.5em;
+}
+
+.overline { font: 700 11px/1 'Open Sans', Arial, sans-serif; color:var(--muted); letter-spacing:.08em; text-transform:uppercase; padding-top:1em }
+    .hed { font-family:'Abril Fatface', serif; font-size:1.35rem; line-height:1.1; margin:6px 0 6px; }
+    .dek { font: 400 14px/1.45 'Open Sans', Arial, sans-serif; color:#2a2a2a; }
 
 /* create a hard stop after the hero so tiles don't float up beside it */
 .clearfix-break { clear: both; height: 0; }
@@ -52,6 +63,8 @@
 /* image hygiene */
 #content .grid_4 img { display: block; width: 100%; height: auto; }
 
+     .issuebar { display:flex; gap:12px; justify-content:center; align-items:center; color:var(--muted); font: 700 12px/1 'Open Sans', Arial, sans-serif; letter-spacing:.08em; text-transform:uppercase; padding-bottom:1em }
+    .issuebar .dot { width:4px; height:4px; background:var(--muted); border-radius:50%; display:inline-block; }
 
 @media (max-width: 1024px) { .home-tiles { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 700px)  { .home-tiles { grid-template-columns: 1fr; } }
@@ -63,8 +76,10 @@
 <div class="container clearfix">
 	<div id="content">
 		<div class="grid_12 cf">
-			<h1><a href="http://winkitude.com">Ari Winkleman</a></h1>
-		
+			<div class="masthead"><a href="http://winkitude.com">Ari Winkleman</a></div>
+		 <div class="issuebar" aria-label="issue dateline">
+      <span>Information Design</span><span class="dot"></span><span>Branding</span><span class="dot"></span><span>Art direction</span>
+    </div>
 		<hr>
 	
 			<br>
@@ -95,34 +110,46 @@
 <div class="home-tiles">
   <div class="grid_4 home-block">
     <a href="eg.html"><img src="images/eg/eg_homepage.gif" alt="Eurasia Group projects"></a>
-    <p><strong>Eurasia Group</strong><br>
-    Brand leadership, information design & data viz, templates/tooling, and digital products.</p>
+  
+    <div class="overline">Feature</div>
+          <h2 class="hed">Eurasia Group</h2>
+          <p class="dek">Brand leadership, information design & data viz, templates/tooling, and digital products.</p>
   </div>
 
   <div class="grid_4 home-block">
     <a href="gzero.html"><img alt="GZERO projects" src="images/gzero/gzero_homepage.gif"></a>
-    <p><strong>GZERO Media</strong><br>
-    Brand development, video & brand guidelines, digital products, and The Graphic Truth</p>
+   <div class="overline">Feature</div>
+          <h2 class="hed">GZERO Media</h2>
+          <p class="dek">Brand development, video & brand guidelines, digital products, and The Graphic Truth</p>
   </div>
+   
 
   <div class="grid_4 home-block">
     <a href="tr.html"><img alt="Top Risks report project" src="images/top_risks/TR_homepage.png"></a>
-    <p><strong>Top Risks</strong><br>
-    Flagship annual outlook: Report, charts, launch assets</p>
+    <div class="overline">Flagship</div>
+          <h2 class="hed">Top Risks</h2>
+          <p class="dek">Annual outlook: Report, charts, launch assets</p>
   </div>
   
 
   <div class="grid_4 home-block">
     <a href="graphictruth.html"><img alt="Graphic Truth project" src="images/graphic_truth/GT_homepage.png"></a>
-    <p><strong>The Graphic Truth</strong><br>
-    Charts, data collection, scraping, and information graphics</p>
+  <div class="overline">Daily Charts</div>
+          <h2 class="hed">The Graphic Truth</h2>
+          <p class="dek">Charts, data collection, scraping, and information graphics</p>
   </div>
+
 
   <div class="grid_4 home-block">
     <a href="guidelines.html"><img alt="Guidelines project" src="images/guidelines/GL_homepage.png"></a>
-    <p><strong>Guidelines & Systems</strong><br>
-    Living standards for brand, charts, and video—used by teams and freelancers</p>
+  <div class="overline">Resources</div>
+          <h2 class="hed">Guidelines & Systems</h2>
+          <p class="dek">Living standards for brand, charts, and video—used by teams and freelancers</p>
   </div>
+  
+  
+  </div>
+  
 </div>
 
 		<footer class="grid_12">

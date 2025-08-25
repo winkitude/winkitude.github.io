@@ -28,6 +28,14 @@
     .lane { margin-bottom: 20px; }
     .divider { margin: 10px 0 20px; border: 0; border-top: 1px solid #e5e5e5; }
     .note { font: 13px/1.4 'Open Sans', Arial, sans-serif; color:#333; }
+
+        .hed { font-family:'Abril Fatface', serif; font-size:1.5rem; line-height:1.1; }
+          .masthead { text-align:center; margin: 28px 0 8px; }
+    .masthead a { font-family:'Abril Fatface', serif; font-size:3.1rem; text-decoration:none; color:var(--ink); letter-spacing:.5px; }
+    .masthead a:hover { color:var(--accent); }
+     .issuebar { display:flex; gap:12px; justify-content:center; align-items:center; color:var(--muted); font: 700 12px/1 'Open Sans', Arial, sans-serif; letter-spacing:.08em; text-transform:uppercase; padding-bottom:1em }
+    .issuebar .dot { width:4px; height:4px; background:var(--muted); border-radius:50%; display:inline-block; }
+  
   </style>
 </head>
 
@@ -37,7 +45,10 @@
 
     <!-- Header -->
     <div class="grid_12">
-      <h1><a href="http://winkitude.com">Ari Winkleman</a></h1>
+     <div class="masthead"><a href="http://winkitude.com">Ari Winkleman</a></div>
+		 <div class="issuebar" aria-label="issue dateline">
+      <span>Information Design</span><span class="dot"></span><span>Branding</span><span class="dot"></span><span>Art direction</span>
+    </div>
       <hr>
       <br>
 
@@ -47,7 +58,7 @@
         <img alt="Guidelines & Systems overview" src="images/guidelines/guidelines_top.png">
       </div>
       <div class="grid_7">
-        <p class="lane-title">Guidelines & Systems</p><br><br>
+        <p class="hed">Guidelines & Systems</p><br><br>
         <p>
           I build guidelines that help teams move fast without losing quality—clear rules, reusable templates, and examples that scale across brands, video, and data visualization. Below are a few lanes that show how I use systems to raise the floor and keep the work consistent.
         </p>
@@ -62,7 +73,7 @@
 
     <!-- LANE 1: Eurasia Group brand system -->
     <div class="grid_12 lane">
-        <p class="lane-title">Eurasia Group – Brand system</p><br>
+        <p class="hed">Eurasia Group – Brand system</p><br>
       </div>
 
       <div class="grid_4">
@@ -90,8 +101,8 @@
     <!-- LANE 2: GZERO brand -->
     <a id="lane-gzero"></a>
     <div class="grid_12 lane">
-      <div class="grid_12"><span class="eyebrow">Lane</span><br>
-        <p class="lane-title">GZERO – Brand development</p><br>
+      <div class="grid_12">
+        <p class="hed">GZERO – Brand development</p><br>
       </div>
 
       <div class="grid_4">
@@ -112,35 +123,13 @@
 
     <div class="grid_12"><hr class="divider"></div>
 
-    <!-- LANE 3: GZERO video guidelines -->
-    <a id="lane-video"></a>
-    <div class="grid_12 lane">
-      <div class="grid_12"><span class="eyebrow">Lane</span><br>
-        <p class="lane-title">GZERO – Video guidelines</p><br>
-      </div>
-
-      <div class="grid_4">
-        <img alt="Lower thirds and safe areas" src="images/guidelines/guidelines-04.png">
-      </div>
-      <div class="grid_7">
-        <p>
-          To support shows and social video, I created motion rules for lower thirds, safe areas, pacing, captions, and platform variants. The goal was consistency on air and in feeds, with files producers can pick up and use directly.
-        </p>
-        <p class="note">Includes editable presets for lower thirds and captioning specs.</p>
-      </div>
-
-      <div class="grid_12"><div class="spacer"></div></div>
-
-      <div class="grid_12 thumb-row"><img alt="Video system sheet" src="images/guidelines/guidelines-04.png"></div>
-    </div>
-
-    <div class="grid_12"><hr class="divider"></div>
+   
 
     <!-- LANE 4: Charts & data viz standards -->
     <a id="lane-charts"></a>
     <div class="grid_12 lane">
-      <div class="grid_12"><span class="eyebrow">Lane</span><br>
-        <p class="lane-title">Charts & data visualization standards</p><br>
+      <div class="grid_12">
+        <p class="hed">Charts & data visualization standards</p><br>
       </div>
 
       <div class="grid_4">
@@ -164,7 +153,7 @@
 
     <!-- Closing takeaway -->
     <div class="grid_12">
-      <p class="lane-title">What this enables</p><br>
+      <p class="hed">What this enables</p><br>
       <p>
         Systems are how I scale design: clear rules, reusable assets, and examples that anyone can use. The result is faster delivery, fewer revisions, and work that looks like it came from one team—even when many hands are on it.
       </p>

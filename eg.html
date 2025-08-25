@@ -18,13 +18,25 @@
   <link href="css/normalize.css" rel="stylesheet" />
   <link href="css/grid.css" rel="stylesheet" />
   <link href="css/screen.css" rel="stylesheet" />
+
+  <style>
+        .hed { font-family:'Abril Fatface', serif; font-size:1.5rem; line-height:1.1; }
+          .masthead { text-align:center; margin: 28px 0 8px; }
+    .masthead a { font-family:'Abril Fatface', serif; font-size:3.1rem; text-decoration:none; color:var(--ink); letter-spacing:.5px; }
+    .masthead a:hover { color:var(--accent); }
+     .issuebar { display:flex; gap:12px; justify-content:center; align-items:center; color:var(--muted); font: 700 12px/1 'Open Sans', Arial, sans-serif; letter-spacing:.08em; text-transform:uppercase; padding-bottom:1em }
+    .issuebar .dot { width:4px; height:4px; background:var(--muted); border-radius:50%; display:inline-block; }
+  </style>
 </head>
 
 <body>
 <div class="container clearfix">
   <div id="content">
     <div class="grid_12">
-      <h1><a href="http://winkitude.com">Ari Winkleman</a></h1>
+      <div class="masthead"><a href="http://winkitude.com">Ari Winkleman</a></div>
+		 <div class="issuebar" aria-label="issue dateline">
+      <span>Information Design</span><span class="dot"></span><span>Branding</span><span class="dot"></span><span>Art direction</span>
+    </div>
       <hr><br>
 
       <!-- HERO -->
@@ -33,9 +45,9 @@
         <img alt="Eurasia Group – Hero" src="images/eg/eg_homepage.gif">
       </div>
       <div class="grid_7">
-        <p style="font-family:'Open Sans', Gotham, 'Helvetica Neue', Helvetica, Arial, 'sans-serif'; font-size:1.5em; line-height:1.25em">
-          Eurasia Group
-        </p><br><br>
+        
+          <p class="hed">Eurasia Group</p> 
+          <br><br>
         <p>
         For more than ten years I’ve shaped the visual voice of Eurasia Group by leading creative direction, building the brand, and managing a talented team of designers and freelancers. I’ve worked across everything from flagship products like Top Risks and the Atlas of Impunity to the quick-turn charts and reports that make our analysis clear and accessible.    
         </p><br><br>
@@ -74,7 +86,7 @@
       <img alt="Chart System Sample" src="images/eg/dataviz_chart_system.png">
     </div>
     <div class="grid_7">
-      <p style="font-family:'Open Sans', Gotham, 'Helvetica Neue', Helvetica, Arial, 'sans-serif'; font-size:1.5em; line-height:1.25em">
+      <p class="hed">
         Information Design & Data Visualization
       </p><br><br>
       <p>
@@ -92,7 +104,7 @@ I take dense analysis and turn it into something people can actually read and un
       <img alt="Excel / PPT Chart Template" src="images/eg/libraries.png">
     </div>
     <div class="grid_7">
-      <p style="font-family:'Open Sans', Gotham, 'Helvetica Neue', Helvetica, Arial, 'sans-serif'; font-size:1.5em; line-height:1.25em">
+      <p class="hed">
         Templates & Tooling
       </p><br><br>
       <p>
@@ -109,7 +121,7 @@ To keep quality consistent at scale, I build reusable systems like Excel and Pow
       <img alt="Product Card / Module" src="images/eg/digital.png">
     </div>
     <div class="grid_7">
-      <p style="font-family:'Open Sans', Gotham, 'Helvetica Neue', Helvetica, Arial, 'sans-serif'; font-size:1.5em; line-height:1.25em">
+      <p class="hed">
         Digital Products
       </p><br><br>
       <p>
@@ -121,7 +133,7 @@ I design and develop high-touch emails for campaigns, client updates, and quarte
     <!-- REPORT HIGHLIGHTS (target for 'Report Highlights' links) -->
     <a id="reports"></a>
     <div class="grid_12">
-      <p style="font-family:'Open Sans', Gotham, 'Helvetica Neue', Helvetica, Arial, 'sans-serif'; font-size:1.5em; line-height:1.25em">
+      <p class="hed">
         Report Highlights
       </p><br>
     </div>

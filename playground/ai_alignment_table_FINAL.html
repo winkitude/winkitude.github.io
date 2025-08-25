@@ -1,223 +1,179 @@
-<!-- AI Alignment Country Table - Unified Table Including Details Rows -->
+<!-- AI Alignment Country Table - Unified + Wrapped Meta Rows -->
 <div id="ai-alignment-table-widget">
-    <!-- Tabulator CSS -->
-    <link href="https://unpkg.com/tabulator-tables@5.5.2/dist/css/tabulator_bootstrap5.min.css" rel="stylesheet">
+  <!-- Tabulator CSS -->
+  <link href="https://unpkg.com/tabulator-tables@5.5.2/dist/css/tabulator_bootstrap5.min.css" rel="stylesheet">
 
-    <style>
-        #ai-alignment-table-widget {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            max-width: 100%;
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
+  <style>
+    #ai-alignment-table-widget {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      max-width: 100%;
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
 
-        #ai-alignment-table-widget h2 {
-            color: #2c3e50;
-            margin-bottom: 15px;
-            font-size: 24px;
-        }
+    #ai-alignment-table-widget h2 {
+      color: #2c3e50;
+      margin-bottom: 15px;
+      font-size: 24px;
+    }
 
-        /* Alignment Key */
-        #ai-alignment-table-widget .alignment-key {
-            background-color: #f8f9fa;
-            padding: 15px;
-            border-radius: 6px;
-            margin-bottom: 20px;
-            border: 1px solid #dee2e6;
-        }
+    /* Alignment Key */
+    #ai-alignment-table-widget .alignment-key {
+      background-color: #f8f9fa;
+      padding: 15px;
+      border-radius: 6px;
+      margin-bottom: 20px;
+      border: 1px solid #dee2e6;
+    }
+    #ai-alignment-table-widget .alignment-key h3 {
+      font-size: 16px;
+      margin-bottom: 12px;
+      color: #2c3e50;
+      font-weight: 600;
+    }
+    #ai-alignment-table-widget .key-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 10px;
+    }
+    #ai-alignment-table-widget .key-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+    }
+    #ai-alignment-table-widget .key-icon {
+      font-size: 20px;
+    }
 
-        #ai-alignment-table-widget .alignment-key h3 {
-            font-size: 16px;
-            margin-bottom: 12px;
-            color: #2c3e50;
-            font-weight: 600;
-        }
+    /* Country selector and info */
+    #ai-alignment-table-widget .country-selector { margin-bottom: 20px; }
+    #ai-alignment-table-widget select {
+      width: 100%;
+      padding: 8px 12px;
+      font-size: 16px;
+      border: 2px solid #dee2e6;
+      border-radius: 4px;
+    }
+    #ai-alignment-table-widget .country-info {
+      background-color: #f8f9fa;
+      padding: 12px;
+      border-radius: 4px;
+      margin-bottom: 15px;
+      border-left: 4px solid #0066cc;
+    }
 
-        #ai-alignment-table-widget .key-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 10px;
-        }
+    /* Table container */
+    #data-table-embed {
+      width: 100%;
+      overflow-x: auto;
+      margin-bottom: 0 !important;
+    }
 
-        #ai-alignment-table-widget .key-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 14px;
-        }
+    /* Tabulator base styles */
+    #ai-alignment-table-widget .tabulator {
+      font-size: 14px;
+      width: 100% !important;
+      margin-bottom: 0 !important;
+    }
+    #ai-alignment-table-widget .tabulator-table { width: 100% !important; }
+    #ai-alignment-table-widget .tabulator-cell {
+      white-space: normal !important;
+      line-height: 1.4 !important;
+      padding: 10px !important;
+      vertical-align: top !important;
+    }
+    #ai-alignment-table-widget .tabulator-col-content {
+      white-space: normal !important;
+      padding: 8px !important;
+    }
 
-        #ai-alignment-table-widget .key-icon {
-            font-size: 20px;
-        }
+    /* Fix header text wrapping */
+    #ai-alignment-table-widget .tabulator-col-title {
+      white-space: normal !important;
+      line-height: 1.2 !important;
+      text-overflow: initial !important;
+      overflow: visible !important;
+    }
+    #ai-alignment-table-widget .tabulator-header .tabulator-col {
+      height: auto !important;
+      min-height: 35px;
+    }
+    #ai-alignment-table-widget .tabulator-row { min-height: 50px; }
 
-        #ai-alignment-table-widget .country-selector {
-            margin-bottom: 20px;
-        }
+    /* Meta rows: rendered as single full-width cells inside the table body */
+    #ai-alignment-table-widget .meta-row .meta-cell {
+      box-sizing: border-box;
+      padding: 12px 10px;
+      background: #f8f9fa;
+      border-top: 1px solid #dee2e6;
+      width: 100%;
+      white-space: normal; /* ensure wrapping */
+    }
+    #ai-alignment-table-widget .meta-row .meta-title {
+      font-size: 16px;
+      color: #2c3e50;
+      margin: 0 0 8px;
+      font-weight: 600;
+    }
+    #ai-alignment-table-widget .alignment-badge {
+      background-color: #0066cc;
+      color: white;
+      padding: 3px 10px;
+      border-radius: 3px;
+      font-size: 13px;
+      font-weight: 500;
+      margin-left: 8px;
+    }
+    #ai-alignment-table-widget .meta-row p {
+      color: #495057;
+      line-height: 1.55;
+      margin: 0;
+      font-size: 14px;
+    }
+    #ai-alignment-table-widget .sovereign-icons {
+      font-size: 20px;
+      letter-spacing: 6px;
+      margin: 6px 0 8px;
+    }
 
-        #ai-alignment-table-widget select {
-            width: 100%;
-            padding: 8px 12px;
-            font-size: 16px;
-            border: 2px solid #dee2e6;
-            border-radius: 4px;
-        }
+    /* Responsive */
+    @media (max-width: 768px) {
+      #ai-alignment-table-widget { padding: 15px; }
+      #ai-alignment-table-widget h2 { font-size: 20px; }
+      #ai-alignment-table-widget .key-grid { grid-template-columns: 1fr; gap: 6px; }
+      #ai-alignment-table-widget .tabulator-cell { padding: 8px !important; font-size: 13px; }
+    }
+  </style>
 
-        #ai-alignment-table-widget .country-info {
-            background-color: #f8f9fa;
-            padding: 12px;
-            border-radius: 4px;
-            margin-bottom: 15px;
-            border-left: 4px solid #0066cc;
-        }
+  <h2>AI Alignment by Country</h2>
 
-        /* Table container */
-        #data-table-embed {
-            width: 100%;
-            overflow-x: auto;
-            margin-bottom: 0 !important;
-        }
-
-        /* Tabulator base styles */
-        #ai-alignment-table-widget .tabulator {
-            font-size: 14px;
-            width: 100% !important;
-            margin-bottom: 0 !important;
-        }
-
-        #ai-alignment-table-widget .tabulator-table {
-            width: 100% !important;
-        }
-
-        #ai-alignment-table-widget .tabulator-cell {
-            white-space: normal !important;
-            line-height: 1.4 !important;
-            padding: 10px !important;
-            vertical-align: top !important;
-        }
-
-        #ai-alignment-table-widget .tabulator-col-content {
-            white-space: normal !important;
-            padding: 8px !important;
-        }
-
-        /* Fix header text wrapping */
-        #ai-alignment-table-widget .tabulator-col-title {
-            white-space: normal !important;
-            line-height: 1.2 !important;
-            text-overflow: initial !important;
-            overflow: visible !important;
-        }
-
-        #ai-alignment-table-widget .tabulator-header .tabulator-col {
-            height: auto !important;
-            min-height: 35px;
-        }
-
-        #ai-alignment-table-widget .tabulator-row {
-            min-height: 50px;
-        }
-
-        /* Unified details rows styling (rendered inside the table as full-width) */
-        #ai-alignment-table-widget .meta-row {
-            background-color: #f8f9fa;
-            border-top: 1px solid #dee2e6;
-        }
-        #ai-alignment-table-widget .meta-row .meta-content {
-            padding: 14px;
-        }
-        #ai-alignment-table-widget .meta-row h4 {
-            font-size: 16px;
-            margin: 0 0 10px;
-            color: #2c3e50;
-        }
-        #ai-alignment-table-widget .alignment-badge {
-            background-color: #0066cc;
-            color: white;
-            padding: 3px 10px;
-            border-radius: 3px;
-            font-size: 13px;
-            font-weight: 500;
-            margin-left: 8px;
-        }
-        #ai-alignment-table-widget .meta-row p {
-            color: #495057;
-            line-height: 1.55;
-            margin: 0 0 12px;
-            font-size: 14px;
-        }
-        #ai-alignment-table-widget .meta-row .sovereign-note {
-            margin-top: 6px;
-            padding-top: 12px;
-            border-top: 1px solid #dee2e6;
-        }
-        #ai-alignment-table-widget .meta-row .sovereign-icons {
-            font-size: 20px;
-            letter-spacing: 6px;
-            margin: 8px 0;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            #ai-alignment-table-widget {
-                padding: 15px;
-            }
-            #ai-alignment-table-widget h2 {
-                font-size: 20px;
-            }
-            #ai-alignment-table-widget .key-grid {
-                grid-template-columns: 1fr;
-                gap: 6px;
-            }
-            #ai-alignment-table-widget .tabulator-cell {
-                padding: 8px !important;
-                font-size: 13px;
-            }
-        }
-    </style>
-
-    <h2>AI Alignment by Country</h2>
-
-    <!-- Alignment Key -->
-    <div class="alignment-key">
-        <h3>Key:</h3>
-        <div class="key-grid">
-            <div class="key-item">
-                <span class="key-icon">🔵</span>
-                <span>Fully US-aligned</span>
-            </div>
-            <div class="key-item">
-                <span class="key-icon">🟦</span>
-                <span>Leans US</span>
-            </div>
-            <div class="key-item">
-                <span class="key-icon">🟡</span>
-                <span>Mixed</span>
-            </div>
-            <div class="key-item">
-                <span class="key-icon">🟥</span>
-                <span>Leans China</span>
-            </div>
-            <div class="key-item">
-                <span class="key-icon">🔴</span>
-                <span>Fully China-aligned</span>
-            </div>
-        </div>
+  <!-- Alignment Key -->
+  <div class="alignment-key">
+    <h3>Key:</h3>
+    <div class="key-grid">
+      <div class="key-item"><span class="key-icon">🔵</span><span>Fully US-aligned</span></div>
+      <div class="key-item"><span class="key-icon">🟦</span><span>Leans US</span></div>
+      <div class="key-item"><span class="key-icon">🟡</span><span>Mixed</span></div>
+      <div class="key-item"><span class="key-icon">🟥</span><span>Leans China</span></div>
+      <div class="key-item"><span class="key-icon">🔴</span><span>Fully China-aligned</span></div>
     </div>
+  </div>
 
-    <div class="country-selector">
-        <select id="countrySelectEmbed">
-            <option value="">-- Choose a country --</option>
-        </select>
-    </div>
+  <div class="country-selector">
+    <select id="countrySelectEmbed">
+      <option value="">-- Choose a country --</option>
+    </select>
+  </div>
 
-    <div id="countryInfoEmbed" class="country-info" style="display: none;">
-        <strong id="countryNameEmbed"></strong>
-        <div id="countrySummaryEmbed"></div>
-    </div>
+  <div id="countryInfoEmbed" class="country-info" style="display: none;">
+    <strong id="countryNameEmbed"></strong>
+    <div id="countrySummaryEmbed"></div>
+  </div>
 
-    <div id="data-table-embed"></div>
+  <div id="data-table-embed"></div>
 </div>
 
 <!-- Tabulator JS -->
@@ -225,267 +181,230 @@
 
 <script>
 (function() {
-    // Normalize field names by removing spaces and special characters
-    function normalizeFieldName(name) {
-        return name.replace(/\s+/g, '').replace(/[^\w]/g, '');
-    }
+  function normalizeFieldName(name) {
+    return name.replace(/\s+/g, '').replace(/[^\w]/g, '');
+  }
+  function normalizeData(data) {
+    return data.map(row => {
+      const normalizedRow = {};
+      Object.keys(row).forEach(key => {
+        const normalizedKey = normalizeFieldName(key);
+        normalizedRow[normalizedKey] = row[key];
+      });
+      return normalizedRow;
+    });
+  }
 
-    // Normalize data to ensure consistent field names
-    function normalizeData(data) {
-        return data.map(row => {
-            const normalizedRow = {};
-            Object.keys(row).forEach(key => {
-                const normalizedKey = normalizeFieldName(key);
-                normalizedRow[normalizedKey] = row[key];
-            });
-            return normalizedRow;
-        });
-    }
-
-    const countriesData = {
-        "Israel": {
-            "data": [
-                {
-                    "Layer": "Hardware & Infrastructure",
-                    "Alignment": "🔵",
-                    "Why This Side Dominates": "Israel’s AI compute nodes and on-prem data centers run exclusively on Western-designed GPUs and networking hardware under US export controls (e.g. Israel-1 supercomputer). Nvidia AI campus expansion forthcoming. All major cloud regions in the country are operated by US hyperscalers (AWS, GCP, Azure, Oracle). Through a $1.2 billion contract, Google Cloud and AWS were selected to provide Israeli government agencies with cloud computing services, including AI, within Israeli borders. Chinese providers are present through partnerships only. Edge and chip deployments likewise rely on US suppliers, and there’s no meaningful Chinese footprint."
-                },
-                {
-                    "Layer": "AI Products & Deployment: Software & Application",
-                    "Alignment": "🔵",
-                    "Why This Side Dominates": "Widely used Hebrew-language LLM and AI service is hosted and served via US or Western platforms, with no Chinese models in production. AI21 Labs’ Jamba 1.5 models, hosted on AWS Bedrock and Azure, natively support Hebrew alongside other languages. DictaLM2.0, a native Hebrew model, was built on French-based Mistral models. Major Israeli enterprises (finance, healthcare, cybersecurity) consistently choose Azure Cognitive Services, AWS Bedrock, among other US platforms. Commercial and government applications integrate Western AI APIs."
-                },
-                {
-                    "Layer": "Ecosystem & Governance",
-                    "Alignment": "🔵",
-                    "Why This Side Dominates": "Israel aligns its AI rules and bilateral MoUs with US/OECD frameworks, and major R&D or infrastructure partnerships are exclusively with American entities. The US and Israel signed an MoU pledging to work together to increase AI innovation, creating a joint science center. There are no significant Chinese-led AI agreements or investments shaping policy, and talent pipelines plus venture funding overwhelmingly flow through US-linked channels. China was once a key partner in Israeli tech investment, particularly in AI, growing US pressure under the Trump and Biden administrations led Israel to tighten scrutiny of Chinese involvement in critical sectors."
-                }
-            ],
-            "summary": "AI infrastructure and ecosystem alignment"
+  const countriesData = {
+    "Israel": {
+      "data": [
+        {
+          "Layer": "Hardware & Infrastructure",
+          "Alignment": "🔵",
+          "Why This Side Dominates": "Israel’s AI compute nodes and on-prem data centers run exclusively on Western-designed GPUs and networking hardware under US export controls (e.g. Israel-1 supercomputer). Nvidia AI campus expansion forthcoming. All major cloud regions in the country are operated by US hyperscalers (AWS, GCP, Azure, Oracle). Through a $1.2 billion contract, Google Cloud and AWS were selected to provide Israeli government agencies with cloud computing services, including AI, within Israeli borders. Chinese providers are present through partnerships only. Edge and chip deployments likewise rely on US suppliers, and there’s no meaningful Chinese footprint."
         },
-        "United Kingdom": {
-            "data": [
-                {
-                    "Layer": "Hardware & Infrastructure",
-                    "Alignment": "🔵",
-                    "WhyThisSideDominates": "UK's AI infrastructure runs on Western hardware with major data centers operated by US hyperscalers. DeepMind's facilities use NVIDIA GPUs exclusively."
-                },
-                {
-                    "Layer": "AI Products & Deployment: Software & Application",
-                    "Alignment": "🔵",
-                    "WhyThisSideDominates": "UK companies like DeepMind (Google) lead in AI research. Most UK enterprises use Western AI platforms and APIs."
-                },
-                {
-                    "Layer": "Ecosystem & Governance",
-                    "Alignment": "🔵",
-                    "WhyThisSideDominates": "UK's AI regulations align with Western frameworks. Strong partnerships with US through AUKUS and bilateral AI agreements."
-                }
-            ],
-            "summary": "Leading Western AI research hub"
+        {
+          "Layer": "AI Products & Deployment: Software & Application",
+          "Alignment": "🔵",
+          "Why This Side Dominates": "Widely used Hebrew-language LLM and AI service is hosted and served via US or Western platforms, with no Chinese models in production. AI21 Labs’ Jamba 1.5 models, hosted on AWS Bedrock and Azure, natively support Hebrew alongside other languages. DictaLM2.0, a native Hebrew model, was built on French-based Mistral models. Major Israeli enterprises (finance, healthcare, cybersecurity) consistently choose Azure Cognitive Services, AWS Bedrock, among other US platforms. Commercial and government applications integrate Western AI APIs."
         },
-        "Singapore": {
-            "data": [
-                {
-                    "Layer": "Hardware & Infrastructure",
-                    "Alignment": "🔵",
-                    "WhyThisSideDominates": "Singapore's data centers primarily use Western infrastructure. Major presence of AWS, Google Cloud, and Microsoft Azure."
-                },
-                {
-                    "Layer": "AI Products & Deployment: Software & Application",
-                    "Alignment": "🟡",
-                    "WhyThisSideDominates": "Mixed ecosystem with both Western and Chinese AI services. Government uses primarily Western platforms while consumer apps include both."
-                },
-                {
-                    "Layer": "Ecosystem & Governance",
-                    "Alignment": "🟡",
-                    "WhyThisSideDominates": "Singapore maintains neutral stance, partnering with both US and China on AI initiatives. ASEAN AI governance framework."
-                }
-            ],
-            "summary": "Balanced approach between East and West"
+        {
+          "Layer": "Ecosystem & Governance",
+          "Alignment": "🔵",
+          "Why This Side Dominates": "Israel aligns its AI rules and bilateral MoUs with US/OECD frameworks, and major R&D or infrastructure partnerships are exclusively with American entities. The US and Israel signed an MoU pledging to work together to increase AI innovation, creating a joint science center. There are no significant Chinese-led AI agreements or investments shaping policy, and talent pipelines plus venture funding overwhelmingly flow through US-linked channels. China was once a key partner in Israeli tech investment, particularly in AI, growing US pressure under the Trump and Biden administrations led Israel to tighten scrutiny of Chinese involvement in critical sectors."
         }
-    };
+      ],
+      "summary": "AI infrastructure and ecosystem alignment"
+    },
+    "United Kingdom": {
+      "data": [
+        {"Layer":"Hardware & Infrastructure","Alignment":"🔵","WhyThisSideDominates":"UK's AI infrastructure runs on Western hardware with major data centers operated by US hyperscalers. DeepMind's facilities use NVIDIA GPUs exclusively."},
+        {"Layer":"AI Products & Deployment: Software & Application","Alignment":"🔵","WhyThisSideDominates":"UK companies like DeepMind (Google) lead in AI research. Most UK enterprises use Western AI platforms and APIs."},
+        {"Layer":"Ecosystem & Governance","Alignment":"🔵","WhyThisSideDominates":"UK's AI regulations align with Western frameworks. Strong partnerships with US through AUKUS and bilateral AI agreements."}
+      ],
+      "summary":"Leading Western AI research hub"
+    },
+    "Singapore": {
+      "data": [
+        {"Layer":"Hardware & Infrastructure","Alignment":"🔵","WhyThisSideDominates":"Singapore's data centers primarily use Western infrastructure. Major presence of AWS, Google Cloud, and Microsoft Azure."},
+        {"Layer":"AI Products & Deployment: Software & Application","Alignment":"🟡","WhyThisSideDominates":"Mixed ecosystem with both Western and Chinese AI services. Government uses primarily Western platforms while consumer apps include both."},
+        {"Layer":"Ecosystem & Governance","Alignment":"🟡","WhyThisSideDominates":"Singapore maintains neutral stance, partnering with both US and China on AI initiatives. ASEAN AI governance framework."}
+      ],
+      "summary":"Balanced approach between East and West"
+    }
+  };
 
-    const countryDetails = {
-        "Israel": {
-            "overall_alignment": "Full US",
-            "description": "Israel's AI ecosystem is deeply aligned with the United States across every technology layer, from hardware and cloud infrastructure to AI models and policy. While Israel demonstrates strong national investment in compute, homegrown models, and leading-edge governance, its foundation remains anchored in American hardware, cloud platforms, and regulatory norms.",
-            "sovereign_note": "🧱☁️ 🧠 ⚖️",
-            "sovereign_description": "Israel's sovereign AI ambitions manifest in domestic compute investment, homegrown models, and local regulatory guardrails—but remain fundamentally supported by US technology and frameworks. The Israel-1 supercomputer, powered entirely by American hardware, underscores domestic compute sovereignty, yet depends on US suppliers. Project Nimbus is a cloud computing project of the Israeli government and its military, in partnership with Google and Amazon to provide Israeli government agencies with cloud computing services in-country. Native Hebrew LLMs such as DictaLM demonstrate growing model sovereignty, and reports suggest that the Israeli-military is creating a ChatGPT-like tool. Israel has unveiled its first-ever comprehensive policy on AI regulation and ethics, based mostly on Western norms. This layered approach exemplifies a strategic pursuit of national control over AI development and data flows while maintaining essential dependence on American hardware, cloud services, and policy blueprints, mirroring broader global sovereign AI efforts."
+  const countryDetails = {
+    "Israel": {
+      "overall_alignment": "Full US",
+      "description": "Israel's AI ecosystem is deeply aligned with the United States across every technology layer, from hardware and cloud infrastructure to AI models and policy. While Israel demonstrates strong national investment in compute, homegrown models, and leading-edge governance, its foundation remains anchored in American hardware, cloud platforms, and regulatory norms.",
+      "sovereign_note": "🧱☁️ 🧠 ⚖️",
+      "sovereign_description": "Israel's sovereign AI ambitions manifest in domestic compute investment, homegrown models, and local regulatory guardrails—but remain fundamentally supported by US technology and frameworks. The Israel-1 supercomputer, powered entirely by American hardware, underscores domestic compute sovereignty, yet depends on US suppliers. Project Nimbus is a cloud computing project of the Israeli government and its military, in partnership with Google and Amazon to provide Israeli government agencies with cloud computing services in-country. Native Hebrew LLMs such as DictaLM demonstrate growing model sovereignty, and reports suggest that the Israeli-military is creating a ChatGPT-like tool. Israel has unveiled its first-ever comprehensive policy on AI regulation and ethics, based mostly on Western norms. This layered approach exemplifies a strategic pursuit of national control over AI development and data flows while maintaining essential dependence on American hardware, cloud services, and policy blueprints, mirroring broader global sovereign AI efforts."
+    },
+    "United Kingdom": {
+      "overall_alignment": "Full US",
+      "description": "The UK's AI ecosystem is comprehensively aligned with the United States, from DeepMind's Google ownership to exclusive use of Western hardware and cloud platforms. The UK positions itself as a global AI research hub while maintaining deep integration with American technology and policy frameworks.",
+      "sovereign_note": "🧱 🧠 ⚖️",
+      "sovereign_description": "The UK pursues AI sovereignty through world-leading research institutions, national AI strategies, and regulatory frameworks, yet remains deeply dependent on US technology infrastructure. While the UK develops sovereign capabilities in AI safety and ethics leadership, its compute infrastructure relies entirely on American hardware and cloud providers."
+    },
+    "Singapore": {
+      "overall_alignment": "Mixed",
+      "description": "Singapore maintains a carefully balanced approach between US and Chinese AI ecosystems, leveraging its strategic position to access both Western and Eastern technologies. This neutral stance enables Singapore to serve as a bridge between competing AI spheres.",
+      "sovereign_note": "☁️ 🧠 ⚖️",
+      "sovereign_description": "Singapore's sovereign AI strategy emphasizes regulatory independence and local AI talent development while pragmatically utilizing both Western and Chinese technology platforms. The nation's AI governance framework reflects ASEAN values while maintaining interoperability with both US and Chinese systems."
+    }
+  };
+
+  let tableEmbed;
+  const countrySelect = document.getElementById('countrySelectEmbed');
+  const countryInfo = document.getElementById('countryInfoEmbed');
+  const countryName = document.getElementById('countryNameEmbed');
+  const countrySummary = document.getElementById('countrySummaryEmbed');
+
+  Object.keys(countriesData).forEach(country => {
+    const option = document.createElement('option');
+    option.value = country;
+    option.textContent = country;
+    countrySelect.appendChild(option);
+  });
+
+  // Build unified data set: core rows + two meta rows (overall + sovereign combined)
+  function buildUnifiedRows(coreData, details) {
+    const normalized = normalizeData(coreData);
+
+    const metaRows = [
+      {
+        type: 'overall',
+        overall_alignment: details.overall_alignment || '',
+        overall_text: details.description || ''
+      },
+      {
+        type: 'sovereign',
+        sovereign_note: details.sovereign_note || '',
+        sovereign_text: details.sovereign_description || ''
+      }
+    ];
+
+    return normalized.concat(metaRows);
+  }
+
+  function initTableEmbed(data, details) {
+    if (tableEmbed) tableEmbed.destroy();
+
+    const unifiedRows = buildUnifiedRows(data, details);
+
+    tableEmbed = new Tabulator("#data-table-embed", {
+      data: unifiedRows,
+      layout: "fitColumns",
+      responsiveLayout: false,
+      height: "auto",
+      columns: [
+        { title: "Layer", field: "Layer", widthGrow: 1.5, minWidth: 150, formatter: "textarea", variableHeight: true },
+        { title: "Alignment", field: "Alignment", width: 110, hozAlign: "center",
+          formatter: function(cell){
+            return `<div class="alignment-cell">${cell.getValue() || ''}</div>`;
+          }
         },
-        "United Kingdom": {
-            "overall_alignment": "Full US",
-            "description": "The UK's AI ecosystem is comprehensively aligned with the United States, from DeepMind's Google ownership to exclusive use of Western hardware and cloud platforms. The UK positions itself as a global AI research hub while maintaining deep integration with American technology and policy frameworks.",
-            "sovereign_note": "🧱 🧠 ⚖️",
-            "sovereign_description": "The UK pursues AI sovereignty through world-leading research institutions, national AI strategies, and regulatory frameworks, yet remains deeply dependent on US technology infrastructure. While the UK develops sovereign capabilities in AI safety and ethics leadership, its compute infrastructure relies entirely on American hardware and cloud providers."
-        },
-        "Singapore": {
-            "overall_alignment": "Mixed",
-            "description": "Singapore maintains a carefully balanced approach between US and Chinese AI ecosystems, leveraging its strategic position to access both Western and Eastern technologies. This neutral stance enables Singapore to serve as a bridge between competing AI spheres.",
-            "sovereign_note": "☁️ 🧠 ⚖️",
-            "sovereign_description": "Singapore's sovereign AI strategy emphasizes regulatory independence and local AI talent development while pragmatically utilizing both Western and Chinese technology platforms. The nation's AI governance framework reflects ASEAN values while maintaining interoperability with both US and Chinese systems."
+        { title: "Why This Side Dominates", field: "WhyThisSideDominates", widthGrow: 3, minWidth: 250, formatter: "textarea", variableHeight: true }
+      ],
+      rowFormatter: function(row) {
+        const data = row.getData();
+        if (!data.type) return; // Normal data rows render as default cells
+
+        // For meta rows, replace the row content with one full-width "cell" div.
+        const rowEl = row.getElement();
+        rowEl.classList.add('meta-row');
+
+        // Remove all default cells
+        while (rowEl.firstChild) rowEl.removeChild(rowEl.firstChild);
+
+        const cell = document.createElement('div');
+        cell.className = 'meta-cell';
+
+        if (data.type === 'overall') {
+          const title = document.createElement('div');
+          title.className = 'meta-title';
+          title.innerHTML = `Overall Alignment <span class="alignment-badge">${data.overall_alignment || ''}</span>`;
+          cell.appendChild(title);
+
+          if (data.overall_text) {
+            const p = document.createElement('p');
+            p.textContent = data.overall_text;
+            cell.appendChild(p);
+          }
         }
-    };
 
-    let tableEmbed;
-    const countrySelect = document.getElementById('countrySelectEmbed');
-    const countryInfo = document.getElementById('countryInfoEmbed');
-    const countryName = document.getElementById('countryNameEmbed');
-    const countrySummary = document.getElementById('countrySummaryEmbed');
+        if (data.type === 'sovereign') {
+          const title = document.createElement('div');
+          title.className = 'meta-title';
+          title.textContent = 'Sovereign AI Note';
+          cell.appendChild(title);
 
-    Object.keys(countriesData).forEach(country => {
-        const option = document.createElement('option');
-        option.value = country;
-        option.textContent = country;
-        countrySelect.appendChild(option);
+          if (data.sovereign_note) {
+            const icons = document.createElement('div');
+            icons.className = 'sovereign-icons';
+            icons.textContent = data.sovereign_note;
+            cell.appendChild(icons);
+          }
+
+          if (data.sovereign_text) {
+            const p = document.createElement('p');
+            p.textContent = data.sovereign_text;
+            cell.appendChild(p);
+          }
+        }
+
+        rowEl.appendChild(cell);
+      }
     });
 
-    // Build unified data set: core rows + meta rows
-    function buildUnifiedRows(coreData, details) {
-        const normalized = normalizeData(coreData);
+    // Ensure proper rendering of variable-height rows
+    setTimeout(() => {
+      if (tableEmbed) tableEmbed.redraw(true);
+    }, 100);
+  }
 
-        // Meta rows use a 'type' flag to trigger custom formatting
-        const metaRows = [
-            {
-                type: 'overall',
-                Layer: `Overall Alignment`,
-                Alignment: details.overall_alignment || '',
-                WhyThisSideDominates: details.description || ''
-            },
-            {
-                type: 'sovereign-title',
-                Layer: 'Sovereign AI Note',
-                Alignment: details.sovereign_note || '',
-                WhyThisSideDominates: ''
-            },
-            {
-                type: 'sovereign-desc',
-                Layer: '',
-                Alignment: '',
-                WhyThisSideDominates: details.sovereign_description || ''
-            }
-        ];
+  countrySelect.addEventListener('change', function() {
+    const selectedCountry = this.value;
 
-        return normalized.concat(metaRows);
+    if (selectedCountry && countriesData[selectedCountry]) {
+      countryInfo.style.display = 'block';
+      countryName.textContent = selectedCountry;
+      countrySummary.textContent = countriesData[selectedCountry].summary;
+
+      const details = countryDetails[selectedCountry] || {
+        overall_alignment: '',
+        description: '',
+        sovereign_note: '',
+        sovereign_description: ''
+      };
+
+      initTableEmbed(countriesData[selectedCountry].data, {
+        overall_alignment: details.overall_alignment,
+        description: details.description,
+        sovereign_note: details.sovereign_note,
+        sovereign_description: details.sovereign_description
+      });
+    } else {
+      countryInfo.style.display = 'none';
+      if (tableEmbed) {
+        tableEmbed.destroy();
+        document.getElementById('data-table-embed').innerHTML = '';
+      }
     }
+  });
 
-    function initTableEmbed(data, details) {
-        if (tableEmbed) {
-            tableEmbed.destroy();
-        }
+  // Auto-select Israel on load
+  countrySelect.value = 'Israel';
+  countrySelect.dispatchEvent(new Event('change'));
 
-        const unifiedRows = buildUnifiedRows(data, details);
-
-        tableEmbed = new Tabulator("#data-table-embed", {
-            data: unifiedRows,
-            layout: "fitColumns",
-            responsiveLayout: false,
-            height: "auto",
-            columns: [
-                { title: "Layer", field: "Layer", widthGrow: 1.5, minWidth: 150, formatter: "textarea", variableHeight: true },
-                { title: "Alignment", field: "Alignment", width: 110, hozAlign: "center",
-                  formatter: function(cell){
-                      // Keep big emoji centered for normal rows
-                      return `<div class="alignment-cell">${cell.getValue() || ''}</div>`;
-                  }
-                },
-                { title: "Why This Side Dominates", field: "WhyThisSideDominates", widthGrow: 3, minWidth: 250, formatter: "textarea", variableHeight: true }
-            ],
-            rowFormatter: function(row) {
-                const data = row.getData();
-                if (!data.type) return; // normal rows
-
-                // Turn the row into a single full-width block
-                const el = row.getElement();
-                el.classList.add('meta-row');
-
-                // Clear default cells to replace with one spanning container
-                while (el.firstChild) el.removeChild(el.firstChild);
-
-                const wrap = document.createElement('div');
-                wrap.className = 'meta-content';
-
-                if (data.type === 'overall') {
-                    const h4 = document.createElement('h4');
-                    h4.innerHTML = `Overall Alignment: <span class="alignment-badge">${data.Alignment || ''}</span>`;
-                    wrap.appendChild(h4);
-
-                    if (data.WhyThisSideDominates) {
-                        const p = document.createElement('p');
-                        p.textContent = data.WhyThisSideDominates;
-                        wrap.appendChild(p);
-                    }
-                }
-
-                if (data.type === 'sovereign-title') {
-                    const h4 = document.createElement('h4');
-                    h4.textContent = 'Sovereign AI Note:';
-                    wrap.appendChild(h4);
-                    if (data.Alignment) {
-                        const icons = document.createElement('div');
-                        icons.className = 'sovereign-icons';
-                        icons.textContent = data.Alignment;
-                        wrap.appendChild(icons);
-                    }
-                }
-
-                if (data.type === 'sovereign-desc') {
-                    const sec = document.createElement('div');
-                    sec.className = 'sovereign-note';
-                    const p = document.createElement('p');
-                    p.textContent = data.WhyThisSideDominates || '';
-                    sec.appendChild(p);
-                    wrap.appendChild(sec);
-                }
-
-                el.appendChild(wrap);
-            }
-        });
-
-        // Ensure proper rendering
-        setTimeout(() => {
-            if (tableEmbed) tableEmbed.redraw(true);
-        }, 100);
-    }
-
-    countrySelect.addEventListener('change', function() {
-        const selectedCountry = this.value;
-
-        if (selectedCountry && countriesData[selectedCountry]) {
-            // Show brief info above
-            countryInfo.style.display = 'block';
-            countryName.textContent = selectedCountry;
-            countrySummary.textContent = countriesData[selectedCountry].summary;
-
-            const details = countryDetails[selectedCountry] || {
-                overall_alignment: '',
-                description: '',
-                sovereign_note: '',
-                sovereign_description: ''
-            };
-
-            initTableEmbed(countriesData[selectedCountry].data, details);
-        } else {
-            countryInfo.style.display = 'none';
-            if (tableEmbed) {
-                tableEmbed.destroy();
-                document.getElementById('data-table-embed').innerHTML = '';
-            }
-        }
-    });
-
-    // Auto-select Israel on load
-    countrySelect.value = 'Israel';
-    countrySelect.dispatchEvent(new Event('change'));
-
-    // Handle window resize
-    let resizeTimeout;
-    window.addEventListener('resize', function() {
-        clearTimeout(resizeTimeout);
-        resizeTimeout = setTimeout(function() {
-            if (tableEmbed) {
-                tableEmbed.redraw(true);
-            }
-        }, 250);
-    });
+  // Handle window resize
+  let resizeTimeout;
+  window.addEventListener('resize', function() {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(function() {
+      if (tableEmbed) tableEmbed.redraw(true);
+    }, 250);
+  });
 })();
 </script>

@@ -1,4 +1,4 @@
-<!-- AI Alignment Country Table - Combined with Details Row -->
+<!-- AI Alignment Country Table - Unified Table Including Details Rows -->
 <div id="ai-alignment-table-widget">
     <!-- Tabulator CSS -->
     <link href="https://unpkg.com/tabulator-tables@5.5.2/dist/css/tabulator_bootstrap5.min.css" rel="stylesheet">
@@ -72,11 +72,6 @@
             border-left: 4px solid #0066cc;
         }
 
-        #ai-alignment-table-widget .alignment-cell {
-            text-align: center;
-            font-size: 20px;
-        }
-
         /* Table container */
         #data-table-embed {
             width: 100%;
@@ -124,19 +119,19 @@
             min-height: 50px;
         }
 
-        /* Details row that attaches to bottom of table */
-        #ai-alignment-table-widget .details-row {
-            border-top: 1px solid #dee2e6;
+        /* Unified details rows styling (rendered inside the table as full-width) */
+        #ai-alignment-table-widget .meta-row {
             background-color: #f8f9fa;
-            padding: 16px 14px;
+            border-top: 1px solid #dee2e6;
         }
-
-        #ai-alignment-table-widget .details-row h4 {
+        #ai-alignment-table-widget .meta-row .meta-content {
+            padding: 14px;
+        }
+        #ai-alignment-table-widget .meta-row h4 {
             font-size: 16px;
             margin: 0 0 10px;
             color: #2c3e50;
         }
-
         #ai-alignment-table-widget .alignment-badge {
             background-color: #0066cc;
             color: white;
@@ -146,21 +141,18 @@
             font-weight: 500;
             margin-left: 8px;
         }
-
-        #ai-alignment-table-widget .details-row p {
+        #ai-alignment-table-widget .meta-row p {
             color: #495057;
-            line-height: 1.5;
+            line-height: 1.55;
             margin: 0 0 12px;
             font-size: 14px;
         }
-
-        #ai-alignment-table-widget .details-row .sovereign-note {
-            margin-top: 12px;
+        #ai-alignment-table-widget .meta-row .sovereign-note {
+            margin-top: 6px;
             padding-top: 12px;
             border-top: 1px solid #dee2e6;
         }
-
-        #ai-alignment-table-widget .details-row .sovereign-icons {
+        #ai-alignment-table-widget .meta-row .sovereign-icons {
             font-size: 20px;
             letter-spacing: 6px;
             margin: 8px 0;
@@ -171,16 +163,13 @@
             #ai-alignment-table-widget {
                 padding: 15px;
             }
-
             #ai-alignment-table-widget h2 {
                 font-size: 20px;
             }
-
             #ai-alignment-table-widget .key-grid {
                 grid-template-columns: 1fr;
                 gap: 6px;
             }
-
             #ai-alignment-table-widget .tabulator-cell {
                 padding: 8px !important;
                 font-size: 13px;
@@ -350,50 +339,105 @@
         countrySelect.appendChild(option);
     });
 
+    // Build unified data set: core rows + meta rows
+    function buildUnifiedRows(coreData, details) {
+        const normalized = normalizeData(coreData);
+
+        // Meta rows use a 'type' flag to trigger custom formatting
+        const metaRows = [
+            {
+                type: 'overall',
+                Layer: `Overall Alignment`,
+                Alignment: details.overall_alignment || '',
+                WhyThisSideDominates: details.description || ''
+            },
+            {
+                type: 'sovereign-title',
+                Layer: 'Sovereign AI Note',
+                Alignment: details.sovereign_note || '',
+                WhyThisSideDominates: ''
+            },
+            {
+                type: 'sovereign-desc',
+                Layer: '',
+                Alignment: '',
+                WhyThisSideDominates: details.sovereign_description || ''
+            }
+        ];
+
+        return normalized.concat(metaRows);
+    }
+
     function initTableEmbed(data, details) {
         if (tableEmbed) {
             tableEmbed.destroy();
         }
 
-        // Normalize the data
-        const normalizedData = normalizeData(data);
+        const unifiedRows = buildUnifiedRows(data, details);
 
-        // Create table
         tableEmbed = new Tabulator("#data-table-embed", {
-            data: normalizedData,
+            data: unifiedRows,
             layout: "fitColumns",
             responsiveLayout: false,
             height: "auto",
             columns: [
-                {
-                    title: "Layer",
-                    field: "Layer",
-                    widthGrow: 1.5,
-                    minWidth: 150,
-                    formatter: "textarea",
-                    variableHeight: true
+                { title: "Layer", field: "Layer", widthGrow: 1.5, minWidth: 150, formatter: "textarea", variableHeight: true },
+                { title: "Alignment", field: "Alignment", width: 110, hozAlign: "center",
+                  formatter: function(cell){
+                      // Keep big emoji centered for normal rows
+                      return `<div class="alignment-cell">${cell.getValue() || ''}</div>`;
+                  }
                 },
-                {
-                    title: "Alignment",
-                    field: "Alignment",
-                    width: 100,
-                    hozAlign: "center",
-                    formatter: function(cell) {
-                        return '<div class="alignment-cell">' + cell.getValue() + '</div>';
-                    }
-                },
-                {
-                    title: "Why This Side Dominates",
-                    field: "WhyThisSideDominates",
-                    widthGrow: 3,
-                    minWidth: 250,
-                    formatter: "textarea",
-                    variableHeight: true
-                }
+                { title: "Why This Side Dominates", field: "WhyThisSideDominates", widthGrow: 3, minWidth: 250, formatter: "textarea", variableHeight: true }
             ],
-            renderComplete: function() {
-                // Inject/refresh the details row after the table is rendered
-                attachDetailsRow(details);
+            rowFormatter: function(row) {
+                const data = row.getData();
+                if (!data.type) return; // normal rows
+
+                // Turn the row into a single full-width block
+                const el = row.getElement();
+                el.classList.add('meta-row');
+
+                // Clear default cells to replace with one spanning container
+                while (el.firstChild) el.removeChild(el.firstChild);
+
+                const wrap = document.createElement('div');
+                wrap.className = 'meta-content';
+
+                if (data.type === 'overall') {
+                    const h4 = document.createElement('h4');
+                    h4.innerHTML = `Overall Alignment: <span class="alignment-badge">${data.Alignment || ''}</span>`;
+                    wrap.appendChild(h4);
+
+                    if (data.WhyThisSideDominates) {
+                        const p = document.createElement('p');
+                        p.textContent = data.WhyThisSideDominates;
+                        wrap.appendChild(p);
+                    }
+                }
+
+                if (data.type === 'sovereign-title') {
+                    const h4 = document.createElement('h4');
+                    h4.textContent = 'Sovereign AI Note:';
+                    wrap.appendChild(h4);
+                    if (data.Alignment) {
+                        const icons = document.createElement('div');
+                        icons.className = 'sovereign-icons';
+                        icons.textContent = data.Alignment;
+                        wrap.appendChild(icons);
+                    }
+                }
+
+                if (data.type === 'sovereign-desc') {
+                    const sec = document.createElement('div');
+                    sec.className = 'sovereign-note';
+                    const p = document.createElement('p');
+                    p.textContent = data.WhyThisSideDominates || '';
+                    sec.appendChild(p);
+                    wrap.appendChild(sec);
+                }
+
+                el.appendChild(wrap);
             }
         });
 
@@ -403,71 +447,21 @@
         }, 100);
     }
 
-    function attachDetailsRow(details) {
-        const holder = document.querySelector("#data-table-embed .tabulator-tableholder");
-        if (!holder) return;
-
-        // Remove existing details row if any
-        const existing = holder.querySelector('.details-row');
-        if (existing) existing.remove();
-
-        // Build details row
-        const div = document.createElement('div');
-        div.className = 'details-row';
-
-        const overall = document.createElement('h4');
-        overall.innerHTML = `Overall Alignment: <span class="alignment-badge">${details.overall_alignment || ''}</span>`;
-        div.appendChild(overall);
-
-        if (details.description) {
-            const desc = document.createElement('p');
-            desc.textContent = details.description;
-            div.appendChild(desc);
-        }
-
-        const noteWrap = document.createElement('div');
-        noteWrap.className = 'sovereign-note';
-
-        const noteTitle = document.createElement('h4');
-        noteTitle.textContent = 'Sovereign AI Note:';
-        noteWrap.appendChild(noteTitle);
-
-        if (details.sovereign_note) {
-            const icons = document.createElement('div');
-            icons.className = 'sovereign-icons';
-            icons.textContent = details.sovereign_note;
-            noteWrap.appendChild(icons);
-        }
-
-        if (details.sovereign_description) {
-            const sdesc = document.createElement('p');
-            sdesc.textContent = details.sovereign_description;
-            noteWrap.appendChild(sdesc);
-        }
-
-        div.appendChild(noteWrap);
-
-        // Append details row below the last data row
-        holder.appendChild(div);
-    }
-
     countrySelect.addEventListener('change', function() {
         const selectedCountry = this.value;
 
         if (selectedCountry && countriesData[selectedCountry]) {
-            // Show brief info
+            // Show brief info above
             countryInfo.style.display = 'block';
             countryName.textContent = selectedCountry;
             countrySummary.textContent = countriesData[selectedCountry].summary;
 
-            const details = (typeof countryDetails[selectedCountry] === 'object')
-                ? countryDetails[selectedCountry]
-                : {
-                    overall_alignment: '',
-                    description: '',
-                    sovereign_note: '',
-                    sovereign_description: ''
-                };
+            const details = countryDetails[selectedCountry] || {
+                overall_alignment: '',
+                description: '',
+                sovereign_note: '',
+                sovereign_description: ''
+            };
 
             initTableEmbed(countriesData[selectedCountry].data, details);
         } else {

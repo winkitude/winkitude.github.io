@@ -1,113 +1,175 @@
 <!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<html class="no-js">
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>Ari Winkleman - Guidelines</title>
+  <title>Ari Winkleman - Guidelines & Systems</title>
   <meta name="description" content="Ari Winkleman">
   <meta name="viewport" content="width=device-width">
-  <link rel="shortcut icon" href="favicon.ico" >
+  <link rel="shortcut icon" href="favicon.ico">
 
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Open+Sans:ital,wght@0,300;0,400;0,700;0,800;1,400&display=swap" rel="stylesheet">
 
-  <!--[if lt IE 9]>
-      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-      <script>window.html5 || document.write('<script src="js/vendor/html5shiv.js"><\/script>')</script>
-  <![endif]-->
-
-
-<!-- FONTS -->
-   <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Open+Sans:ital,wght@0,300;0,400;0,700;0,800;1,400&display=swap" rel="stylesheet">
-  
-<!-- Styles -->
+  <!-- Core Styles (match site) -->
   <link href="css/normalize.css" rel="stylesheet" />
   <link href="css/grid.css" rel="stylesheet" />
   <link href="css/screen.css" rel="stylesheet" />
+
   <style>
+    /* Page-local helpers (keeps original framework intact) */
+    #content { max-width: 1000px; margin: 0 auto; }
+    .lane-title { font-family: 'Open Sans', Arial, sans-serif; font-size: 1.5em; line-height: 1.25em; }
+    .eyebrow { font: 700 12px/1 'Open Sans', Arial, sans-serif; letter-spacing: .06em; text-transform: uppercase; color:#222; }
+    .spacer { height: 10px; }
+    .thumb-row img { width: 100%; height: auto; display: block; border-radius: 4px; }
+    .pill { display:inline-block; padding:4px 8px; border:1px solid #e5e5e5; border-radius:16px; font:600 12px 'Open Sans', Arial, sans-serif; background:#fff; }
+    .cta { text-decoration: underline; font-weight: 700; }
+    .lane { margin-bottom: 20px; }
+    .divider { margin: 10px 0 20px; border: 0; border-top: 1px solid #e5e5e5; }
+    .note { font: 13px/1.4 'Open Sans', Arial, sans-serif; color:#333; }
+
         .hed { font-family:'Abril Fatface', serif; font-size:1.5rem; line-height:1.1; }
           .masthead { text-align:center; margin: 28px 0 8px; }
     .masthead a { font-family:'Abril Fatface', serif; font-size:3.1rem; text-decoration:none; color:var(--ink); letter-spacing:.5px; }
     .masthead a:hover { color:var(--accent); }
      .issuebar { display:flex; gap:12px; justify-content:center; align-items:center; color:var(--muted); font: 700 12px/1 'Open Sans', Arial, sans-serif; letter-spacing:.08em; text-transform:uppercase; padding-bottom:1em }
     .issuebar .dot { width:4px; height:4px; background:var(--muted); border-radius:50%; display:inline-block; }
+  
   </style>
-
 </head>
 
 <body>
 <div class="container clearfix">
-	<div id="content">
-		<div class="grid_12">
-			<div class="masthead"><a href="http://winkitude.com">Ari Winkleman</a></div>
+  <div id="content">
+
+    <!-- Header -->
+    <div class="grid_12">
+     <div class="masthead"><a href="http://winkitude.com">Ari Winkleman</a></div>
 		 <div class="issuebar" aria-label="issue dateline">
       <span>Information Design</span><span class="dot"></span><span>Branding</span><span class="dot"></span><span>Art direction</span>
     </div>
-		
-		<hr>
-	
-			<br>
-			
-			<div class="grid_4 photo">
-		<img alt="Grid" src="images/guidelines/guidelines_top.png">
-			</div>
-			
-			
+      <hr>
+      <br>
 
-      <div class="grid_7">
-        <p class="hed">Guidelines</p><br><br>
-        <p>I developed guidelines for brand, video, and charts that the Design team uses to keep our work consistent and flexible. They also give analysts the tools to create their own charts and assets, and provide external partners with a clear reference point. The guides live in shared documents that are easy to update and collaborate on, so edits and improvements happen as the brand evolves. Each one is a living resource that helps maintain quality and consistency across the company’s work. 
-      </p> 
+      <!-- Hero -->
+      <div class="grid_4 photo">
+        <!-- Replace with a strong composite showing brand/video/chart artifacts -->
+        <img alt="Guidelines & Systems overview" src="images/guidelines/guidelines_top.png">
       </div>
-		
-	</div>
-		
-	<div class="grid_12">
-		<hr>
-		</div>
-	<br>
+      <div class="grid_7">
+        <p class="hed">Guidelines & Systems</p><br><br>
+        <p>
+          I build guidelines that help teams move fast without losing quality—clear rules, reusable templates, and examples that scale across brands, video, and data visualization. Below are a few lanes that show how I use systems to raise the floor and keep the work consistent.
+        </p>
+        <div class="spacer"></div>
+        <p class="note">
+          Lanes: <span class="pill">Eurasia Group</span> <span class="pill">GZERO</span> <span class="pill">GZERO Video</span> <span class="pill">Charts</span>
+        </p>
+      </div>
+    </div>
 
-		<div class="grid_4">
-	<img alt="Chart guidelines" src="images/guidelines/guidelines-01.png"></a>
+    <div class="grid_12"><hr class="divider"></div>
+
+    <!-- LANE 1: Eurasia Group brand system -->
+    <div class="grid_12 lane">
+        <p class="hed">Eurasia Group – Brand system</p><br>
+      </div>
+
+      <div class="grid_4">
+        <img alt="EG brand rules preview" src="images/eg/eg_homepage.gif">
+      </div>
+      <div class="grid_7">
+        <p>
+          I led the build-out of a practical brand system that could flex from flagship reports to daily client materials. My focus was on clarity and adoption: logo rules, color and type scales, layout grids, and downloadable assets that let analysts and designers produce consistent work quickly.
+        </p>
+
+      </div>
+
+      <div class="grid_12"><div class="spacer"></div></div>
+
+      <!-- Evidence strip -->
+      <div class="grid_4 thumb-row"><img alt="Cover system" src="images/guidelines/guidelines-03.png"></div>
+      <div class="grid_4 thumb-row"><img alt="Color & accessibility" src="images/guidelines/eg-accessibility.png"></div>
+      <div class="grid_4 thumb-row"><img alt="Anatomy of a logo" src="images/guidelines/logo-spacing.png"></div>
+    
+
+    <div class="grid_12"><hr class="divider"></div>
+
+    <!-- LANE 2: GZERO brand -->
+    <a id="lane-gzero"></a>
+    <div class="grid_12 lane">
+      <div class="grid_12">
+        <p class="hed">GZERO – Brand development</p><br>
+      </div>
+
+      <div class="grid_4">
+        <img alt="GZERO branding" src="images/guidelines/GZERO_brand.gif">
+      </div>
+      <div class="grid_7">
+        <p>
+          I evolved the GZERO identity for a fast editorial environment—daily news, long‑form, events, and partnerships. The guidelines balance strong recognition with room to move, so producers and designers can ship quickly without breaking the brand.
+        </p>
+        <p class="note"><a class="cta" href="gzero.html">See GZERO work →</a></p>
+      </div>
+
+      <div class="grid_12"><div class="spacer"></div></div>
+
+      <div class="grid_6 thumb-row"><img alt="Brand guidelines sample" src="images/guidelines/publications_tree.png"></div>
+      <div class="grid_6 thumb-row"><img alt="Brand in use across surfaces" src="images/guidelines/GZERO_color.png"></div>
+    </div>
+
+    <div class="grid_12"><hr class="divider"></div>
+
+   
+
+    <!-- LANE 4: Charts & data viz standards -->
+    <a id="lane-charts"></a>
+    <div class="grid_12 lane">
+      <div class="grid_12">
+        <p class="hed">Charts & data visualization standards</p><br>
+      </div>
+
+      <div class="grid_4">
+        <img alt="Chart spec" src="images/guidelines/guidelines1.png">
+      </div>
+      <div class="grid_7">
+        <p>
+          I standardized chart typography, color ramps, gridlines, and source/notes hierarchy—and built Excel/PPT templates so non‑designers could produce work that stays readable and on brand. These rules show up everywhere from daily briefs to flagship reports.
+        </p>
+        <p class="note"><a class="cta" href="tr.html">See Top Risks →</a> &nbsp;|&nbsp; <a class="cta" href="graphictruth.html">See Graphic Truth →</a></p>
+      </div>
+
+      <div class="grid_12"><div class="spacer"></div></div>
+
+      <div class="grid_4 thumb-row"><img alt="Color pairing rules" src="images/guidelines/guidelines-05.png"></div>
+      <div class="grid_4 thumb-row"><img alt="Map spec" src="images/guidelines/chart-map.png"></div>
+      <div class="grid_4 thumb-row"><img alt="Table spec" src="images/guidelines/chart-table.png"></div>
+    </div>
+
+    <div class="grid_12"><hr class="divider"></div>
+
+    <!-- Closing takeaway -->
+    <div class="grid_12">
+      <p class="hed">What this enables</p><br><br>
+      <p>
+        Systems are how I scale design: clear rules, reusable assets, and examples that anyone can use. The result is faster delivery, fewer revisions, and work that looks like it came from one team—even when many hands are on it.
+      </p>
+    </div>
+
+    <footer class="grid_12" style="margin-top:20px;">
+      <a href="index.html"><p>Back to homepage &rarr;</p></a>
+    </footer>
+
+  </div>
 </div>
-<div class="grid_4">
-	<img alt="Chart guidelines" src="images/guidelines/guidelines-05.png"></a>
-</div>
-<div class="grid_4">
-	<img alt="Chart guidelines" src="images/guidelines/guidelines-06.png"></a>
-</div>
-
-<div class="grid_6">
-	<img alt="Brand guidelines" src="images/guidelines/guidelines-03.png"></a>
-</div>
-<div class="grid_6">
-	<img alt="Brand guidelines" src="images/guidelines/guidelines-07.png"></a>
-</div>
-
-<div class="grid_12">
-	<img alt="Video guidelines" src="images/guidelines/guidelines-04.png"></a>
-</div>
-		<footer class="grid_12">
-<a href=index.html><p>Back to homepage &rarr;</p></a>
-</footer>
-
-
-</div>
-
-
-</div>
-
-
-
 
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-8FK0VXYYGX"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
+  function gtag(){dataLayer.push(arguments);} 
   gtag('js', new Date());
-
   gtag('config', 'G-8FK0VXYYGX');
 </script>
 </body>

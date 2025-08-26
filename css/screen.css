@@ -80,7 +80,8 @@ margin-right:auto;
 #caption{
 	font-family:'Open Sans', Gotham, 'Helvetica Neue', Helvetica, Arial, 'sans-serif';
 	font-size:.75em;
-	color:#aaa
+	color:#aaa;
+	padding-top:.75em;
 }
 
 a {
@@ -129,6 +130,21 @@ a:visited{
 	padding-right:0px;
 	border-right:solid 0px #aaa;
 }
+
+
+/* Keep the badges tidy and centered on mobile */
+.issuebar { flex-wrap: wrap; }                 /* allow wrapping */
+.issuebar span { white-space: nowrap; }        /* prevent awkward splits */
+.issuebar .dot {
+  width: .45em; height: .45em;                 /* size the dot relative to text */
+  margin: 0 .6em;                              /* breathing room around the dot */
+}
+
+/* On small screens, just center the line(s) like text */
+@media (max-width: 640px) {
+  .issuebar { display: block; text-align: center; }
+}
+
 
 @media screen and (max-width: 1024px) {
 

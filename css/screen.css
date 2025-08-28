@@ -132,18 +132,6 @@ a:visited{
 }
 
 
-/* Keep the badges tidy and centered on mobile */
-.issuebar { flex-wrap: wrap; }                 /* allow wrapping */
-.issuebar span { white-space: nowrap; }        /* prevent awkward splits */
-.issuebar .dot {
-  width: .45em; height: .45em;                 /* size the dot relative to text */
-  margin: 0 .6em;                              /* breathing room around the dot */
-}
-
-/* On small screens, just center the line(s) like text */
-@media (max-width: 640px) {
-  .issuebar { display: block; text-align: center; }
-}
 
 
 @media screen and (max-width: 1024px) {

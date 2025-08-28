@@ -66,6 +66,22 @@
      .issuebar { display:flex; gap:12px; justify-content:center; align-items:center; color:var(--muted); font: 700 12px/1 'Open Sans', Arial, sans-serif; letter-spacing:.08em; text-transform:uppercase; padding-bottom:1em }
     .issuebar .dot { width:4px; height:4px; background:var(--muted); border-radius:50%; display:inline-block; }
 
+
+    /* Keep the badges tidy and centered on mobile */
+.issuebar { flex-wrap: wrap; }                 /* allow wrapping */
+.issuebar span { white-space: nowrap; }        /* prevent awkward splits */
+.issuebar .dot {
+  width: .45em; height: .45em;                 /* size the dot relative to text */
+  margin: 0 .6em;                              /* breathing room around the dot */
+}
+
+/* On small screens, just center the line(s) like text */
+@media (max-width: 640px) {
+  .issuebar { display: block; text-align: center; }
+}
+
+
+
 @media (max-width: 1024px) { .home-tiles { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 700px)  { .home-tiles { grid-template-columns: 1fr; } }
 
@@ -167,8 +183,8 @@
   </div>
   <div class="grid_8">
    <div class="overline">Vibe coding</div>
-    <h2 class="hed">Simpsons Network</h2>
-  I’ve been collecting data on Springfield’s charts, drools, and tangled web of relationships… <a href="posts/simpsons.html">Read more</a></p>
+    <h2 class="hed">The Simpsons Relationship Network</h2>
+  <p class="dek">I’ve been collecting data on Springfield’s charts, drools, and tangled web of relationships… <a href="posts/simpsons.html">Read more</a></p>
 </div>
   </div>
 </div>

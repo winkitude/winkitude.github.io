@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>NHL Nationality Share – Interactive Stacked Area Chart (v4)</title>
+  <title>NHL Nationality Share – Interactive Stacked Area Chart (v5)</title>
   <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
   <style>
-    :root { --bg:#0b0e13; --panel:#121622; --ink:#e8ecf1; --muted:#aab3c2; --accent:#6aa6ff; --grid:#2a3245; --lockout:#6b7280; }
+    :root { --bg:#0b0e13; --panel:#121622; --ink:#e8ecf1; --muted:#aab3c2; --accent:#6aa6ff; --grid:#2a3245; --gridBright:#3b4661; --lockout:#9aa3b2; }
     html, body { height:100%; }
     body { margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
            background:var(--bg); color:var(--ink); -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; }
@@ -14,65 +14,71 @@
     h1 { font-size:24px; margin:0 0 4px; letter-spacing:.2px; }
     .sub { color:var(--muted); margin-bottom:16px; font-size:14px; }
     .chart-card { background:var(--panel); border-radius:18px; box-shadow:0 10px 30px rgba(0,0,0,.3); padding:16px 16px 8px; }
-    .chart { width:100%; height:520px; position:relative; }
+    .chart { width:100%; height:560px; position:relative; }
     .axis path, .axis line { stroke: var(--grid); }
     .axis text { fill: var(--muted); font-size: 12px; }
-    .grid line { stroke: var(--grid); stroke-dasharray: 2 4; }
-    .area { opacity:.9; transition: opacity .2s ease, filter .2s; }
-    .area.dim { opacity:.15; filter: grayscale(30%); }
-    .area.highlight { opacity:1; stroke:#fff; stroke-width:1.2; }
-    .lockout-band { fill:var(--lockout); opacity:.25; }
-    .lockout-label { fill:var(--muted); font-size:11px; }
-    .legend { display:grid; grid-template-columns: repeat(auto-fill, minmax(160px,1fr)); gap:8px 10px; margin-top:14px; }
-    .legend .item { display:flex; align-items:center; gap:8px; padding:8px 10px; border-radius:12px; background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.06); cursor:pointer; user-select:none; }
+    .areas .area { opacity:.95; transition: opacity .15s ease, filter .15s; }
+    .areas .area.dim { opacity:.18; filter: grayscale(30%); }
+    .legend { display:grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap: 8px 10px; margin-top:14px; }
+    .legend .item { display:flex; align-items:center; gap:10px; padding:8px 12px; border-radius:12px; background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.08); cursor:pointer; user-select:none; }
     .legend .item.active { outline:2px solid var(--accent); background: rgba(106,166,255,.12); }
-    .legend .swatch { width:12px; height:12px; border-radius:50%; }
     .legend .flag { font-size:18px; line-height:1; }
-    .legend .name { color:var(--ink); font-size:13px; }
-    .tooltip { position:absolute; pointer-events:none; z-index:10; background:#0d1220; color:var(--ink); border:1px solid rgba(255,255,255,.1); padding:8px 10px; border-radius:10px; font-size:12px; box-shadow:0 6px 18px rgba(0,0,0,.35); opacity:0; transition:opacity .1s; }
+    .legend .name { color:var(--ink); font-size:13px; flex: 1 1 auto; }
+    .legend .val { color:var(--muted); font-variant-numeric: tabular-nums; font-size:12px; }
+    .tooltip { position:absolute; pointer-events:none; z-index:10; background:#0d1220; color:var(--ink);
+               border:1px solid rgba(255,255,255,.1); padding:8px 10px; border-radius:10px; font-size:12px;
+               box-shadow:0 6px 18px rgba(0,0,0,.35); opacity:0; transition:opacity .1s; }
     .note { color:var(--muted); font-size:12px; margin-top:8px; }
     .debug { color:#c9d1d9; background:#0e1625; border:1px solid #24314a; border-radius:10px; padding:8px 10px; font-size:12px; margin-top:10px; white-space:pre-wrap; }
+    .year-marker line { stroke: var(--gridBright); stroke-width: 1.25; }
+    .year-badge { fill: #0d1220; stroke: rgba(255,255,255,.15); stroke-width:1; }
+    .year-text { fill: var(--ink); font-size: 11px; }
+    .grid-top line { stroke: var(--gridBright); stroke-dasharray: 2 3; }
+    .lockout-band { fill: var(--lockout); opacity: .35; }
+    .lockout-label { fill: white; font-weight: 600; font-size: 11px; }
+    .toplabel { fill: var(--ink); font-size: 12px; paint-order: stroke; stroke: rgba(0,0,0,.35); stroke-width: 2px; }
   </style>
 </head>
 <body>
   <div class="wrap">
     <h1>NHL Games by Player Nationality (Share by Year)</h1>
-    <div class="sub">Stacked area shows % share per season/year. Click a country below to highlight. Lockout years are marked.</div>
+    <div class="sub">100% stacked by year. Hover anywhere to see values; click a country below to spotlight it. 2005 lockout marked.</div>
     <div class="chart-card">
       <div id="chart" class="chart"></div>
       <div id="legend" class="legend" aria-label="Countries"></div>
       <div class="note">
-        Accepts long or wide CSVs. Wide format like this file: first column = country, other columns = seasons (e.g., <code>1917-18</code>) with percentages.<br>
-        Filenames tried: <code>2025_NHL_Nationality.csv</code>, <code>2025 NHL Nationality.csv</code>, <code>nhl_nationality_games.csv</code>. Or use:
-        <input id="csvUpload" type="file" accept=".csv" style="display:inline-block">.
+        Accepts wide or long CSVs. Filenames tried: <code>2025_NHL_Nationality.csv</code>, <code>2025 NHL Nationality.csv</code>, <code>nhl_nationality_games.csv</code>.
+        Or use: <input id="csvUpload" type="file" accept=".csv" style="display:inline-block">.
       </div>
       <div id="debug" class="debug" style="display:none"></div>
     </div>
   </div>
 
   <script>
-  const LOCKOUT_YEARS = [1995, 2005, 2013];
+  // =================== Config & helpers ===================
+  const LOCKOUT_YEAR = 2005; // only 2005 per request
   const PALETTE = ["#5B8FF9","#5AD8A6","#5D7092","#F6BD16","#6F5EF9","#6DC8EC","#945FB9","#FF9845","#1E9493","#FF99C3","#FF6B6B","#41C1B2","#B28DFF","#78D3F8","#FFD166","#EF476F","#06D6A0","#118AB2","#8338EC","#3A86FF"];
-
   const debugEl = document.getElementById('debug');
   const log = (txt) => { debugEl.style.display='block'; debugEl.textContent = txt; console.log(txt); };
-
-  function isoToFlagEmoji(iso2){
-    if(!iso2) return "";
-    const map={UK:'GB'};
-    const code=(map[iso2]||iso2).toUpperCase();
-    if(code.length!==2) return "";
-    const A=0x1F1E6;
-    return String.fromCodePoint(...[...code].map(c=>A+c.charCodeAt(0)-65));
-  }
-
-  // Include hyphen -, en dash – (U+2013), em dash — (U+2014), minus sign − (U+2212)
   const DASH = "[-–—−]";
 
+  function isoToFlagEmoji(name){
+    const map = {
+      "Canada":"CA","United States":"US","USA":"US",
+      "Sweden":"SE","Russia":"RU","Soviet Union":"RU","Czech Republic":"CZ","Czechia":"CZ","Finland":"FI",
+      "Germany":"DE","Slovakia":"SK","Switzerland":"CH","Latvia":"LV","Denmark":"DK","Norway":"NO","Austria":"AT",
+      "France":"FR","United Kingdom":"GB","England":"GB","Scotland":"GB","Wales":"GB","Slovenia":"SI","Netherlands":"NL",
+      "Belarus":"BY","Ukraine":"UA","Lithuania":"LT","Estonia":"EE","Poland":"PL","Hungary":"HU","Italy":"IT","Spain":"ES"
+    };
+    const iso2 = map[name] || "";
+    if (!iso2 || iso2.length !== 2) return "🏒";
+    const A=0x1F1E6;
+    return String.fromCodePoint(...[...iso2].map(c=>A+c.charCodeAt(0)-65));
+  }
   function parseSeasonToYear(value){
     if (value == null) return NaN;
     const s = String(value).trim();
-    if (/^\\d{4}$/.test(s)) return +s;
+    if (/^\d{4}$/.test(s)) return +s;
     const re = new RegExp(`^(\\d{4})\\s*${DASH}\\s*(\\d{2}|\\d{4})$`);
     const m = s.match(re);
     if (m){
@@ -81,160 +87,112 @@
       const endYear = endPart.length === 2 ? (Math.floor(start/100)*100 + +endPart) : +endPart;
       return endYear;
     }
-    const m2 = s.match(/(\\d{4})/);
+    const m2 = s.match(/(\d{4})/);
     return m2 ? +m2[1] : NaN;
   }
-
   function cleanNumber(x){
     if (x == null) return 0;
-    const s = String(x).replace(/[,\\s%]/g,'').trim();
+    const s = String(x).replace(/[,%\s]/g,'').trim();
     const n = parseFloat(s);
     return isNaN(n) ? 0 : n;
   }
-
-  function mapCountry(raw){
-    const s=(raw||"").toString().trim();
-    const m={
-      'Canada':'CA','CAN':'CA','CA':'CA',
-      'United States':'US','USA':'US','US':'US',
-      'Sweden':'SE','SWE':'SE','SE':'SE',
-      'Russia':'RU','RUS':'RU','RU':'RU','Soviet Union':'RU','USSR':'RU',
-      'Czech Republic':'CZ','Czechia':'CZ','CZE':'CZ','CZ':'CZ',
-      'Finland':'FI','FIN':'FI','FI':'FI',
-      'Germany':'DE','GER':'DE','DE':'DE',
-      'Slovakia':'SK','SVK':'SK','SK':'SK',
-      'Switzerland':'CH','SUI':'CH','CH':'CH',
-      'Latvia':'LV','LAT':'LV','LV':'LV',
-      'Denmark':'DK','DEN':'DK','DK':'DK',
-      'Norway':'NO','NOR':'NO','NO':'NO',
-      'Austria':'AT','AUT':'AT','AT':'AT',
-      'France':'FR','FRA':'FR','FR':'FR',
-      'United Kingdom':'GB','UK':'GB','GBR':'GB','GB':'GB','England':'GB','Scotland':'GB','Wales':'GB',
-      'Slovenia':'SI','SLO':'SI','SI':'SI',
-      'Netherlands':'NL','NED':'NL','NL':'NL',
-      'Belarus':'BY','BLR':'BY','BY':'BY',
-      'Ukraine':'UA','UKR':'UA','UA':'UA',
-      'Lithuania':'LT','LTU':'LT','LT':'LT',
-      'Estonia':'EE','EST':'EE','EE':'EE',
-      'Poland':'PL','POL':'PL','PL':'PL',
-      'Hungary':'HU','HUN':'HU','HU':'HU',
-      'Italy':'IT','ITA':'IT','IT':'IT',
-      'Spain':'ES','ESP':'ES','ES':'ES'
-    };
-    return m[s]||s;
-  }
-
   function isSeasonCol(name){
     const s = String(name||"").trim();
     const re = new RegExp(`^\\d{4}\\s*${DASH}\\s*(?:\\d{2}|\\d{4})$`);
     return re.test(s);
   }
-
-  function parseCSV(text){
+  function detectWide(text){
     const rows = d3.csvParse(text);
     const cols = rows.columns;
-    // Identify season-like headers
     const seasonCols = cols.filter(isSeasonCol);
     const nonSeasonCols = cols.filter(c => !isSeasonCol(c));
-
-    // Heuristic: treat as WIDE if any season-like columns exist OR if
-    // the first data row contains >5 numeric cells across columns.
-    let wide = false;
-    if (seasonCols.length >= 1) wide = true;
-    else if (rows.length){
+    if (seasonCols.length >= 1) return {wide:true, rows, cols, seasonCols, nonSeasonCols};
+    if (rows.length){
       const first = rows[0];
       let numericCount = 0;
       cols.forEach(c => { if (c && cleanNumber(first[c]) > 0) numericCount++; });
-      if (numericCount >= 5) wide = true;
+      if (numericCount >= 5) return {wide:true, rows, cols, seasonCols: cols.slice(1), nonSeasonCols:[cols[0]]};
     }
-
-    if (wide){
-      // pick a likely country column: first non-season col; if empty-string header exists, use that.
-      let countryCol = nonSeasonCols[0] ?? cols[0];
-      const long = [];
-      rows.forEach(r => {
-        const country = mapCountry(r[countryCol]);
-        if (!country) return;
-        seasonCols.forEach(sc => {
-          const val = cleanNumber(r[sc]);
-          if (!isNaN(val)) {
-            const year = parseSeasonToYear(sc);
-            long.push({year, country, percent: val});
-          }
-        });
-      });
-      return { format: 'wide', rows: long };
-    }
-
-    // LONG
-    const long2 = rows.map(r => {
-      const yearRaw = r.year ?? r.Year ?? r.season ?? r.Season ?? r.SEASON ?? r.SeasonYear;
-      const year = parseSeasonToYear(yearRaw);
-      const countryRaw = r.country ?? r.Country ?? r.nationality ?? r.Nationality ?? r.NATION ?? r.Nation;
-      const country = mapCountry(countryRaw);
-      const gamesRaw = r.games ?? r.Games ?? r.GP ?? r.Count ?? r.count ?? r.GamesPlayed ?? r.GAMES;
-      const percentRaw = r.percent ?? r.Percent ?? r.share ?? r.Share;
-      const out = { year, country };
-      if (percentRaw != null && percentRaw !== '') out.percent = cleanNumber(percentRaw);
-      if (gamesRaw != null && gamesRaw !== '') out.games = cleanNumber(gamesRaw);
-      return out;
-    });
-    return { format: 'long', rows: long2 };
+    return {wide:false, rows, cols, seasonCols, nonSeasonCols};
   }
-
+  function meltWide(rows, seasonCols, countryCol){
+    const out = [];
+    rows.forEach(r => {
+      const country = (r[countryCol]||"").toString().trim();
+      if (!country) return;
+      seasonCols.forEach(sc => {
+        const val = cleanNumber(r[sc]);
+        if (!isNaN(val)) {
+          const year = parseSeasonToYear(sc);
+          out.push({year, country, percent: val});
+        }
+      });
+    });
+    return out;
+  }
+  function parseCSV(text){
+    const {wide, rows, cols, seasonCols, nonSeasonCols} = detectWide(text);
+    if (wide){
+      const countryCol = nonSeasonCols[0] || cols[0];
+      const long = meltWide(rows, seasonCols.length?seasonCols:cols.slice(1), countryCol);
+      return {format:'wide', rows: long};
+    } else {
+      const raw = d3.csvParse(text);
+      const long = raw.map(r => {
+        const yearRaw = r.year ?? r.Year ?? r.season ?? r.Season ?? r.SEASON ?? r.SeasonYear;
+        const countryRaw = r.country ?? r.Country ?? r.nationality ?? r.Nationality ?? r.NATION ?? r.Nation;
+        const gamesRaw = r.games ?? r.Games ?? r.GP ?? r.Count ?? r.count ?? r.GamesPlayed ?? r.GAMES;
+        const percentRaw = r.percent ?? r.Percent ?? r.share ?? r.Share;
+        const y = parseSeasonToYear(yearRaw);
+        const c = (countryRaw||"").toString().trim();
+        const out = { year: y, country: c };
+        if (percentRaw != null && percentRaw !== '') out.percent = cleanNumber(percentRaw);
+        if (gamesRaw != null && gamesRaw !== '') out.games = cleanNumber(gamesRaw);
+        return out;
+      });
+      return {format:'long', rows: long};
+    }
+  }
   function toStackData(parsed){
-    let rows = parsed.rows;
+    let rows = parsed.rows.filter(r => r.country && Number.isFinite(r.year));
     let usePercent = rows.some(r => typeof r.percent === 'number' && r.percent > 0);
     if (!usePercent){
-      const byYear = d3.rollup(rows, v => ({
-        total: d3.sum(v, d=>cleanNumber(d.games||0))
-      }), d=>d.year);
+      const byYear = d3.rollup(rows, v => d3.sum(v, d=>cleanNumber(d.games||0)), d=>d.year);
       rows = rows.map(r => {
-        const m = byYear.get(r.year);
-        const pct = m && m.total>0 ? (100 * cleanNumber(r.games||0) / m.total) : 0;
+        const total = byYear.get(r.year)||0;
+        const pct = total>0 ? (100 * cleanNumber(r.games||0) / total) : 0;
         return { year: r.year, country: r.country, percent: pct };
       });
     }
-
     const years = Array.from(new Set(rows.map(r => r.year))).filter(y => Number.isFinite(y)).sort((a,b)=>a-b);
     const countries = Array.from(new Set(rows.map(r => r.country))).filter(Boolean);
-
     const data = years.map(y => {
-      const row = { year: y };
-      const byCountry = new Map();
-      rows.filter(r => r.year === y).forEach(r => byCountry.set(r.country, r.percent));
-      const totalPct = Array.from(byCountry.values()).reduce((a,b)=>a+b,0);
-      countries.forEach(c => {
-        const pct = byCountry.get(c) ?? 0;
-        const share = totalPct > 0 ? pct/totalPct : 0;
-        row[c] = share;
-      });
+      const row = {year:y};
+      const byC = new Map();
+      rows.filter(r=>r.year===y).forEach(r => byC.set(r.country, r.percent));
+      const totalPct = Array.from(byC.values()).reduce((a,b)=>a+b,0) || 1;
+      countries.forEach(c => { row[c] = (byC.get(c)||0) / totalPct; });
       return row;
     });
     return {data, years, countries};
   }
-
   async function fetchFirst(paths){
     for(const p of paths){
       try{
-        const txt = await fetch(p, {cache:'no-store'}).then(r=>{
-          if(!r.ok) throw new Error(r.statusText);
-          return r.text();
-        });
+        const txt = await fetch(p, {cache:'no-store'}).then(r=>{ if(!r.ok) throw new Error(r.statusText); return r.text(); });
         return txt;
       }catch(e){}
     }
     throw new Error("All CSV fetch attempts failed: "+paths.join(", "));
   }
-
   async function loadText(){
     if(window.__CSV_TEXT__) return window.__CSV_TEXT__;
     const candidates = ["2025_NHL_Nationality.csv","2025%20NHL%20Nationality.csv","nhl_nationality_games.csv"];
     return await fetchFirst(candidates);
   }
-
   function colorScale(keys){ const map=new Map(); keys.forEach((k,i)=>map.set(k,PALETTE[i%PALETTE.length])); return k=>map.get(k); }
 
+  // =================== Render ===================
   async function init(){
     let text;
     try { text = await loadText(); }
@@ -256,7 +214,7 @@
     const container=d3.select('#chart');
     const W=container.node().clientWidth;
     const H=container.node().clientHeight;
-    const margin={top:24,right:18,bottom:34,left:44};
+    const margin={top:28,right:90,bottom:34,left:44};
     const innerW=W-margin.left-margin.right;
     const innerH=H-margin.top-margin.bottom;
 
@@ -266,66 +224,126 @@
     const x=d3.scaleLinear().domain(d3.extent(years)).range([0,innerW]);
     const y=d3.scaleLinear().domain([0,1]).range([innerH,0]);
 
-    const yAxis=d3.axisLeft(y).ticks(5).tickFormat(d3.format('.0%'));
-    const xAxis=d3.axisBottom(x).ticks(Math.min(12,years.length)).tickFormat(d3.format('d'));
+    const yAxis=d3.axisLeft(y).tickValues(d3.range(0,1.0001,0.1)).tickFormat(d=>d3.format('.0%')(d));
+    const xAxis=d3.axisBottom(x).ticks(Math.min(14,years.length)).tickFormat(d3.format('d'));
     g.append('g').attr('class','axis').call(yAxis);
     g.append('g').attr('class','axis').attr('transform',`translate(0,${innerH})`).call(xAxis);
-    g.append('g').attr('class','grid').call(d3.axisLeft(y).ticks(5).tickSize(-innerW).tickFormat(''));
 
     const stack=d3.stack().keys(countries).order(d3.stackOrderNone).offset(d3.stackOffsetExpand);
     const series=stack(data);
     const area=d3.area().x(d=>x(d.data.year)).y0(d=>y(d[0])).y1(d=>y(d[1])).curve(d3.curveMonotoneX);
-
-    const lockGroup=g.append('g');
-    LOCKOUT_YEARS.forEach(yLock=>{
-      const xPos=x(yLock);
-      lockGroup.append('rect').attr('class','lockout-band').attr('x',xPos-6).attr('y',0).attr('width',12).attr('height',innerH);
-      lockGroup.append('text').attr('class','lockout-label').attr('x',xPos+4).attr('y',12).text('lockout');
-    });
-
-    const areas=g.append('g').selectAll('path.area')
+    g.append('g').attr('class','areas').selectAll('path.area')
       .data(series,d=>d.key).join('path')
       .attr('class','area')
       .attr('fill',d=>color(d.key))
       .attr('d',d=>area(d));
 
+    const gridTop = g.append('g').attr('class','grid-top').attr('pointer-events','none');
+    d3.range(0,1.0001,0.1).forEach(v => {
+      gridTop.append('line').attr('x1',0).attr('x2',innerW).attr('y1',y(v)).attr('y2',y(v));
+    });
+
+    const lockX = x(LOCKOUT_YEAR);
+    const lockGroup = g.append('g').attr('class','lockout-top');
+    lockGroup.append('rect').attr('class','lockout-band')
+      .attr('x', lockX-6).attr('y', 0).attr('width', 12).attr('height', innerH);
+    lockGroup.append('text').attr('class','lockout-label')
+      .attr('x', Math.min(innerW-40, lockX+6)).attr('y', 12).text('lockout');
+
+    const marker = g.append('g').attr('class','year-marker').style('display','none');
+    marker.append('line').attr('y1',0).attr('y2',innerH);
+    const badge = marker.append('g');
+    badge.append('rect').attr('class','year-badge').attr('rx',6).attr('ry',6).attr('width',44).attr('height',18);
+    badge.append('text').attr('class','year-text').attr('x',22).attr('y',12).attr('text-anchor','middle');
+
     const tooltip=d3.select('#chart').append('div').attr('class','tooltip');
-    function showTooltip(evt,country,dSegment){
-      const year=dSegment.data.year;
-      const pct=((dSegment[1]-dSegment[0])*100).toFixed(1);
-      tooltip.style('opacity',1).html(`<strong>${country}</strong><br>${year}: ${pct}%`)
-        .style('left',(evt.offsetX+12)+'px').style('top',(evt.offsetY-28)+'px');
-    }
-    function hideTooltip(){ tooltip.style('opacity',0); }
 
-    const overlay=g.append('rect').attr('fill','transparent').attr('pointer-events','all')
-      .attr('x',0).attr('y',0).attr('width',innerW).attr('height',innerH);
-    const bisect=d3.bisector(d=>d.year).center;
-    let activeKey=null;
-
-    overlay.on('mousemove',(evt)=>{
-      if(!activeKey) return;
-      const xm=x.invert(d3.pointer(evt,overlay.node())[0]);
-      const idx=Math.max(0,Math.min(data.length-1,bisect(data,xm)));
-      const s=series.find(s=>s.key===activeKey);
-      const seg=s[idx];
-      showTooltip(evt,activeKey,seg);
-    }).on('mouseleave',hideTooltip);
-
-    function setActive(key){
-      activeKey=key;
-      areas.classed('highlight',d=>d.key===key).classed('dim',d=>key&&d.key!==key);
-      d3.selectAll('.legend .item').classed('active',function(){ return d3.select(this).attr('data-key')===key; });
-      if(!key) hideTooltip();
-    }
-
-    const legend=d3.select('#legend');
-    const items=legend.selectAll('.item').data(countries).join('div')
-      .attr('class','item').attr('data-key',d=>d)
-      .on('click',function(e,key){ setActive(activeKey===key?null:key); });
-    items.append('span').attr('class','flag').text(d=>isoToFlagEmoji(d)||'🏒');
-    items.append('span').attr('class','swatch').style('background',d=>color(d));
+    const legend = d3.select('#legend');
+    const items = legend.selectAll('.item').data(countries).join('div')
+      .attr('class','item')
+      .attr('data-key',d=>d)
+      .on('click', function(e, key){
+        activeKey = (activeKey === key ? null : key);
+        updateHighlight();
+      });
+    items.append('span').attr('class','flag').text(d=>isoToFlagEmoji(d));
     items.append('span').attr('class','name').text(d=>d);
+    items.append('span').attr('class','val').text('—');
+
+    function updateLegendValues(idx){
+      if (idx == null) idx = data.length - 1;
+      const row = data[idx];
+      items.select('.val').text(d => {
+        const v = (row[d] || 0) * 100;
+        return v ? v.toFixed(1) + '%' : '0.0%';
+      });
+    }
+
+    const lastRow = data[data.length-1];
+    const shares = countries.map(c => ({c, s: lastRow[c] || 0}))
+                            .sort((a,b)=>d3.descending(a.s,b.s)).slice(0,5);
+    const idxLast = data.length-1;
+    shares.forEach(({c}) => {
+      const seg = series.find(s=>s.key===c)[idxLast];
+      const mid = (seg[0]+seg[1])/2;
+      const yMid = y(mid);
+      const xText = innerW + 6;
+      g.append('text').attr('class','toplabel').attr('x', xText).attr('y', yMid+4).text(c);
+    });
+
+    const overlay = g.append('rect').attr('fill','transparent').attr('pointer-events','all')
+      .attr('x',0).attr('y',0).attr('width',innerW).attr('height',innerH);
+
+    const bisect = d3.bisector(d=>d.year).center;
+    let activeKey = null;
+
+    function updateHighlight(){
+      d3.selectAll('.areas .area')
+        .classed('dim', d => activeKey && d.key !== activeKey);
+      d3.selectAll('.legend .item')
+        .classed('active', function(){ return d3.select(this).attr('data-key') === activeKey; });
+    }
+
+    function findCountryAt(xp, yp){
+      const xm = x.invert(xp);
+      const idx = Math.max(0, Math.min(data.length - 1, bisect(data, xm)));
+      const yNorm = y.invert(yp);
+      for (const s of series){
+        const seg = s[idx];
+        if (yNorm >= seg[0] && yNorm <= seg[1]) {
+          return {key: s.key, idx, seg};
+        }
+      }
+      return {key: null, idx, seg: null};
+    }
+
+    overlay.on('mousemove', (evt) => {
+      const [mx, my] = d3.pointer(evt, g.node());
+      const {key, idx, seg} = findCountryAt(mx, my);
+
+      marker.style('display', null);
+      const year = data[idx].year;
+      marker.attr('transform', `translate(${x(year)},0)`);
+      badge.attr('transform', `translate(${Math.min(innerW-44, Math.max(0, x(year)-22))}, -22)`);
+      badge.select('text').text(year);
+
+      updateLegendValues(idx);
+
+      let html = `<strong>${year}</strong>`;
+      if (key){
+        const pct = ((seg[1]-seg[0])*100).toFixed(1);
+        html += `<br>${key}: ${pct}%`;
+      }
+      tooltip.style('opacity',1).html(html)
+        .style('left',(evt.offsetX + 14) + 'px')
+        .style('top',(evt.offsetY - 28) + 'px');
+    }).on('mouseleave', () => {
+      tooltip.style('opacity',0);
+      marker.style('display','none');
+      updateLegendValues(null);
+    });
+
+    updateLegendValues(null);
 
     const input = document.getElementById('csvUpload');
     if(input){

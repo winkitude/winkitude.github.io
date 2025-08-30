@@ -4,11 +4,27 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>NHL Nationality Share – Interactive Stacked Area Chart</title>
+<link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
 <style>
   :root { --bg:#0b0e13; --panel:#121622; --ink:#e8ecf1; --muted:#aab3c2; --accent:#6aa6ff; --grid:#2a3245; --gridBright:#3b4661; }
   body { margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; background:var(--bg); color:var(--ink); }
-  .wrap { max-width:1100px; margin:32px auto 48px; padding:0 16px; }
+
+  /* Brand header (like Simpsons post) */
+  .site-header {
+    position: sticky; top: 0; z-index: 5;
+    display:flex; align-items:center; gap:12px;
+    padding:10px 16px; border-bottom:1px solid rgba(255,255,255,.08);
+    background: rgba(11,14,19,0.9); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+  }
+  .brand a {
+    text-decoration:none; color:#fff; font-weight:600; letter-spacing:.2px;
+    font-family: 'Abril Fatface', serif; font-size:20px; line-height:1;
+  }
+  .brand a:hover { opacity:.8; }
+  .divider { width:1px; height:18px; background: rgba(255,255,255,.12); }
+
+  .wrap { max-width:1100px; margin: 20px auto 48px; padding: 0 16px; }
   h1 { font-size:24px; margin:0 0 4px; }
   .sub { color:var(--muted); margin-bottom:16px; font-size:14px; }
   .chart-card { background:var(--panel); border-radius:18px; padding:16px; box-shadow:0 10px 30px rgba(0,0,0,.3); }
@@ -39,13 +55,20 @@
   .event-band { fill:rgba(255,255,255,0.06); stroke:rgba(255,255,255,0.12); }
   .event-line { stroke:rgba(255,255,255,0.7); stroke-width:1.25; }
   .event-label { fill:#cfd6e6; font-size:11px; }
-  /* On small screens, hide top-5 labels to free width */
   @media (max-width: 720px){
     .hide-mobile { display:none !important; }
   }
 </style>
 </head>
 <body>
+
+<!-- Brand header -->
+<header class="site-header">
+  <div class="brand"><a href="../index.html" title="Ari Winkleman">Ari Winkleman</a></div>
+  <div class="divider" aria-hidden="true"></div>
+  <div style="color:#cfd6e6; font-size:13px;">NHL Nationality Share</div>
+</header>
+
 <div class="wrap">
   <h1>NHL Games by Player Nationality (Share by Year)</h1>
   <div class="sub">100% stacked by year. Hover anywhere to see values; click a country below to spotlight it.</div>
@@ -184,13 +207,11 @@ async function loadText(){ const candidates=["2025_NHL_Nationality.csv","2025%20
   const {data, years, countries}=toStackData(parsed);
   if(!data.length){ document.getElementById('chart').innerHTML='<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#aab3c2;text-align:center;padding:16px;">No plottable data.</div>'; return; }
 
-  // Responsive: treat narrow container as "mobile"
   const container=d3.select('#chart');
   const W=container.node().clientWidth;
   const H=container.node().clientHeight;
   const isMobile = W <= 720;
 
-  // Margins: shrink right margin on mobile (no right labels)
   const topCalloutH=26, xAxisRoom=28, bottomCalloutH=46;
   const margin={ top:28+topCalloutH, right:isMobile?24:110, bottom:34 + xAxisRoom + bottomCalloutH, left:44 };
   const innerW=W-margin.left-margin.right, innerH=H-margin.top-margin.bottom;
@@ -221,13 +242,13 @@ async function loadText(){ const candidates=["2025_NHL_Nationality.csv","2025%20
   const gridTop=g.append('g').attr('class','grid-top').attr('pointer-events','none');
   d3.range(0,1.0001,0.1).forEach(v=>{ gridTop.append('line').attr('x1',0).attr('x2',innerW).attr('y1',y(v)).attr('y2',y(v)); });
 
-  // TOP era callouts (short on mobile, toggleable on click)
-  let showShort = isMobile; // default: short on mobile, full on desktop
+  // TOP era callouts (short on mobile; tap/click to toggle full)
+  let showShort = isMobile;
+  const ERA_BANDS = () => (showShort ? ERA_BANDS_SHORT : ERA_BANDS_FULL);
   const eraG=g.append('g').attr('class','era-callouts');
   function drawEras(){
     eraG.selectAll('*').remove();
-    const bands = showShort ? ERA_BANDS_SHORT : ERA_BANDS_FULL;
-    bands.forEach(({start,end,label})=>{
+    ERA_BANDS().forEach(({start,end,label})=>{
       const x1=x(start), x2=x(end);
       eraG.append('rect').attr('class','era-band')
         .attr('x',Math.min(x1,x2)).attr('y',-topCalloutH+2)
@@ -242,7 +263,7 @@ async function loadText(){ const candidates=["2025_NHL_Nationality.csv","2025%20
   drawEras();
   eraG.on('click', ()=>{ showShort=!showShort; drawEras(); });
 
-  // BOTTOM events (below x-axis labels)
+  // Bottom events (below x-axis labels)
   const eventsG=g.append('g').attr('class','bottom-events');
   const eventsYTop=innerH + xAxisRoom + 6;
   const bandH=bottomCalloutH - 12;

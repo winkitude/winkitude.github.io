@@ -3,39 +3,48 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>NHL Nationality Share – Interactive Stacked Area Chart (v5)</title>
+  <title>NHL Nationality Share – Interactive Stacked Area Chart</title>
   <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
   <style>
-    :root { --bg:#0b0e13; --panel:#121622; --ink:#e8ecf1; --muted:#aab3c2; --accent:#6aa6ff; --grid:#2a3245; --gridBright:#3b4661; --lockout:#9aa3b2; }
+    :root { --bg:#0b0e13; --panel:#121622; --ink:#e8ecf1; --muted:#aab3c2; --accent:#6aa6ff; --grid:#2a3245; --gridBright:#3b4661; }
     html, body { height:100%; }
-    body { margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
-           background:var(--bg); color:var(--ink); -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; }
+    body { margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; background:var(--bg); color:var(--ink); -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; }
     .wrap { max-width:1100px; margin: 32px auto 48px; padding: 0 16px; }
     h1 { font-size:24px; margin:0 0 4px; letter-spacing:.2px; }
     .sub { color:var(--muted); margin-bottom:16px; font-size:14px; }
     .chart-card { background:var(--panel); border-radius:18px; box-shadow:0 10px 30px rgba(0,0,0,.3); padding:16px 16px 8px; }
+
+    .controls { display:flex; gap:10px; align-items:center; margin: 0 0 10px; }
+    .controls label { font-size:12px; color:var(--muted); }
+    .controls input { border:1px solid rgba(255,255,255,.12); background:#0e1526; color:var(--ink); padding:6px 8px; border-radius:10px; outline:none; font-size:13px; width:120px; }
+    .controls input::placeholder { color:#7f8aa6; }
+
     .chart { width:100%; height:560px; position:relative; }
     .axis path, .axis line { stroke: var(--grid); }
     .axis text { fill: var(--muted); font-size: 12px; }
     .areas .area { opacity:.95; transition: opacity .15s ease, filter .15s; }
     .areas .area.dim { opacity:.18; filter: grayscale(30%); }
+
     .legend { display:grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap: 8px 10px; margin-top:14px; }
     .legend .item { display:flex; align-items:center; gap:10px; padding:8px 12px; border-radius:12px; background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.08); cursor:pointer; user-select:none; }
     .legend .item.active { outline:2px solid var(--accent); background: rgba(106,166,255,.12); }
     .legend .flag { font-size:18px; line-height:1; }
     .legend .name { color:var(--ink); font-size:13px; flex: 1 1 auto; }
     .legend .val { color:var(--muted); font-variant-numeric: tabular-nums; font-size:12px; }
-    .tooltip { position:absolute; pointer-events:none; z-index:10; background:#0d1220; color:var(--ink);
-               border:1px solid rgba(255,255,255,.1); padding:8px 10px; border-radius:10px; font-size:12px;
-               box-shadow:0 6px 18px rgba(0,0,0,.35); opacity:0; transition:opacity .1s; }
+
+    .tooltip { position:absolute; pointer-events:none; z-index:10; background:#0d1220; color:var(--ink); border:1px solid rgba(255,255,255,.1); padding:8px 10px; border-radius:10px; font-size:12px; box-shadow:0 6px 18px rgba(0,0,0,.35); opacity:0; transition:opacity .1s; }
     .note { color:var(--muted); font-size:12px; margin-top:8px; }
     .debug { color:#c9d1d9; background:#0e1625; border:1px solid #24314a; border-radius:10px; padding:8px 10px; font-size:12px; margin-top:10px; white-space:pre-wrap; }
+
     .year-marker line { stroke: var(--gridBright); stroke-width: 1.25; }
     .year-badge { fill: #0d1220; stroke: rgba(255,255,255,.15); stroke-width:1; }
     .year-text { fill: var(--ink); font-size: 11px; }
     .grid-top line { stroke: var(--gridBright); stroke-dasharray: 2 3; }
-    .lockout-band { fill: var(--lockout); opacity: .35; }
-    .lockout-label { fill: white; font-weight: 600; font-size: 11px; }
+
+    /* Lockout bar on top (2005 only) */
+    .lockout-bar { fill: #000; }
+    .lockout-text { fill: #fff; font-weight: 700; font-size: 10px; letter-spacing: .6px; }
+
     .toplabel { fill: var(--ink); font-size: 12px; paint-order: stroke; stroke: rgba(0,0,0,.35); stroke-width: 2px; }
   </style>
 </head>
@@ -44,11 +53,15 @@
     <h1>NHL Games by Player Nationality (Share by Year)</h1>
     <div class="sub">100% stacked by year. Hover anywhere to see values; click a country below to spotlight it. 2005 lockout marked.</div>
     <div class="chart-card">
+      <div class="controls">
+        <label for="yearSearch">Go to year:</label>
+        <input id="yearSearch" type="number" placeholder="e.g. 2005" />
+      </div>
+
       <div id="chart" class="chart"></div>
       <div id="legend" class="legend" aria-label="Countries"></div>
       <div class="note">
-        Accepts wide or long CSVs. Filenames tried: <code>2025_NHL_Nationality.csv</code>, <code>2025 NHL Nationality.csv</code>, <code>nhl_nationality_games.csv</code>.
-        Or use: <input id="csvUpload" type="file" accept=".csv" style="display:inline-block">.
+        The page will try to load one of these CSVs from the same folder: <code>2025_NHL_Nationality.csv</code>, <code>2025 NHL Nationality.csv</code>, or <code>nhl_nationality_games.csv</code>.
       </div>
       <div id="debug" class="debug" style="display:none"></div>
     </div>
@@ -56,11 +69,11 @@
 
   <script>
   // =================== Config & helpers ===================
-  const LOCKOUT_YEAR = 2005; // only 2005 per request
+  const LOCKOUT_YEAR = 2005; // only 2005
   const PALETTE = ["#5B8FF9","#5AD8A6","#5D7092","#F6BD16","#6F5EF9","#6DC8EC","#945FB9","#FF9845","#1E9493","#FF99C3","#FF6B6B","#41C1B2","#B28DFF","#78D3F8","#FFD166","#EF476F","#06D6A0","#118AB2","#8338EC","#3A86FF"];
+  const DASH = "[-–—−]"; // hyphen, en dash, em dash, minus
   const debugEl = document.getElementById('debug');
   const log = (txt) => { debugEl.style.display='block'; debugEl.textContent = txt; console.log(txt); };
-  const DASH = "[-–—−]";
 
   function isoToFlagEmoji(name){
     const map = {
@@ -75,6 +88,7 @@
     const A=0x1F1E6;
     return String.fromCodePoint(...[...iso2].map(c=>A+c.charCodeAt(0)-65));
   }
+
   function parseSeasonToYear(value){
     if (value == null) return NaN;
     const s = String(value).trim();
@@ -90,23 +104,27 @@
     const m2 = s.match(/(\d{4})/);
     return m2 ? +m2[1] : NaN;
   }
+
   function cleanNumber(x){
     if (x == null) return 0;
     const s = String(x).replace(/[,%\s]/g,'').trim();
     const n = parseFloat(s);
     return isNaN(n) ? 0 : n;
   }
+
   function isSeasonCol(name){
     const s = String(name||"").trim();
     const re = new RegExp(`^\\d{4}\\s*${DASH}\\s*(?:\\d{2}|\\d{4})$`);
     return re.test(s);
   }
+
   function detectWide(text){
     const rows = d3.csvParse(text);
     const cols = rows.columns;
     const seasonCols = cols.filter(isSeasonCol);
     const nonSeasonCols = cols.filter(c => !isSeasonCol(c));
     if (seasonCols.length >= 1) return {wide:true, rows, cols, seasonCols, nonSeasonCols};
+    // heuristic: if first row has many numeric-looking cells, treat as wide
     if (rows.length){
       const first = rows[0];
       let numericCount = 0;
@@ -115,6 +133,7 @@
     }
     return {wide:false, rows, cols, seasonCols, nonSeasonCols};
   }
+
   function meltWide(rows, seasonCols, countryCol){
     const out = [];
     rows.forEach(r => {
@@ -130,6 +149,7 @@
     });
     return out;
   }
+
   function parseCSV(text){
     const {wide, rows, cols, seasonCols, nonSeasonCols} = detectWide(text);
     if (wide){
@@ -153,6 +173,7 @@
       return {format:'long', rows: long};
     }
   }
+
   function toStackData(parsed){
     let rows = parsed.rows.filter(r => r.country && Number.isFinite(r.year));
     let usePercent = rows.some(r => typeof r.percent === 'number' && r.percent > 0);
@@ -166,16 +187,18 @@
     }
     const years = Array.from(new Set(rows.map(r => r.year))).filter(y => Number.isFinite(y)).sort((a,b)=>a-b);
     const countries = Array.from(new Set(rows.map(r => r.country))).filter(Boolean);
+
     const data = years.map(y => {
       const row = {year:y};
       const byC = new Map();
       rows.filter(r=>r.year===y).forEach(r => byC.set(r.country, r.percent));
       const totalPct = Array.from(byC.values()).reduce((a,b)=>a+b,0) || 1;
-      countries.forEach(c => { row[c] = (byC.get(c)||0) / totalPct; });
+      countries.forEach(c => { row[c] = (byC.get(c)||0) / totalPct; }); // 0..1
       return row;
     });
     return {data, years, countries};
   }
+
   async function fetchFirst(paths){
     for(const p of paths){
       try{
@@ -185,11 +208,12 @@
     }
     throw new Error("All CSV fetch attempts failed: "+paths.join(", "));
   }
+
   async function loadText(){
-    if(window.__CSV_TEXT__) return window.__CSV_TEXT__;
     const candidates = ["2025_NHL_Nationality.csv","2025%20NHL%20Nationality.csv","nhl_nationality_games.csv"];
     return await fetchFirst(candidates);
   }
+
   function colorScale(keys){ const map=new Map(); keys.forEach((k,i)=>map.set(k,PALETTE[i%PALETTE.length])); return k=>map.get(k); }
 
   // =================== Render ===================
@@ -198,7 +222,7 @@
     try { text = await loadText(); }
     catch (e) {
       log("CSV fetch failed: " + e.message);
-      document.getElementById('chart').innerHTML = '<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#aab3c2;text-align:center;padding:16px;">Could not load a CSV. Use the CSV uploader below, or serve the files from a local web server.</div>';
+      document.getElementById('chart').innerHTML = '<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#aab3c2;text-align:center;padding:16px;">Could not load a CSV. Make sure the HTML and CSV are in the same folder and you are serving them from a local web server.</div>';
       return;
     }
     const parsed = parseCSV(text);
@@ -206,15 +230,21 @@
 
     const {data, years, countries} = toStackData(parsed);
     if (!data.length || !years.length || !countries.length){
-      document.getElementById('chart').innerHTML = '<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#aab3c2;text-align:center;padding:16px;">No plottable data after transform. Check the debug box for details.</div>';
+      document.getElementById('chart').innerHTML = '<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#aab3c2;text-align:center;padding:16px;">No plottable data after transform.</div>';
       return;
     }
+
+    // Year search
+    const yearInput = document.getElementById('yearSearch');
+    yearInput.min = years[0];
+    yearInput.max = years[years.length-1];
+    yearInput.step = 1;
 
     const color = colorScale(countries);
     const container=d3.select('#chart');
     const W=container.node().clientWidth;
     const H=container.node().clientHeight;
-    const margin={top:28,right:90,bottom:34,left:44};
+    const margin={top:28,right:100,bottom:34,left:44};
     const innerW=W-margin.left-margin.right;
     const innerH=H-margin.top-margin.bottom;
 
@@ -238,18 +268,23 @@
       .attr('fill',d=>color(d.key))
       .attr('d',d=>area(d));
 
+    // Grid on TOP
     const gridTop = g.append('g').attr('class','grid-top').attr('pointer-events','none');
     d3.range(0,1.0001,0.1).forEach(v => {
       gridTop.append('line').attr('x1',0).attr('x2',innerW).attr('y1',y(v)).attr('y2',y(v));
     });
 
+    // Lockout bar ON TOP: black bar with vertical "lockout" text at 2005
     const lockX = x(LOCKOUT_YEAR);
-    const lockGroup = g.append('g').attr('class','lockout-top');
-    lockGroup.append('rect').attr('class','lockout-band')
+    const lockGroup = g.append('g').attr('class','lockout-overlay');
+    lockGroup.append('rect').attr('class','lockout-bar')
       .attr('x', lockX-6).attr('y', 0).attr('width', 12).attr('height', innerH);
-    lockGroup.append('text').attr('class','lockout-label')
-      .attr('x', Math.min(innerW-40, lockX+6)).attr('y', 12).text('lockout');
+    // vertical text (rotated -90 so it reads down the bar)
+    lockGroup.append('text').attr('class','lockout-text')
+      .attr('transform', `translate(${lockX+5}, 10) rotate(-90)`)
+      .text('lockout');
 
+    // Always-on hover marker
     const marker = g.append('g').attr('class','year-marker').style('display','none');
     marker.append('line').attr('y1',0).attr('y2',innerH);
     const badge = marker.append('g');
@@ -258,6 +293,7 @@
 
     const tooltip=d3.select('#chart').append('div').attr('class','tooltip');
 
+    // Legend (full names + values)
     const legend = d3.select('#legend');
     const items = legend.selectAll('.item').data(countries).join('div')
       .attr('class','item')
@@ -279,6 +315,7 @@
       });
     }
 
+    // Top 5 labels at right edge (latest year)
     const lastRow = data[data.length-1];
     const shares = countries.map(c => ({c, s: lastRow[c] || 0}))
                             .sort((a,b)=>d3.descending(a.s,b.s)).slice(0,5);
@@ -310,11 +347,19 @@
       const yNorm = y.invert(yp);
       for (const s of series){
         const seg = s[idx];
-        if (yNorm >= seg[0] && yNorm <= seg[1]) {
-          return {key: s.key, idx, seg};
-        }
+        if (yNorm >= seg[0] && yNorm <= seg[1]) return {key: s.key, idx, seg};
       }
       return {key: null, idx, seg: null};
+    }
+
+    function moveToYear(targetYear){
+      const idx = Math.max(0, Math.min(data.length - 1, d3.bisector(d=>d).center(years, +targetYear)));
+      const year = years[idx];
+      marker.style('display', null);
+      marker.attr('transform', `translate(${x(year)},0)`);
+      badge.attr('transform', `translate(${Math.min(innerW-44, Math.max(0, x(year)-22))}, -22)`);
+      badge.select('text').text(year);
+      updateLegendValues(idx);
     }
 
     overlay.on('mousemove', (evt) => {
@@ -343,21 +388,20 @@
       updateLegendValues(null);
     });
 
-    updateLegendValues(null);
+    // Year search interactions
+    yearInput.addEventListener('change', () => {
+      const val = +yearInput.value;
+      if (Number.isFinite(val)) moveToYear(val);
+    });
+    yearInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter'){
+        const val = +yearInput.value;
+        if (Number.isFinite(val)) moveToYear(val);
+      }
+    });
 
-    const input = document.getElementById('csvUpload');
-    if(input){
-      input.addEventListener('change', async (e)=>{
-        const file = e.target.files?.[0];
-        if(!file) return;
-        const txt = await file.text();
-        window.__CSV_TEXT__ = txt;
-        document.getElementById('chart').innerHTML='';
-        document.getElementById('legend').innerHTML='';
-        debugEl.style.display='none'; debugEl.textContent='';
-        init();
-      });
-    }
+    // Initialize legend with latest year
+    updateLegendValues(null);
   }
 
   init();

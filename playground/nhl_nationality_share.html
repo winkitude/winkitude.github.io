@@ -7,161 +7,105 @@
 <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
 <style>
   :root { --bg:#0b0e13; --panel:#121622; --ink:#e8ecf1; --muted:#aab3c2; --accent:#6aa6ff; --grid:#2a3245; --gridBright:#3b4661; }
-  html, body { height:100%; }
-  body { margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; background:var(--bg); color:var(--ink); -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; }
-  .wrap { max-width:1100px; margin: 32px auto 48px; padding: 0 16px; }
-  h1 { font-size:24px; margin:0 0 4px; letter-spacing:.2px; }
+  body { margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; background:var(--bg); color:var(--ink); }
+  .wrap { max-width:1100px; margin:32px auto 48px; padding:0 16px; }
+  h1 { font-size:24px; margin:0 0 4px; }
   .sub { color:var(--muted); margin-bottom:16px; font-size:14px; }
-
-  .chart-card { background:var(--panel); border-radius:18px; box-shadow:0 10px 30px rgba(0,0,0,.3); padding:16px 16px 8px; }
-  .controls { display:flex; gap:10px; align-items:center; margin: 0 0 10px; }
-  .controls label { font-size:12px; color:var(--muted); }
-  .controls input { border:1px solid rgba(255,255,255,.12); background:#0e1526; color:var(--ink); padding:6px 8px; border-radius:10px; outline:none; font-size:13px; width:120px; }
-  .controls input::placeholder { color:#7f8aa6; }
-
+  .chart-card { background:var(--panel); border-radius:18px; padding:16px; box-shadow:0 10px 30px rgba(0,0,0,.3); }
+  .controls { margin-bottom:10px; }
+  .controls label { font-size:12px; color:var(--muted); margin-right:6px; }
+  .controls input { background:#0e1526; color:var(--ink); border:1px solid rgba(255,255,255,.12); border-radius:10px; padding:6px 8px; font-size:13px; }
   .chart { width:100%; height:640px; position:relative; }
-  .axis path, .axis line { stroke: var(--grid); }
-  .axis text { fill: var(--muted); font-size: 12px; }
-  .areas .area { opacity:.95; transition: opacity .15s ease, filter .15s; }
-  .areas .area.dim { opacity:.18; filter: grayscale(30%); }
-
-  .legend { display:grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap: 8px 10px; margin-top:14px; }
-  .legend .item { display:flex; align-items:center; gap:10px; padding:8px 12px; border-radius:12px; background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.08); cursor:pointer; user-select:none; }
-  .legend .item.active { outline:2px solid var(--accent); background: rgba(106,166,255,.12); }
-  .legend .flag { font-size:18px; line-height:1; }
-  .legend .name { color:var(--ink); font-size:13px; flex: 1 1 auto; }
-  .legend .val { color:var(--muted); font-variant-numeric: tabular-nums; font-size:12px; }
-
-  .tooltip { position:absolute; pointer-events:none; z-index:10; background:#0d1220; color:var(--ink); border:1px solid rgba(255,255,255,.1); padding:8px 10px; border-radius:10px; font-size:12px; box-shadow:0 6px 18px rgba(0,0,0,.35); opacity:0; transition:opacity .1s; }
-
-  .year-marker line { stroke: var(--gridBright); stroke-width: 1.25; }
-  .year-badge { fill: #0d1220; stroke: rgba(255,255,255,.15); stroke-width:1; }
-  .year-text { fill: var(--ink); font-size: 11px; }
-  .grid-top line { stroke: var(--gridBright); stroke-dasharray: 2 3; }
-
-  /* Lockout bar */
-  .lockout-bar { fill: #000; }
-  .lockout-text { fill: #fff; font-weight: 700; font-size: 11px; letter-spacing: .6px; }
-
-  .toplabel { fill: var(--ink); font-size: 12px; paint-order: stroke; stroke: rgba(0,0,0,.35); stroke-width: 2px; }
-
-  /* Era & event callouts */
-  .era-band { fill: rgba(255,255,255,0.06); stroke: rgba(255,255,255,0.12); }
-  .era-label { fill: #e6ebf5; font-size: 11px; font-weight: 600; }
-  .event-band { fill: rgba(255,255,255,0.06); stroke: rgba(255,255,255,0.12); }
-  .event-line { stroke: rgba(255,255,255,0.7); stroke-width: 1.25; }
-  .event-label { fill: #cfd6e6; font-size: 11px; }
+  .axis path, .axis line { stroke:var(--grid); }
+  .axis text { fill:var(--muted); font-size:12px; }
+  .areas .area { opacity:.95; transition:opacity .15s; }
+  .areas .area.dim { opacity:.18; filter:grayscale(30%); }
+  .legend { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:8px 10px; margin-top:14px; }
+  .legend .item { display:flex; align-items:center; gap:10px; padding:8px 12px; border-radius:12px; background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.08); cursor:pointer; }
+  .legend .item.active { outline:2px solid var(--accent); background:rgba(106,166,255,.12); }
+  .legend .flag { font-size:18px; }
+  .legend .name { flex:1; font-size:13px; }
+  .legend .val { font-size:12px; color:var(--muted); font-variant-numeric:tabular-nums; }
+  .tooltip { position:absolute; pointer-events:none; z-index:10; background:#0d1220; color:var(--ink); border:1px solid rgba(255,255,255,.1); padding:8px 10px; border-radius:10px; font-size:12px; box-shadow:0 6px 18px rgba(0,0,0,.35); opacity:0; }
+  .year-marker line { stroke:var(--gridBright); stroke-width:1.25; }
+  .year-badge { fill:#0d1220; stroke:rgba(255,255,255,.15); stroke-width:1; }
+  .year-text { fill:var(--ink); font-size:11px; }
+  .grid-top line { stroke:var(--gridBright); stroke-dasharray:2 3; }
+  .lockout-bar { fill:#000; }
+  .lockout-text { fill:#fff; font-weight:700; font-size:11px; }
+  .toplabel { fill:var(--ink); font-size:12px; stroke:rgba(0,0,0,.35); stroke-width:2px; paint-order:stroke; }
+  .era-band { fill:rgba(255,255,255,0.06); stroke:rgba(255,255,255,0.12); }
+  .era-label { fill:#e6ebf5; font-size:11px; font-weight:600; }
+  .event-band { fill:rgba(255,255,255,0.06); stroke:rgba(255,255,255,0.12); }
+  .event-line { stroke:rgba(255,255,255,0.7); stroke-width:1.25; }
+  .event-label { fill:#cfd6e6; font-size:11px; }
 </style>
 </head>
 <body>
-  <div class="wrap">
-    <h1>NHL Games by Player Nationality (Share by Year)</h1>
-    <div class="sub">100% stacked by year. Hover anywhere to see values; click a country below to spotlight it. Lockout and eras/events annotated.</div>
-
-    <div class="chart-card">
-      <div class="controls">
-        <label for="yearSearch">Go to year:</label>
-        <input id="yearSearch" type="number" placeholder="e.g. 2005" />
-      </div>
-
-      <div id="chart" class="chart"></div>
-      <div id="legend" class="legend" aria-label="Countries"></div>
+<div class="wrap">
+  <h1>NHL Games by Player Nationality (Share by Year)</h1>
+  <div class="sub">100% stacked by year. Hover anywhere to see values; click a country below to spotlight it.</div>
+  <div class="chart-card">
+    <div class="controls">
+      <label for="yearSearch">Go to year:</label>
+      <input id="yearSearch" type="number" placeholder="e.g. 2005" />
     </div>
+    <div id="chart" class="chart"></div>
+    <div id="legend" class="legend"></div>
   </div>
+</div>
 
 <script>
-/* =================== Config & helpers =================== */
 const LOCKOUT_YEAR = 2005;
-const PALETTE = ["#5B8FF9","#5AD8A6","#5D7092","#F6BD16","#6F5EF9","#6DC8EC","#945FB9","#FF9845","#1E9493","#FF99C3","#FF6B6B","#41C1B2","#B28DFF","#78D3F8","#FFD166","#EF476F","#06D6A0","#118AB2","#8338EC","#3A86FF"];
+const ERA_BANDS = [
+  {start:1917,end:1942,label:"Founding (1917–1942)"},
+  {start:1942,end:1967,label:"Original Six era (1942–1967)"},
+  {start:1967,end:1992,label:"Expansion era (1967–1992)"},
+  {start:1992,end:2025,label:"Modern era (1992–2025)"}
+];
+const BOTTOM_EVENTS = [
+  {type:"band", start:1938,end:1945,label:"WWII (1938–1945)"},
+  {type:"line", year:1991,label:"1991: Dissolution of the USSR"},
+  {type:"line", year:2008,label:"2008: KHL founded"}
+];
 
-// Place near PALETTE
-// Optional: your fixed palette for specific countries
+// Color overrides
 const COLOR_BY_COUNTRY = {
-  "Canada": "#E63946",
-  "United States": "#1D3557",
-  "Sweden": "#F1C40F",
-  "Finland": "#2ECC71",
-  "Russia": "#E74C3C",
-  "Czech Republic": "#8E44AD",
-  "Slovakia": "#27AE60",
-  "Germany": "#2C3E50",
-  "Switzerland": "#C0392B",
-  // ...add more if you want pinned colors
+  "Canada":"#E63946","United States":"#1D3557","Sweden":"#F1C40F","Finland":"#2ECC71",
+  "Russia":"#E74C3C","Czech Republic":"#8E44AD","Slovakia":"#27AE60","Germany":"#2C3E50",
+  "Switzerland":"#C0392B","Australia":"#F39C12","United Kingdom":"#2980B9","Ireland":"#2ECC71",
+  "Lebanon":"#E74C3C","Kazakhstan":"#3498DB","Japan":"#FFFFFF","Croatia":"#C0392B",
+  "Jamaica":"#27AE60","South Korea":"#BDC3C7"
 };
 
 function hashColor(str){
-  let h=0; for (let i=0;i<str.length;i++) h = (h*31 + str.charCodeAt(i))|0;
-  const hue = Math.abs(h) % 360;
+  let h=0; for(let i=0;i<str.length;i++) h=(h*31+str.charCodeAt(i))|0;
+  const hue=Math.abs(h)%360;
   return `hsl(${hue},65%,52%)`;
 }
-
 function colorScale(keys){
-  const map = new Map();
-  keys.forEach(k => {
-    // use your override if present, else deterministic hash color
-    map.set(k, COLOR_BY_COUNTRY[k] || hashColor(k));
-  });
-  return k => map.get(k);
+  const map=new Map();
+  keys.forEach(k=>{ map.set(k,COLOR_BY_COUNTRY[k]||hashColor(k)); });
+  return k=>map.get(k);
 }
 
-
-const DASH = "[-–—−]"; // hyphen, en, em, minus
-const ERA_BANDS = [
-  {start:1917, end:1942, label:"Founding (1917–1942)"},
-  {start:1942, end:1967, label:"Original Six era (1942–1967)"},
-  {start:1967, end:1992, label:"Expansion era (1967–1992)"},
-  {start:1992, end:2025, label:"Modern era (1992–2025)"},
-];
-// Bottom events
-const BOTTOM_EVENTS = [
-  {type:"band", start:1938, end:1945, label:"WWII (1938–1945)"},
-  {type:"line", year:1991, label:"1991: Dissolution of the USSR"},
-  {type:"line", year:2008, label:"2008: KHL founded"},
-];
-
-// Drop-in replacement for isoToFlagEmoji (handles aliases + missing flags)
+// Flag helper
 function isoToFlagEmoji(name){
-  if (!name) return "🏒";
-  const n = String(name).trim().toLowerCase();
-
-  // Map of normalized names/aliases → ISO-2
-  const map = {
-    // Already-covered basics (kept for completeness)
-    "canada":"CA","united states":"US","usa":"US","u.s.a.":"US","u.s.":"US",
-    "sweden":"SE","finland":"FI","russia":"RU","czech republic":"CZ","czechia":"CZ",
-    "slovakia":"SK","germany":"DE","switzerland":"CH","latvia":"LV","denmark":"DK",
-    "norway":"NO","austria":"AT","france":"FR","united kingdom":"GB","england":"GB",
-    "scotland":"GB","wales":"GB","netherlands":"NL","slovenia":"SI","belarus":"BY",
-    "ukraine":"UA","lithuania":"LT","estonia":"EE","poland":"PL","hungary":"HU",
-    "italy":"IT","spain":"ES","kazakhstan":"KZ", // (was missing in your list)
-    "soviet union":"RU","ussr":"RU","czechoslovakia":"CZ/SK", // special-case below
-    "west germany":"DE","east germany":"DE","serbia and montenegro":"RS",
-    "serbia":"RS","montenegro":"ME","yugoslavia":"RS",
-
-    // NEW: the ones you said are missing
-    "australia":"AU",
-    "uk":"GB","u.k.":"GB","great britain":"GB","britain":"GB",
-    "ireland":"IE","republic of ireland":"IE","eire":"IE",
-    "lebanon":"LB",
-    "japan":"JP",
-    "croatia":"HR",
-    "jamaica":"JM",
-    "south korea":"KR","republic of korea":"KR","korea, south":"KR","korea (south)":"KR","rok":"KR",
-
-    // Extra helpful aliases (optional)
-    "kazakhstan":"KZ", // common misspelling
-    "korea":"KR", // if your data uses just “Korea” and means the south
+  if(!name) return "🏒";
+  const n=String(name).trim().toLowerCase();
+  const map={
+    "canada":"CA","united states":"US","usa":"US","u.s.":"US","sweden":"SE","finland":"FI",
+    "russia":"RU","soviet union":"RU","ussr":"RU","czech republic":"CZ","czechia":"CZ","slovakia":"SK",
+    "germany":"DE","switzerland":"CH","latvia":"LV","denmark":"DK","norway":"NO","austria":"AT","france":"FR",
+    "united kingdom":"GB","uk":"GB","great britain":"GB","england":"GB","scotland":"GB","wales":"GB",
+    "ireland":"IE","lebanon":"LB","kazakhstan":"KZ","japan":"JP","croatia":"HR","jamaica":"JM",
+    "south korea":"KR","republic of korea":"KR","korea, south":"KR","australia":"AU"
   };
-
-  // Special-case historical multi-flag (no single emoji exists)
-  if (map[n] === "CZ/SK") return "🇨🇿🇸🇰";
-
-  const iso2 = map[n];
-  if (!iso2 || iso2.length !== 2) return "🏒"; // fallback hockey emoji
-
-  // Turn ISO-2 into a regional-indicator flag emoji
-  const A = 0x1F1E6;
-  return String.fromCodePoint(...[...iso2].map(c => A + c.charCodeAt(0) - 65));
+  if(map[n]==="CZ/SK") return "🇨🇿🇸🇰";
+  const iso2=map[n];
+  if(!iso2) return "🏒";
+  const A=0x1F1E6;
+  return String.fromCodePoint(...[...iso2].map(c=>A+c.charCodeAt(0)-65));
 }
 
 

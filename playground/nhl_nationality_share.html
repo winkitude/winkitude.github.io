@@ -3,50 +3,35 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>NHL Nationality Share – Interactive Stacked Area Chart</title>
+  <title>NHL Nationality Share – Interactive Stacked Area Chart (v2)</title>
   <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
   <style>
-    :root {
-      --bg: #0b0e13;
-      --panel: #121622;
-      --ink: #e8ecf1;
-      --muted: #aab3c2;
-      --accent: #6aa6ff;
-      --grid: #2a3245;
-      --lockout: #6b7280;
-    }
-    html, body { height: 100%; }
-    body {
-      margin: 0;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
-      background: var(--bg);
-      color: var(--ink);
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-    }
-    .wrap { max-width: 1100px; margin: 32px auto 48px; padding: 0 16px; }
-    h1 { font-size: 24px; margin: 0 0 4px; letter-spacing: .2px; }
-    .sub { color: var(--muted); margin-bottom: 16px; font-size: 14px; }
-    .chart-card { background: var(--panel); border-radius: 18px; box-shadow: 0 10px 30px rgba(0,0,0,.3); padding: 16px 16px 8px; }
-    .chart { width: 100%; height: 520px; position: relative; }
+    :root { --bg:#0b0e13; --panel:#121622; --ink:#e8ecf1; --muted:#aab3c2; --accent:#6aa6ff; --grid:#2a3245; --lockout:#6b7280; }
+    html, body { height:100%; }
+    body { margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+           background:var(--bg); color:var(--ink); -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; }
+    .wrap { max-width:1100px; margin: 32px auto 48px; padding: 0 16px; }
+    h1 { font-size:24px; margin:0 0 4px; letter-spacing:.2px; }
+    .sub { color:var(--muted); margin-bottom:16px; font-size:14px; }
+    .chart-card { background:var(--panel); border-radius:18px; box-shadow:0 10px 30px rgba(0,0,0,.3); padding:16px 16px 8px; }
+    .chart { width:100%; height:520px; position:relative; }
     .axis path, .axis line { stroke: var(--grid); }
     .axis text { fill: var(--muted); font-size: 12px; }
     .grid line { stroke: var(--grid); stroke-dasharray: 2 4; }
-    .area { opacity: .9; transition: opacity .2s ease, filter .2s; }
-    .area.dim { opacity: .15; filter: grayscale(30%); }
-    .area.highlight { opacity: 1; stroke: white; stroke-width: 1.2; }
-    .lockout-band { fill: var(--lockout); opacity: .25; }
-    .lockout-label { fill: var(--muted); font-size: 11px; }
-    .legend { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 8px 10px; margin-top: 14px; }
-    .legend .item { display: flex; align-items: center; gap: 8px; padding: 8px 10px; border-radius: 12px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); cursor: pointer; user-select: none; transition: transform .08s ease, background .2s ease, border-color .2s ease; }
-    .legend .item:hover { transform: translateY(-1px); background: rgba(255,255,255,0.06); }
-    .legend .item.active { outline: 2px solid var(--accent); background: rgba(106,166,255,0.12); }
-    .legend .swatch { width: 12px; height: 12px; border-radius: 50%; flex: 0 0 auto; }
-    .legend .flag { font-size: 18px; line-height: 1; flex: 0 0 auto; }
-    .legend .name { color: var(--ink); font-size: 13px; }
-    .tooltip { position: absolute; pointer-events: none; z-index: 10; background: #0d1220; color: var(--ink); border: 1px solid rgba(255,255,255,0.1); padding: 8px 10px; border-radius: 10px; font-size: 12px; box-shadow: 0 6px 18px rgba(0,0,0,.35); opacity: 0; transition: opacity .1s ease; }
-    .note { color: var(--muted); font-size: 12px; margin-top: 8px; }
-    a { color: var(--accent); text-decoration: none; }
+    .area { opacity:.9; transition: opacity .2s ease, filter .2s; }
+    .area.dim { opacity:.15; filter: grayscale(30%); }
+    .area.highlight { opacity:1; stroke:#fff; stroke-width:1.2; }
+    .lockout-band { fill:var(--lockout); opacity:.25; }
+    .lockout-label { fill:var(--muted); font-size:11px; }
+    .legend { display:grid; grid-template-columns: repeat(auto-fill, minmax(160px,1fr)); gap:8px 10px; margin-top:14px; }
+    .legend .item { display:flex; align-items:center; gap:8px; padding:8px 10px; border-radius:12px; background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.06); cursor:pointer; user-select:none; }
+    .legend .item.active { outline:2px solid var(--accent); background: rgba(106,166,255,.12); }
+    .legend .swatch { width:12px; height:12px; border-radius:50%; }
+    .legend .flag { font-size:18px; line-height:1; }
+    .legend .name { color:var(--ink); font-size:13px; }
+    .tooltip { position:absolute; pointer-events:none; z-index:10; background:#0d1220; color:var(--ink); border:1px solid rgba(255,255,255,.1); padding:8px 10px; border-radius:10px; font-size:12px; box-shadow:0 6px 18px rgba(0,0,0,.35); opacity:0; transition:opacity .1s; }
+    .note { color:var(--muted); font-size:12px; margin-top:8px; }
+    .debug { color:#c9d1d9; background:#0e1625; border:1px solid #24314a; border-radius:10px; padding:8px 10px; font-size:12px; margin-top:10px; white-space:pre-wrap; }
   </style>
 </head>
 <body>
@@ -57,16 +42,21 @@
       <div id="chart" class="chart"></div>
       <div id="legend" class="legend" aria-label="Countries"></div>
       <div class="note">
-        Data schema expected: <code>year,country,games</code>. If fetch fails (file:// or path), use this uploader:
-        <input id="csvUpload" type="file" accept=".csv" style="display:inline-block">.
-        The page will try these filenames from the same folder in order:
-        <code>2025_NHL_Nationality.csv</code>, <code>2025 NHL Nationality.csv</code>, <code>nhl_nationality_games.csv</code>.
+        Data schema accepted (case-insensitive): <code>year</code> or <code>season</code> (e.g., <code>2004-05</code>),
+        <code>country</code> / <code>nationality</code>, and <code>games</code> (also <code>GP</code>, <code>Count</code>).<br>
+        Filenames tried (same folder): <code>2025_NHL_Nationality.csv</code>, <code>2025 NHL Nationality.csv</code>, <code>nhl_nationality_games.csv</code>.
+        Or load via: <input id="csvUpload" type="file" accept=".csv" style="display:inline-block">.
       </div>
+      <div id="debug" class="debug" style="display:none"></div>
     </div>
   </div>
+
   <script>
   const LOCKOUT_YEARS = [1995, 2005, 2013];
   const PALETTE = ["#5B8FF9","#5AD8A6","#5D7092","#F6BD16","#6F5EF9","#6DC8EC","#945FB9","#FF9845","#1E9493","#FF99C3","#FF6B6B","#41C1B2","#B28DFF","#78D3F8","#FFD166","#EF476F","#06D6A0","#118AB2","#8338EC","#3A86FF"];
+
+  const debugEl = document.getElementById('debug');
+  const showDebug = (txt) => { debugEl.style.display='block'; debugEl.textContent = txt; console.log(txt); };
 
   function isoToFlagEmoji(iso2){
     if(!iso2) return "";
@@ -77,7 +67,33 @@
     return String.fromCodePoint(...[...code].map(c=>A+c.charCodeAt(0)-65));
   }
 
-  // Country normalization + flexible headers
+  // Parse season string like "2004-05" -> 2005 (end year)
+  function parseSeasonToYear(value){
+    if (value == null) return NaN;
+    const s = String(value).trim();
+    // If plain number, return it
+    if (/^\\d{4}$/.test(s)) return +s;
+    // Season formats: "2004-05", "1994-1995", "2004–05" (en dash), possibly with extra spaces
+    const m = s.match(/^(\\d{4})\\s*[–-]\\s*(\\d{2}|\\d{4})$/);
+    if (m){
+      const start = +m[1];
+      const endPart = m[2];
+      const endYear = endPart.length === 2 ? (Math.floor(start/100)*100 + +endPart) : +endPart;
+      // NHL seasons end in the following year
+      return endYear;
+    }
+    // Try to pick first 4 digits if present
+    const m2 = s.match(/(\\d{4})/);
+    return m2 ? +m2[1] : NaN;
+  }
+
+  function cleanNumber(x){
+    if (x == null) return 0;
+    const s = String(x).replace(/,/g,'').trim();
+    const n = parseFloat(s);
+    return isNaN(n) ? 0 : n;
+  }
+
   function mapCountry(raw){
     const s=(raw||"").toString().trim();
     const m={
@@ -109,11 +125,18 @@
     };
     return m[s]||s;
   }
+
   function normalizeRow(d){
-    const year=+(d.year||d.Year||d.season||d.Season);
-    const countryRaw=d.country||d.Country||d.nationality||d.Nationality;
-    const games=+(d.games||d.Games||d.GP||d.Count||d.count||0);
-    return {year, country:mapCountry(countryRaw), games};
+    const yearRaw = d.year ?? d.Year ?? d.season ?? d.Season ?? d.SEASON ?? d.SeasonYear;
+    const year = parseSeasonToYear(yearRaw);
+
+    const countryRaw = d.country ?? d.Country ?? d.nationality ?? d.Nationality ?? d.NATION ?? d.Nation;
+    const country = mapCountry(countryRaw);
+
+    const gamesRaw = d.games ?? d.Games ?? d.GP ?? d.Count ?? d.count ?? d.GamesPlayed ?? d.GAMES;
+    const games = cleanNumber(gamesRaw);
+
+    return { year, country, games };
   }
 
   async function fetchFirst(paths){
@@ -124,37 +147,32 @@
           return r.text();
         });
         return txt;
-      }catch(e){
-        // try next
-      }
+      }catch(e){ /* try next */ }
     }
     throw new Error("All CSV fetch attempts failed: "+paths.join(", "));
   }
 
   async function loadRows(){
-    // If uploaded via input
     if(window.__CSV_TEXT__){
-      return d3.csvParse(window.__CSV_TEXT__.trim(), normalizeRow);
+      const parsed = d3.csvParse(window.__CSV_TEXT__.trim(), normalizeRow);
+      return parsed;
     }
-    // Try multiple filenames (underscored, spaced, generic)
-    const candidates = [
-      "2025_NHL_Nationality.csv",
-      "2025%20NHL%20Nationality.csv",
-      "nhl_nationality_games.csv"
-    ];
-    try{
-      const txt = await fetchFirst(candidates);
-      return d3.csvParse(txt, normalizeRow);
-    }catch(err){
-      console.error("CSV fetch failed:", err);
-      const container = document.getElementById('chart');
-      container.innerHTML = '<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#aab3c2;text-align:center;padding:16px;">Could not load a CSV from the expected filenames. If you are opening this file locally (file://), browsers block fetch. Use the CSV uploader below, or serve these files via a local server.</div>';
-      return [];
-    }
+    const candidates = ["2025_NHL_Nationality.csv","2025%20NHL%20Nationality.csv","nhl_nationality_games.csv"];
+    const txt = await fetchFirst(candidates);
+    const parsed = d3.csvParse(txt, normalizeRow);
+    return parsed;
   }
 
   function prepareData(rows){
-    const byYearCountry=d3.rollup(rows,v=>d3.sum(v,d=>d.games),d=>d.year,d=>d.country);
+    const valid = rows.filter(r => Number.isFinite(r.year) && r.year>1800 && r.year<3000 && r.country && r.games>0);
+    if (valid.length !== rows.length){
+      showDebug(`Parsed ${rows.length} rows, ${valid.length} valid after filtering.\n`+
+                `Examples (first 5):\n`+
+                rows.slice(0,5).map(r=>JSON.stringify(r)).join('\n'));
+    } else {
+      showDebug(`Parsed ${rows.length} rows.`);
+    }
+    const byYearCountry=d3.rollup(valid,v=>d3.sum(v,d=>d.games),d=>d.year,d=>d.country);
     const years=Array.from(byYearCountry.keys()).sort((a,b)=>a-b);
     const countriesSet=new Set();
     byYearCountry.forEach(m=>m.forEach((_,c)=>countriesSet.add(c)));
@@ -163,25 +181,28 @@
       const map=byYearCountry.get(year)||new Map();
       const total=Array.from(map.values()).reduce((a,b)=>a+b,0);
       const row={year};
-      countries.forEach(c=>{
-        const val=map.get(c)||0;
-        row[c]= total>0 ? (val/total) : 0;
-      });
+      countries.forEach(c=>{ const val=map.get(c)||0; row[c]= total>0 ? (val/total) : 0; });
       return row;
     });
-    return {data,countries,years};
+    return {data,countries,years, validCount: valid.length};
   }
 
-  function colorScale(keys){
-    const map=new Map();
-    keys.forEach((k,i)=>map.set(k,PALETTE[i%PALETTE.length]));
-    return k=>map.get(k);
-  }
+  function colorScale(keys){ const map=new Map(); keys.forEach((k,i)=>map.set(k,PALETTE[i%PALETTE.length])); return k=>map.get(k); }
 
   async function init(){
-    const rows=await loadRows();
-    if(!rows.length) return;
-    const {data,countries,years}=prepareData(rows);
+    let rows = [];
+    try {
+      rows = await loadRows();
+    } catch (e) {
+      showDebug("CSV fetch failed: "+e.message);
+      document.getElementById('chart').innerHTML = '<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#aab3c2;text-align:center;padding:16px;">Could not load a CSV. Use the CSV uploader below, or serve the files from a local web server.</div>';
+      return;
+    }
+    const {data,countries,years, validCount} = prepareData(rows);
+    if (!validCount || !years.length || !countries.length){
+      document.getElementById('chart').innerHTML = '<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#aab3c2;text-align:center;padding:16px;">No plottable data. Check that your CSV has usable Year/Season, Country/Nationality, and Games columns. See debug box below.</div>';
+      return;
+    }
     const color=colorScale(countries);
 
     const container=d3.select('#chart');
@@ -203,26 +224,19 @@
     g.append('g').attr('class','axis').attr('transform',`translate(0,${innerH})`).call(xAxis);
     g.append('g').attr('class','grid').call(d3.axisLeft(y).ticks(5).tickSize(-innerW).tickFormat(''));
 
-    // 100% stacked
     const stack=d3.stack().keys(countries).order(d3.stackOrderNone).offset(d3.stackOffsetExpand);
     const series=stack(data);
     const area=d3.area().x(d=>x(d.data.year)).y0(d=>y(d[0])).y1(d=>y(d[1])).curve(d3.curveMonotoneX);
 
-    // Lockout bands
     const lockGroup=g.append('g');
     LOCKOUT_YEARS.forEach(yLock=>{
       const xPos=x(yLock);
-      lockGroup.append('rect')
-        .attr('class','lockout-band')
-        .attr('x',xPos-6).attr('y',0).attr('width',12).attr('height',innerH);
-      lockGroup.append('text')
-        .attr('class','lockout-label')
-        .attr('x',xPos+4).attr('y',12).text('lockout');
+      lockGroup.append('rect').attr('class','lockout-band').attr('x',xPos-6).attr('y',0).attr('width',12).attr('height',innerH);
+      lockGroup.append('text').attr('class','lockout-label').attr('x',xPos+4).attr('y',12).text('lockout');
     });
 
     const areas=g.append('g').selectAll('path.area')
-      .data(series,d=>d.key)
-      .join('path')
+      .data(series,d=>d.key).join('path')
       .attr('class','area')
       .attr('fill',d=>color(d.key))
       .attr('d',d=>area(d));
@@ -231,18 +245,13 @@
     function showTooltip(evt,country,dSegment){
       const year=dSegment.data.year;
       const pct=((dSegment[1]-dSegment[0])*100).toFixed(1);
-      tooltip.style('opacity',1)
-        .html(`<strong>${country}</strong><br>${year}: ${pct}%`)
-        .style('left',(evt.offsetX+12)+'px')
-        .style('top',(evt.offsetY-28)+'px');
+      tooltip.style('opacity',1).html(`<strong>${country}</strong><br>${year}: ${pct}%`)
+        .style('left',(evt.offsetX+12)+'px').style('top',(evt.offsetY-28)+'px');
     }
     function hideTooltip(){ tooltip.style('opacity',0); }
 
-    const overlay=g.append('rect')
-      .attr('fill','transparent')
-      .attr('pointer-events','all')
+    const overlay=g.append('rect').attr('fill','transparent').attr('pointer-events','all')
       .attr('x',0).attr('y',0).attr('width',innerW).attr('height',innerH);
-
     const bisect=d3.bisector(d=>d.year).center;
     let activeKey=null;
 
@@ -264,8 +273,7 @@
 
     const legend=d3.select('#legend');
     const items=legend.selectAll('.item').data(countries).join('div')
-      .attr('class','item')
-      .attr('data-key',d=>d)
+      .attr('class','item').attr('data-key',d=>d)
       .on('click',function(e,key){ setActive(activeKey===key?null:key); });
     items.append('span').attr('class','flag').text(d=>isoToFlagEmoji(d)||'🏒');
     items.append('span').attr('class','swatch').style('background',d=>color(d));
@@ -281,6 +289,7 @@
         window.__CSV_TEXT__ = txt;
         document.getElementById('chart').innerHTML='';
         document.getElementById('legend').innerHTML='';
+        debugEl.style.display='none'; debugEl.textContent='';
         init();
       });
     }

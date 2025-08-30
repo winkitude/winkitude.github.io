@@ -243,25 +243,35 @@ async function loadText(){ const candidates=["2025_NHL_Nationality.csv","2025%20
   d3.range(0,1.0001,0.1).forEach(v=>{ gridTop.append('line').attr('x1',0).attr('x2',innerW).attr('y1',y(v)).attr('y2',y(v)); });
 
   // TOP era callouts (short on mobile; tap/click to toggle full)
-  let showShort = isMobile;
-  const ERA_BANDS = () => (showShort ? ERA_BANDS_SHORT : ERA_BANDS_FULL);
-  const eraG=g.append('g').attr('class','era-callouts');
-  function drawEras(){
-    eraG.selectAll('*').remove();
-    ERA_BANDS().forEach(({start,end,label})=>{
-      const x1=x(start), x2=x(end);
-      eraG.append('rect').attr('class','era-band')
-        .attr('x',Math.min(x1,x2)).attr('y',-topCalloutH+2)
-        .attr('width',Math.abs(x2-x1)).attr('height',topCalloutH-4)
-        .attr('rx',4);
-      eraG.append('text').attr('class','era-label')
-        .attr('x',(x1+x2)/2).attr('y',-topCalloutH/2+4)
-        .attr('text-anchor','middle').attr('dominant-baseline','middle')
-        .text(label);
-    });
-  }
-  drawEras();
-  eraG.on('click', ()=>{ showShort=!showShort; drawEras(); });
+let showShort = isMobile ? true : false; // always short on mobile
+const eraG = g.append('g').attr('class','era-callouts');
+
+function drawEras(){
+  eraG.selectAll('*').remove();
+  const bands = showShort ? ERA_BANDS_SHORT : ERA_BANDS_FULL;
+  bands.forEach(({start,end,label})=>{
+    const x1 = x(start), x2 = x(end);
+    eraG.append('rect')
+      .attr('class','era-band')
+      .attr('x', Math.min(x1,x2)).attr('y', -topCalloutH+2)
+      .attr('width', Math.abs(x2-x1)).attr('height', topCalloutH-4)
+      .attr('rx', 4);
+    eraG.append('text')
+      .attr('class','era-label')
+      .attr('x', (x1+x2)/2).attr('y', -topCalloutH/2+4)
+      .attr('text-anchor','middle').attr('dominant-baseline','middle')
+      .text(label);
+  });
+}
+drawEras();
+
+// Only allow toggling on desktop/tablet
+if (!isMobile) {
+  eraG.on('click', () => { showShort = !showShort; drawEras(); });
+} else {
+  // Remove “click” affordance on mobile
+  eraG.selectAll('.era-band').style('cursor', 'default');
+}
 
   // Bottom events (below x-axis labels)
   const eventsG=g.append('g').attr('class','bottom-events');

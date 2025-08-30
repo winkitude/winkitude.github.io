@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>NHL Nationality Share – Interactive Stacked Area Chart (v2)</title>
+  <title>NHL Nationality Share – Interactive Stacked Area Chart (v3)</title>
   <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
   <style>
     :root { --bg:#0b0e13; --panel:#121622; --ink:#e8ecf1; --muted:#aab3c2; --accent:#6aa6ff; --grid:#2a3245; --lockout:#6b7280; }
@@ -37,15 +37,16 @@
 <body>
   <div class="wrap">
     <h1>NHL Games by Player Nationality (Share by Year)</h1>
-    <div class="sub">Stacked area shows % of total games played in each calendar year. Click a country below to highlight. Lockout years are marked.</div>
+    <div class="sub">Stacked area shows % share per season/year. Click a country below to highlight. Lockout years are marked.</div>
     <div class="chart-card">
       <div id="chart" class="chart"></div>
       <div id="legend" class="legend" aria-label="Countries"></div>
       <div class="note">
-        Data schema accepted (case-insensitive): <code>year</code> or <code>season</code> (e.g., <code>2004-05</code>),
-        <code>country</code> / <code>nationality</code>, and <code>games</code> (also <code>GP</code>, <code>Count</code>).<br>
-        Filenames tried (same folder): <code>2025_NHL_Nationality.csv</code>, <code>2025 NHL Nationality.csv</code>, <code>nhl_nationality_games.csv</code>.
-        Or load via: <input id="csvUpload" type="file" accept=".csv" style="display:inline-block">.
+        Accepts long or wide CSVs. Wide format like this file:
+        first column = country, other columns = seasons (e.g., <code>1917-18</code>) with percentages.
+        Long format also works (<code>year,country,games</code> or <code>year,country,percent</code>).<br>
+        Filenames tried: <code>2025_NHL_Nationality.csv</code>, <code>2025 NHL Nationality.csv</code>, <code>nhl_nationality_games.csv</code>. Or use:
+        <input id="csvUpload" type="file" accept=".csv" style="display:inline-block">.
       </div>
       <div id="debug" class="debug" style="display:none"></div>
     </div>
@@ -56,7 +57,7 @@
   const PALETTE = ["#5B8FF9","#5AD8A6","#5D7092","#F6BD16","#6F5EF9","#6DC8EC","#945FB9","#FF9845","#1E9493","#FF99C3","#FF6B6B","#41C1B2","#B28DFF","#78D3F8","#FFD166","#EF476F","#06D6A0","#118AB2","#8338EC","#3A86FF"];
 
   const debugEl = document.getElementById('debug');
-  const showDebug = (txt) => { debugEl.style.display='block'; debugEl.textContent = txt; console.log(txt); };
+  const log = (txt) => { debugEl.style.display='block'; debugEl.textContent = txt; console.log(txt); };
 
   function isoToFlagEmoji(iso2){
     if(!iso2) return "";
@@ -67,22 +68,17 @@
     return String.fromCodePoint(...[...code].map(c=>A+c.charCodeAt(0)-65));
   }
 
-  // Parse season string like "2004-05" -> 2005 (end year)
   function parseSeasonToYear(value){
     if (value == null) return NaN;
     const s = String(value).trim();
-    // If plain number, return it
     if (/^\\d{4}$/.test(s)) return +s;
-    // Season formats: "2004-05", "1994-1995", "2004–05" (en dash), possibly with extra spaces
     const m = s.match(/^(\\d{4})\\s*[–-]\\s*(\\d{2}|\\d{4})$/);
     if (m){
       const start = +m[1];
       const endPart = m[2];
       const endYear = endPart.length === 2 ? (Math.floor(start/100)*100 + +endPart) : +endPart;
-      // NHL seasons end in the following year
       return endYear;
     }
-    // Try to pick first 4 digits if present
     const m2 = s.match(/(\\d{4})/);
     return m2 ? +m2[1] : NaN;
   }
@@ -126,17 +122,85 @@
     return m[s]||s;
   }
 
-  function normalizeRow(d){
-    const yearRaw = d.year ?? d.Year ?? d.season ?? d.Season ?? d.SEASON ?? d.SeasonYear;
-    const year = parseSeasonToYear(yearRaw);
+  function isSeasonCol(name){
+    return /^(?:\\d{4})\\s*[–-]\\s*(?:\\d{2}|\\d{4})$/.test(String(name).trim());
+  }
 
-    const countryRaw = d.country ?? d.Country ?? d.nationality ?? d.Nationality ?? d.NATION ?? d.Nation;
-    const country = mapCountry(countryRaw);
+  function parseCSV(text){
+    const rows = d3.csvParse(text);
+    const cols = rows.columns;
 
-    const gamesRaw = d.games ?? d.Games ?? d.GP ?? d.Count ?? d.count ?? d.GamesPlayed ?? d.GAMES;
-    const games = cleanNumber(gamesRaw);
+    // Detect wide format: many season-like columns, and one non-season text col for country names.
+    const seasonCols = cols.filter(isSeasonCol);
+    const nonSeasonCols = cols.filter(c => !isSeasonCol(c));
 
-    return { year, country, games };
+    if (seasonCols.length >= 5 && nonSeasonCols.length >= 1){
+      const countryCol = nonSeasonCols[0]; // assume first non-season is country label
+      const long = [];
+      rows.forEach(r => {
+        const country = mapCountry(r[countryCol]);
+        if (!country) return;
+        seasonCols.forEach(sc => {
+          const val = cleanNumber(r[sc]);
+          if (!isNaN(val)) {
+            const year = parseSeasonToYear(sc);
+            long.push({year, country, percent: val});
+          }
+        });
+      });
+      return { format: 'wide', rows: long };
+    }
+
+    // Otherwise assume long
+    const long2 = rows.map(r => {
+      const yearRaw = r.year ?? r.Year ?? r.season ?? r.Season ?? r.SEASON ?? r.SeasonYear;
+      const year = parseSeasonToYear(yearRaw);
+      const countryRaw = r.country ?? r.Country ?? r.nationality ?? r.Nationality ?? r.NATION ?? r.Nation;
+      const gamesRaw = r.games ?? r.Games ?? r.GP ?? r.Count ?? r.count ?? r.GamesPlayed ?? r.GAMES;
+      const percentRaw = r.percent ?? r.Percent ?? r.share ?? r.Share;
+      const out = { year, country: mapCountry(countryRaw) };
+      if (percentRaw != null && percentRaw !== '') out.percent = cleanNumber(percentRaw);
+      if (gamesRaw != null && gamesRaw !== '') out.games = cleanNumber(gamesRaw);
+      return out;
+    });
+    return { format: 'long', rows: long2 };
+  }
+
+  function toStackData(parsed){
+    let rows = parsed.rows;
+    // If we have percentages, use them directly; else compute from games per year
+    let usePercent = rows.some(r => typeof r.percent === 'number' && r.percent > 0);
+
+    if (!usePercent){
+      // compute totals per year, then percent = games / total * 100
+      const byYear = d3.rollup(rows, v => ({
+        total: d3.sum(v, d=>cleanNumber(d.games||0))
+      }), d=>d.year);
+      rows = rows.map(r => {
+        const m = byYear.get(r.year);
+        const pct = m && m.total>0 ? (100 * cleanNumber(r.games||0) / m.total) : 0;
+        return { year: r.year, country: r.country, percent: pct };
+      });
+    }
+
+    // build year list and country list
+    const years = Array.from(new Set(rows.map(r => r.year))).filter(y => Number.isFinite(y)).sort((a,b)=>a-b);
+    const countries = Array.from(new Set(rows.map(r => r.country))).filter(Boolean);
+
+    // matrix by year with percent normalized [0..1]
+    const data = years.map(y => {
+      const row = { year: y };
+      const byCountry = new Map();
+      rows.filter(r => r.year === y).forEach(r => byCountry.set(r.country, r.percent));
+      const totalPct = Array.from(byCountry.values()).reduce((a,b)=>a+b,0);
+      countries.forEach(c => {
+        const pct = byCountry.get(c) ?? 0;
+        const share = totalPct > 0 ? pct/totalPct : 0;
+        row[c] = share;
+      });
+      return row;
+    });
+    return {data, years, countries};
   }
 
   async function fetchFirst(paths){
@@ -147,64 +211,37 @@
           return r.text();
         });
         return txt;
-      }catch(e){ /* try next */ }
+      }catch(e){}
     }
     throw new Error("All CSV fetch attempts failed: "+paths.join(", "));
   }
 
-  async function loadRows(){
-    if(window.__CSV_TEXT__){
-      const parsed = d3.csvParse(window.__CSV_TEXT__.trim(), normalizeRow);
-      return parsed;
-    }
+  async function loadText(){
+    if(window.__CSV_TEXT__) return window.__CSV_TEXT__;
     const candidates = ["2025_NHL_Nationality.csv","2025%20NHL%20Nationality.csv","nhl_nationality_games.csv"];
-    const txt = await fetchFirst(candidates);
-    const parsed = d3.csvParse(txt, normalizeRow);
-    return parsed;
-  }
-
-  function prepareData(rows){
-    const valid = rows.filter(r => Number.isFinite(r.year) && r.year>1800 && r.year<3000 && r.country && r.games>0);
-    if (valid.length !== rows.length){
-      showDebug(`Parsed ${rows.length} rows, ${valid.length} valid after filtering.\n`+
-                `Examples (first 5):\n`+
-                rows.slice(0,5).map(r=>JSON.stringify(r)).join('\n'));
-    } else {
-      showDebug(`Parsed ${rows.length} rows.`);
-    }
-    const byYearCountry=d3.rollup(valid,v=>d3.sum(v,d=>d.games),d=>d.year,d=>d.country);
-    const years=Array.from(byYearCountry.keys()).sort((a,b)=>a-b);
-    const countriesSet=new Set();
-    byYearCountry.forEach(m=>m.forEach((_,c)=>countriesSet.add(c)));
-    const countries=Array.from(countriesSet);
-    const data=years.map(year=>{
-      const map=byYearCountry.get(year)||new Map();
-      const total=Array.from(map.values()).reduce((a,b)=>a+b,0);
-      const row={year};
-      countries.forEach(c=>{ const val=map.get(c)||0; row[c]= total>0 ? (val/total) : 0; });
-      return row;
-    });
-    return {data,countries,years, validCount: valid.length};
+    return await fetchFirst(candidates);
   }
 
   function colorScale(keys){ const map=new Map(); keys.forEach((k,i)=>map.set(k,PALETTE[i%PALETTE.length])); return k=>map.get(k); }
 
   async function init(){
-    let rows = [];
-    try {
-      rows = await loadRows();
-    } catch (e) {
-      showDebug("CSV fetch failed: "+e.message);
+    let text;
+    try { text = await loadText(); }
+    catch (e) {
+      log("CSV fetch failed: " + e.message);
       document.getElementById('chart').innerHTML = '<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#aab3c2;text-align:center;padding:16px;">Could not load a CSV. Use the CSV uploader below, or serve the files from a local web server.</div>';
       return;
     }
-    const {data,countries,years, validCount} = prepareData(rows);
-    if (!validCount || !years.length || !countries.length){
-      document.getElementById('chart').innerHTML = '<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#aab3c2;text-align:center;padding:16px;">No plottable data. Check that your CSV has usable Year/Season, Country/Nationality, and Games columns. See debug box below.</div>';
+    const parsed = parseCSV(text);
+    log(`Detected format: ${parsed.format}. Parsed rows: ${parsed.rows.length}`);
+
+    const {data, years, countries} = toStackData(parsed);
+    if (!data.length || !years.length || !countries.length){
+      document.getElementById('chart').innerHTML = '<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#aab3c2;text-align:center;padding:16px;">No plottable data after transform. Check the debug box for details.</div>';
       return;
     }
-    const color=colorScale(countries);
 
+    const color = colorScale(countries);
     const container=d3.select('#chart');
     const W=container.node().clientWidth;
     const H=container.node().clientHeight;
@@ -279,7 +316,6 @@
     items.append('span').attr('class','swatch').style('background',d=>color(d));
     items.append('span').attr('class','name').text(d=>d);
 
-    // CSV uploader
     const input = document.getElementById('csvUpload');
     if(input){
       input.addEventListener('change', async (e)=>{

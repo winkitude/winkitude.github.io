@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>NHL Nationality Share – Interactive Stacked Area Chart</title>
+  <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+  <style>
+    :root {
+      --bg: #0b0e13;
+      --panel: #121622;
+      --ink: #e8ecf1;
+      --muted: #aab3c2;
+      --accent: #6aa6ff;
+      --grid: #2a3245;
+      --lockout: #6b7280;
+    }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      background: var(--bg);
+      color: var(--ink);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    .wrap { max-width: 1100px; margin: 32px auto 48px; padding: 0 16px; }
+    h1 { font-size: 24px; margin: 0 0 4px; letter-spacing: .2px; }
+    .sub { color: var(--muted); margin-bottom: 16px; font-size: 14px; }
+    .chart-card { background: var(--panel); border-radius: 18px; box-shadow: 0 10px 30px rgba(0,0,0,.3); padding: 16px 16px 8px; }
+    .chart { width: 100%; height: 520px; position: relative; }
+    .axis path, .axis line { stroke: var(--grid); }
+    .axis text { fill: var(--muted); font-size: 12px; }
+    .grid line { stroke: var(--grid); stroke-dasharray: 2 4; }
+    .area { opacity: .9; transition: opacity .2s ease, filter .2s; }
+    .area.dim { opacity: .15; filter: grayscale(30%); }
+    .area.highlight { opacity: 1; stroke: white; stroke-width: 1.2; }
+    .lockout-band { fill: var(--lockout); opacity: .25; }
+    .lockout-label { fill: var(--muted); font-size: 11px; }
+    .legend { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 8px 10px; margin-top: 14px; }
+    .legend .item { display: flex; align-items: center; gap: 8px; padding: 8px 10px; border-radius: 12px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); cursor: pointer; user-select: none; transition: transform .08s ease, background .2s ease, border-color .2s ease; }
+    .legend .item:hover { transform: translateY(-1px); background: rgba(255,255,255,0.06); }
+    .legend .item.active { outline: 2px solid var(--accent); background: rgba(106,166,255,0.12); }
+    .legend .swatch { width: 12px; height: 12px; border-radius: 50%; flex: 0 0 auto; }
+    .legend .flag { font-size: 18px; line-height: 1; flex: 0 0 auto; }
+    .legend .name { color: var(--ink); font-size: 13px; }
+    .tooltip { position: absolute; pointer-events: none; z-index: 10; background: #0d1220; color: var(--ink); border: 1px solid rgba(255,255,255,0.1); padding: 8px 10px; border-radius: 10px; font-size: 12px; box-shadow: 0 6px 18px rgba(0,0,0,.35); opacity: 0; transition: opacity .1s ease; }
+    .note { color: var(--muted); font-size: 12px; margin-top: 8px; }
+    a { color: var(--accent); text-decoration: none; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>NHL Games by Player Nationality (Share by Year)</h1>
+    <div class="sub">Stacked area shows % of total games played in each calendar year. Click a country below to highlight. Lockout years are marked.</div>
+    <div class="chart-card">
+      <div id="chart" class="chart"></div>
+      <div id="legend" class="legend" aria-label="Countries"></div>
+      <div class="note">Now reading directly from your uploaded dataset <code>2025 NHL Nationality.csv</code>.</div>
+    </div>
+  </div>
+  <script>
+  const LOCKOUT_YEARS = [1995, 2005, 2013];
+  const PALETTE = ["#5B8FF9","#5AD8A6","#5D7092","#F6BD16","#6F5EF9","#6DC8EC","#945FB9","#FF9845","#1E9493","#FF99C3","#FF6B6B","#41C1B2","#B28DFF","#78D3F8","#FFD166","#EF476F","#06D6A0","#118AB2","#8338EC","#3A86FF"];
+  function isoToFlagEmoji(iso2){ if(!iso2) return ""; const map={UK:'GB'}; const code=(map[iso2]||iso2).toUpperCase(); if(code.length!==2) return ""; const A=0x1F1E6; return String.fromCodePoint(...[...code].map(c=>A+c.charCodeAt(0)-65)); }
+  async function loadRows(){ const txt=await fetch('2025 NHL Nationality.csv').then(r=>r.text()); return d3.csvParse(txt,d=>({year:+d.year,country:d.country.trim(),games:+d.games})); }
+  function prepareData(rows){ const byYearCountry=d3.rollup(rows,v=>d3.sum(v,d=>d.games),d=>d.year,d=>d.country); const years=Array.from(byYearCountry.keys()).sort((a,b)=>a-b); const countriesSet=new Set(); byYearCountry.forEach(m=>m.forEach((_,c)=>countriesSet.add(c))); const countries=Array.from(countriesSet); const data=years.map(year=>{const map=byYearCountry.get(year)||new Map(); const total=Array.from(map.values()).reduce((a,b)=>a+b,0); const row={year}; countries.forEach(c=>{const val=map.get(c)||0; row[c]=total>0?(val/total):0;}); return row;}); return {data,countries,years}; }
+  function colorScale(keys){const map=new Map(); keys.forEach((k,i)=>map.set(k,PALETTE[i%PALETTE.length])); return k=>map.get(k);} 
+  async function init(){ const rows=await loadRows(); const {data,countries,years}=prepareData(rows); const color=colorScale(countries); const container=d3.select('#chart'); const W=container.node().clientWidth; const H=container.node().clientHeight; const margin={top:24,right:18,bottom:34,left:44}; const innerW=W-margin.left-margin.right; const innerH=H-margin.top-margin.bottom; const svg=container.append('svg').attr('width',W).attr('height',H); const g=svg.append('g').attr('transform',`translate(${margin.left},${margin.top})`); const x=d3.scaleLinear().domain(d3.extent(years)).range([0,innerW]); const y=d3.scaleLinear().domain([0,1]).range([innerH,0]); const yAxis=d3.axisLeft(y).ticks(5).tickFormat(d3.format('.0%')); const xAxis=d3.axisBottom(x).ticks(Math.min(12,years.length)).tickFormat(d3.format('d')); g.append('g').attr('class','axis').call(yAxis); g.append('g').attr('class','axis').attr('transform',`translate(0,${innerH})`).call(xAxis); g.append('g').attr('class','grid').call(d3.axisLeft(y).ticks(5).tickSize(-innerW).tickFormat('')); const stack=d3.stack().keys(countries).order(d3.stackOrderNone).offset(d3.stackOffsetExpand); const series=stack(data); const area=d3.area().x(d=>x(d.data.year)).y0(d=>y(d[0])).y1(d=>y(d[1])).curve(d3.curveMonotoneX); const lockGroup=g.append('g'); LOCKOUT_YEARS.forEach(yLock=>{const xPos=x(yLock); lockGroup.append('rect').attr('class','lockout-band').attr('x',xPos-6).attr('y',0).attr('width',12).attr('height',innerH); lockGroup.append('text').attr('class','lockout-label').attr('x',xPos+4).attr('y',12).text('lockout');}); const areas=g.append('g').selectAll('path.area').data(series,d=>d.key).join('path').attr('class','area').attr('fill',d=>color(d.key)).attr('d',d=>area(d)); const tooltip=d3.select('#chart').append('div').attr('class','tooltip'); function showTooltip(evt,country,dSegment){const year=dSegment.data.year; const pct=((dSegment[1]-dSegment[0])*100).toFixed(1); tooltip.style('opacity',1).html(`<strong>${country}</strong><br>${year}: ${pct}%`).style('left',(evt.offsetX+12)+'px').style('top',(evt.offsetY-28)+'px');} function hideTooltip(){tooltip.style('opacity',0);} const overlay=g.append('rect').attr('fill','transparent').attr('pointer-events','all').attr('x',0).attr('y',0).attr('width',innerW).attr('height',innerH); const bisect=d3.bisector(d=>d.year).center; let activeKey=null; overlay.on('mousemove',(evt)=>{if(!activeKey)return; const xm=x.invert(d3.pointer(evt,overlay.node())[0]); const idx=Math.max(0,Math.min(data.length-1,bisect(data,xm))); const s=series.find(s=>s.key===activeKey); const seg=s[idx]; showTooltip(evt,activeKey,seg);}).on('mouseleave',hideTooltip); function setActive(key){activeKey=key; areas.classed('highlight',d=>d.key===key).classed('dim',d=>key&&d.key!==key); d3.selectAll('.legend .item').classed('active',function(){return d3.select(this).attr('data-key')===key;}); if(!key)hideTooltip();} const legend=d3.select('#legend'); const items=legend.selectAll('.item').data(countries).join('div').attr('class','item').attr('data-key',d=>d).on('click',function(e,key){setActive(activeKey===key?null:key);}); items.append('span').attr('class','flag').text(d=>isoToFlagEmoji(d)||'🏒'); items.append('span').attr('class','swatch').style('background',d=>color(d)); items.append('span').attr('class','name').text(d=>d); }
+  init();
+  </script>
+</body>
+</html>

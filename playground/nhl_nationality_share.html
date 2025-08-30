@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>NHL Nationality Share – Interactive Stacked Area Chart (v3)</title>
+  <title>NHL Nationality Share – Interactive Stacked Area Chart (v4)</title>
   <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
   <style>
     :root { --bg:#0b0e13; --panel:#121622; --ink:#e8ecf1; --muted:#aab3c2; --accent:#6aa6ff; --grid:#2a3245; --lockout:#6b7280; }
@@ -42,9 +42,7 @@
       <div id="chart" class="chart"></div>
       <div id="legend" class="legend" aria-label="Countries"></div>
       <div class="note">
-        Accepts long or wide CSVs. Wide format like this file:
-        first column = country, other columns = seasons (e.g., <code>1917-18</code>) with percentages.
-        Long format also works (<code>year,country,games</code> or <code>year,country,percent</code>).<br>
+        Accepts long or wide CSVs. Wide format like this file: first column = country, other columns = seasons (e.g., <code>1917-18</code>) with percentages.<br>
         Filenames tried: <code>2025_NHL_Nationality.csv</code>, <code>2025 NHL Nationality.csv</code>, <code>nhl_nationality_games.csv</code>. Or use:
         <input id="csvUpload" type="file" accept=".csv" style="display:inline-block">.
       </div>
@@ -68,11 +66,15 @@
     return String.fromCodePoint(...[...code].map(c=>A+c.charCodeAt(0)-65));
   }
 
+  // Include hyphen -, en dash – (U+2013), em dash — (U+2014), minus sign − (U+2212)
+  const DASH = "[-–—−]";
+
   function parseSeasonToYear(value){
     if (value == null) return NaN;
     const s = String(value).trim();
     if (/^\\d{4}$/.test(s)) return +s;
-    const m = s.match(/^(\\d{4})\\s*[–-]\\s*(\\d{2}|\\d{4})$/);
+    const re = new RegExp(`^(\\d{4})\\s*${DASH}\\s*(\\d{2}|\\d{4})$`);
+    const m = s.match(re);
     if (m){
       const start = +m[1];
       const endPart = m[2];
@@ -85,7 +87,7 @@
 
   function cleanNumber(x){
     if (x == null) return 0;
-    const s = String(x).replace(/,/g,'').trim();
+    const s = String(x).replace(/[,\\s%]/g,'').trim();
     const n = parseFloat(s);
     return isNaN(n) ? 0 : n;
   }
@@ -123,19 +125,32 @@
   }
 
   function isSeasonCol(name){
-    return /^(?:\\d{4})\\s*[–-]\\s*(?:\\d{2}|\\d{4})$/.test(String(name).trim());
+    const s = String(name||"").trim();
+    const re = new RegExp(`^\\d{4}\\s*${DASH}\\s*(?:\\d{2}|\\d{4})$`);
+    return re.test(s);
   }
 
   function parseCSV(text){
     const rows = d3.csvParse(text);
     const cols = rows.columns;
-
-    // Detect wide format: many season-like columns, and one non-season text col for country names.
+    // Identify season-like headers
     const seasonCols = cols.filter(isSeasonCol);
     const nonSeasonCols = cols.filter(c => !isSeasonCol(c));
 
-    if (seasonCols.length >= 5 && nonSeasonCols.length >= 1){
-      const countryCol = nonSeasonCols[0]; // assume first non-season is country label
+    // Heuristic: treat as WIDE if any season-like columns exist OR if
+    // the first data row contains >5 numeric cells across columns.
+    let wide = false;
+    if (seasonCols.length >= 1) wide = true;
+    else if (rows.length){
+      const first = rows[0];
+      let numericCount = 0;
+      cols.forEach(c => { if (c && cleanNumber(first[c]) > 0) numericCount++; });
+      if (numericCount >= 5) wide = true;
+    }
+
+    if (wide){
+      // pick a likely country column: first non-season col; if empty-string header exists, use that.
+      let countryCol = nonSeasonCols[0] ?? cols[0];
       const long = [];
       rows.forEach(r => {
         const country = mapCountry(r[countryCol]);
@@ -151,14 +166,15 @@
       return { format: 'wide', rows: long };
     }
 
-    // Otherwise assume long
+    // LONG
     const long2 = rows.map(r => {
       const yearRaw = r.year ?? r.Year ?? r.season ?? r.Season ?? r.SEASON ?? r.SeasonYear;
       const year = parseSeasonToYear(yearRaw);
       const countryRaw = r.country ?? r.Country ?? r.nationality ?? r.Nationality ?? r.NATION ?? r.Nation;
+      const country = mapCountry(countryRaw);
       const gamesRaw = r.games ?? r.Games ?? r.GP ?? r.Count ?? r.count ?? r.GamesPlayed ?? r.GAMES;
       const percentRaw = r.percent ?? r.Percent ?? r.share ?? r.Share;
-      const out = { year, country: mapCountry(countryRaw) };
+      const out = { year, country };
       if (percentRaw != null && percentRaw !== '') out.percent = cleanNumber(percentRaw);
       if (gamesRaw != null && gamesRaw !== '') out.games = cleanNumber(gamesRaw);
       return out;
@@ -168,11 +184,8 @@
 
   function toStackData(parsed){
     let rows = parsed.rows;
-    // If we have percentages, use them directly; else compute from games per year
     let usePercent = rows.some(r => typeof r.percent === 'number' && r.percent > 0);
-
     if (!usePercent){
-      // compute totals per year, then percent = games / total * 100
       const byYear = d3.rollup(rows, v => ({
         total: d3.sum(v, d=>cleanNumber(d.games||0))
       }), d=>d.year);
@@ -183,11 +196,9 @@
       });
     }
 
-    // build year list and country list
     const years = Array.from(new Set(rows.map(r => r.year))).filter(y => Number.isFinite(y)).sort((a,b)=>a-b);
     const countries = Array.from(new Set(rows.map(r => r.country))).filter(Boolean);
 
-    // matrix by year with percent normalized [0..1]
     const data = years.map(y => {
       const row = { year: y };
       const byCountry = new Map();

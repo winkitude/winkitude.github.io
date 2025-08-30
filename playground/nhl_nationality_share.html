@@ -19,7 +19,7 @@
     .controls input { border:1px solid rgba(255,255,255,.12); background:#0e1526; color:var(--ink); padding:6px 8px; border-radius:10px; outline:none; font-size:13px; width:120px; }
     .controls input::placeholder { color:#7f8aa6; }
 
-    .chart { width:100%; height:560px; position:relative; }
+    .chart { width:100%; height:620px; position:relative; } /* taller to make room for callouts */
     .axis path, .axis line { stroke: var(--grid); }
     .axis text { fill: var(--muted); font-size: 12px; }
     .areas .area { opacity:.95; transition: opacity .15s ease, filter .15s; }
@@ -33,7 +33,7 @@
     .legend .val { color:var(--muted); font-variant-numeric: tabular-nums; font-size:12px; }
 
     .tooltip { position:absolute; pointer-events:none; z-index:10; background:#0d1220; color:var(--ink); border:1px solid rgba(255,255,255,.1); padding:8px 10px; border-radius:10px; font-size:12px; box-shadow:0 6px 18px rgba(0,0,0,.35); opacity:0; transition:opacity .1s; }
-    .note { color:var(--muted); font-size:12px; margin-top:8px; }
+    .note { color:#97a2ba; font-size:12px; margin-top:8px; }
     .debug { color:#c9d1d9; background:#0e1625; border:1px solid #24314a; border-radius:10px; padding:8px 10px; font-size:12px; margin-top:10px; white-space:pre-wrap; }
 
     .year-marker line { stroke: var(--gridBright); stroke-width: 1.25; }
@@ -43,15 +43,22 @@
 
     /* Lockout bar on top (2005 only) */
     .lockout-bar { fill: #000; }
-    .lockout-text { fill: #fff; font-weight: 700; font-size: 10px; letter-spacing: .6px; }
+    .lockout-text { fill: #fff; font-weight: 700; font-size: 11px; letter-spacing: .6px; }
 
     .toplabel { fill: var(--ink); font-size: 12px; paint-order: stroke; stroke: rgba(0,0,0,.35); stroke-width: 2px; }
+
+    /* Era & event callouts */
+    .era-band { fill: rgba(255,255,255,0.06); stroke: rgba(255,255,255,0.12); }
+    .era-label { fill: #e6ebf5; font-size: 11px; font-weight: 600; }
+    .event-band { fill: rgba(255,255,255,0.04); stroke: rgba(255,255,255,0.12); }
+    .event-line { stroke: rgba(255,255,255,0.6); stroke-width: 1.25; }
+    .event-label { fill: #cfd6e6; font-size: 11px; }
   </style>
 </head>
 <body>
   <div class="wrap">
     <h1>NHL Games by Player Nationality (Share by Year)</h1>
-    <div class="sub">100% stacked by year. Hover anywhere to see values; click a country below to spotlight it. 2005 lockout marked.</div>
+    <div class="sub">100% stacked by year. Hover anywhere to see values; click a country below to spotlight it. 2005 lockout marked, eras & historical events annotated.</div>
     <div class="chart-card">
       <div class="controls">
         <label for="yearSearch">Go to year:</label>
@@ -71,9 +78,23 @@
   // =================== Config & helpers ===================
   const LOCKOUT_YEAR = 2005; // only 2005
   const PALETTE = ["#5B8FF9","#5AD8A6","#5D7092","#F6BD16","#6F5EF9","#6DC8EC","#945FB9","#FF9845","#1E9493","#FF99C3","#FF6B6B","#41C1B2","#B28DFF","#78D3F8","#FFD166","#EF476F","#06D6A0","#118AB2","#8338EC","#3A86FF"];
-  const DASH = "[-–—−]"; // hyphen, en dash, em dash, minus
+  const DASH = "[-–—−]"; // hyphen, en, em, minus
   const debugEl = document.getElementById('debug');
   const log = (txt) => { debugEl.style.display='block'; debugEl.textContent = txt; console.log(txt); };
+
+  // Era callouts (TOP)
+  const ERA_BANDS = [
+    {start:1917, end:1942, label:"Founding (1917–1942)"},
+    {start:1942, end:1967, label:"Original Six era (1942–1967)"},
+    {start:1967, end:1992, label:"Expansion era (1967–1992)"},
+    {start:1992, end:2025, label:"Modern era (1992–2025)"},
+  ];
+  // Historical events (BOTTOM)
+  const BOTTOM_EVENTS = [
+    {type:"band", start:1938, end:1945, label:"WWII (1938–1945)"},
+    {type:"line", year:1991, label:"Dissolution of the USSR"},
+    {type:"line", year:2008, label:"KHL founded"},
+  ];
 
   function isoToFlagEmoji(name){
     const map = {
@@ -92,7 +113,7 @@
   function parseSeasonToYear(value){
     if (value == null) return NaN;
     const s = String(value).trim();
-    if (/^\d{4}$/.test(s)) return +s;
+    if (/^\\d{4}$/.test(s)) return +s;
     const re = new RegExp(`^(\\d{4})\\s*${DASH}\\s*(\\d{2}|\\d{4})$`);
     const m = s.match(re);
     if (m){
@@ -101,30 +122,26 @@
       const endYear = endPart.length === 2 ? (Math.floor(start/100)*100 + +endPart) : +endPart;
       return endYear;
     }
-    const m2 = s.match(/(\d{4})/);
+    const m2 = s.match(/(\\d{4})/);
     return m2 ? +m2[1] : NaN;
   }
-
   function cleanNumber(x){
     if (x == null) return 0;
-    const s = String(x).replace(/[,%\s]/g,'').trim();
+    const s = String(x).replace(/[,%\\s]/g,'').trim();
     const n = parseFloat(s);
     return isNaN(n) ? 0 : n;
   }
-
   function isSeasonCol(name){
     const s = String(name||"").trim();
     const re = new RegExp(`^\\d{4}\\s*${DASH}\\s*(?:\\d{2}|\\d{4})$`);
     return re.test(s);
   }
-
   function detectWide(text){
     const rows = d3.csvParse(text);
     const cols = rows.columns;
     const seasonCols = cols.filter(isSeasonCol);
     const nonSeasonCols = cols.filter(c => !isSeasonCol(c));
     if (seasonCols.length >= 1) return {wide:true, rows, cols, seasonCols, nonSeasonCols};
-    // heuristic: if first row has many numeric-looking cells, treat as wide
     if (rows.length){
       const first = rows[0];
       let numericCount = 0;
@@ -133,7 +150,6 @@
     }
     return {wide:false, rows, cols, seasonCols, nonSeasonCols};
   }
-
   function meltWide(rows, seasonCols, countryCol){
     const out = [];
     rows.forEach(r => {
@@ -149,7 +165,6 @@
     });
     return out;
   }
-
   function parseCSV(text){
     const {wide, rows, cols, seasonCols, nonSeasonCols} = detectWide(text);
     if (wide){
@@ -173,7 +188,6 @@
       return {format:'long', rows: long};
     }
   }
-
   function toStackData(parsed){
     let rows = parsed.rows.filter(r => r.country && Number.isFinite(r.year));
     let usePercent = rows.some(r => typeof r.percent === 'number' && r.percent > 0);
@@ -187,7 +201,6 @@
     }
     const years = Array.from(new Set(rows.map(r => r.year))).filter(y => Number.isFinite(y)).sort((a,b)=>a-b);
     const countries = Array.from(new Set(rows.map(r => r.country))).filter(Boolean);
-
     const data = years.map(y => {
       const row = {year:y};
       const byC = new Map();
@@ -198,7 +211,6 @@
     });
     return {data, years, countries};
   }
-
   async function fetchFirst(paths){
     for(const p of paths){
       try{
@@ -208,12 +220,10 @@
     }
     throw new Error("All CSV fetch attempts failed: "+paths.join(", "));
   }
-
   async function loadText(){
     const candidates = ["2025_NHL_Nationality.csv","2025%20NHL%20Nationality.csv","nhl_nationality_games.csv"];
     return await fetchFirst(candidates);
   }
-
   function colorScale(keys){ const map=new Map(); keys.forEach((k,i)=>map.set(k,PALETTE[i%PALETTE.length])); return k=>map.get(k); }
 
   // =================== Render ===================
@@ -244,7 +254,11 @@
     const container=d3.select('#chart');
     const W=container.node().clientWidth;
     const H=container.node().clientHeight;
-    const margin={top:28,right:100,bottom:34,left:44};
+
+    // Expand margins to allow top & bottom callouts
+    const topCalloutH = 26;   // height for ERA bands above plot
+    const bottomCalloutH = 36; // height for bottom events under plot
+    const margin={top:28+topCalloutH,right:110,bottom:34+bottomCalloutH,left:44};
     const innerW=W-margin.left-margin.right;
     const innerH=H-margin.top-margin.bottom;
 
@@ -274,17 +288,63 @@
       gridTop.append('line').attr('x1',0).attr('x2',innerW).attr('y1',y(v)).attr('y2',y(v));
     });
 
-    // Lockout bar ON TOP: black bar with vertical "lockout" text at 2005
+    // ---------- TOP ERA CALLOUTS (drawn above plot within negative y) ----------
+    const eraG = g.append('g').attr('class','era-callouts');
+    ERA_BANDS.forEach(({start,end,label})=>{
+      const x1 = x(start), x2 = x(end);
+      eraG.append('rect')
+        .attr('class','era-band')
+        .attr('x', Math.min(x1,x2)).attr('y', -topCalloutH+2)
+        .attr('width', Math.abs(x2-x1)).attr('height', topCalloutH-4)
+        .attr('rx', 4);
+      eraG.append('text')
+        .attr('class','era-label')
+        .attr('x', (x1+x2)/2).attr('y', -topCalloutH/2+4)
+        .attr('text-anchor','middle').attr('dominant-baseline','middle')
+        .text(label);
+    });
+
+    // ---------- BOTTOM EVENTS (under plot area) ----------
+    const eventsG = g.append('g').attr('class','bottom-events');
+    // Band event (WWII 1938-1945)
+    BOTTOM_EVENTS.filter(e=>e.type==="band").forEach(({start,end,label})=>{
+      const x1=x(start), x2=x(end);
+      eventsG.append('rect')
+        .attr('class','event-band')
+        .attr('x', Math.min(x1,x2)).attr('y', innerH + 6)
+        .attr('width', Math.abs(x2-x1)).attr('height', bottomCalloutH-12)
+        .attr('rx', 3);
+      eventsG.append('text')
+        .attr('class','event-label')
+        .attr('x', (x1+x2)/2).attr('y', innerH + bottomCalloutH/2 + 2)
+        .attr('text-anchor','middle').attr('dominant-baseline','middle')
+        .text(label);
+    });
+    // Line events (1991, 2008)
+    BOTTOM_EVENTS.filter(e=>e.type==="line").forEach(({year,label})=>{
+      const xx = x(year);
+      eventsG.append('line')
+        .attr('class','event-line')
+        .attr('x1',xx).attr('x2',xx)
+        .attr('y1', innerH + 6).attr('y2', innerH + bottomCalloutH - 6);
+      eventsG.append('text')
+        .attr('class','event-label')
+        .attr('x', xx + 6).attr('y', innerH + bottomCalloutH/2 + 2)
+        .attr('dominant-baseline','middle')
+        .text(`${year}: ${label}`);
+    });
+
+    // ---------- Lockout bar ON TOP with centered vertical label ----------
     const lockX = x(LOCKOUT_YEAR);
     const lockGroup = g.append('g').attr('class','lockout-overlay');
     lockGroup.append('rect').attr('class','lockout-bar')
       .attr('x', lockX-6).attr('y', 0).attr('width', 12).attr('height', innerH);
-    // vertical text (rotated -90 so it reads down the bar)
     lockGroup.append('text').attr('class','lockout-text')
-      .attr('transform', `translate(${lockX+5}, 10) rotate(-90)`)
+      .attr('transform', `translate(${lockX+5}, ${innerH/2}) rotate(-90)`)
+      .attr('text-anchor','middle')
       .text('lockout');
 
-    // Always-on hover marker
+    // ---------- Always-on hover marker ----------
     const marker = g.append('g').attr('class','year-marker').style('display','none');
     marker.append('line').attr('y1',0).attr('y2',innerH);
     const badge = marker.append('g');
@@ -293,7 +353,7 @@
 
     const tooltip=d3.select('#chart').append('div').attr('class','tooltip');
 
-    // Legend (full names + values)
+    // ---------- Legend (full names + values) ----------
     const legend = d3.select('#legend');
     const items = legend.selectAll('.item').data(countries).join('div')
       .attr('class','item')

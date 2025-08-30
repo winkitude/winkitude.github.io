@@ -74,20 +74,6 @@
 const LOCKOUT_YEAR = 2005;
 const PALETTE = ["#5B8FF9","#5AD8A6","#5D7092","#F6BD16","#6F5EF9","#6DC8EC","#945FB9","#FF9845","#1E9493","#FF99C3","#FF6B6B","#41C1B2","#B28DFF","#78D3F8","#FFD166","#EF476F","#06D6A0","#118AB2","#8338EC","#3A86FF"];
 
-// Place near PALETTE
-const COLOR_BY_COUNTRY = {
-  "Canada": "#E63946",
-  "United States": "#1D3557",
-  "Sweden": "#F1C40F",
-  "Finland": "#2ECC71",
-  "Russia": "#E74C3C",
-  "Czech Republic": "#8E44AD",
-  "Slovakia": "#27AE60",
-  "Germany": "#2C3E50",
-  "Switzerland": "#C0392B",
-  // add more overrides...
-};
-
 const DASH = "[-–—−]"; // hyphen, en, em, minus
 const ERA_BANDS = [
   {start:1917, end:1942, label:"Founding (1917–1942)"},
@@ -102,51 +88,19 @@ const BOTTOM_EVENTS = [
   {type:"line", year:2008, label:"2008: KHL founded"},
 ];
 
-// Drop-in replacement for isoToFlagEmoji (handles aliases + missing flags)
 function isoToFlagEmoji(name){
-  if (!name) return "🏒";
-  const n = String(name).trim().toLowerCase();
-
-  // Map of normalized names/aliases → ISO-2
   const map = {
-    // Already-covered basics (kept for completeness)
-    "canada":"CA","united states":"US","usa":"US","u.s.a.":"US","u.s.":"US",
-    "sweden":"SE","finland":"FI","russia":"RU","czech republic":"CZ","czechia":"CZ",
-    "slovakia":"SK","germany":"DE","switzerland":"CH","latvia":"LV","denmark":"DK",
-    "norway":"NO","austria":"AT","france":"FR","united kingdom":"GB","england":"GB",
-    "scotland":"GB","wales":"GB","netherlands":"NL","slovenia":"SI","belarus":"BY",
-    "ukraine":"UA","lithuania":"LT","estonia":"EE","poland":"PL","hungary":"HU",
-    "italy":"IT","spain":"ES","kazakhstan":"KZ", // (was missing in your list)
-    "soviet union":"RU","ussr":"RU","czechoslovakia":"CZ/SK", // special-case below
-    "west germany":"DE","east germany":"DE","serbia and montenegro":"RS",
-    "serbia":"RS","montenegro":"ME","yugoslavia":"RS",
-
-    // NEW: the ones you said are missing
-    "australia":"AU",
-    "uk":"GB","u.k.":"GB","great britain":"GB","britain":"GB",
-    "ireland":"IE","republic of ireland":"IE","eire":"IE",
-    "lebanon":"LB",
-    "japan":"JP",
-    "croatia":"HR",
-    "jamaica":"JM",
-    "south korea":"KR","republic of korea":"KR","korea, south":"KR","korea (south)":"KR","rok":"KR",
-
-    // Extra helpful aliases (optional)
-    "kazakhstan":"KZ", // common misspelling
-    "korea":"KR", // if your data uses just “Korea” and means the south
+    "Canada":"CA","United States":"US","USA":"US",
+    "Sweden":"SE","Russia":"RU","Soviet Union":"RU","Czech Republic":"CZ","Czechia":"CZ","Finland":"FI",
+    "Germany":"DE","Slovakia":"SK","Switzerland":"CH","Latvia":"LV","Denmark":"DK","Norway":"NO","Austria":"AT",
+    "France":"FR","United Kingdom":"GB","England":"GB","Scotland":"GB","Wales":"GB","Slovenia":"SI","Netherlands":"NL",
+    "Belarus":"BY","Ukraine":"UA","Lithuania":"LT","Estonia":"EE","Poland":"PL","Hungary":"HU","Italy":"IT","Spain":"ES"
   };
-
-  // Special-case historical multi-flag (no single emoji exists)
-  if (map[n] === "CZ/SK") return "🇨🇿🇸🇰";
-
-  const iso2 = map[n];
-  if (!iso2 || iso2.length !== 2) return "🏒"; // fallback hockey emoji
-
-  // Turn ISO-2 into a regional-indicator flag emoji
-  const A = 0x1F1E6;
-  return String.fromCodePoint(...[...iso2].map(c => A + c.charCodeAt(0) - 65));
+  const iso2 = map[name] || "";
+  if (!iso2 || iso2.length !== 2) return "🏒";
+  const A=0x1F1E6;
+  return String.fromCodePoint(...[...iso2].map(c=>A+c.charCodeAt(0)-65));
 }
-
 
 function parseSeasonToYear(value){
   if (value == null) return NaN;
@@ -257,28 +211,7 @@ async function loadText(){
   const candidates = ["2025_NHL_Nationality.csv","2025%20NHL%20Nationality.csv","nhl_nationality_games.csv"];
   return await fetchFirst(candidates);
 }
-function colorScale(keys){
-  const map = new Map();
-  let paletteIdx = 0;
-  keys.forEach(k => {
-    if (COLOR_BY_COUNTRY[k]) {
-      map.set(k, COLOR_BY_COUNTRY[k]);
-    } else {
-      map.set(k, PALETTE[paletteIdx % PALETTE.length]);
-      paletteIdx++;
-    }
-  });
-  return k => map.get(k);
-}
-
-function hashColor(str){
-  let h=0; for (let i=0;i<str.length;i++) { h = (h*31 + str.charCodeAt(i))|0; }
-  const hue = Math.abs(h) % 360;
-  return `hsl(${hue},65%,52%)`;
-}
-// ...
-map.set(k, COLOR_BY_COUNTRY[k] || hashColor(k));
-
+function colorScale(keys){ const map=new Map(); keys.forEach((k,i)=>map.set(k,PALETTE[i%PALETTE.length])); return k=>map.get(k); }
 
 /* =================== Render =================== */
 (async function init(){

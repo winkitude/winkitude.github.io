@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Interactive NHL Division Timeline</title>
+  <style>
+    :root { --bg:#0b0d12; --fg:#e9edf2; --muted:#a9b3c1; --accent:#4aa3ff; }
+    html,body{margin:0;height:100%;background:var(--bg);color:var(--fg);font:14px/1.4 system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;}
+    header{position:sticky;top:0;background:linear-gradient(180deg, rgba(11,13,18,.95), rgba(11,13,18,.7));backdrop-filter:saturate(1.2) blur(6px);z-index:5;border-bottom:1px solid rgba(255,255,255,.06)}
+    .wrap{max-width:1100px;margin:0 auto;padding:16px;}
+    h1{font-weight:700;font-size:20px;margin:0 0 6px}
+    .sub{color:var(--muted);font-size:13px;margin-bottom:10px}
+    .controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:8px 0 4px}
+    input[type="search"], textarea{background:#121722;color:var(--fg);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:10px 12px}
+    input[type="search"]{min-width:240px}
+    textarea{width:100%;height:120px;resize:vertical;margin-top:6px}
+    button{background:var(--accent);color:#08101a;border:0;border-radius:8px;padding:10px 12px;font-weight:600;cursor:pointer}
+    button.secondary{background:transparent;color:var(--fg);border:1px solid rgba(255,255,255,.15)}
+    .legend{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+    .pill{border:1px solid rgba(255,255,255,.18);color:var(--muted);border-radius:999px;padding:4px 8px;font-size:12px}
+    .chart{width:100%;overflow:auto;border-top:1px solid rgba(255,255,255,.06)}
+    svg{width:1600px;height:auto;display:block}
+    .lane-label{fill:var(--muted);font-size:12px}
+    .year-tick{stroke:#293040;stroke-width:1}
+    .grid{stroke:#1b2230;stroke-width:1}
+    .team-path{fill:none;stroke:#5aa2ff;stroke-width:2;opacity:.45;cursor:pointer;mix-blend-mode:screen}
+    .team-path:hover{opacity:1;stroke-width:3}
+    .team-path.selected{opacity:1;stroke:#fff;stroke-width:3.25}
+    .team-dot{fill:#e6f0ff;stroke:#0b0d12;stroke-width:1.5}
+    .division-band{fill:transparent}
+    .tooltip{position:absolute;pointer-events:none;background:#0f1420;color:#e9edf2;border:1px solid rgba(255,255,255,.12);padding:8px 10px;border-radius:8px;font-size:12px;box-shadow:0 6px 20px rgba(0,0,0,.25)}
+    .note{color:var(--muted);font-size:12px;margin-top:6px}
+    .kbd{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;background:#0e1320;border:1px solid rgba(255,255,255,.08);border-radius:6px;padding:2px 6px;color:#cde3ff}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <h1>NHL Division Timeline — Interactive</h1>
+      <div class="sub">Hover a line to highlight a team. Click to lock. Use search to filter. Paste or edit data below and press “Update chart”.</div>
+      <div class="controls">
+        <input id="search" type="search" placeholder="Search team… (e.g., Vegas)" />
+        <button id="clear">Clear</button>
+        <span class="note">CSV format: <span class="kbd">team,year,division</span></span>
+      </div>
+      <textarea id="csv"></textarea>
+      <div class="controls">
+        <button id="update">Update chart</button>
+        <button id="download" class="secondary">Download SVG</button>
+      </div>
+      <div class="legend" id="legend"></div>
+    </div>
+  </header>
+
+  <div class="chart wrap">
+    <svg id="svg" viewBox="0 0 1600 600" preserveAspectRatio="xMinYMin meet" aria-label="NHL Division Timeline"></svg>
+  </div>
+
+  <div id="tt" class="tooltip" style="opacity:0;transform:translate(-9999px,-9999px)"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+  <script>
+  // --- Starter dataset (edit inline or paste over via the textarea) ---
+  const DEFAULT_CSV = `team,year,division
+Vegas Golden Knights,2017,Pacific
+Vegas Golden Knights,2018,Pacific
+Vegas Golden Knights,2019,Pacific
+Vegas Golden Knights,2020,Pacific
+Vegas Golden Knights,2021,West
+Vegas Golden Knights,2022,Pacific
+Arizona Coyotes,2011,Pacific
+Arizona Coyotes,2012,Pacific
+Arizona Coyotes,2013,Pacific
+Arizona Coyotes,2014,Pacific
+Arizona Coyotes,2015,Pacific
+Arizona Coyotes,2016,Pacific
+Arizona Coyotes,2017,Pacific
+Arizona Coyotes,2018,Pacific
+Arizona Coyotes,2019,Pacific
+Arizona Coyotes,2020,Pacific
+Arizona Coyotes,2021,West
+Arizona Coyotes,2022,Central
+Detroit Red Wings,2011,Central
+Detroit Red Wings,2012,Central
+Detroit Red Wings,2013,Atlantic
+Detroit Red Wings,2014,Atlantic
+Detroit Red Wings,2015,Atlantic
+Detroit Red Wings,2016,Atlantic
+Detroit Red Wings,2017,Atlantic
+Detroit Red Wings,2018,Atlantic
+Detroit Red Wings,2019,Atlantic
+Detroit Red Wings,2020,Atlantic
+Detroit Red Wings,2021,Central
+Detroit Red Wings,2022,Atlantic
+`;
+
+  const svg = d3.select('#svg');
+  const tooltip = d3.select('#tt');
+  const csvEl = document.getElementById('csv');
+  csvEl.value = DEFAULT_CSV;
+
+  const margin = {top: 40, right: 140, bottom: 40, left: 140};
+  let width = 1600 - margin.left - margin.right;
+  let height = 520 - margin.top - margin.bottom;
+
+  const g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
+  const gridG = g.append('g');
+  const lanesG = g.append('g');
+  const pathsG = g.append('g');
+  const dotsG = g.append('g');
+  const labelsG = g.append('g');
+  const legendEl = document.getElementById('legend');
+
+  // Utility: group by key
+  function groupBy(arr, keyFn){
+    return Array.from(d3.group(arr, keyFn), ([key, values]) => ({key, values}));
+  }
+
+  function parseData(text){
+    const rows = d3.csvParse(text.trim());
+    rows.forEach(r=>{ r.year=+r.year; r.division=r.division.trim(); r.team=r.team.trim(); });
+    return rows;
+  }
+
+  function computeLayout(rows){
+    // Years present
+    const years = Array.from(new Set(rows.map(d=>d.year))).sort(d3.ascending);
+
+    // For each year, collect divisions and fix a stable order
+    const divisionsByYear = new Map();
+    years.forEach(y=>{
+      const divs = Array.from(new Set(rows.filter(d=>d.year===y).map(d=>d.division))).sort((a,b)=>a.localeCompare(b));
+      divisionsByYear.set(y, divs);
+    });
+
+    // Scales
+    const x = d3.scalePoint().domain(years).range([0, width]).padding(0.5);
+    const rowHeight = 40; // lane height
+    const maxDivs = d3.max(years, y => divisionsByYear.get(y).length);
+    height = Math.max(200, maxDivs * rowHeight + 40);
+    svg.attr('viewBox', `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`);
+
+    // Y accessor: depends on year & division
+    function yFor(year, division){
+      const divs = divisionsByYear.get(year);
+      const i = divs.indexOf(division);
+      return i < 0 ? null : i * rowHeight + 10;
+    }
+
+    // Build per-team series as sorted points with (x,y)
+    const byTeam = groupBy(rows, d=>d.team);
+    const series = byTeam.map(({key: team, values})=>{
+      const pts = values.sort((a,b)=>d3.ascending(a.year,b.year)).map(d=>({
+        team,
+        year:d.year,
+        division:d.division,
+        x:x(d.year),
+        y:yFor(d.year, d.division)
+      })).filter(p=>p.y!=null);
+      return {team, points: pts};
+    }).filter(s=>s.points.length>0);
+
+    return {years, divisionsByYear, x, yFor, series, rowHeight, maxDivs};
+  }
+
+  function draw(rows){
+    const { years, divisionsByYear, x, yFor, series, rowHeight } = computeLayout(rows);
+
+    // Clear
+    gridG.selectAll('*').remove();
+    lanesG.selectAll('*').remove();
+    pathsG.selectAll('*').remove();
+    dotsG.selectAll('*').remove();
+    labelsG.selectAll('*').remove();
+
+    // Vertical year grid
+    gridG.selectAll('line.year')
+      .data(years)
+      .join('line')
+      .attr('class','grid')
+      .attr('x1', d=>x(d))
+      .attr('x2', d=>x(d))
+      .attr('y1', -20)
+      .attr('y2', height-10);
+
+    // Year labels
+    labelsG.selectAll('text.year')
+      .data(years)
+      .join('text')
+      .attr('x', d=>x(d))
+      .attr('y', -24)
+      .attr('text-anchor','middle')
+      .attr('fill','#c8d2e3')
+      .attr('font-size',12)
+      .text(d=>d);
+
+    // Division lanes & labels per year
+    years.forEach(year=>{
+      const divs = divisionsByYear.get(year);
+      lanesG.selectAll(`rect.band-${year}`)
+        .data(divs)
+        .join('rect')
+        .attr('class', 'division-band')
+        .attr('x', x(year) - 60)
+        .attr('y', (d,i)=> i*rowHeight - rowHeight/2 + 10)
+        .attr('width', 120)
+        .attr('height', rowHeight)
+        .on('mousemove', (ev, d)=>{
+          showTip(ev, `${d} — ${year}`);
+        })
+        .on('mouseleave', hideTip);
+
+      lanesG.selectAll(`text.label-${year}`)
+        .data(divs)
+        .join('text')
+        .attr('class','lane-label')
+        .attr('x', x(year))
+        .attr('y', (d,i)=> i*rowHeight + 14)
+        .attr('text-anchor','middle')
+        .text(d=>d);
+    });
+
+    // Color scale per team (hash to consistent HSL)
+    function colorForTeam(name){
+      let h=0; for(let i=0;i<name.length;i++){ h=(h*31 + name.charCodeAt(i))>>>0; }
+      return `hsl(${h%360} 80% 60%)`;
+    }
+
+    // Paths
+    const line = d3.line()
+      .x(d=>d.x)
+      .y(d=>d.y)
+      .curve(d3.curveMonotoneX);
+
+    const teamPaths = pathsG.selectAll('path.team-path')
+      .data(series, d=>d.team)
+      .join('path')
+      .attr('class','team-path')
+      .attr('d', d=>line(d.points))
+      .attr('stroke', d=>colorForTeam(d.team))
+      .on('mouseenter', function(ev,d){
+        d3.select(this).classed('hover', true).attr('stroke-width',3).attr('opacity',1);
+        showTip(ev, d.team);
+      })
+      .on('mousemove', (ev,d)=>showTip(ev, d.team))
+      .on('mouseleave', function(){ if(!d3.select(this).classed('selected')) d3.select(this).attr('stroke-width',2).attr('opacity',.45); hideTip(); })
+      .on('click', function(ev,d){
+        const sel = d3.select(this).classed('selected');
+        pathsG.selectAll('.team-path').classed('selected',false).attr('stroke-width',2).attr('opacity',.45);
+        if(!sel){ d3.select(this).classed('selected',true).attr('stroke-width',3.25).attr('opacity',1); }
+      });
+
+    // Dots at each year change
+    dotsG.selectAll('g.team-dots')
+      .data(series)
+      .join('g')
+      .attr('class','team-dots')
+      .each(function(s){
+        d3.select(this).selectAll('circle')
+          .data(s.points)
+          .join('circle')
+          .attr('class','team-dot')
+          .attr('r',3)
+          .attr('cx', p=>p.x)
+          .attr('cy', p=>p.y)
+          .attr('fill', colorForTeam(s.team))
+          .on('mouseenter', (ev,p)=>{ showTip(ev, `${p.team} — ${p.division} (${p.year})`); })
+          .on('mousemove', (ev,p)=>{ showTip(ev, `${p.team} — ${p.division} (${p.year})`); })
+          .on('mouseleave', hideTip);
+      });
+
+    // Legend (divisions present overall)
+    const allDivs = Array.from(new Set(rows.map(d=>d.division))).sort((a,b)=>a.localeCompare(b));
+    legendEl.innerHTML = '';
+    allDivs.forEach(d=>{
+      const span = document.createElement('span');
+      span.className = 'pill';
+      span.textContent = d;
+      legendEl.appendChild(span);
+    });
+
+    // Search filter
+    const search = document.getElementById('search');
+    function applyFilter(){
+      const q = search.value.trim().toLowerCase();
+      teamPaths.attr('display', d => !q || d.team.toLowerCase().includes(q) ? null : 'none');
+      dotsG.selectAll('g.team-dots').attr('display', function(d){
+        const team = d3.select(this).datum();
+        return !q || team.team.toLowerCase().includes(q) ? null : 'none';
+      });
+    }
+    search.oninput = applyFilter;
+    document.getElementById('clear').onclick = ()=>{ search.value=''; applyFilter(); };
+
+    // Download SVG
+    document.getElementById('download').onclick = ()=>{
+      const clone = svg.node().cloneNode(true);
+      const blob = new Blob([`<?xml version="1.0" encoding="UTF-8" standalone="no"?>\n` + clone.outerHTML], {type:'image/svg+xml;charset=utf-8'});
+      const url = URL.createObjectURL(blob);
+      const a = Object.assign(document.createElement('a'), {href:url, download:'nhl-division-timeline.svg'});
+      document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+    };
+  }
+
+  function showTip(ev, html){
+    tooltip.html(html).style('opacity',1);
+    const { clientX:x, clientY:y } = ev;
+    tooltip.style('transform', `translate(${x+14}px, ${y+14}px)`);
+  }
+  function hideTip(){ tooltip.style('opacity',0).style('transform','translate(-9999px,-9999px)'); }
+
+  function updateFromText(){
+    const rows = parseData(csvEl.value);
+    draw(rows);
+  }
+
+  // Hook up update button
+  document.getElementById('update').onclick = updateFromText;
+
+  // Initial render
+  updateFromText();
+  </script>
+</body>
+</html>

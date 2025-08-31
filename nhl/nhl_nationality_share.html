@@ -58,6 +58,21 @@
   @media (max-width: 720px){
     .hide-mobile { display:none !important; }
   }
+
+.substack-embed {
+  display: flex;
+  justify-content: center;
+  margin: 40px 0;
+}
+.substack-embed iframe {
+  border: 1px solid var(--gridBright);
+  background: var(--panel);
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.35);
+}
+
+
+
 </style>
 </head>
 <body>
@@ -389,6 +404,24 @@ if (!isMobile) {
   // Initialize legend with latest year
   updateLegendValues(null);
 })();
+</script>
+
+<div class="substack-embed">
+  <iframe src="https://winkitude.substack.com/embed" 
+          width="480" height="320" 
+          frameborder="0" scrolling="no"></iframe>
+</div>
+
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+  var pageTracker = _gat._getTracker("UA-12840282-3");
+  pageTracker._trackPageview();
+} catch(err) {}
 </script>
 </body>
 </html>

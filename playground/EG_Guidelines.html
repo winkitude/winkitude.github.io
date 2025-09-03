@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Brand Guidelines — Starter</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* =============================
+       Brand Tokens (edit these)
+       ============================= */
+    :root {
+      /* Primary */
+      --eg-navy: #00205B; 
+      --eg-blue-1: #1D4F91; 
+      --eg-blue-2: #3A5DAE; 
+      --eg-cyan: #00A3E0; 
+      --eg-gray-53: #8D9092; 
+
+      /* Secondary (subset; extend as needed) */
+      --eg-aqua: #005A70; 
+      --eg-lightb: #25CCD3; 
+      --eg-purple1: #5F259F; 
+      --eg-purple2: #7D55C7; 
+      --eg-darkgreen: #658D18; 
+      --eg-lightgreen: #97D700; 
+      --eg-dirtygreen: #949300; 
+      --eg-lime: #C4D600; 
+      --eg-gold: #FFCD00; 
+      --eg-brown: #D19000; 
+      --eg-orange1: #FF6900; 
+      --eg-orange2: #DC582A; 
+      --eg-red1: #EF3340; 
+      --eg-red2: #BA0C2F;       
+
+      /* Neutrals */
+      --bg: #ffffff;
+      --ink: #111827;
+      --ink-subtle: #4B5563;
+      --border: #E5E7EB;
+
+      /* Layout */
+      --radius: 16px;
+      --shadow: 0 6px 24px rgba(0,0,0,.08);
+      --maxw: 1200px;
+    }
+
+    /* =============================
+       Base Styles
+       ============================= */
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      color: var(--ink);
+      background: var(--bg);
+      line-height: 1.55;
+    }
+
+    .wrap { display: grid; grid-template-columns: 280px 1fr; min-height: 100vh; }
+    @media (max-width: 900px) { .wrap { grid-template-columns: 1fr; } }
+
+    /* Sidebar */
+    .sidebar {
+      border-right: 1px solid var(--border);
+      padding: 24px; position: sticky; top: 0; height: 100vh; overflow:auto;
+      background: #fafbfc;
+    }
+    @media (max-width: 900px) {
+      .sidebar { position: static; height: auto; }
+    }
+    .brandmark { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+    .brandmark .dot { width: 16px; height: 16px; border-radius: 50%; background: var(--eg-navy); }
+    .brandmark h1 { font-size: 18px; margin: 0; font-weight: 700; letter-spacing:.2px; }
+    .version { color: var(--ink-subtle); font-size: 12px; margin-bottom: 24px; }
+
+    nav a { display:block; padding:10px 12px; margin:4px 0; border-radius:10px; color: var(--ink); text-decoration:none; }
+    nav a:hover { background: rgba(0,32,91,.06); }
+    nav .section-label { margin-top: 18px; font-weight: 700; font-size: 12px; text-transform: uppercase; color: var(--ink-subtle); letter-spacing:.08em; }
+
+    /* Main */
+    main { padding: 32px; max-width: var(--maxw); width: 100%; margin: 0 auto; }
+    header.page {
+      background: linear-gradient(135deg, rgba(0,32,91,.08), transparent 60%);
+      border: 1px solid var(--border);
+      padding: 20px 24px; border-radius: var(--radius); box-shadow: var(--shadow);
+      margin-bottom: 24px;
+    }
+    .crumbs { font-size: 13px; color: var(--ink-subtle); }
+    .crumbs a { color: var(--eg-navy); text-decoration: none; }
+    h2 { margin: 20px 0 8px; font-size: 28px; letter-spacing: .2px; }
+    p.lead { color: var(--ink-subtle); margin-top: 0; }
+
+    /* Cards */
+    .card { border:1px solid var(--border); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); background: #fff; }
+    .grid { display:grid; gap: 16px; }
+    .grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
+    .grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+    @media (max-width: 900px) { .grid.cols-2, .grid.cols-3 { grid-template-columns: 1fr; } }
+
+    .pill { display:inline-block; padding: 2px 8px; font-size: 12px; border-radius: 999px; border:1px solid var(--border); background:#fff; }
+
+    /* Tokens & swatches */
+    .swatch { border-radius: 12px; border:1px solid var(--border); overflow:hidden; }
+    .swatch .chip { height: 80px; }
+    .swatch .meta { padding: 12px; font-size: 13px; display:grid; gap:4px; }
+    .chip.navy { background: var(--eg-navy); }
+    .chip.blue1 { background: var(--eg-blue-1); }
+    .chip.blue2 { background: var(--eg-blue-2); }
+    .chip.cyan { background: var(--eg-cyan); }
+    .chip.gray { background: var(--eg-gray-53); }
+    .chip.aqua { background: var(--eg-aqua); }
+    .chip.lightb { background: var(--eg-lightb); }
+    .chip.purple1 { background: var(--eg-purple1); }
+    .chip.purple2 { background: var(--eg-purple2); }
+    .chip.darkgreen { background: var(--eg-darkgreen); }
+    .chip.lightgreen { background: var(--eg-lightgreen); }
+    .chip.dirtygreen { background: var(--eg-dirtygreen); }
+    .chip.lime { background: var(--eg-lime); }
+    .chip.gold { background: var(--eg-gold); }
+    .chip.brown { background: var(--eg-brown); }
+    .chip.orange1 { background: var(--eg-orange1); }
+    .chip.orange2 { background: var(--eg-orange2); }
+    .chip.red1 { background: var(--eg-red1); }
+    .chip.red2 { background: var(--eg-red2); }
+
+
+    .badge { font-size: 11px; padding: 2px 6px; border-radius:6px; border:1px solid var(--border); }
+    .badge.pass { background: #e8f7ee; border-color:#b5e3c8; }
+    .badge.fail { background: #fde8ea; border-color:#f5c2c7; }
+
+    /* Logo usage blocks */
+    .usage { display:grid; grid-template-columns: 1fr 1fr; gap:16px; }
+    @media (max-width:900px){ .usage{ grid-template-columns: 1fr; } }
+    .do, .dont { border:1px solid var(--border); border-radius: 14px; overflow:hidden; background:#fff; }
+    .do header, .dont header { padding: 8px 12px; font-weight: 700; font-size: 13px; }
+    .do header { background: #e8f7ee; }
+    .dont header { background: #fde8ea; }
+    .do .body, .dont .body { padding: 16px; }
+    .example-box { height: 140px; border:1px dashed var(--border); border-radius: 12px; background: repeating-linear-gradient(45deg,#fafafa,#fafafa 10px,#f2f2f2 10px,#f2f2f2 20px); display:flex; align-items:center; justify-content:center; color: var(--ink-subtle); }
+
+    /* Tables */
+    table { width:100%; border-collapse:collapse; font-size: 14px; }
+    th, td { border-bottom:1px solid var(--border); text-align:left; padding:10px 8px; }
+    th { color: var(--ink-subtle); font-weight:600; }
+
+    /* Footer */
+    footer { margin: 24px 0 60px; color: var(--ink-subtle); font-size: 13px; }
+
+    .btn { display:inline-block; padding:10px 14px; border-radius: 10px; border:1px solid var(--border); text-decoration:none; color: var(--eg-navy); }
+    .btn:visited { color: var(--eg-navy); }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <aside class="sidebar">
+      <div class="brandmark"><span class="dot"></span><h1>Eurasia Group</h1></div>
+      <div class="version">Brand Guidelines • v1.0</div>
+      <nav>
+        <div class="section-label">Start here</div>
+        <a href="#overview">Brand overview</a>
+        <a href="#downloads">Downloads</a>
+        <div class="section-label">Identity</div>
+        <a href="#logo">Logo system</a>
+        <a href="#color">Color palette</a>
+        <a href="#type">Typography</a>
+        <a href="#icons">Iconography</a>
+        <a href="#photo">Photography</a>
+        <div class="section-label">Implementation</div>
+        <a href="#access">Accessibility</a>
+        <a href="#examples">Usage examples</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </aside>
+
+    <main>
+      <header class="page">
+        <div class="crumbs"><a href="#">Home</a> · Brand Guidelines</div>
+        <h2>Brand Guidelines</h2>
+        <p class="lead">A living reference for coworkers and vendors. Use this as the source of truth for assets, usage, and accessibility.</p>
+      </header>
+
+      <section id="overview" class="card">
+        <h3>Brand overview</h3>
+        <p>Eurasia Group is the leading global research and advisory firm. We live in an era of volatility and uncertainty, one that generates both risks and opportunities for businesses and investors. The Eurasia Group logo reflects this view by using the shape of our initials to symbolize a fragmented globe. We are committed to helping clients understand and navigate this changing geopolitical landscape and make better informed decisions in an uncertain world.</p>
+        <p>The idea of "politics first" is central to our work. Politics is the lens through which we view the world and the starting point for our interactions with clients. Much has changed as Eurasia Group has expanded, but the politics first approach—and the commitment to analysis that is free of political bias and the influence of private interests—has not.</p>
+      </section>
+
+    
+
+      <div style="height:16px"></div>
+
+      <section id="logo" class="card">
+        <h3>Logo system</h3>
+        <p>Use the primary logo whenever possible. Maintain clear space equal to half the logomark square on all sides; if the mark is 50px × 50px, the clearance is 25px. Do not modify, distort, or recolor beyond approved variations.</p>
+        <div class="usage" style="margin-top:12px">
+          <div class="do">
+            <header>Do</header>
+            <div class="body">
+              <div class="example-box">Primary logo on white</div>
+              <p>Keep clear space and minimum size intact. Use approved color variations only.</p>
+            </div>
+          </div>
+          <div class="dont">
+            <header>Don't</header>
+            <div class="body">
+              <div class="example-box">Stretched, recolored, or crowded</div>
+              <p>Avoid stretching, drop shadows, outlines, or placing on low‑contrast backgrounds.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div style="height:16px"></div>
+
+      <section id="color" class="card">
+        <h3>Primary color palette</h3>
+        <p>Primary colors are below. Use high‑contrast pairings for text to meet WCAG AA.</p>
+        <div class="grid cols-3" style="margin-top:12px">
+          <div class="swatch">
+            <div class="chip navy"></div>
+            <div class="meta"><strong>Navy</strong><span>HEX #00205B</span><span>RGB: 0 32 91</span><span>CMYK: 100 93 33 32</span><span class="badge pass">Text on white: Pass</span></div>
+          </div>
+          <div class="swatch">
+            <div class="chip blue1"></div>
+            <div class="meta"><strong>Blue 1</strong><span>HEX #1D4F91</span><span>RGB: 29 79 145</span><span>CMYK: 97 77 14 2</span><span class="badge pass">Text on white: Pass</span></div>
+          </div>
+          <div class="swatch">
+            <div class="chip blue2"></div>
+            <div class="meta"><strong>Blue 2</strong><span>HEX #3A5DAE</span><span>RGB: 58 93 174</span><span>CMYK: 85 70 0 0</span><span class="badge pass">Text on white: Pass</span></div>
+          </div>
+          <div class="swatch">
+            <div class="chip cyan"></div>
+            <div class="meta"><strong>Cyan</strong><span>HEX #00A3E0</span><span>RGB: 0 163 224</span><span>CMYK: 80 18 0 0</span><span class="badge fail">Small text on white: Check</span></div>
+          </div>
+          <div class="swatch">
+            <div class="chip gray"></div>
+            <div class="meta"><strong>Gray 53%</strong><span>HEX #8D9092</span><span>RGB: 141 144 146</span><span>CMYK: 0 0 0 53</span><span class="badge fail">Small text on white: Check</span></div>
+          </div></div> </section>
+
+   <div style="height:16px"></div>
+     <section id="color" class="card">
+   <h3>Secondary color palette</h3>
+        <p>Secondary colors are below. Use high‑contrast pairings for text to meet WCAG AA.</p>
+        <div class="grid cols-3" style="margin-top:12px">
+           
+          <div class="swatch">
+            <div class="chip aqua"></div>
+            <div class="meta"><strong></strong><span>HEX: #005A70</span><span>RGB: 0 90 112</span><span>CMYK: 100 55 42 20</span><span class="badge pass">Text on white: Pass</span></div>
+          </div>
+          <div class="swatch">
+            <div class="chip lightb"></div>
+            <div class="meta"><strong></strong><span>HEX: #25CCD3</span><span>RGB: 45 204 211</span><span>CMYK: 63 0 21 0</span><span class="badge pass">Text on white: Pass</span></div>
+          </div>
+          <div class="swatch">
+            <div class="chip purple1"></div>
+            <div class="meta"><strong></strong><span>HEX #5F259F</span><span>RGB: 95 37 159</span><span>CMYK: 76 98 0 2</span><span class="badge fail">Small text on white: Check</span></div>
+          </div>
+          <div class="swatch">
+            <div class="chip purple2"></div>
+            <div class="meta"><strong></strong><span>HEX #7D55C7</span><span>RGB: 125 85 199</span><span>CMYK: 60 72 0 0</span><span class="badge pass">Text on white: Pass</span></div>
+          </div>
+
+          <div class="swatch">
+            <div class="chip darkgreen"></div>
+            <div class="meta"><strong></strong><span>HEX #658D18</span><span>RGB: 101 141 27</span><span>CMYK: 65 26 100 9</span><span class="badge pass">Text on white: Pass</span></div>
+          </div>
+
+          <div class="swatch">
+            <div class="chip lightgreen"></div>
+            <div class="meta"><strong></strong><span>HEX: #97D700</span><span>RGB: 151 215 0</span><span>CMYK: 40 0 100 0</span><span class="badge pass">Text on white: Pass</span></div>
+          </div>
+
+          <div class="swatch">
+            <div class="chip dirtygreen"></div>
+            <div class="meta"><strong></strong><span>HEX #949300</span><span>RGB: 148 147 0</span><span>CMYK: 39 28 100 15</span><span class="badge pass">Text on white: Pass</span></div>
+          </div>
+
+          <div class="swatch">
+            <div class="chip lime"></div>
+            <div class="meta"><strong></strong><span>HEX #C4D600</span><span>RGB: 196 214 0</span><span>CMYK: 29 1 100 0</span><span class="badge pass">Text on white: Pass</span></div>
+          </div>
+
+          <div class="swatch">
+            <div class="chip gold"></div>
+            <div class="meta"><strong></strong><span>HEX #FFCD00</span><span>RGB: 255 205 0</span><span>CMYK: 0 18 100 0</span><span class="badge pass">Text on white: Pass</span></div>
+          </div>
+
+          <div class="swatch">
+            <div class="chip brown"></div>
+            <div class="meta"><strong></strong><span>HEX #D19000</span><span>RGB: 209 144 0</span><span>CMYK: 16 47 100 1</span><span class="badge pass">Text on white: Pass</span></div>
+          </div>
+
+          <div class="swatch">
+            <div class="chip orange1"></div>
+            <div class="meta"><strong></strong><span>HEX #FF6900</span><span>RGB: 255 105 0</span><span>CMYK: 0 65 100 0</span><span class="badge pass">Text on white: Pass</span></div>
+          </div>
+
+          <div class="swatch">
+            <div class="chip orange2"></div>
+            <div class="meta"><strong></strong><span>HEX #DC582A</span><span>RGB: 225 88 41</span><span>CMYK: 7 80 98 1</span><span class="badge pass">Text on white: Pass</span></div>
+          </div>
+          
+          <div class="swatch">
+            <div class="chip red1"></div>
+            <div class="meta"><strong></strong><span>HEX #EF3340</span><span>RGB: 247 50 63</span><span>CMYK: 0 93 75 0</span><span class="badge pass">Text on white: Pass</span></div>
+          </div>
+
+          <div class="swatch">
+            <div class="chip red2"></div>
+            <div class="meta"><strong></strong><span>HEX #BA0C2F</span><span>RGB: 195 0 47</span><span>CMYK: 16 100 87 7</span><span class="badge pass">Text on white: Pass</span></div>
+          </div>
+        </div>
+      </section>
+
+      <div style="height:16px"></div>
+
+      <section id="type" class="card">
+        <h3>Typography</h3>
+        <p>Primary font: Acumin Pro. Alternatives: Industry, Source Serif for editorial accents, Arial/Calibri for generic fallback. Use consistent weight hierarchies and maintain generous line‑height.</p>
+        <table>
+          <thead><tr><th>Role</th><th>Font</th><th>Weights</th><th>Notes</th></tr></thead>
+          <tbody>
+            <tr><td>Headlines</td><td>Acumin Pro</td><td>Bold / Black</td><td>Tight letter‑spacing at large sizes.</td></tr>
+            <tr><td>Body</td><td>Acumin Pro</td><td>Regular / Medium</td><td>16–18px web, 1.5 line‑height.</td></tr>
+            <tr><td>Editorial pull</td><td>Source Serif</td><td>Regular / Bold</td><td>Use sparingly.</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <div style="height:16px"></div>
+
+      <section id="icons" class="card">
+        <h3>Iconography</h3>
+        <p>Use a consistent stroke weight and corner radii. Align to a 24px or 32px grid. Avoid overly detailed metaphors.</p>
+        <div class="usage" style="margin-top:12px">
+          <div class="do">
+            <header>Do</header>
+            <div class="body">
+              <div class="example-box">Grid‑aligned, consistent stroke</div>
+            </div>
+          </div>
+          <div class="dont">
+            <header>Don't</header>
+            <div class="body">
+              <div class="example-box">Random sizes, mixed styles</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div style="height:16px"></div>
+
+      <section id="photo" class="card">
+        <h3>Photography</h3>
+        <p>Favor imagery that conveys clarity amid complexity, with authentic global context. Maintain sufficient contrast for overlaid type.</p>
+      </section>
+
+      <div style="height:16px"></div>
+
+      <section id="access" class="card">
+        <h3>Accessibility</h3>
+        <p>Text on color must meet WCAG AA. Prefer navy or blue‑1 on white for body text. Reserve cyan/gold for accents and large display only. Ensure focus states, alt text, and semantic HTML.</p>
+        <table>
+          <thead><tr><th>Pairing</th><th>Use</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td>Navy on white</td><td>Body text</td><td><span class="badge pass">AA+</span></td></tr>
+            <tr><td>Cyan on white</td><td>Buttons, large headlines</td><td><span class="badge fail">Check size</span></td></tr>
+            <tr><td>Gold on white</td><td>Accents only</td><td><span class="badge fail">Not for body</span></td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <div style="height:16px"></div>
+
+      <section id="examples" class="card">
+        <h3>Usage examples</h3>
+        <div class="grid cols-2">
+          <div class="card">
+            <h4>Email header</h4>
+            <div class="example-box">Hero image + Navy headline</div>
+          </div>
+          <div class="card">
+            <h4>Social tile</h4>
+            <div class="example-box">Navy field + Cyan rule</div>
+          </div>
+        </div>
+      </section>
+
+  <div style="height:16px"></div>
+
+      <section id="downloads" class="card">
+        <h3>Downloads</h3>
+        <p>Everything you need to get started. Keep files versioned and do not rename exports.</p>
+        <div class="grid cols-3" style="margin-top:12px">
+          <a class="btn" href="#">Logos (SVG/PNG)</a>
+          <a class="btn" href="#">Color tokens (ASE/JSON)</a>
+          <a class="btn" href="#">Type specs (PDF)</a>
+        </div>
+      </section>
+
+      <footer>
+        Questions or asset requests? <a href="#" class="pill">Contact Brand</a>
+      </footer>
+    </main>
+  </div>
+</body>
+</html>

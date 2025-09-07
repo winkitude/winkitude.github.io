@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>Ari Winkleman - The Graphic Truth Archive</title>
+  <title>Ari Winkleman - Graphic Truth</title>
   <meta name="description" content="Ari Winkleman">
   <meta name="viewport" content="width=device-width">
   <link rel="shortcut icon" href="favicon.ico">
@@ -12,8 +12,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poltawski+Nowy:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,700;0,800;1,400&display=swap" rel="stylesheet">  
-  
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,700;0,800;1,400&display=swap" rel="stylesheet">
+
   <!-- Styles -->
   <link href="css/normalize.css" rel="stylesheet" />
   <link href="css/grid.css" rel="stylesheet" />
@@ -169,73 +169,52 @@
 <div class="grid_2"></div>
 
       <div class="grid_8 intro">
-       <!-- New compact intro (no portrait, no duplicate headline) -->
-        <h2 class="prelede">The Graphic Truth - Archive</h2>
+      
+        <h2 class="prelede">The Graphic Truth</h2>
         <p class="lede">
-Below you can browse and search through the charts I’ve created over the years—a collection of visuals that turn complex issues into clear, accessible stories. Feel free to explore, reference, or get inspired.   
-</p>   
+The Graphic Truth is GZERO Media’s daily data-driven visual, a quick and sharp way to explain complex global stories through charts and infographics.</p><br><br>
+      
       </div>
 <div class="grid_2"></div>
 
-      <!-- Search bar -->
-      <div class="search-bar grid_12">
-        <input type="text" id="searchInput" placeholder="Search articles...">
-      </div>
-
-      <!-- Responsive grid for articles -->
-      <div id="articles-wrapper" class="grid_12"></div>
-
-      <footer class="grid_12 sticky-footer">
-  <a href="index.html"><p>Back to homepage &rarr;</p></a>
-</footer>
+ <div class="grid_12">  
+<div class="grid_6"><a href="https://www.gzeromedia.com/gzero-north/the-graphic-truth-the-nhl-is-no-longer-dominated-by-canadians"><img src="images/graphic_truth/image_19.png"></a></div>
+     <div class="grid_1"></div>
+     <div class="grid_5"><p>What i did to build this chart</p></div>
     </div>
-  </div>
+ 
+
+
+
+<br> <br>
+<div class="grid_12">  
+    
+     <div class="grid_5"><p>What I did do build this chart</p></div>
+       <div class="grid_1"></div>
+   <div class="grid_6"><a href="https://www.gzeromedia.com/gzero-north/the-graphic-truth-the-nhl-is-no-longer-dominated-by-canadians"><img src="images/graphic_truth/image_19.png"></a></div>
+    </div>
+ </div>
+
+<br> <br>
+ <div class="grid_12">  
+<div class="grid_6"><a href="https://www.gzeromedia.com/gzero-north/the-graphic-truth-the-nhl-is-no-longer-dominated-by-canadians"><img src="images/graphic_truth/image_19.png"></a></div>
+     <div class="grid_1"></div>
+     <div class="grid_5"><p>What i did to build this chart</p></div>
+    </div>
+
+    <br> <br>
+<div class="grid_12">  
+    
+     <div class="grid_5"><p>What I did do build this chart</p></div>
+       <div class="grid_1"></div>
+   <div class="grid_6"><a href="https://www.gzeromedia.com/gzero-north/the-graphic-truth-the-nhl-is-no-longer-dominated-by-canadians"><img src="images/graphic_truth/image_19.png"></a></div>
+    </div>
+ </div>
+
+
 </div>
 
-<script>
-  function renderArticles(data, filter = '') {
-    const wrapper = document.getElementById('articles-wrapper');
-    wrapper.innerHTML = '';
 
-    data
-      .filter(item => 
-  item.headline.toLowerCase().includes(filter.toLowerCase()) ||
-  (Array.isArray(item.keywords) 
-    ? item.keywords.some(k => k.toLowerCase().includes(filter.toLowerCase()))
-    : String(item.keywords).toLowerCase().includes(filter.toLowerCase()))
-)
-
-
-      .forEach(item => {
-        const link = document.createElement('a');
-        link.href = item.article_url;
-        link.target = '_blank';
-
-        const img = document.createElement('img');
-        img.alt = item.headline;
-        img.src = item.image.startsWith('http') ? item.image : `images/graphic_truth/${item.image}`;
-
-        link.appendChild(img);
-        wrapper.appendChild(link);
-      });
-  }
-
-  fetch('articles_data.json')
-    .then(res => res.json())
-    .then(data => {
-      data.sort((a, b) => {
-  const numA = parseInt(a.image.match(/\d+/));
-  const numB = parseInt(b.image.match(/\d+/));
-  return numA - numB;
-});
-
-      renderArticles(data);
-      document.getElementById('searchInput').addEventListener('input', (e) => {
-        renderArticles(data, e.target.value);
-      });
-    })
-    .catch(err => console.error("Error loading articles:", err));
-</script>
 
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-8FK0VXYYGX"></script>

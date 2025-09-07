@@ -229,7 +229,16 @@ h1 {
 
 }
 
-
+@media (max-width: 700px) {
+  .grid_8.intro {
+    width: 100% !important;
+    margin: 0 auto;
+  }
+  /* Remove the empty side columns on mobile */
+  .grid_2 {
+    display: none;
+  }
+}
 
 /* simple clearfix helper */
 .cf::after {

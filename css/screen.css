@@ -259,3 +259,22 @@ h1 {
 .home-tiles > .grid_4:nth-of-type(3n+1) {
   clear: both;
 }
+
+
+/* iOS/Safari-friendly full-width intro */
+@media screen and (max-width: 900px) {
+  /* remove spacer columns */
+  .grid_2 { display: none !important; }
+
+  /* make .grid_8 truly span the row */
+  .grid_8.intro {
+    float: none !important;
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    display: block !important;
+  }
+
+
+
+}

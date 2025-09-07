@@ -9,7 +9,11 @@
   <link rel="shortcut icon" href="../favicon.ico">
 
   <!-- FONTS -->
-  <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Open+Sans:ital,wght@0,300;0,400;0,700;0,800;1,400&display=swap" rel="stylesheet">
+<!-- FONTS -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poltawski+Nowy:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,700;0,800;1,400&display=swap" rel="stylesheet">
 
   <!-- Site Styles (same stack as the rest of the site) -->
   <link href="../css/normalize.css" rel="stylesheet" />
@@ -70,22 +74,35 @@
     .divider { margin: 10px 0 20px; border: 0; border-top: 1px solid #e5e5e5; }
     .note { font: 13px/1.4 'Open Sans', Arial, sans-serif; color:#333; }
 
-        .hed { font-family:'Abril Fatface', serif; font-size:1.5rem; line-height:1.1; }
-          .masthead { text-align:center; margin: 28px 0 8px; }
-    .masthead a { font-family:'Abril Fatface', serif; font-size:3.1rem; text-decoration:none; color:var(--ink); letter-spacing:.5px; }
-    .masthead a:hover { color:var(--accent); }
-     .issuebar { display:flex; gap:12px; justify-content:center; align-items:center; color:var(--muted); font: 700 12px/1 'Open Sans', Arial, sans-serif; letter-spacing:.08em; text-transform:uppercase; padding-bottom:1em }
-    .issuebar .dot { width:4px; height:4px; background:var(--muted); border-radius:50%; display:inline-block; }
+         .masthead{ text-align:center; padding-top: 22px; margin:0 0 6px; }
+    .masthead a{
+      font-family:"Poltawski Nowy", serif;
+      font-size:clamp(28px,3.2vw,40px);
+      text-decoration:none; color:var(--ink); letter-spacing:.2px;
+    }
+    .masthead a:hover{ color:var(--accent); }
+    .issuebar{
+      display:flex; gap:12px; justify-content:center; align-items:center; flex-wrap:wrap;
+      color:var(--muted);
+      font:700 12px/1 'Open Sans', Arial, sans-serif;
+      letter-spacing:.08em; text-transform:uppercase; padding-bottom:.9em;
+    }
+    .issuebar span{ white-space:nowrap; }
+    .issuebar .dot{ width:.45em; height:.45em; background:var(--muted); border-radius:50%; display:inline-block; }
   
-
+:root{
+      --container-pad: 16px;
+      --pad-left: max(var(--container-pad), env(safe-area-inset-left));
+      --pad-right: max(var(--container-pad), env(safe-area-inset-right));
+    }
     
   </style>
 </head>
 <body>
 <div class="container clearfix">
   <div id="content">
-    <div class="grid_12">
-  <div class="masthead"><a href="http://winkitude.com">Ari Winkleman</a></div>
+    <div class="grid_12 cf">
+  <div class="masthead"><a href="../index.html">Ari Winkleman</a></div>
 		 <div class="issuebar" aria-label="issue dateline">
       <span>Information Design</span><span class="dot"></span><span>Branding</span><span class="dot"></span><span>Art direction</span>
     </div>

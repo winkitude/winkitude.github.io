@@ -11,203 +11,190 @@
   <meta name="viewport" content="width=device-width">
   <link rel="shortcut icon" href="favicon.ico" >
 
-
   <!--[if lt IE 9]>
-      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-      <script>window.html5 || document.write('<script src="js/vendor/html5shiv.js"><\/script>')</script>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <script>window.html5 || document.write('<script src="js/vendor/html5shiv.js"><\/script>')</script>
   <![endif]-->
 
+  <!-- FONTS -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poltawski+Nowy:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,700;0,800;1,400&display=swap" rel="stylesheet">
 
-<!-- FONTS -->
-   <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Open+Sans:ital,wght@0,300;0,400;0,700;0,800;1,400&display=swap" rel="stylesheet">
-  
-<!-- Styles -->
+  <!-- Styles -->
   <link href="css/normalize.css" rel="stylesheet" />
   <link href="css/grid.css" rel="stylesheet" />
   <link href="css/screen.css" rel="stylesheet" />
 
-<style>
-  .grid_4 > p { margin-top: 6px; }
+  <style>
+    /* Safe mobile insets so text never hugs the edges */
+    :root{
+      --container-pad: 16px;
+      --pad-left: max(var(--container-pad), env(safe-area-inset-left));
+      --pad-right: max(var(--container-pad), env(safe-area-inset-right));
+    }
+    .container { padding-left: var(--pad-left); padding-right: var(--pad-right); }
 
-  .masthead { text-align:center; margin: 28px 0 8px; }
-    .masthead a { font-family:'Abril Fatface', serif; font-size:3.1rem; text-decoration:none; color:var(--ink); letter-spacing:.5px; }
-    .masthead a:hover { color:var(--accent); }
-.home-tiles {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 36px 16px;   /* 36px between rows, 16px between columns */
-}
-.home-tiles .grid_4 { float: none; width: auto; margin: 0; } /* cancels float grid */
-.home-tiles img { display: block; width: 100%; height: auto; }
-/* Lock copy height to ~3 lines to prevent overlap jitter */
-.home-tiles p { margin-top: 6px; min-height: 3.6em; }
+    /* — Unified header styles (apply the same on every page) — */
+    .masthead{ text-align:center; padding-top: 22px; margin:0 0 6px; }
+    .masthead a{
+      font-family:"Poltawski Nowy", serif;
+      font-size:clamp(28px,3.2vw,40px);
+      text-decoration:none; color:var(--ink); letter-spacing:.2px;
+    }
+    .masthead a:hover{ color:var(--accent); }
+    .issuebar{
+      display:flex; gap:12px; justify-content:center; align-items:center; flex-wrap:wrap;
+      color:var(--muted);
+      font:700 12px/1 'Open Sans', Arial, sans-serif;
+      letter-spacing:.08em; text-transform:uppercase; padding-bottom:.9em;
+    }
+    .issuebar span{ white-space:nowrap; }
+    .issuebar .dot{ width:.45em; height:.45em; background:var(--muted); border-radius:50%; display:inline-block; }
 
+    /* Intro (replaces any old photo/bio/hero blocks) */
+    .intro { padding: 10px 0 6px; margin-bottom: 6px; text-align: center; }
+    .intro .lede {
+      font: 400 clamp(16px, 1.45vw, 19px)/1.5 'Open Sans', Arial, sans-serif;
+      color: var(--ink); max-width: 75ch; margin: 0 auto 6px;
+    }
 
-.home-block{
-  line-height: 1.5em;
-}
+     .intro .prelede {font-family:"Poltawski Nowy", serif;
+      font-size: 35px;}
 
-.overline { font: 700 11px/1 'Open Sans', Arial, sans-serif; color:var(--muted); letter-spacing:.08em; text-transform:uppercase; padding-top:1em }
-    .hed { font-family:'Abril Fatface', serif; font-size:1.35rem; line-height:1.1; margin:6px 0 6px; }
-    .dek { font: 400 14px/1.45 'Open Sans', Arial, sans-serif; color:#2a2a2a; }
+    .intro .meta {
+      font: 700 12px/1.2 'Open Sans', Arial, sans-serif;
+      letter-spacing: .06em; text-transform: uppercase;
+      color: var(--muted); margin: 0 0 8px;
+    }
+    .intro .meta a { color: var(--muted); text-decoration: none; border-bottom: 1px solid rgba(0,0,0,.08); }
+    .intro .meta a:hover { color: var(--ink); border-bottom-color: var(--ink); }
+    .intro .contact {
+      display:flex; justify-content:center; align-items:center; gap:10px;
+      font:700 12px/1 'Open Sans', Arial, sans-serif; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin:0;
+    }
+    .contact-link{ color:var(--muted); text-decoration:none; }
+    .contact-link:hover{ color:var(--ink); }
+    .intro .dot{ width:.45em; height:.45em; background:var(--muted); border-radius:50%; display:inline-block; }
 
-/* create a hard stop after the hero so tiles don't float up beside it */
-.clearfix-break { clear: both; height: 0; }
+    /* Explicitly retire legacy blocks if they still exist */
+    .hero-intro, .photo { display:none !important; }
 
-/* spacing under each tile */
-#content .grid_4 { margin-bottom: 24px; }
+    /* Home tiles */
+    .home-tiles {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 36px 16px;
+    }
+    .home-tiles .grid_4 { float:none; width:auto; margin:0; }
+    .home-tiles img { display:block; width:100%; height:auto; }
+    .home-tiles p { margin-top:6px; min-height:3.6em; }
 
-/* start a new row every 3 tiles */
-#content .grid_4:nth-of-type(3n+1) { clear: left; }
+    .home-block{ line-height:1.5em; }
+    .overline { font:700 12px/1 'Open Sans', Arial, sans-serif; color:var(--muted); letter-spacing:.08em; text-transform:uppercase; padding-top:1em }
+    .hed { font-family:"Poltawski Nowy", serif; font-size:1.5rem; line-height:1.1; margin:6px 0 6px; }
+    .dek { font:400 16px/1.45 'Open Sans', Arial, sans-serif; color:#2a2a2a; }
 
-/* image hygiene */
-#content .grid_4 img { display: block; width: 100%; height: auto; }
+    .clearfix-break { clear: both; height: 0; }
+    #content .grid_4 { margin-bottom: 24px; }
+    #content .grid_4:nth-of-type(3n+1) { clear:left; }
+    #content .grid_4 img { display:block; width:100%; height:auto; }
 
-     .issuebar { display:flex; gap:12px; justify-content:center; align-items:center; color:var(--muted); font: 700 12px/1 'Open Sans', Arial, sans-serif; letter-spacing:.08em; text-transform:uppercase; padding-bottom:1em }
-    .issuebar .dot { width:4px; height:4px; background:var(--muted); border-radius:50%; display:inline-block; }
-
-
-    /* Keep the badges tidy and centered on mobile */
-.issuebar { flex-wrap: wrap; }                 /* allow wrapping */
-.issuebar span { white-space: nowrap; }        /* prevent awkward splits */
-.issuebar .dot {
-  width: .45em; height: .45em;                 /* size the dot relative to text */
-  margin: 0 .6em;                              /* breathing room around the dot */
-}
-
-/* On small screens, just center the line(s) like text */
-@media (max-width: 640px) {
-  .issuebar { display: block; text-align: center; }
-}
-
-
-
-@media (max-width: 1024px) { .home-tiles { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 700px)  { .home-tiles { grid-template-columns: 1fr; } }
-
-</style>
+    @media (max-width: 1024px) { .home-tiles { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 700px)  { .home-tiles { grid-template-columns: 1fr; } }
+  </style>
 </head>
 
 <body>
 <div class="container clearfix">
-	<div id="content">
-		<div class="grid_12 cf">
-			<div class="masthead"><a href="http://winkitude.com">Ari Winkleman</a></div>
-		 <div class="issuebar" aria-label="issue dateline">
-      <span>Information Design</span><span class="dot"></span><span>Branding</span><span class="dot"></span><span>Art direction</span>
-    </div>
-		<hr>
-	
-			<br>
-			
-			<div class="grid_4 photo">
-			<img alt="Portrait of Ari Winkleman" src="images/ari.png">
-				<div id="caption">Photo via Design Dept. 'Design Leadership Fundamentals' workshop</div>
-			</div>
-			
-			
-
-      <div class="grid_7">
-        <p style="font-family:'Open Sans', Gotham, 'Helvetica Neue', Helvetica, Arial, 'sans-serif'; font-size:1.5em; line-height:1.25em ">
-          I’m Ari Winkleman, Lead Designer at <a href="https://eurasiagroup.net" target="_blank">Eurasia Group</a> and Senior Designer at <a href="https://www.gzeromedia.com/u/ari_winkleman_old" target="_blank">GZERO Media</a>. <br><br>
-          My focus is brand identity, information design, and data visualization—turning complicated ideas into clear, impactful visuals.
-          
- <br><br>
-       Please feel free to email me at ariswinkleman {at} gmail {dot} com<br><br>
-        Or you can find me on <a href="https://www.linkedin.com/in/ari-winkleman/" target="_blank">Linkedin</a>.</p> 
+  <div id="content">
+    <div class="grid_12 cf">
+      <div class="masthead"><a href="index.html">Ari Winkleman</a></div>
+      <div class="issuebar" aria-label="issue dateline">
+        <span>Information Design</span><span class="dot"></span><span>Branding</span><span class="dot"></span><span>Art Direction</span>
       </div>
-		
-	</div>
-
- <div class="grid_12"><hr></div>
-<br>
-<!-- add this line -->
-<div class="clearfix-break" aria-hidden="true"></div>
-<div class="home-tiles">
-  <div class="grid_4 home-block">
-    <a href="eg.html"><img src="images/eg/eg_homepage.gif" alt="Eurasia Group projects"></a>
-  
-    <div class="overline">Feature</div>
-          <h2 class="hed">Eurasia Group</h2>
-          <p class="dek">Brand leadership, information design & data viz, templates/tooling, and digital products.</p>
-  </div>
-
-  <div class="grid_4 home-block">
-    <a href="gzero.html"><img alt="GZERO projects" src="images/gzero/gzero_homepage.gif"></a>
-   <div class="overline">Feature</div>
-          <h2 class="hed">GZERO Media</h2>
-          <p class="dek">Brand development, video & brand guidelines, digital products, and The Graphic Truth</p>
-  </div>
+      <hr>
+      <br>
+<div class="grid_2"></div>
+      <div class="grid_8 intro">
+       <!-- New compact intro (no portrait, no duplicate headline) -->
+        <h2 class="prelede">Hi!</h2>
+        <p class="lede">
+         I’m a designer who specializes in information design, brand systems, and creative direction. I take complicated ideas and make them easy to see and understand. Over the years I’ve built tools, templates, and design systems that keep teams moving fast and consistent, while also shaping flagship reports, daily visuals, and events that reach wide audiences.
+       <br><br>
+       Find me on <a href="https://www.linkedin.com/in/ari-winkleman/" target="_blank" >LinkedIn</a> or contact me via <a href="mailto:ariswinkleman@gmail.com">email</a>
+        </p>
+      </div>
+      <div class="grid_2"></div>
+      </div>
    
 
-  <div class="grid_4 home-block">
-    <a href="tr.html"><img alt="Top Risks report project" src="images/top_risks/TR_homepage.png"></a>
-    <div class="overline">Flagship</div>
-          <h2 class="hed">Top Risks</h2>
-          <p class="dek">Annual outlook: Report, charts, launch assets</p>
+    <div class="grid_12"><hr></div>
+    <br>
+
+    <div class="clearfix-break" aria-hidden="true"></div>
+
+    <div class="home-tiles">
+      <div class="grid_4 home-block">
+        <a href="eg.html"><img src="images/eg/eg_homepage.gif" alt="Eurasia Group projects"></a>
+        <div class="overline">Feature</div>
+        <h2 class="hed">Eurasia Group</h2>
+        <p class="dek">Brand leadership, information design &amp; data viz, templates/tooling, and digital products.</p>
+      </div>
+
+      <div class="grid_4 home-block">
+        <a href="gzero.html"><img alt="GZERO projects" src="images/gzero/gzero_homepage.gif"></a>
+        <div class="overline">Feature</div>
+        <h2 class="hed">GZERO Media</h2>
+        <p class="dek">Brand development, video &amp; brand guidelines, digital products, and The Graphic Truth</p>
+      </div>
+
+      <div class="grid_4 home-block">
+        <a href="tr.html"><img alt="Top Risks report project" src="images/top_risks/TR_homepage.png"></a>
+        <div class="overline">Flagship</div>
+        <h2 class="hed">Top Risks</h2>
+        <p class="dek">Annual outlook: report, charts, launch assets</p>
+      </div>
+
+      <div class="grid_4 home-block">
+        <a href="graphictruth.html"><img alt="Graphic Truth project" src="images/graphic_truth/GT_homepage.png"></a>
+        <div class="overline">Daily Charts</div>
+        <h2 class="hed">The Graphic Truth</h2>
+        <p class="dek">Charts, data collection, scraping, and information graphics</p>
+      </div>
+
+      <div class="grid_4 home-block">
+        <a href="guidelines.html"><img alt="Guidelines project" src="images/guidelines/GL_homepage.png"></a>
+        <div class="overline">Resources</div>
+        <h2 class="hed">Guidelines &amp; Systems</h2>
+        <p class="dek">Living standards for brand, charts, and video—used by teams and freelancers</p>
+      </div>
+    </div>
+
+    <div class="grid_12"><hr></div><br>
+
+    <!-- BLOG SECTION -->
+    <div class="grid_12">
+      <h2 style="font-family:'Poltawski Nowy', serif; font-size:1.8em; margin-bottom:16px;">Posts</h2>
+    </div>
+
+    <div class="grid_12 blog-row">
+      <div class="grid_3">
+        <a href="posts/simpsons.html">
+          <img class="blog-thumb" src="images/posts/choo-choo-choose.jpg" alt="Simpsons network project">
+        </a>
+      </div>
+      <div class="grid_8">
+        <div class="overline">Vibe coding</div>
+        <h2 class="hed">The Simpsons Relationship Network</h2>
+        <p class="dek">I’ve been collecting data on Springfield’s charts, drools, and tangled web of relationships… <a href="posts/simpsons.html">Read more</a></p>
+      </div>
+    </div>
   </div>
-  
-
-  <div class="grid_4 home-block">
-    <a href="graphictruth.html"><img alt="Graphic Truth project" src="images/graphic_truth/GT_homepage.png"></a>
-  <div class="overline">Daily Charts</div>
-          <h2 class="hed">The Graphic Truth</h2>
-          <p class="dek">Charts, data collection, scraping, and information graphics</p>
-  </div>
-
-
-  <div class="grid_4 home-block">
-    <a href="guidelines.html"><img alt="Guidelines project" src="images/guidelines/GL_homepage.png"></a>
-  <div class="overline">Resources</div>
-          <h2 class="hed">Guidelines & Systems</h2>
-          <p class="dek">Living standards for brand, charts, and video—used by teams and freelancers</p>
-  </div>
-  
-  </div>
-
-  
-  <div class="grid_12"><hr></div><br>
-
-<!-- BLOG SECTION -->
-<div class="grid_12">
-  <h2 style="font-family:'Abril Fatface', serif; font-size:1.8em; margin-bottom:16px;">
-    Posts
-  </h2>
 </div>
 
-<div class="grid_12 blog-row">
-  <div class="grid_3">
-    <a href="posts/simpsons.html">
-      <img class="blog-thumb" src="images/posts/choo-choo-choose.jpg" alt="Simpsons network project">
-    </a>
-  </div>
-  <div class="grid_8">
-   <div class="overline">Vibe coding</div>
-    <h2 class="hed">The Simpsons Relationship Network</h2>
-  <p class="dek">I’ve been collecting data on Springfield’s charts, drools, and tangled web of relationships… <a href="posts/simpsons.html">Read more</a></p>
-</div>
-  </div>
-</div>
-
-
-
-  
-</div>
-
-
-
-
-<footer class="grid_12">
-</footer>
-
-
-</div>
-
-
-</div>
-
-
-
+<footer class="grid_12"></footer>
 
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-8FK0VXYYGX"></script>
@@ -215,7 +202,6 @@
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-
   gtag('config', 'G-8FK0VXYYGX');
 </script>
 </body>

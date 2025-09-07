@@ -114,6 +114,27 @@
 
     @media (max-width: 1024px) { .home-tiles { grid-template-columns: repeat(2, 1fr); } }
     @media (max-width: 700px)  { .home-tiles { grid-template-columns: 1fr; } }
+
+
+      /* Re-usable card grid like homepage */
+.cards-3up {
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 36px 16px;
+}
+@media (max-width:1024px){ .cards-3up{ grid-template-columns:repeat(2,1fr);} }
+@media (max-width:700px){ .cards-3up{ grid-template-columns:1fr;} }
+
+/* Lock thumbs to a consistent aspect and crop nicely */
+.card .thumb{ position:relative; aspect-ratio:16/10; background:#eee; overflow:hidden; }
+.card .thumb img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+
+/* Tidy text + stabilize heights a bit */
+.card .overline{ font:700 12px/1 'Open Sans',Arial,sans-serif; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); padding-top:1em; }
+.card .title{ font-family:"Poltawski Nowy",serif; font-size:1.5rem; line-height:1.1; margin:6px 0 6px; }
+.card .dek{ font:400 16px/1.45 'Open Sans',Arial,sans-serif; color:#2a2a2a; min-height:3.6em; }
+
+
   </style>
 </head>
 
@@ -145,10 +166,10 @@
        
     </div>
 
-   <!-- <div class="grid_12"><hr></div><br>-->
-
-    <!-- MAJOR PROJECTS HUB (tiles that link to existing case pages) -->
-    <div class="grid_4">
+  <div class="grid_12"><hr></div><br>
+  <div class="grid_12"> 
+  <div class="cards-3up">
+    <div class="card">
       <a href="tr.html">
         <img alt="Top Risks – Case study" src="images/top_risks/TR_homepage.png">
       </a>
@@ -156,14 +177,15 @@
           Flagship annual outlook: Report, charts, launch assets</p>
     </div>
    
-    <div class="grid_4">
+    <div class="card">
       <a href="guidelines.html">
         <img alt="Guidelines – Brand, Chart, Video" src="images/guidelines/GL_homepage.png">
       </a>
       <p><strong>Guidelines & Systems</strong><br>
       Living standards for brand, charts, and video—used by teams and freelancers.</p>
     </div>
-
+    </div>
+</div>
     <div class="grid_12"><hr></div><br>
 
     <!-- INFORMATION DESIGN & DATA VIZ -->

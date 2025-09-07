@@ -230,13 +230,14 @@ h1 {
 }
 
 @media (max-width: 700px) {
+  /* remove the spacer columns so the center can expand */
+  .grid_2 { display: none !important; }
+
+  /* make the intro truly full width on Safari */
   .grid_8.intro {
+    float: none !important;
     width: 100% !important;
-    margin: 0 auto;
-  }
-  /* Remove the empty side columns on mobile */
-  .grid_2 {
-    display: none;
+    margin: 0 !important;
   }
 }
 

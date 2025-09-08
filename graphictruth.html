@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-  <title>Ari Winkleman - The Graphic Truth Archive</title>
-  <meta name="description" content="Ari Winkleman - The Graphic Truth Archive" />
+  <title>Ari Winkleman - The Graphic Truth</title>
+  <meta name="description" content="Ari Winkleman - The Graphic Truth" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <link rel="shortcut icon" href="favicon.ico" />
 
@@ -20,37 +20,54 @@
 
   <!-- Page-local styles -->
   <style>
-    /* Search */
-    .search { padding: 12px 0 0; }
-    .search input[type="text"]{
-      display:block; width:100%;
-      font: 400 16px/1.2 'Open Sans', Arial, sans-serif;
-      padding: 12px 14px; border:1px solid #ccc; border-radius:6px;
+    /* Alternating two-column rows with equal, uncropped images */
+    .gt-rows .row{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:24px;
+      align-items:center;
+      margin-bottom:48px;
     }
-
-    /* Square, responsive gallery */
-    .gallery { padding: 18px 0 70px; } /* bottom pad so sticky footer never overlaps */
-    .gallery .grid{ grid-template-columns: repeat(4, 1fr); gap: 12px; }
-    .tile { display:block; position:relative; border-radius:6px; overflow:hidden; background:#eee; transform: translateZ(0); }
-    .tile::before{ content:""; display:block; aspect-ratio:1/1; }
-    .tile img{
-      position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block;
-      transition: transform .2s ease-in-out;
+    .gt-rows .row .media{
+      display:flex;
+      align-items:center;
+      justify-content:center;
     }
-    .tile:hover img{ transform: scale(1.04); }
-
-    /* Back-home sticky footer */
-    .sticky-foot{
-      position:fixed; left:0; right:0; bottom:0; z-index:1000;
-      background:#fff; border-top:1px solid #ccc;
-      padding:10px 0; text-align:center;
+    .gt-rows .row .media img{
+      width:100%;
+      height:auto;
+      max-height:380px;         /* equal vertical sizing on desktop/tablet */
+      object-fit:contain;       /* show whole image, no crop */
+      background:#f5f5f5;       /* subtle letterbox if aspect ratios differ */
+      border-radius:6px;
+      display:block;
     }
-    .sticky-foot a{ text-decoration:none; color:inherit; font-family:'Open Sans', Arial, sans-serif; }
+    .gt-rows .copy .meta{
+      margin-top:.5rem;
+      font:700 12px/1 'Open Sans', Arial, sans-serif;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      color:#6b6b6b;
+    }
+    /* Alternate sides for even rows */
+    .gt-rows .row:nth-of-type(even) .media{ order:2; }
+    .gt-rows .row:nth-of-type(even) .copy { order:1; }
 
-    /* Responsive columns */
-    @media (max-width: 1200px){ .gallery .grid{ grid-template-columns: repeat(3, 1fr); } }
-    @media (max-width: 900px){  .gallery .grid{ grid-template-columns: repeat(2, 1fr); } }
-    @media (max-width: 520px){  .gallery .grid{ grid-template-columns: 1fr; } }
+    /* Archive button */
+    .cta-archive{ text-align:center; padding:10px 0 36px; }
+    .btn{
+      display:inline-block; padding:10px 16px; border:1px solid #111; border-radius:6px;
+      text-decoration:none; font-weight:700;
+    }
+    .btn:hover{ background:#111; color:#fff; }
+
+    /* Responsive stack */
+    @media (max-width:700px){
+      .gt-rows .row{ grid-template-columns:1fr; }
+      .gt-rows .row .media,
+      .gt-rows .row .copy{ order:unset; }
+      .gt-rows .row .media img{ max-height:none; } /* let images grow naturally on phones */
+    }
   </style>
 </head>
 
@@ -70,100 +87,105 @@
     <!-- Intro -->
     <section class="intro">
       <div class="wrap">
-        <h2 class="prelede">The Graphic Truth — Archive</h2>
+        <h2 class="prelede">The Graphic Truth</h2>
         <p class="lede">
-          Below you can browse and search through the charts I’ve created over the years—a collection of visuals that turn complex issues into clear, accessible stories. Feel free to explore, reference, or get inspired.
+          GZERO Media’s daily data-driven visual — a quick, sharp way to explain complex global stories through charts and infographics. Below are selected pieces and short notes on what I did to build them.
         </p>
       </div>
     </section>
 
     <hr class="rule" />
 
-    <!-- Search -->
-    <section class="search">
+    <!-- Alternating rows: equal-sized media + copy -->
+    <section class="gt-rows">
       <div class="wrap">
-        <label for="searchInput" class="visually-hidden">Search articles</label>
-        <input id="searchInput" type="text" placeholder="Search articles…" autocomplete="off" />
+
+        <!-- Row 1 -->
+        <div class="row">
+          <div class="media">
+            <a href="https://www.gzeromedia.com/gzero-north/the-graphic-truth-the-nhl-is-no-longer-dominated-by-canadians" target="_blank" rel="noopener">
+              <img src="images/graphic_truth/image_19.png" alt="NHL nationality composition over time">
+            </a>
+          </div>
+          <div class="copy">
+            <h3 class="hed">The NHL is no longer dominated by Canadians</h3>
+            <p class="dek">
+              This project began as a personal exploration into the history of the NHL, visualized through the nationalities of its players. The original chart, created over a decade ago, was a static look at how the league’s global footprint evolved.
+              <br><br>
+              In 2023, I revisited the project for GZERO Media. The updated version revealed an even more compelling story: Canada’s enduring dominance, the emergence and decline of hockey powerhouses, and the gradual internationalization of the game.
+              <br><br>
+              <strong>My role</strong><br>
+              I gathered and organized the underlying data, identified the key storylines, and designed the chart to balance clarity with depth. The first iteration was a static visualization; more recently, I developed an <a href="https://winkitude.com/nhl/nhl_nationality_share.html">interactive version</a> that allows readers to explore changes over time and uncover their own insights.
+            </p>
+            <p class="meta">Data sourcing · chart design · interactive build</p>
+          </div>
+        </div>
+
+        <!-- Row 2 -->
+        <div class="row">
+          <div class="media">
+            <a href="https://www.gzeromedia.com/the-graphic-truth-two-different-pandemics-eu-vs-us-coronavirus-cases-spike-28-june" target="_blank" rel="noopener">
+              <img src="images/graphic_truth/image_143.jpg" alt="Chart comparing early US vs EU Covid trajectories">
+            </a>
+          </div>
+          <div class="copy">
+            <h3 class="hed">US vs. EU Pandemic Trajectories</h3>
+            <p class="dek">
+              Early in the pandemic, Ian Bremmer asked for a clear comparison of how the US and EU were managing Covid-19 for his weekly newsletter. I sourced data from the Johns Hopkins dashboard, ran the calculations, and built a simple line chart to track the diverging trends.
+              <br><br>
+              What seemed straightforward quickly became one of our most widely circulated visuals. The chart captured a critical moment — showing just how much worse the US outbreak was compared to Europe — and it resonated far beyond our audience. It even made its way into Biden’s 2020 campaign materials (<a href="images/graphic_truth/covid-stolen.png">European date stamps and all</a>).
+              <br><br><strong>My role</strong><br>
+              Data sourcing · analysis · chart design
+              <br><br><strong>Impact</strong><br>
+              The chart became a viral reference point during the pandemic, demonstrating how even a simple, well-timed visualization can shape the conversation.
+            </p>
+            <p class="meta">Newsletter chart · rapid analysis · high distribution</p>
+          </div>
+        </div>
+
+        <!-- Row 3 -->
+        <div class="row">
+          <div class="media">
+            <a href="https://www.gzeromedia.com/graphic-truth-how-nato-absorbed-its-old-foes" target="_blank" rel="noopener">
+              <img src="images/graphic_truth/image_30.gif" alt="Animated map showing NATO expansion over time">
+            </a>
+          </div>
+          <div class="copy">
+            <h3 class="hed">NATO Expansion Over Time</h3>
+            <p class="dek">
+              To highlight NATO’s growth since its founding, I worked with analysts who gathered the historical data on member states. My task was to transform that information into a clear, compelling visual.
+              <br><br>
+              I designed a map that layered historical and contemporary boundaries, showing when and how each country joined the alliance. To bring the story to life, I built an animated GIF using Illustrator and Photoshop — a simple, shareable format that made the expansion easy to grasp at a glance.
+              <br><br><strong>My role</strong><br>
+              Map design · asset preparation · animation
+              <br><br><strong>Impact</strong><br>
+              The animation distilled decades of geopolitical change into a format that was engaging for a wide audience, and it became a go-to visual for conversations around NATO’s evolving role.
+            </p>
+            <p class="meta">Historical mapping · motion design · editorial explainer</p>
+          </div>
+        </div>
+
       </div>
     </section>
 
-    <!-- Gallery -->
-    <section class="gallery">
+    <hr class="rule" />
+
+    <!-- Archive CTA -->
+    <section class="cta-archive">
       <div class="wrap">
-        <div id="articles" class="grid" aria-live="polite"></div>
+        <a class="btn" href="graphictruth_archive.html">Browse the full archive →</a>
       </div>
     </section>
   </main>
 
   <footer class="site-footer">
     <div class="wrap">
+      <a href="index.html" class="dek">Back to homepage &rarr;</a><br />
       <small class="dek" style="color:#6b6b6b;">&copy; <span id="year"></span> Ari Winkleman</small>
     </div>
   </footer>
 
-  <!-- Sticky back-home -->
-  <div class="sticky-foot">
-    <div class="wrap">
-      <a href="index.html"><p class="dek">Back to homepage &rarr;</p></a>
-    </div>
-  </div>
-
-  <script>
-    // Year
-    document.getElementById('year').textContent = new Date().getFullYear();
-
-    // Render helpers
-    const $grid = document.getElementById('articles');
-    const $q    = document.getElementById('searchInput');
-
-    function render(data, query){
-      const term = (query || "").trim().toLowerCase();
-      $grid.innerHTML = "";
-      const filtered = !term ? data : data.filter(d => {
-        const inHeadline = (d.headline || "").toLowerCase().includes(term);
-        const keys = Array.isArray(d.keywords) ? d.keywords.join(" ") : String(d.keywords || "");
-        const inKeys = keys.toLowerCase().includes(term);
-        return inHeadline || inKeys;
-      });
-
-      for(const item of filtered){
-        const a = document.createElement('a');
-        a.className = 'tile';
-        a.href = item.article_url;
-        a.target = '_blank';
-        a.rel = 'noopener';
-
-        const img = document.createElement('img');
-        img.alt = item.headline || 'Graphic Truth article';
-        img.loading = 'lazy';
-        img.src = (item.image || '').startsWith('http')
-          ? item.image
-          : 'images/graphic_truth/' + (item.image || '');
-
-        a.appendChild(img);
-        $grid.appendChild(a);
-      }
-    }
-
-    // Fetch data and wire search
-    fetch('articles_data.json')
-      .then(r => r.json())
-      .then(data => {
-        // Optional: sort by number inside filename (matches your current behavior)
-        data.sort((a, b) => {
-          const na = parseInt(String(a.image || '').match(/\d+/));
-          const nb = parseInt(String(b.image || '').match(/\d+/));
-          return (isNaN(na)?0:na) - (isNaN(nb)?0:nb);
-        });
-
-        render(data, '');
-        $q.addEventListener('input', (e) => render(data, e.target.value));
-      })
-      .catch(err => {
-        console.error('Error loading articles:', err);
-        $grid.innerHTML = '<p class="dek">Sorry, the archive failed to load.</p>';
-      });
-  </script>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
 
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-8FK0VXYYGX"></script>

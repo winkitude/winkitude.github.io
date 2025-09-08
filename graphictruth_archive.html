@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <title>Ari Winkleman - The Graphic Truth Archive</title>
+  <meta name="description" content="Ari Winkleman - The Graphic Truth Archive" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <link rel="shortcut icon" href="favicon.ico" />
+
+  <!-- FONTS -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poltawski+Nowy:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,700;0,800;1,400&display=swap" rel="stylesheet" />
+
+  <!-- Base styles -->
+  <link href="css/normalize.css" rel="stylesheet" />
+  <link href="css/screen.css?v=10" rel="stylesheet" />
+
+  <!-- Page-local styles -->
+  <style>
+    /* Search */
+    .search { padding: 12px 0 0; }
+    .search input[type="text"]{
+      display:block; width:100%;
+      font: 400 16px/1.2 'Open Sans', Arial, sans-serif;
+      padding: 12px 14px; border:1px solid #ccc; border-radius:6px;
+    }
+
+    /* Square, responsive gallery */
+    .gallery { padding: 18px 0 70px; } /* bottom pad so sticky footer never overlaps */
+    .gallery .grid{ grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .tile { display:block; position:relative; border-radius:6px; overflow:hidden; background:#eee; transform: translateZ(0); }
+    .tile::before{ content:""; display:block; aspect-ratio:1/1; }
+    .tile img{
+      position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block;
+      transition: transform .2s ease-in-out;
+    }
+    .tile:hover img{ transform: scale(1.04); }
+
+    /* Back-home sticky footer */
+    .sticky-foot{
+      position:fixed; left:0; right:0; bottom:0; z-index:1000;
+      background:#fff; border-top:1px solid #ccc;
+      padding:10px 0; text-align:center;
+    }
+    .sticky-foot a{ text-decoration:none; color:inherit; font-family:'Open Sans', Arial, sans-serif; }
+
+    /* Responsive columns */
+    @media (max-width: 1200px){ .gallery .grid{ grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 900px){  .gallery .grid{ grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 520px){  .gallery .grid{ grid-template-columns: 1fr; } }
+  </style>
+</head>
+
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="wrap">
+      <div class="masthead"><a href="index.html">Ari Winkleman</a></div>
+      <div class="issuebar" aria-label="disciplines">
+        <span>Information Design</span><span class="dot"></span><span>Branding</span><span class="dot"></span><span>Art Direction</span>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- Intro -->
+    <section class="intro">
+      <div class="wrap">
+        <h2 class="prelede">The Graphic Truth — Archive</h2>
+        <p class="lede">
+          Below you can browse and search through the charts I’ve created over the years—a collection of visuals that turn complex issues into clear, accessible stories. Feel free to explore, reference, or get inspired.
+        </p>
+      </div>
+    </section>
+
+    <hr class="rule" />
+
+    <!-- Search -->
+    <section class="search">
+      <div class="wrap">
+        <label for="searchInput" class="visually-hidden">Search articles</label>
+        <input id="searchInput" type="text" placeholder="Search articles…" autocomplete="off" />
+      </div>
+    </section>
+
+    <!-- Gallery -->
+    <section class="gallery">
+      <div class="wrap">
+        <div id="articles" class="grid" aria-live="polite"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <small class="dek" style="color:#6b6b6b;">&copy; <span id="year"></span> Ari Winkleman</small>
+    </div>
+  </footer>
+
+  <!-- Sticky back-home -->
+  <div class="sticky-foot">
+    <div class="wrap">
+      <a href="index.html"><p class="dek">Back to homepage &rarr;</p></a>
+    </div>
+  </div>
+
+  <script>
+    // Year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Render helpers
+    const $grid = document.getElementById('articles');
+    const $q    = document.getElementById('searchInput');
+
+    function render(data, query){
+      const term = (query || "").trim().toLowerCase();
+      $grid.innerHTML = "";
+      const filtered = !term ? data : data.filter(d => {
+        const inHeadline = (d.headline || "").toLowerCase().includes(term);
+        const keys = Array.isArray(d.keywords) ? d.keywords.join(" ") : String(d.keywords || "");
+        const inKeys = keys.toLowerCase().includes(term);
+        return inHeadline || inKeys;
+      });
+
+      for(const item of filtered){
+        const a = document.createElement('a');
+        a.className = 'tile';
+        a.href = item.article_url;
+        a.target = '_blank';
+        a.rel = 'noopener';
+
+        const img = document.createElement('img');
+        img.alt = item.headline || 'Graphic Truth article';
+        img.loading = 'lazy';
+        img.src = (item.image || '').startsWith('http')
+          ? item.image
+          : 'images/graphic_truth/' + (item.image || '');
+
+        a.appendChild(img);
+        $grid.appendChild(a);
+      }
+    }
+
+    // Fetch data and wire search
+    fetch('articles_data.json')
+      .then(r => r.json())
+      .then(data => {
+        // Optional: sort by number inside filename (matches your current behavior)
+        data.sort((a, b) => {
+          const na = parseInt(String(a.image || '').match(/\d+/));
+          const nb = parseInt(String(b.image || '').match(/\d+/));
+          return (isNaN(na)?0:na) - (isNaN(nb)?0:nb);
+        });
+
+        render(data, '');
+        $q.addEventListener('input', (e) => render(data, e.target.value));
+      })
+      .catch(err => {
+        console.error('Error loading articles:', err);
+        $grid.innerHTML = '<p class="dek">Sorry, the archive failed to load.</p>';
+      });
+  </script>
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8FK0VXYYGX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-8FK0VXYYGX');
+  </script>
+</body>
+</html>

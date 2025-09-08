@@ -1,22 +1,22 @@
 <!DOCTYPE html>
-<html class="no-js">
+<html lang="en" class="no-js">
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>Ari Winkleman - Top Risks</title>
-  <meta name="description" content="Ari Winkleman">
-  <meta name="viewport" content="width=device-width">
-  <link rel="shortcut icon" href="favicon.ico">
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <title>Ari Winkleman — Top Risks</title>
+  <meta name="description" content="Ari Winkleman" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <link rel="shortcut icon" href="favicon.ico" />
 
-  <!-- Fonts -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poltawski+Nowy:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,700;0,800;1,400&display=swap" rel="stylesheet">
-  <!-- Core Styles (original framework) -->
+  <!-- FONTS -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poltawski+Nowy:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,700;0,800;1,400&display=swap" rel="stylesheet" />
+
+  <!-- Base styles -->
   <link href="css/normalize.css" rel="stylesheet" />
-  <link href="css/grid.css" rel="stylesheet" />
-  <link href="css/screen.css" rel="stylesheet" />
+  <link href="css/screen.css?v=10" rel="stylesheet" />
 
   <!-- Preload cover images 2016–2025 -->
   <link rel="preload" as="image" href="images/top_risks/2016TR.png">
@@ -30,635 +30,455 @@
   <link rel="preload" as="image" href="images/top_risks/2024TR.png">
   <link rel="preload" as="image" href="images/top_risks/2025TR.png">
 
+  <!-- Page-local styles -->
   <style>
-   /* ── Layout & grid tweaks (keeps original framework) ───────────────────────── */
-#content { max-width: 1000px; margin: 0 auto; }
+    /* Covers grid */
+    .covers .grid { grid-template-columns: repeat(5, 1fr); gap: 18px; }
+    @media (max-width: 1024px){ .covers .grid { grid-template-columns: repeat(4, 1fr); } }
+    @media (max-width: 750px){  .covers .grid { grid-template-columns: repeat(2, 1fr); } }
 
-.tr-covers { margin-top: 10px; }
-/* 5-up on desktop with your float grid */
-.tr-covers .tr-cover.grid_2 { width: 18%; }
-
-/* ── Cover cards ───────────────────────────────────────────────────────────── */
-.cover-card {
-  position: relative;
-  display: block;
-  overflow: hidden;
-  border-radius: 4px;
-}
-.cover-card img { width: 100%; height: auto; display: block; }
-
-.year-tag {
-  position: absolute;
-  left: 6px;
-  bottom: 6px;
-  font-family: 'Open Sans', Arial, sans-serif;
-  font-size: 12px;
-  line-height: 1;
-  letter-spacing: .02em;
-  background: rgba(255,255,255,0.9);
-  color: #000;
-  border: 1px solid #e5e5e5;
-  border-radius: 3px;
-  padding: 4px 6px;
-  pointer-events: none;
-}
-
-.view-report {
-  position: absolute;
-  right: 6px;
-  top: 6px;
-  font-family: 'Open Sans', Arial, sans-serif;
-  font-size: 11px;
-  line-height: 1;
-  background: rgba(255,255,255,0.95);
-  color: #000;
-  border: 1px solid #e5e5e5;
-  border-radius: 3px;
-  padding: 4px 6px;
-  text-decoration: none;
-}
-.view-report:focus,
-.view-report:hover { text-decoration: underline; }
-
-.section-label {
-  font-family: 'Open Sans', Arial, sans-serif;
-  font-size: 1.2em;
-  font-weight: 700;
-  margin: 20px 0 8px;
-}
-.open-lb {
-  display: inline-block;
-  margin: 10px 0 6px;
-  font-family: 'Open Sans', Arial, sans-serif;
-  font-size: 13px;
-  text-decoration: underline;
-}
-
-/* ── Lightbox container (white sheet) ─────────────────────────────────────── */
-.lb-overlay {
-  position: fixed; inset: 0;
-  background: rgba(255,255,255,0.98);
-  display: none;
-  align-items: center; justify-content: center;
-  z-index: 9999;
-}
-.lb-overlay[aria-hidden="false"] { display: flex; }
-
-.lb-dialog {
-  width: 92vw; 
-  max-width: 980px;
-  max-height: 92vh; 
-  display: flex; 
-  flex-direction: column;
-  border: 1px solid #e5e5e5;
-  border-radius: 8px;
-  background: #fff;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-  position: relative;
-  overflow: auto;          /* allow scrolling if content exceeds height */
-}
-
-
-
-
-.lb-header {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 10px 14px;
-  border-bottom: 1px solid #eee;
-  font-family: 'Open Sans', Arial, sans-serif;
-}
-.lb-title { font-size: 14px; font-weight: 700; }
-.lb-close {
-  background: none; border: 0; font-size: 20px; cursor: pointer;
-  line-height: 1; padding: 4px 6px;
-}
-
-/* ── Lightbox body (flex) + media pane safe sizing ────────────────────────── */
-.lb-body {
-  display: flex;
-  gap: 16px;
-  padding: 14px;
-  overflow: auto;          /* instead of hidden */
-}
-.lb-media {
-  flex: 1 1 0;
-  min-width: 0;                 /* allow shrink so it won't overlap sidebar */
-  min-height: 48vh;             /* ensures visible area before image loads */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  touch-action: pan-y;          /* vertical scrolling allowed; capture horizontal swipes */
-}
-.lb-media img {
-  display: block;
-  max-width: 100%;
-  height: auto;
-  max-height: 70vh;
-  object-fit: contain;
-  border: 1px solid #eee;
-  border-radius: 4px;
-  background: #fff;
-  visibility: hidden;           /* revealed when onload fires (JS adds .is-ready) */
-}
-.lb-media img.is-ready { visibility: visible; }
-
-.lb-meta {
-  flex: 0 0 250px;
-  min-width: 0;
-  font-family: 'Open Sans', Arial, sans-serif;
-  font-size: 14px; line-height: 1.4;
-  overflow: auto;
-  max-height: calc(92vh - 110px);
-}
-.lb-meta .lb-year { font-weight: 800; margin-bottom: 6px; }
-.lb-meta .lb-blurb { font-size: 13px; color: #333; margin: 8px 0 12px; }
-.lb-meta .lb-link {
-  display: inline-block; margin-top: 6px;
-  text-decoration: underline; font-weight: 700;
-}
-
-/* ── Thumbnails ───────────────────────────────────────────────────────────── */
-.lb-thumbs {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 6px;
-  margin-top: 12px;
-  -webkit-overflow-scrolling: touch;
-}
-.lb-thumbs img {
-  width: 100%; height: 80px; object-fit: cover;
-  border: 1px solid #eee; border-radius: 6px; cursor: pointer;
-  touch-action: manipulation;
-}
-.lb-thumbs img.active { outline: 2px solid #111; }
-
-/* ── Optional nav arrows (positioned over sheet) ─────────────────────────── */
-.lb-nav {
-  position: absolute; inset: 0; pointer-events: none;
-  display: flex; align-items: center; justify-content: space-between;
-}
-.lb-nav button {
-  pointer-events: auto;
-  background: rgba(0,0,0,0.04);
-  border: 1px solid #ddd;
-  width: 36px; height: 36px; border-radius: 18px;
-  margin: 10px;
-  cursor: pointer;
-}
-
-/* ── iOS dynamic viewport tweak ───────────────────────────────────────────── */
-@supports (height: 1dvh) {
-  .lb-media { min-height: 52dvh; }
-  .lb-media img { max-height: 72dvh; }
-}
-
-/* ── Responsive (aligns with your screen.css breakpoints) ─────────────────── */
-@media screen and (max-width: 1024px) {
-  .tr-covers .tr-cover.grid_2 { width: 23.5%; } /* ~4-up on tablet */
-}
-@media screen and (max-width: 750px) {
-  .tr-covers .tr-cover.grid_2 { width: 48%; }   /* 2-up on phones */
-  .lb-body { flex-direction: column; }
-  .lb-meta { flex-basis: auto; max-height: none; }
-  .lb-media img { max-height: 56vh; }
-}
-
- /* Safe mobile insets so text never hugs the edges */
-    :root{
-      --container-pad: 16px;
-      --pad-left: max(var(--container-pad), env(safe-area-inset-left));
-      --pad-right: max(var(--container-pad), env(safe-area-inset-right));
+    .cover-card { position: relative; display:block; border-radius:6px; overflow:hidden; background:#f5f5f5; }
+    .cover-card img { display:block; width:100%; height:auto; }
+    .year-tag {
+      position:absolute; left:6px; bottom:6px;
+      font: 12px/1 'Open Sans', Arial, sans-serif; letter-spacing:.02em;
+      background: rgba(255,255,255,.92); color:#000; border:1px solid #e5e5e5; border-radius:3px; padding:4px 6px; pointer-events:none;
     }
-    .container { padding-left: var(--pad-left); padding-right: var(--pad-right); }
-
-    /* — Unified header styles (apply the same on every page) — */
-    .masthead{ text-align:center; padding-top: 22px; margin:0 0 6px; }
-    .masthead a{
-      font-family:"Poltawski Nowy", serif;
-      font-size:clamp(28px,3.2vw,40px);
-      text-decoration:none; color:var(--ink); letter-spacing:.2px;
+    .view-report {
+      position:absolute; right:6px; top:6px;
+      font: 11px/1 'Open Sans', Arial, sans-serif;
+      background: rgba(255,255,255,.95); color:#000; border:1px solid #e5e5e5; border-radius:3px; padding:4px 6px;
+      text-decoration:none;
     }
-    .masthead a:hover{ color:var(--accent); }
-    .issuebar{
-      display:flex; gap:12px; justify-content:center; align-items:center; flex-wrap:wrap;
-      color:var(--muted);
-      font:700 12px/1 'Open Sans', Arial, sans-serif;
-      letter-spacing:.08em; text-transform:uppercase; padding-bottom:.9em;
+    .view-report:hover { text-decoration: underline; }
+
+    .section-label { font-family: 'Open Sans', Arial, sans-serif; font-size:1.2em; font-weight:700; margin: 20px 0 8px; }
+
+    /* Lightbox */
+    .lb-overlay { position:fixed; inset:0; background:rgba(255,255,255,.98); display:none; align-items:center; justify-content:center; z-index:9999; }
+    .lb-overlay[aria-hidden="false"]{ display:flex; }
+    .lb-dialog {
+      width:92vw; max-width:980px; max-height:92vh;
+      display:flex; flex-direction:column;
+      border:1px solid #e5e5e5; border-radius:8px; background:#fff; box-shadow:0 10px 30px rgba(0,0,0,.08); position:relative; overflow:auto;
     }
-    .issuebar span{ white-space:nowrap; }
-    .issuebar .dot{ width:.45em; height:.45em; background:var(--muted); border-radius:50%; display:inline-block; }
+    .lb-header { display:flex; align-items:center; justify-content:space-between; padding:10px 14px; border-bottom:1px solid #eee; font-family:'Open Sans', Arial, sans-serif; }
+    .lb-title { font-size:14px; font-weight:700; }
+    .lb-close { background:none; border:0; font-size:20px; cursor:pointer; line-height:1; padding:4px 6px; }
 
-    /* Intro (replaces any old photo/bio/hero blocks) */
-    .intro { padding: 10px 0 6px; margin-bottom: 6px; text-align: center; }
-    .intro .lede {
-      font: 400 clamp(16px, 1.45vw, 19px)/1.5 'Open Sans', Arial, sans-serif;
-      color: var(--ink); max-width: 75ch; margin: 0 auto 6px;
+    .lb-body { display:flex; gap:16px; padding:14px; overflow:auto; }
+    .lb-media { flex:1 1 0; min-width:0; min-height:48vh; display:flex; align-items:center; justify-content:center; overflow:hidden; touch-action: pan-y; }
+    .lb-media img { display:block; max-width:100%; height:auto; max-height:70vh; object-fit:contain; border:1px solid #eee; border-radius:4px; background:#fff; visibility:hidden; }
+    .lb-media img.is-ready { visibility:visible; }
+
+    .lb-meta { flex:0 0 250px; min-width:0; font:14px/1.4 'Open Sans', Arial, sans-serif; overflow:auto; max-height:calc(92vh - 110px); }
+    .lb-meta .lb-year { font-weight:800; margin-bottom:6px; }
+    .lb-meta .lb-blurb { font-size:13px; color:#333; margin:8px 0 12px; }
+    .lb-link { display:inline-block; margin-top:6px; text-decoration:underline; font-weight:700; }
+
+    .lb-thumbs { display:grid; grid-template-columns:repeat(3,1fr); gap:6px; margin-top:12px; -webkit-overflow-scrolling:touch; }
+    .lb-thumbs img { width:100%; height:80px; object-fit:cover; border:1px solid #eee; border-radius:6px; cursor:pointer; touch-action:manipulation; }
+    .lb-thumbs img.active { outline:2px solid #111; }
+
+    .lb-nav { position:absolute; inset:0; pointer-events:none; display:flex; align-items:center; justify-content:space-between; }
+    .lb-nav button { pointer-events:auto; background:rgba(0,0,0,.04); border:1px solid #ddd; width:36px; height:36px; border-radius:18px; margin:10px; cursor:pointer; }
+
+    @supports (height: 1dvh) {
+      .lb-media { min-height:52dvh; }
+      .lb-media img { max-height:72dvh; }
     }
-    .intro .prelede {font-family:"Poltawski Nowy", serif;
-      font-size: 35px;}
-    .intro .meta {
-      font: 700 12px/1.2 'Open Sans', Arial, sans-serif;
-      letter-spacing: .06em; text-transform: uppercase;
-      color: var(--muted); margin: 0 0 8px;
+    @media (max-width: 750px){
+      .lb-body { flex-direction:column; }
+      .lb-meta { flex-basis:auto; max-height:none; }
+      .lb-media img { max-height:56vh; }
     }
-    .intro .meta a { color: var(--muted); text-decoration: none; border-bottom: 1px solid rgba(0,0,0,.08); }
-    .intro .meta a:hover { color: var(--ink); border-bottom-color: var(--ink); }
-    .intro .contact {
-      display:flex; justify-content:center; align-items:center; gap:10px;
-      font:700 12px/1 'Open Sans', Arial, sans-serif; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin:0;
-    }
-    .contact-link{ color:var(--muted); text-decoration:none; }
-    .contact-link:hover{ color:var(--ink); }
-    .intro .dot{ width:.45em; height:.45em; background:var(--muted); border-radius:50%; display:inline-block; }
-
-    /* Explicitly retire legacy blocks if they still exist */
-    .hero-intro, .photo { display:none !important; }
-
-    /* Home tiles */
-    .home-tiles {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 36px 16px;
-    }
-    .home-tiles .grid_4 { float:none; width:auto; margin:0; }
-    .home-tiles img { display:block; width:100%; height:auto; }
-    .home-tiles p { margin-top:6px; min-height:3.6em; }
-
-    .home-block{ line-height:1.5em; }
-    .overline { font:700 12px/1 'Open Sans', Arial, sans-serif; color:var(--muted); letter-spacing:.08em; text-transform:uppercase; padding-top:1em }
-    .hed { font-family:"Poltawski Nowy", serif; font-size:1.5rem; line-height:1.1; margin:6px 0 6px; }
-    .dek { font:400 16px/1.45 'Open Sans', Arial, sans-serif; color:#2a2a2a; }
-
-    .clearfix-break { clear: both; height: 0; }
-    #content .grid_4 { margin-bottom: 24px; }
-    #content .grid_4:nth-of-type(3n+1) { clear:left; }
-    #content .grid_4 img { display:block; width:100%; height:auto; }
-
-    @media (max-width: 1024px) { .home-tiles { grid-template-columns: repeat(2, 1fr); } }
-    @media (max-width: 700px)  { .home-tiles { grid-template-columns: 1fr; } }  </style>
+  </style>
 </head>
 
 <body>
-<div class="container clearfix">
-  <div id="content">
-    <div class="grid_12">
-        <div class="masthead"><a href="index.html">Ari Winkleman</a></div>
-		 <div class="issuebar" aria-label="issue dateline">
-      <span>Information Design</span><span class="dot"></span><span>Branding</span><span class="dot"></span><span>Art direction</span>
-    </div>
-      
-      <br>
+  <a class="skip" href="#main">Skip to content</a>
 
-     <div class="grid_2"></div>
- <div class="grid_8 intro">
-       <!-- New compact intro (no portrait, no duplicate headline) -->
+  <header class="site-header">
+    <div class="wrap">
+      <div class="masthead"><a href="index.html">Ari Winkleman</a></div>
+      <div class="issuebar" aria-label="disciplines">
+        <span>Information Design</span><span class="dot"></span><span>Branding</span><span class="dot"></span><span>Art Direction</span>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- Intro -->
+    <section class="intro">
+      <div class="wrap">
         <h2 class="prelede">Top Risks</h2>
         <p class="lede">
-          Top Risks is Eurasia Group’s biggest project of the year. Tens of thousands read the report, and millions more see its charts and graphics on TV and online.</p> <br><br>
-          <p>Every January, we launch it as the year kicks off. Research and writing start in the fall, but design only gets the green light about four weeks before publication. That window keeps shrinking because the world doesn’t slow down—major global events are happening more often, constantly shifting the main themes and changing the story right up to the finish line. <br><br>
-          I lead the creative direction and manage the entire design process—coordinating charts, layouts, photo collages, marketing campaigns, and event graphics. I keep the brand and vision consistent across every asset, consult on all major visuals, and design many of them myself. The work ranges from big-picture decisions to the smallest design details that make the final product hold together.
+          Top Risks is Eurasia Group’s biggest project of the year. Tens of thousands read the report, and millions more see its charts and graphics on TV and online.
+          Every January, we launch it as the year kicks off. Research and writing start in the fall, but design only gets the green light about four weeks before publication. That window keeps shrinking because the world doesn’t slow down—major global events are happening more often, constantly shifting the main themes and changing the story right up to the finish line.
+          I lead the creative direction and manage the entire design process—coordinating charts, layouts, photo collages, marketing campaigns, and event graphics. I keep the brand and vision consistent across every asset, consult on all major visuals, and design many of them myself.
         </p>
       </div>
-    <div class="grid_2"></div>
+    </section>
+
+    <hr class="rule" />
+
+    <!-- Covers grid -->
+    <section class="covers">
+      <div class="wrap">
+        <div class="grid">
+          <!-- 2016 -->
+          <article class="card">
+            <a href="#" class="cover-card"
+               data-year="2016"
+               data-report="https://www.eurasiagroup.net/issues/top-risks-2016"
+               data-images="TopRisks-2016_1.png|2016 Top Risks report cover,TopRisks-2016_Spread1.png|Spread on the 5th Risk,TopRisks-2016_Spread2.png|Spread on the 4th risk,TopRisks-2016_Spread3.png|Chart of where ISIS inspired killings happened">
+              <img src="images/top_risks/2016TR.png" alt="Top Risks 2016 cover" loading="lazy" />
+              <span class="year-tag">2016</span>
+              <span class="view-report" title="View report" aria-label="View report" data-link>View report</span>
+            </a>
+          </article>
+
+          <!-- 2017 -->
+          <article class="card">
+            <a href="#" class="cover-card"
+               data-year="2017"
+               data-report="https://www.eurasiagroup.net/issues/top-risks-2017"
+               data-images="TopRisks-2017_1.png|2017 Top Risks report cover,TopRisks-2017_Spread1.png|Spread on the first risk,TopRisks-2017_Spread2.png|Spread on the 6th risk,TopRisks-2017_Spread3.png|Chart on North Korea's weapons program from 2013-2016,TopRisks-2017_Spread4.png|Timeline on Erdogan's march toward consolidation of power">
+              <img src="images/top_risks/2017TR.png" alt="Top Risks 2017 cover" loading="lazy" />
+              <span class="year-tag">2017</span>
+              <span class="view-report" title="View report" aria-label="View report" data-link>View report</span>
+            </a>
+          </article>
+
+          <!-- 2018 -->
+          <article class="card">
+            <a href="#" class="cover-card"
+               data-year="2018"
+               data-report="https://www.eurasiagroup.net/issues/top-risks-2018"
+               data-images="TopRisks-2018_1.png|2018 Top Risks report cover,TopRisks-2018_Spread1.png|Spread on the first risk,TopRisks-2018_Spread2.png|Spread on the sixth risk,TopRisks-2018_Spread3.png|Chart of Mexican Pesos per dollar over three elections (2000, 2006, 2012),TopRisks-2018_Spread4.png|Infographic on the global tech cold war between the US and China">
+              <img src="images/top_risks/2018TR.png" alt="Top Risks 2018 cover" loading="lazy" />
+              <span class="year-tag">2018</span>
+              <span class="view-report" title="View report" aria-label="View report" data-link>View report</span>
+            </a>
+          </article>
+
+          <!-- 2019 -->
+          <article class="card">
+            <a href="#" class="cover-card"
+               data-year="2019"
+               data-report="https://www.eurasiagroup.net/issues/top-risks-for-2019"
+               data-images="TopRisks-2019_1.png|2019 Top Risks report cover,TopRisks-2019_Spread1.png|Spread of the second risk,TopRisks-2019_Spread2.png|Spread of the 8th risk,TopRisks-2019_Spread3.png|Collage for the 8th risk on Mexico featuring AMLO and a stock line,TopRisks-2019_Spread4.png|Collage from the second risk where Trump and Xi are shaking hands,TopRisks-2019_Spread5.png|Decision tree on who you should vote for in the Nigeria election-Buhari or Atiku,TopRisks-2019_Spread6.png|Map of incidents in the Kerch Strait between Ukraine and Russia">
+              <img src="images/top_risks/2019TR.png" alt="Top Risks 2019 cover" loading="lazy" />
+              <span class="year-tag">2019</span>
+              <span class="view-report" title="View report" aria-label="View report" data-link>View report</span>
+            </a>
+          </article>
+
+          <!-- 2020 -->
+          <article class="card">
+            <a href="#" class="cover-card"
+               data-year="2020"
+               data-report="https://www.eurasiagroup.net/issues/top-risks-2020"
+               data-images="TopRisks-2020_1.png|2020 Top Risks report cover,TopRisks-2020_Spread1.png|Spread on the first risk,TopRisks-2020_Spread2.png|Spread on the tenth risk,TopRisks-2020_Spread3.png|Latin America presidential approval ratings">
+              <img src="images/top_risks/2020TR.png" alt="Top Risks 2020 cover" loading="lazy" />
+              <span class="year-tag">2020</span>
+              <span class="view-report" title="View report" aria-label="View report" data-link>View report</span>
+            </a>
+          </article>
+
+          <!-- 2021 -->
+          <article class="card">
+            <a href="#" class="cover-card"
+               data-year="2021"
+               data-report="https://www.eurasiagroup.net/issues/top-risks-2021"
+               data-images="TopRisks-2021_1.png|2021 Top Risks report cover,TopRisks-2021_Spread1.png|Spread of the third risk,TopRisks-2021_Spread2.png|Spread of the second risk,TopRisks-2021_Spread3.png|Map of upcoming elections in Latin America,TopRisks-2021_Spread4.png|Chart plotting out the fiscal breakeven oil prices in the Middle East and North Africa in 2021">
+              <img src="images/top_risks/2021TR.png" alt="Top Risks 2021 cover" loading="lazy" />
+              <span class="year-tag">2021</span>
+              <span class="view-report" title="View report" aria-label="View report" data-link>View report</span>
+            </a>
+          </article>
+
+          <!-- 2022 -->
+          <article class="card">
+            <a href="#" class="cover-card"
+               data-year="2022"
+               data-report="https://www.eurasiagroup.net/issues/top-risks-2022"
+               data-images="TopRisks-2022_1.png|2022 Top Risks report cover,TopRisks-2022_Spread1.png|Spread of the fourth risk,TopRisks-2022_Spread2.png|Spread of the fifth risk,TopRisks-2022_Spread3.png|Chart on Xi Jinping's dominance of Communist Party discourse,TopRisks-2022_Spread4.png|Illustratiob on tech companies and where they stand on being Globalists, National champions, or Techno-utopians">
+              <img src="images/top_risks/2022TR.png" alt="Top Risks 2022 cover" loading="lazy" />
+              <span class="year-tag">2022</span>
+              <span class="view-report" title="View report" aria-label="View report" data-link>View report</span>
+            </a>
+          </article>
+
+          <!-- 2023 -->
+          <article class="card">
+            <a href="#" class="cover-card"
+               data-year="2023"
+               data-report="https://www.eurasiagroup.net/issues/top-risks-2023"
+               data-images="TopRisks-2023_1.png|2023 Top Risks report cover,TopRisks-2023_Spread1.png|Spread of the third risk,TopRisks-2023_Spread2.png|Spread of the 8th risk,TopRisks-2023_Spread3.png|Chart plotting Xi jinping's dominance over top Communist Party bodies,TopRisks-2023_Spread4.png|Chart plotting the rise of partisan animosity in the US">
+              <img src="images/top_risks/2023TR.png" alt="Top Risks 2023 cover" loading="lazy" />
+              <span class="year-tag">2023</span>
+              <span class="view-report" title="View report" aria-label="View report" data-link>View report</span>
+            </a>
+          </article>
+
+          <!-- 2024 -->
+          <article class="card">
+            <a href="#" class="cover-card"
+               data-year="2024"
+               data-report="https://www.eurasiagroup.net/issues/top-risks-2024"
+               data-images="TopRisks-2024_1.png|2016 Top Risks report cover,TopRisks-2024_Spread1.png|Spread of the first risk,TopRisks-2024_Spread2.png|Spread of the fifth risk,TopRisks-2024_Spread3.png|Chart plotting the delince of confidence in America's political and social institutions,TopRisks-2024_Spread4.png|Map showing the US personnel locations and numbers in the Middle East">
+              <img src="images/top_risks/2024TR.png" alt="Top Risks 2024 cover" loading="lazy" />
+              <span class="year-tag">2024</span>
+              <span class="view-report" title="View report" aria-label="View report" data-link>View report</span>
+            </a>
+          </article>
+
+          <!-- 2025 -->
+          <article class="card">
+            <a href="#" class="cover-card"
+               data-year="2025"
+               data-report="https://www.eurasiagroup.net/issues/top-risks-2025"
+               data-images="TopRisks-2025_1.png|2025 Top Risks report cover,TopRisks-2025_Spread1.png|Spread of the second risk,TopRisks-2025_Spread2.png|Spread of the sixth risk,TopRisks-2025_Spread3.png|Stacked bar chart showing the potential impact of Trump's proposed tariff hikes,TopRisks-2025_Spread4.png|Scatter plot showing AI's models are quickly approaching human-level performance against benchmarks">
+              <img src="images/top_risks/2025TR.png" alt="Top Risks 2025 cover" loading="lazy" />
+              <span class="year-tag">2025</span>
+              <span class="view-report" title="View report" aria-label="View report" data-link>View report</span>
+            </a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <hr class="rule" />
+
+    <!-- Highlights -->
+    <section class="section">
+      <div class="wrap">
+        <p class="section-label">Highlights</p>
+        <figure class="card" style="margin-top:10px;">
+          <span class="thumb" style="aspect-ratio:auto;">
+            <img src="images/top_risks/TRArt.png" alt="Collage of Top Risks report artwork" loading="lazy" />
+          </span>
+        </figure>
+        <figure class="card">
+          <span class="thumb" style="aspect-ratio:auto;">
+            <img src="images/top_risks/TRCharts.png" alt="Sample charts from Top Risks reports" loading="lazy" />
+          </span>
+        </figure>
+        <p class="dek" style="margin-top:12px;"><a href="index.html">Back to homepage →</a></p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <small class="dek" style="color:#6b6b6b;">&copy; <span id="year"></span> Ari Winkleman</small>
     </div>
+  </footer>
 
-    <div class="grid_12"><hr></div>
+  <!-- Year -->
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
 
-    <!-- Helper link: opens 2016 lightbox -->
-    <div class="grid_12">
-      <a href="#" class="open-lb" onclick="openLightbox(0); return false;">Open light box</a>
-    </div>
-
-    <!-- Two rows of 5 covers (2016–2025) in original grid classes -->
-    <div class="grid_12 tr-covers" id="trGrid" aria-label="Top Risks cover archive">
-      <div class="grid_2 tr-cover">
-        <a href="#" class="cover-card"
-           data-year="2016"
-           data-report="https://www.eurasiagroup.net/issues/top-risks-2016"
-           data-images="TopRisks-2016_1.png|2016 Top Risks report cover,TopRisks-2016_Spread1.png|Spread on the 5th Risk,TopRisks-2016_Spread2.png|Spread on the 4th risk,TopRisks-2016_Spread3.png|Chart of where ISIS inspired killings happened"
-           data-blurb="2016 was my first year on the project. I co-led the process, working closely with the team to shape the report’s look and feel. My work focused on sourcing images, building charts, and creating supporting campaign assets. It was my introduction to the fast pace of Top Risks and the importance of keeping visuals sharp and consistent under tight deadlines.">
-          <img alt="Top Risks 2016 logo" src="images/top_risks/2016TR.png" loading="lazy">
-          <span class="year-tag">2016</span>
-          <span class="view-report" title="View report" aria-label="View report" onclick="event.stopPropagation();" data-link>View report</span>
-        </a>
+  <!-- Lightbox -->
+  <div class="lb-overlay" id="lightbox" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="lbTitle">
+    <div class="lb-dialog">
+      <div class="lb-header">
+        <div class="lb-title" id="lbTitle">Top Risks</div>
+        <button class="lb-close" type="button" aria-label="Close" onclick="closeLightbox()">×</button>
       </div>
-
-      <div class="grid_2 tr-cover">
-        <a href="#" class="cover-card" data-year="2017" data-report="https://www.eurasiagroup.net/issues/top-risks-2017" 
-            data-images="TopRisks-2017_1.png|2017 Top Risks report cover,TopRisks-2017_Spread1.png|Spread on the first risk,TopRisks-2017_Spread2.png|Spread on the 6th risk,TopRisks-2017_Spread3.png|Chart on North Korea's weapons program from 2013-2016,TopRisks-2017_Spread4.png|Timeline on Erdogan's march toward consolidation of power"
-            data-blurb="2017 was shaped by the fallout of the 2016 presidential election, which threw the world into uncertainty and left us with a very tight deadline to identify the risks and get the report out on time. It pushed the team to move as fast as possible while still producing a high-quality flagship. It was also the first year we took complete ownership of Eurasia Group’s new brand and logo, which meant figuring out how to connect that refreshed identity to Top Risks and push the visuals forward in a meaningful way.">
-          <img alt="Top Risks 2017 logo" src="images/top_risks/2017TR.png" loading="lazy">
-          <span class="year-tag">2017</span>
-          <span class="view-report" title="View report" aria-label="View report" onclick="event.stopPropagation();" data-link>View report</span>
-        </a>
+      <div class="lb-body">
+        <div class="lb-media">
+          <img id="lbImage" alt="">
+        </div>
+        <aside class="lb-meta">
+          <div class="lb-year" id="lbYear"></div>
+          <div class="lb-blurb" id="lbBlurb"></div>
+          <a id="lbLink" class="lb-link" href="#" target="_blank" rel="noopener">View full report →</a>
+          <div class="lb-thumbs" id="lbThumbs"></div>
+        </aside>
       </div>
-
-      <div class="grid_2 tr-cover">
-        <a href="#" class="cover-card" data-year="2018" data-report="https://www.eurasiagroup.net/issues/top-risks-2018" 
-            data-images="TopRisks-2018_1.png|2018 Top Risks report cover,TopRisks-2018_Spread1.png|Spread on the first risk,TopRisks-2018_Spread2.png|Spread on the sixth risk,TopRisks-2018_Spread3.png|Chart of Mexican Pesos per dollar over three elections (2000, 2006, 2012),TopRisks-2018_Spread4.png|Infographic on the global tech cold war between the US and China"
-            data-blurb="2018 marked Eurasia Group's 20th anniversary, and Top Risks became the launch point for a year of celebration. To match the moment, we ramped up the campaign assets around the report—expanding beyond the core publication to create a broader set of visuals that carried the anniversary theme throughout the year.">
-          <img alt="Top Risks 2018 logo" src="images/top_risks/2018TR.png" loading="lazy">
-          <span class="year-tag">2018</span>
-          <span class="view-report" title="View report" aria-label="View report" onclick="event.stopPropagation();" data-link>View report</span>
-        </a>
-      </div>
-
-      <div class="grid_2 tr-cover">
-        <a href="#" class="cover-card" data-year="2019" data-report="https://www.eurasiagroup.net/issues/top-risks-for-2019" 
-            data-images="TopRisks-2019_1.png|2019 Top Risks report cover,TopRisks-2019_Spread1.png|Spread of the second risk,TopRisks-2019_Spread2.png|Spread of the 8th risk,TopRisks-2019_Spread3.png|Collage for the 8th risk on Mexico featuring AMLO and a stock line,TopRisks-2019_Spread4.png|Collage from the second risk where Trump and Xi are shaking hands,TopRisks-2019_Spread5.png|Decision tree on who you should vote for in the Nigeria election-Buhari or Atiku,TopRisks-2019_Spread6.png|Map of incidents in the Kerch Strait between Ukraine and Russia"
-        data-blurb="By the end of 2018 our design team had expanded, which gave us more space to push the visuals for Top Risks. We leaned further into the fractured world theme of the logo and began making it more of our own. This was also the first year we created original images for the report instead of relying solely on Reuters or other sources, giving the project a stronger and more distinctive visual identity.">
-          <img alt="Top Risks 2019 logo" src="images/top_risks/2019TR.png" loading="lazy">
-          <span class="year-tag">2019</span>
-          <span class="view-report" title="View report" aria-label="View report" onclick="event.stopPropagation();" data-link>View report</span>
-        </a>
-      </div>
-
-      <div class="grid_2 tr-cover">
-        <a href="#" class="cover-card" data-year="2020" data-report="https://www.eurasiagroup.net/issues/top-risks-2020" 
-            data-images="TopRisks-2020_1.png|2020 Top Risks report cover,TopRisks-2020_Spread1.png|Spread on the first risk,TopRisks-2020_Spread2.png|Spread on the tenth risk,TopRisks-2020_Spread3.png|Latin America presidential approval ratings"
-        data-blurb="As we moved closer to the pandemic, the pace of global events had shifted. Business leaders were tracking every major development, and it felt like there was something new every week. For Top Risks, our team kept pushing the boundaries of what could be done with PDF outputs and how those designs could expand into social and other assets. My focus that year was on art direction and managing the timelines for each deliverable. By March 2020, as the pandemic unfolded, Eurasia Group recognized the need to adapt Top Risks further by adding more context on how we saw the world changing.">
-          <img alt="Top Risks 2020 logo" src="images/top_risks/2020TR.png" loading="lazy">
-          <span class="year-tag">2020</span>
-          <span class="view-report" title="View report" aria-label="View report" onclick="event.stopPropagation();" data-link>View report</span>
-        </a>
-      </div>
-
-      <div class="grid_2 tr-cover">
-        <a href="#" class="cover-card" data-year="2021" 
-        data-report="https://www.eurasiagroup.net/issues/top-risks-2021" 
-            data-images="TopRisks-2021_1.png|2021 Top Risks report cover,TopRisks-2021_Spread1.png|Spread of the third risk,TopRisks-2021_Spread2.png|Spread of the second risk,TopRisks-2021_Spread3.png|Map of upcoming elections in Latin America,TopRisks-2021_Spread4.png|Chart plotting out the fiscal breakeven oil prices in the Middle East and North Africa in 2021"
-        data-blurb="Another close and delayed election put us back on our heels for Top Risks 2021. To meet the challenge, we made the layout and template more agile so we could move quickly as the content came together. I continued to art direct and manage production while also diving back into the charts, making sure the visuals stayed clear and consistent under pressure.">
-          <img alt="Top Risks 2021 logo" src="images/top_risks/2021TR.png" loading="lazy">
-          <span class="year-tag">2021</span>
-          <span class="view-report" title="View report" aria-label="View report" onclick="event.stopPropagation();" data-link>View report</span>
-        </a>
-      </div>
-
-      <div class="grid_2 tr-cover">
-        <a href="#" class="cover-card" data-year="2022" data-report="https://www.eurasiagroup.net/issues/top-risks-2022" 
-            data-images="TopRisks-2022_1.png|2022 Top Risks report cover,TopRisks-2022_Spread1.png|Spread of the fourth risk,TopRisks-2022_Spread2.png|Spread of the fifth risk,TopRisks-2022_Spread3.png|Chart on Xi Jinping's dominance of Communist Party discourse,TopRisks-2022_Spread4.png|Illustratiob on tech companies and where they stand on being Globalists, National champions, or Techno-utopians"
-        data-blurb="2022 was the first year I led Top Risks on my own. The report continued to grow in both size and influence, and we expanded the range of supporting assets to match its reach. I also directed the charts, working closely with analysts throughout the process to make sure the visuals reflected their insights and helped bring the research to life.">
-          <img alt="Top Risks 2022 logo" src="images/top_risks/2022TR.png" loading="lazy">
-          <span class="year-tag">2022</span>
-          <span class="view-report" title="View report" aria-label="View report" onclick="event.stopPropagation();" data-link>View report</span>
-        </a>
-      </div>
-
-      <div class="grid_2 tr-cover">
-        <a href="#" class="cover-card" data-year="2023" data-report="https://www.eurasiagroup.net/issues/top-risks-2023" 
-            data-images="TopRisks-2023_1.png|2023 Top Risks report cover,TopRisks-2023_Spread1.png|Spread of the third risk,TopRisks-2023_Spread2.png|Spread of the 8th risk,TopRisks-2023_Spread3.png|Chart plotting Xi jinping's dominance over top Communist Party bodies,TopRisks-2023_Spread4.png|Chart plotting the rise of partisan animosity in the US"
-        data-blurb="As Eurasia Group prepared to celebrate 25 years, I art directed and managed the many moving parts that make up Top Risks. From the core report to the smaller pieces that support it, I oversaw the full process to ensure everything was cohesive and aligned with the milestone year.">
-          <img alt="Top Risks 2023 logo" src="images/top_risks/2023TR.png" loading="lazy">
-          <span class="year-tag">2023</span>
-          <span class="view-report" title="View report" aria-label="View report" onclick="event.stopPropagation();" data-link>View report</span>
-        </a>
-      </div>
-
-      <div class="grid_2 tr-cover">
-        <a href="#" class="cover-card" data-year="2024" data-report="https://www.eurasiagroup.net/issues/top-risks-2024" 
-            data-images="TopRisks-2024_1.png|2016 Top Risks report cover,TopRisks-2024_Spread1.png|Spread of the first risk,TopRisks-2024_Spread2.png|Spread of the fifth risk,TopRisks-2024_Spread3.png|Chart plotting the delince of confidence in America's political and social institutions,TopRisks-2024_Spread4.png|Map showing the US personnel locations and numbers in the Middle East"
-        data-blurb="In 2024 we introduced addendums and expanded the report with more context boxes to cover global issues in greater depth. I continued to lead on art direction and project management while also jumping in on layout and charts to keep the visuals sharp and consistent.">
-          <img alt="Top Risks 2024 logo" src="images/top_risks/2024TR.png" loading="lazy">
-          <span class="year-tag">2024</span>
-          <span class="view-report" title="View report" aria-label="View report" onclick="event.stopPropagation();" data-link>View report</span>
-        </a>
-      </div>
-
-      <div class="grid_2 tr-cover">
-        <a href="#" class="cover-card" data-year="2025" data-report="https://www.eurasiagroup.net/issues/top-risks-2025" 
-            data-images="TopRisks-2025_1.png|2025 Top Risks report cover,TopRisks-2025_Spread1.png|Spread of the second risk,TopRisks-2025_Spread2.png|Spread of the sixth risk,TopRisks-2025_Spread3.png|Stacked bar chart showing the potential impact of Trump's proposed tariff hikes,TopRisks-2025_Spread4.png|Scatter plot showing AI's models are quickly approaching human-level performance against benchmarks"
-        data-blurb="Like many years before, 2025 came down to the wire. Major global events were unfolding almost daily, and much of the content had to wait until the results of the 2024 election. While we held for clarity on the writing, I led on art direction and project management, using the extra time to refine our templates and update the branding, cleaning up issues we had noticed in past editions.">
-          <img alt="Top Risks 2025 logo" src="images/top_risks/2025TR.png" loading="lazy">
-          <span class="year-tag">2025</span>
-          <span class="view-report" title="View report" aria-label="View report" onclick="event.stopPropagation();" data-link>View report</span>
-        </a>
+      <div class="lb-nav" aria-hidden="true">
+        <button type="button" onclick="prevItem()" aria-label="Previous">‹</button>
+        <button type="button" onclick="nextItem()" aria-label="Next">›</button>
       </div>
     </div>
-
-    <div class="grid_12">
-      <br><br><p class="section-label">Highlights</p>
-    </div>
-
-    <!-- Legacy art and charts blocks -->
-    <div class="grid_12" style="margin-top:20px;">
-      <img alt="Collage of Top Risks report artwork" src="images/top_risks/TRArt.png">
-    </div>
-    <div class="grid_12">
-      <img alt="Sample charts from Top Risks reports" src="images/top_risks/TRCharts.png">
-    </div>
-
-    <footer class="grid_12">
-      <a href="index.html"><p>Back to homepage &rarr;</p></a>
-    </footer>
   </div>
-</div>
 
-<!-- Lightbox -->
-<div class="lb-overlay" id="lightbox" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="lbTitle">
-  <div class="lb-dialog">
-    <div class="lb-header">
-      <div class="lb-title" id="lbTitle">Top Risks</div>
-      <button class="lb-close" type="button" aria-label="Close" onclick="closeLightbox()">×</button>
-    </div>
-    <div class="lb-body">
-      <div class="lb-media">
-        <img id="lbImage" alt="">
-      </div>
-      <aside class="lb-meta">
-        <div class="lb-year" id="lbYear"></div>
-        <div class="lb-blurb" id="lbBlurb"></div>
-        <a id="lbLink" class="lb-link" href="#" target="_blank" rel="noopener">View full report →</a>
-        <div class="lb-thumbs" id="lbThumbs"></div>
-      </aside>
-    </div>
-    <div class="lb-nav" aria-hidden="true">
-      <button type="button" onclick="prevItem()" aria-label="Previous">‹</button>
-      <button type="button" onclick="nextItem()" aria-label="Next">›</button>
-    </div>
-  </div>
-</div>
+  <script>
+  (function(){
+    const covers   = Array.from(document.querySelectorAll('.cover-card'));
+    const lb       = document.getElementById('lightbox');
+    const lbImg    = document.getElementById('lbImage');
+    const lbYearEl = document.getElementById('lbYear');
+    const lbBlurb  = document.getElementById('lbBlurb');
+    const lbLink   = document.getElementById('lbLink');
+    const lbThumbs = document.getElementById('lbThumbs');
 
-<script>
-(function(){
-  // Elements
-  const covers   = Array.from(document.querySelectorAll('.cover-card'));
-  const lb       = document.getElementById('lightbox');
-  const lbImg    = document.getElementById('lbImage');
-  const lbYearEl = document.getElementById('lbYear');
-  const lbBlurb  = document.getElementById('lbBlurb');
-  const lbLink   = document.getElementById('lbLink');
-  const lbThumbs = document.getElementById('lbThumbs');
+    let currentYearIndex = -1;
+    let currentImages = [];      // [{src, alt}]
+    let currentImageIndex = 0;
 
-  let currentYearIndex = -1;
-  let currentImages = [];      // [{src, alt}]
-  let currentImageIndex = 0;
+    const fileName = (p) => (p || '').split('/').pop();
 
-  const fileName = (p) => (p || '').split('/').pop();
-
-  // Safe resolver (uses existing if present)
-  const resolvePath = window.resolvePath || function(imgEntry, coverSrc){
-    const trimmed = (imgEntry || '').trim();
-    if (/^https?:\/\//i.test(trimmed)) return trimmed;           // absolute
-    if (trimmed.includes('/')) return trimmed;                    // has path
-    try {                                                         // same folder as cover
-      const a = document.createElement('a'); a.href = coverSrc;
-      const parts = a.pathname.split('/'); parts.pop();
-      return parts.join('/') + '/' + trimmed;
-    } catch(e) {
-      return 'images/top_risks/' + trimmed;
-    }
-  };
-
-  // Parse data-images: "file|alt, file|alt, ..."
-  function parseImages(raw, coverSrc, year){
-    const entries = (raw || '').split(',').map(s => s.trim()).filter(Boolean);
-    return entries.map((entry, i) => {
-      const [srcPart, altPart] = entry.split('|').map(x => (x || '').trim());
-      const src = resolvePath(srcPart, coverSrc);
-      const alt = altPart || defaultAlt(src, year, i);
-      return { src, alt };
-    });
-  }
-
-  // Sensible default alt if none provided
-  function defaultAlt(src, year, i){
-    const fn = fileName(src).toLowerCase();
-    if (/cover|tr\.(png|jpg|jpeg|webp)/.test(fn)) return `Top Risks ${year} cover`;
-    if (/chart|fig|graph/.test(fn))               return `Top Risks ${year} chart ${i+1}`;
-    if (/event|stage|promo/.test(fn))             return `Top Risks ${year} event graphic ${i+1}`;
-    return `Top Risks ${year} detail ${i+1}`;
-  }
-
-  function setActiveThumb(i){
-    Array.from(lbThumbs.querySelectorAll('img')).forEach((t, idx) => {
-      t.classList.toggle('active', idx === i);
-    });
-  }
-
-  function showImage(i){
-    currentImageIndex = i;
-    const item = currentImages[currentImageIndex];
-    // reveal only when fully loaded (helps iOS)
-    lbImg.classList.remove('is-ready');
-    lbImg.alt = item.alt;
-    lbImg.onload = () => lbImg.classList.add('is-ready');
-    // cache-bust to force repaint on iOS when switching quickly
-    const bust = item.src + (item.src.includes('?') ? '&' : '?') + 'ts=' + Date.now();
-    lbImg.src = bust;
-    setActiveThumb(currentImageIndex);
-  }
-
-  function renderThumbs(){
-    lbThumbs.innerHTML = '';
-    currentImages.forEach((item, i) => {
-      const t = new Image();
-      t.src = item.src;
-      t.alt = item.alt;
-      if (i === currentImageIndex) t.classList.add('active');
-      const show = () => showImage(i);
-      t.addEventListener('click', show, {passive:true});
-      t.addEventListener('touchstart', show, {passive:true});
-      t.addEventListener('pointerdown', show, {passive:true});
-      lbThumbs.appendChild(t);
-    });
-  }
-
-  function openLightbox(yearIdx){
-    currentYearIndex = yearIdx;
-
-    const card     = covers[yearIdx];
-    const year     = card.getAttribute('data-year') || '';
-    const report   = card.getAttribute('data-report') || '#';
-    const blurb    = card.getAttribute('data-blurb') || '';
-    const coverEl  = card.querySelector('img');
-    const coverSrc = coverEl ? coverEl.getAttribute('src') : '';
-    const coverFn  = fileName(coverSrc);
-
-    const parsed = parseImages(card.getAttribute('data-images') || '', coverSrc, year); // [{src,alt}]
-
-    // Start on first non-cover image if present
-    let start = 0;
-    if (parsed.length) {
-      const firstIsCover = fileName(parsed[0].src) === coverFn;
-      if (firstIsCover && parsed.length > 1) start = 1;
-      if (!firstIsCover) {
-        const nci = parsed.findIndex(x => fileName(x.src) !== coverFn);
-        start = nci === -1 ? 0 : nci;
+    // Safe resolver (uses existing if present)
+    const resolvePath = window.resolvePath || function(imgEntry, coverSrc){
+      const trimmed = (imgEntry || '').trim();
+      if (/^https?:\/\//i.test(trimmed)) return trimmed;
+      if (trimmed.includes('/')) return trimmed;
+      try {
+        const a = document.createElement('a'); a.href = coverSrc;
+        const parts = a.pathname.split('/'); parts.pop();
+        return parts.join('/') + '/' + trimmed;
+      } catch(e) {
+        return 'images/top_risks/' + trimmed;
       }
+    };
+
+    // Parse data-images: "file|alt, file|alt, ..."
+    function parseImages(raw, coverSrc, year){
+      const entries = (raw || '').split(',').map(s => s.trim()).filter(Boolean);
+      return entries.map((entry, i) => {
+        const [srcPart, altPart] = entry.split('|').map(x => (x || '').trim());
+        const src = resolvePath(srcPart, coverSrc);
+        const alt = altPart || defaultAlt(src, year, i);
+        return { src, alt };
+      });
     }
 
-    currentImages = parsed.length ? parsed : [{ src: coverSrc, alt: `Top Risks ${year} cover` }];
-    currentImageIndex = Math.min(Math.max(start,0), currentImages.length-1);
+    function defaultAlt(src, year, i){
+      const fn = fileName(src).toLowerCase();
+      if (/cover|tr\.(png|jpg|jpeg|webp)/.test(fn)) return `Top Risks ${year} cover`;
+      if (/chart|fig|graph/.test(fn))               return `Top Risks ${year} chart ${i+1}`;
+      if (/event|stage|promo/.test(fn))             return `Top Risks ${year} event graphic ${i+1}`;
+      return `Top Risks ${year} detail ${i+1}`;
+    }
 
-    // Fill UI
-    lbYearEl.textContent = year;
-    lbBlurb.textContent  = blurb;
-    lbLink.href          = report;
+    function setActiveThumb(i){
+      Array.from(lbThumbs.querySelectorAll('img')).forEach((t, idx) => {
+        t.classList.toggle('active', idx === i);
+      });
+    }
 
-    showImage(currentImageIndex);
-    renderThumbs();
+    function showImage(i){
+      currentImageIndex = i;
+      const item = currentImages[currentImageIndex];
+      lbImg.classList.remove('is-ready');
+      lbImg.alt = item.alt;
+      lbImg.onload = () => lbImg.classList.add('is-ready');
+      const bust = item.src + (item.src.includes('?') ? '&' : '?') + 'ts=' + Date.now();
+      lbImg.src = bust;
+      setActiveThumb(currentImageIndex);
+    }
 
-    // open
-    lb.setAttribute('aria-hidden','false');
-    document.body.style.overflow = 'hidden';
-    document.addEventListener('keydown', onKey);
-  }
+    function renderThumbs(){
+      lbThumbs.innerHTML = '';
+      currentImages.forEach((item, i) => {
+        const t = new Image();
+        t.src = item.src;
+        t.alt = item.alt;
+        if (i === currentImageIndex) t.classList.add('active');
+        const show = () => showImage(i);
+        t.addEventListener('click', show, {passive:true});
+        t.addEventListener('touchstart', show, {passive:true});
+        t.addEventListener('pointerdown', show, {passive:true});
+        lbThumbs.appendChild(t);
+      });
+    }
 
-  function closeLightbox(){
-    lb.setAttribute('aria-hidden','true');
-    document.body.style.overflow = '';
-    document.removeEventListener('keydown', onKey);
-  }
+    function openLightbox(yearIdx){
+      currentYearIndex = yearIdx;
 
-  function prevYear(){
-    if (currentYearIndex <= 0) return;
-    openLightbox(currentYearIndex - 1);
-  }
-  function nextYear(){
-    if (currentYearIndex >= covers.length - 1) return;
-    openLightbox(currentYearIndex + 1);
-  }
-  function onKey(e){
-    if (e.key === 'Escape') closeLightbox();
-    if (e.key === 'ArrowLeft')  prevYear();
-    if (e.key === 'ArrowRight') nextYear();
-  }
+      const card     = covers[yearIdx];
+      const year     = card.getAttribute('data-year') || '';
+      const report   = card.getAttribute('data-report') || '#';
+      const blurb    = card.getAttribute('data-blurb') || '';
+      const coverEl  = card.querySelector('img');
+      const coverSrc = coverEl ? coverEl.getAttribute('src') : '';
+      const coverFn  = fileName(coverSrc);
 
-  // Backdrop close
-  lb.addEventListener('click', (e) => {
-    if (e.target.id === 'lightbox') closeLightbox();
-  });
+      const parsed = parseImages(card.getAttribute('data-images') || '', coverSrc, year);
 
-  // Wire cards + “View report” chip
-  covers.forEach((card, idx) => {
-    const chip = card.querySelector('[data-link]');
-    if (chip) chip.addEventListener('click', () => {
-      const url = card.getAttribute('data-report') || '#';
-      if (url && url !== '#') window.open(url, '_blank', 'noopener');
+      // Start on first non-cover image if present
+      let start = 0;
+      if (parsed.length) {
+        const firstIsCover = fileName(parsed[0].src) === coverFn;
+        if (firstIsCover && parsed.length > 1) start = 1;
+        if (!firstIsCover) {
+          const nci = parsed.findIndex(x => fileName(x.src) !== coverFn);
+          start = nci === -1 ? 0 : nci;
+        }
+      }
+
+      currentImages = parsed.length ? parsed : [{ src: coverSrc, alt: `Top Risks ${year} cover` }];
+      currentImageIndex = Math.min(Math.max(start,0), currentImages.length-1);
+
+      // Fill UI
+      lbYearEl.textContent = year;
+      lbBlurb.textContent  = blurb;
+      lbLink.href          = report;
+
+      showImage(currentImageIndex);
+      renderThumbs();
+
+      lb.setAttribute('aria-hidden','false');
+      document.body.style.overflow = 'hidden';
+      document.addEventListener('keydown', onKey);
+    }
+
+    function closeLightbox(){
+      lb.setAttribute('aria-hidden','true');
+      document.body.style.overflow = '';
+      document.removeEventListener('keydown', onKey);
+    }
+
+    function prevYear(){
+      if (currentYearIndex <= 0) return;
+      openLightbox(currentYearIndex - 1);
+    }
+    function nextYear(){
+      if (currentYearIndex >= covers.length - 1) return;
+      openLightbox(currentYearIndex + 1);
+    }
+    function onKey(e){
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowLeft')  prevYear();
+      if (e.key === 'ArrowRight') nextYear();
+    }
+
+    // Backdrop close
+    document.getElementById('lightbox').addEventListener('click', (e) => {
+      if (e.target.id === 'lightbox') closeLightbox();
     });
-    card.addEventListener('click', (e) => {
-      e.preventDefault();
-      openLightbox(idx);
+
+    // Wire cards + “View report” chip
+    covers.forEach((card, idx) => {
+      const chip = card.querySelector('[data-link]');
+      if (chip) chip.addEventListener('click', (ev) => {
+        ev.stopPropagation();
+        const url = card.getAttribute('data-report') || '#';
+        if (url && url !== '#') window.open(url, '_blank', 'noopener');
+      });
+      card.addEventListener('click', (e) => {
+        e.preventDefault();
+        openLightbox(idx);
+      });
     });
-  });
 
-  // Expose for helper link + arrows
-  window.openLightbox = openLightbox;
-  window.closeLightbox = closeLightbox;
-  window.prevItem = prevYear;   // change year
-  window.nextItem = nextYear;   // change year
-})();
-</script>
+    // Expose for external triggers if needed
+    window.openLightbox = openLightbox;
+    window.closeLightbox = closeLightbox;
+    window.prevItem = prevYear;
+    window.nextItem = nextYear;
+  })();
+  </script>
 
-
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-8FK0VXYYGX"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-8FK0VXYYGX');
-</script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8FK0VXYYGX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-8FK0VXYYGX');
+  </script>
 </body>
 </html>

@@ -1,253 +1,177 @@
 <!DOCTYPE html>
-<html class="no-js">
+<html lang="en" class="no-js">
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
   <title>Ari Winkleman - The Graphic Truth Archive</title>
-  <meta name="description" content="Ari Winkleman">
- <meta name="viewport" content="width=device-width, initial-scale=1">
-
-
-  <link rel="shortcut icon" href="favicon.ico">
+  <meta name="description" content="Ari Winkleman - The Graphic Truth Archive" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <link rel="shortcut icon" href="favicon.ico" />
 
   <!-- FONTS -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poltawski+Nowy:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,700;0,800;1,400&display=swap" rel="stylesheet">  
-  
-  <!-- Styles -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poltawski+Nowy:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,700;0,800;1,400&display=swap" rel="stylesheet" />
+
+  <!-- Base styles -->
   <link href="css/normalize.css" rel="stylesheet" />
-  <link href="css/grid.css" rel="stylesheet" />
-  <link href="css/screen.css" rel="stylesheet" />
-  
+  <link href="css/screen.css?v=10" rel="stylesheet" />
+
+  <!-- Page-local styles -->
   <style>
-    .search-bar {
-      margin: 20px 0;
-    }
-    .search-bar input {
-      width: 100%;
-      padding: 10px;
-      font-size: 1em;
-      border: 1px solid #ccc;
-      border-radius: 4px;
+    /* Search */
+    .search { padding: 12px 0 0; }
+    .search input[type="text"]{
+      display:block; width:100%;
+      font: 400 16px/1.2 'Open Sans', Arial, sans-serif;
+      padding: 12px 14px; border:1px solid #ccc; border-radius:6px;
     }
 
-    /* Responsive grid for clickable image squares */
-    #articles-wrapper {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 10px;
-      margin-top: 30px;
+    /* Square, responsive gallery */
+    .gallery { padding: 18px 0 70px; } /* bottom pad so sticky footer never overlaps */
+    .gallery .grid{ grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .tile { display:block; position:relative; border-radius:6px; overflow:hidden; background:#eee; transform: translateZ(0); }
+    .tile::before{ content:""; display:block; aspect-ratio:1/1; }
+    .tile img{
+      position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block;
+      transition: transform .2s ease-in-out;
     }
+    .tile:hover img{ transform: scale(1.04); }
 
-    #articles-wrapper a {
-      display: block;
-      width: 100%;
-      aspect-ratio: 1 / 1;
-      overflow: hidden;
-      border-radius: 6px;
-      transition: transform 0.2s ease-in-out;
+    /* Back-home sticky footer */
+    .sticky-foot{
+      position:fixed; left:0; right:0; bottom:0; z-index:1000;
+      background:#fff; border-top:1px solid #ccc;
+      padding:10px 0; text-align:center;
     }
+    .sticky-foot a{ text-decoration:none; color:inherit; font-family:'Open Sans', Arial, sans-serif; }
 
-    #articles-wrapper a:hover {
-      transform: scale(1.05);
-    }
-
-    #articles-wrapper img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-
-     .sticky-footer {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background: white; /* match site background */
-    padding: 10px 0;
-    text-align: center;
-    border-top: 1px solid #ccc;
-    z-index: 1000;
-  }
-  .sticky-footer a {
-    text-decoration: none;
-    color: inherit;
-  }
-  .sticky-footer p {
-    margin: 0;
-    font-family: 'Open Sans', sans-serif;
-  }
-
-    /* Safe mobile insets so text never hugs the edges */
-    :root{
-      --container-pad: 16px;
-      --pad-left: max(var(--container-pad), env(safe-area-inset-left));
-      --pad-right: max(var(--container-pad), env(safe-area-inset-right));
-    }
-    .container { padding-left: var(--pad-left); padding-right: var(--pad-right); }
-
-    /* — Unified header styles (apply the same on every page) — */
-    .masthead{ text-align:center; padding-top: 22px; margin:0 0 6px; }
-    .masthead a{
-      font-family:"Poltawski Nowy", serif;
-      font-size:clamp(28px,3.2vw,40px);
-      text-decoration:none; color:var(--ink); letter-spacing:.2px;
-    }
-    .masthead a:hover{ color:var(--accent); }
-    .issuebar{
-      display:flex; gap:12px; justify-content:center; align-items:center; flex-wrap:wrap;
-      color:var(--muted);
-      font:700 12px/1 'Open Sans', Arial, sans-serif;
-      letter-spacing:.08em; text-transform:uppercase; padding-bottom:.9em;
-    }
-    .issuebar span{ white-space:nowrap; }
-    .issuebar .dot{ width:.45em; height:.45em; background:var(--muted); border-radius:50%; display:inline-block; }
-
-    /* Intro (replaces any old photo/bio/hero blocks) */
-    .intro { padding: 10px 0 6px; margin-bottom: 6px; text-align: center; }
-    .intro .lede {
-      font: 400 clamp(16px, 1.45vw, 19px)/1.5 'Open Sans', Arial, sans-serif;
-      color: var(--ink); max-width: 75ch; margin: 0 auto 6px;
-    }
-     .intro .prelede {font-family:"Poltawski Nowy", serif;
-      font-size: 35px;}
-
-    .intro .meta {
-      font: 700 12px/1.2 'Open Sans', Arial, sans-serif;
-      letter-spacing: .06em; text-transform: uppercase;
-      color: var(--muted); margin: 0 0 8px;
-    }
-    .intro .meta a { color: var(--muted); text-decoration: none; border-bottom: 1px solid rgba(0,0,0,.08); }
-    .intro .meta a:hover { color: var(--ink); border-bottom-color: var(--ink); }
-    .intro .contact {
-      display:flex; justify-content:center; align-items:center; gap:10px;
-      font:700 12px/1 'Open Sans', Arial, sans-serif; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin:0;
-    }
-    .contact-link{ color:var(--muted); text-decoration:none; }
-    .contact-link:hover{ color:var(--ink); }
-    .intro .dot{ width:.45em; height:.45em; background:var(--muted); border-radius:50%; display:inline-block; }
-
-    /* Explicitly retire legacy blocks if they still exist */
-    .hero-intro, .photo { display:none !important; }
-
-    /* Home tiles */
-    .home-tiles {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 36px 16px;
-    }
-    .home-tiles .grid_4 { float:none; width:auto; margin:0; }
-    .home-tiles img { display:block; width:100%; height:auto; }
-    .home-tiles p { margin-top:6px; min-height:3.6em; }
-
-    .home-block{ line-height:1.5em; }
-    .overline { font:700 12px/1 'Open Sans', Arial, sans-serif; color:var(--muted); letter-spacing:.08em; text-transform:uppercase; padding-top:1em }
-    .hed { font-family:"Poltawski Nowy", serif; font-size:1.5rem; line-height:1.1; margin:6px 0 6px; }
-    .dek { font:400 16px/1.45 'Open Sans', Arial, sans-serif; color:#2a2a2a; }
-
-    .clearfix-break { clear: both; height: 0; }
-    #content .grid_4 { margin-bottom: 24px; }
-    #content .grid_4:nth-of-type(3n+1) { clear:left; }
-    #content .grid_4 img { display:block; width:100%; height:auto; }
-
-    @media (max-width: 1024px) { .home-tiles { grid-template-columns: repeat(2, 1fr); } }
-    @media (max-width: 700px)  { .home-tiles { grid-template-columns: 1fr; } }
+    /* Responsive columns */
+    @media (max-width: 1200px){ .gallery .grid{ grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 900px){  .gallery .grid{ grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 520px){  .gallery .grid{ grid-template-columns: 1fr; } }
   </style>
 </head>
+
 <body>
-<div class="container clearfix">
-  <div id="content">
-    <div class="grid_12 cf">
-         <div class="masthead"><a href="index.html">Ari Winkleman</a></div>
-		 <div class="issuebar" aria-label="issue dateline">
-      <span>Information Design</span><span class="dot"></span><span>Branding</span><span class="dot"></span><span>Art direction</span>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="wrap">
+      <div class="masthead"><a href="index.html">Ari Winkleman</a></div>
+      <div class="issuebar" aria-label="disciplines">
+        <span>Information Design</span><span class="dot"></span><span>Branding</span><span class="dot"></span><span>Art Direction</span>
+      </div>
     </div>
-      <br>
+  </header>
 
-      
-<div class="grid_2"></div>
-
-      <div class="grid_8 intro">
-       <!-- New compact intro (no portrait, no duplicate headline) -->
-        <h2 class="prelede">The Graphic Truth - Archive</h2>
+  <main id="main">
+    <!-- Intro -->
+    <section class="intro">
+      <div class="wrap">
+        <h2 class="prelede">The Graphic Truth — Archive</h2>
         <p class="lede">
-Below you can browse and search through the charts I’ve created over the years—a collection of visuals that turn complex issues into clear, accessible stories. Feel free to explore, reference, or get inspired.   
-</p>   
+          Below you can browse and search through the charts I’ve created over the years—a collection of visuals that turn complex issues into clear, accessible stories. Feel free to explore, reference, or get inspired.
+        </p>
       </div>
-<div class="grid_2"></div>
+    </section>
 
-      <!-- Search bar -->
-      <div class="search-bar grid_12">
-        <input type="text" id="searchInput" placeholder="Search articles...">
+    <hr class="rule" />
+
+    <!-- Search -->
+    <section class="search">
+      <div class="wrap">
+        <label for="searchInput" class="visually-hidden">Search articles</label>
+        <input id="searchInput" type="text" placeholder="Search articles…" autocomplete="off" />
       </div>
+    </section>
 
-      <!-- Responsive grid for articles -->
-      <div id="articles-wrapper" class="grid_12"></div>
+    <!-- Gallery -->
+    <section class="gallery">
+      <div class="wrap">
+        <div id="articles" class="grid" aria-live="polite"></div>
+      </div>
+    </section>
+  </main>
 
-      <footer class="grid_12 sticky-footer">
-  <a href="index.html"><p>Back to homepage &rarr;</p></a>
-</footer>
+  <footer class="site-footer">
+    <div class="wrap">
+      <small class="dek" style="color:#6b6b6b;">&copy; <span id="year"></span> Ari Winkleman</small>
+    </div>
+  </footer>
+
+  <!-- Sticky back-home -->
+  <div class="sticky-foot">
+    <div class="wrap">
+      <a href="index.html"><p class="dek">Back to homepage &rarr;</p></a>
     </div>
   </div>
-</div>
 
-<script>
-  function renderArticles(data, filter = '') {
-    const wrapper = document.getElementById('articles-wrapper');
-    wrapper.innerHTML = '';
+  <script>
+    // Year
+    document.getElementById('year').textContent = new Date().getFullYear();
 
-    data
-      .filter(item => 
-  item.headline.toLowerCase().includes(filter.toLowerCase()) ||
-  (Array.isArray(item.keywords) 
-    ? item.keywords.some(k => k.toLowerCase().includes(filter.toLowerCase()))
-    : String(item.keywords).toLowerCase().includes(filter.toLowerCase()))
-)
+    // Render helpers
+    const $grid = document.getElementById('articles');
+    const $q    = document.getElementById('searchInput');
 
+    function render(data, query){
+      const term = (query || "").trim().toLowerCase();
+      $grid.innerHTML = "";
+      const filtered = !term ? data : data.filter(d => {
+        const inHeadline = (d.headline || "").toLowerCase().includes(term);
+        const keys = Array.isArray(d.keywords) ? d.keywords.join(" ") : String(d.keywords || "");
+        const inKeys = keys.toLowerCase().includes(term);
+        return inHeadline || inKeys;
+      });
 
-      .forEach(item => {
-        const link = document.createElement('a');
-        link.href = item.article_url;
-        link.target = '_blank';
+      for(const item of filtered){
+        const a = document.createElement('a');
+        a.className = 'tile';
+        a.href = item.article_url;
+        a.target = '_blank';
+        a.rel = 'noopener';
 
         const img = document.createElement('img');
-        img.alt = item.headline;
-        img.src = item.image.startsWith('http') ? item.image : `images/graphic_truth/${item.image}`;
+        img.alt = item.headline || 'Graphic Truth article';
+        img.loading = 'lazy';
+        img.src = (item.image || '').startsWith('http')
+          ? item.image
+          : 'images/graphic_truth/' + (item.image || '');
 
-        link.appendChild(img);
-        wrapper.appendChild(link);
+        a.appendChild(img);
+        $grid.appendChild(a);
+      }
+    }
+
+    // Fetch data and wire search
+    fetch('articles_data.json')
+      .then(r => r.json())
+      .then(data => {
+        // Optional: sort by number inside filename (matches your current behavior)
+        data.sort((a, b) => {
+          const na = parseInt(String(a.image || '').match(/\d+/));
+          const nb = parseInt(String(b.image || '').match(/\d+/));
+          return (isNaN(na)?0:na) - (isNaN(nb)?0:nb);
+        });
+
+        render(data, '');
+        $q.addEventListener('input', (e) => render(data, e.target.value));
+      })
+      .catch(err => {
+        console.error('Error loading articles:', err);
+        $grid.innerHTML = '<p class="dek">Sorry, the archive failed to load.</p>';
       });
-  }
+  </script>
 
-  fetch('articles_data.json')
-    .then(res => res.json())
-    .then(data => {
-      data.sort((a, b) => {
-  const numA = parseInt(a.image.match(/\d+/));
-  const numB = parseInt(b.image.match(/\d+/));
-  return numA - numB;
-});
-
-      renderArticles(data);
-      document.getElementById('searchInput').addEventListener('input', (e) => {
-        renderArticles(data, e.target.value);
-      });
-    })
-    .catch(err => console.error("Error loading articles:", err));
-</script>
-
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-8FK0VXYYGX"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-8FK0VXYYGX');
-</script>
-
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8FK0VXYYGX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-8FK0VXYYGX');
+  </script>
 </body>
 </html>

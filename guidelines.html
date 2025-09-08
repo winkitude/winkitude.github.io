@@ -1,242 +1,158 @@
 <!DOCTYPE html>
-<html class="no-js">
+<html lang="en" class="no-js">
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
   <title>Ari Winkleman - Guidelines & Systems</title>
-  <meta name="description" content="Ari Winkleman">
-  <meta name="viewport" content="width=device-width">
-  <link rel="shortcut icon" href="favicon.ico">
+  <meta name="description" content="Ari Winkleman - Guidelines & Systems" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <link rel="shortcut icon" href="favicon.ico" />
 
-  <!-- Fonts -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poltawski+Nowy:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,700;0,800;1,400&display=swap" rel="stylesheet">
-  <!-- Core Styles (match site) -->
+  <!-- FONTS -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poltawski+Nowy:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,700;0,800;1,400&display=swap" rel="stylesheet" />
+
+  <!-- Base styles -->
   <link href="css/normalize.css" rel="stylesheet" />
-  <link href="css/grid.css" rel="stylesheet" />
-  <link href="css/screen.css" rel="stylesheet" />
-
-  <style>
-    /* Page-local helpers (keeps original framework intact) */
-    #content { max-width: 1000px; margin: 0 auto; }
-    .lane-title { font-family: 'Open Sans', Arial, sans-serif; font-size: 1.5em; line-height: 1.25em; }
-    .eyebrow { font: 700 12px/1 'Open Sans', Arial, sans-serif; letter-spacing: .06em; text-transform: uppercase; color:#222; }
-    .spacer { height: 10px; }
-    .thumb-row img { width: 100%; height: auto; display: block; border-radius: 4px; }
-    .pill { display:inline-block; padding:4px 8px; border:1px solid #e5e5e5; border-radius:16px; font:600 12px 'Open Sans', Arial, sans-serif; background:#fff; }
-    .cta { text-decoration: underline; font-weight: 700; }
-    .lane { margin-bottom: 20px; }
-    .divider { margin: 10px 0 20px; border: 0; border-top: 1px solid #e5e5e5; }
-    .note { font: 13px/1.4 'Open Sans', Arial, sans-serif; color:#333; }
-
-         /* Safe mobile insets so text never hugs the edges */
-    :root{
-      --container-pad: 16px;
-      --pad-left: max(var(--container-pad), env(safe-area-inset-left));
-      --pad-right: max(var(--container-pad), env(safe-area-inset-right));
-    }
-    .container { padding-left: var(--pad-left); padding-right: var(--pad-right); }
-
-    /* — Unified header styles (apply the same on every page) — */
-    .masthead{ text-align:center; padding-top: 22px; margin:0 0 6px; }
-    .masthead a{
-      font-family:"Poltawski Nowy", serif;
-      font-size:clamp(28px,3.2vw,40px);
-      text-decoration:none; color:var(--ink); letter-spacing:.2px;
-    }
-    .masthead a:hover{ color:var(--accent); }
-    .issuebar{
-      display:flex; gap:12px; justify-content:center; align-items:center; flex-wrap:wrap;
-      color:var(--muted);
-      font:700 12px/1 'Open Sans', Arial, sans-serif;
-      letter-spacing:.08em; text-transform:uppercase; padding-bottom:.9em;
-    }
-    .issuebar span{ white-space:nowrap; }
-    .issuebar .dot{ width:.45em; height:.45em; background:var(--muted); border-radius:50%; display:inline-block; }
-
-    /* Intro (replaces any old photo/bio/hero blocks) */
-    .intro { padding: 10px 0 6px; margin-bottom: 6px; text-align: center; }
-    .intro .lede {
-      font: 400 clamp(16px, 1.45vw, 19px)/1.5 'Open Sans', Arial, sans-serif;
-      color: var(--ink); max-width: 75ch; margin: 0 auto 6px;
-    }
-
-     .intro .prelede {font-family:"Poltawski Nowy", serif;
-      font-size: 35px;}
-
-    .intro .meta {
-      font: 700 12px/1.2 'Open Sans', Arial, sans-serif;
-      letter-spacing: .06em; text-transform: uppercase;
-      color: var(--muted); margin: 0 0 8px;
-    }
-    .intro .meta a { color: var(--muted); text-decoration: none; border-bottom: 1px solid rgba(0,0,0,.08); }
-    .intro .meta a:hover { color: var(--ink); border-bottom-color: var(--ink); }
-    .intro .contact {
-      display:flex; justify-content:center; align-items:center; gap:10px;
-      font:700 12px/1 'Open Sans', Arial, sans-serif; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin:0;
-    }
-    .contact-link{ color:var(--muted); text-decoration:none; }
-    .contact-link:hover{ color:var(--ink); }
-    .intro .dot{ width:.45em; height:.45em; background:var(--muted); border-radius:50%; display:inline-block; }
-
-    /* Explicitly retire legacy blocks if they still exist */
-    .hero-intro, .photo { display:none !important; }
-
-    /* Home tiles */
-    .home-tiles {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 36px 16px;
-    }
-    .home-tiles .grid_4 { float:none; width:auto; margin:0; }
-    .home-tiles img { display:block; width:100%; height:auto; }
-    .home-tiles p { margin-top:6px; min-height:3.6em; }
-
-    .home-block{ line-height:1.5em; }
-    .overline { font:700 12px/1 'Open Sans', Arial, sans-serif; color:var(--muted); letter-spacing:.08em; text-transform:uppercase; padding-top:1em }
-    .hed { font-family:"Poltawski Nowy", serif; font-size:1.5rem; line-height:1.1; margin:6px 0 6px; }
-    .dek { font:400 16px/1.45 'Open Sans', Arial, sans-serif; color:#2a2a2a; }
-
-    .clearfix-break { clear: both; height: 0; }
-    #content .grid_4 { margin-bottom: 24px; }
-    #content .grid_4:nth-of-type(3n+1) { clear:left; }
-    #content .grid_4 img { display:block; width:100%; height:auto; }
-
-    @media (max-width: 1024px) { .home-tiles { grid-template-columns: repeat(2, 1fr); } }
-    @media (max-width: 700px)  { .home-tiles { grid-template-columns: 1fr; } }
-
-  </style>
+  <link href="css/screen.css?v=10" rel="stylesheet" />
 </head>
 
 <body>
-<div class="container clearfix">
-  <div id="content">
+  <a class="skip" href="#main">Skip to content</a>
 
-    <!-- Header -->
-    <div class="grid_12 cf">
-     <div class="masthead"><a href="index.html">Ari Winkleman</a></div>
-		 <div class="issuebar" aria-label="issue dateline">
-      <span>Information Design</span><span class="dot"></span><span>Branding</span><span class="dot"></span><span>Art direction</span>
+  <header class="site-header">
+    <div class="wrap">
+      <div class="masthead"><a href="index.html">Ari Winkleman</a></div>
+      <div class="issuebar" aria-label="disciplines">
+        <span>Information Design</span><span class="dot"></span><span>Branding</span><span class="dot"></span><span>Art Direction</span>
+      </div>
     </div>
-      <br>
+  </header>
 
-<div class="grid_2"></div>
-      <div class="grid_8 intro">
-       <!-- New compact intro (no portrait, no duplicate headline) -->
-        <h2 class="prelede">Guidelines & Systems</h2>
+  <main id="main">
+    <!-- Intro -->
+    <section class="intro">
+      <div class="wrap">
+        <h2 class="prelede">Guidelines &amp; Systems</h2>
         <p class="lede">
           I build guidelines that help teams move fast without losing quality—clear rules, reusable templates, and examples that scale across brands, video, and data visualization. Below are a few lanes that show how I use systems to raise the floor and keep the work consistent.
         </p>
       </div>
-      <div class="grid_2"></div>
+    </section>
 
-     
-    </div>
+    <hr class="rule" />
 
-    <div class="grid_12"><hr class="divider"></div>
+    <!-- Lane 1: Eurasia Group brand system -->
+    <section class="section">
+      <div class="wrap">
+        <h2 class="section-hed">Eurasia Group – Brand system</h2>
+        <div class="grid" style="grid-template-columns: 1fr 1.6fr; gap: 24px;">
+          <figure class="card">
+            <span class="thumb">
+              <img src="images/eg/eg_homepage.gif" alt="EG brand rules preview" loading="lazy" />
+            </span>
+          </figure>
+          <div>
+            <p class="dek">
+              I led the build-out of a practical brand system that could flex from flagship reports to daily client materials. My focus was on clarity and adoption: logo rules, color and type scales, layout grids, and downloadable assets that let analysts and designers produce consistent work quickly.
+            </p>
+          </div>
+        </div>
 
-    <!-- LANE 1: Eurasia Group brand system -->
-    <div class="grid_12 lane">
-        <p class="hed">Eurasia Group – Brand system</p><br>
+        <div class="grid" style="grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 16px;">
+          <figure class="card"><span class="thumb"><img src="images/guidelines/guidelines-03.png" alt="Cover system" loading="lazy" /></span></figure>
+          <figure class="card"><span class="thumb"><img src="images/guidelines/eg-accessibility.png" alt="Color & accessibility" loading="lazy" /></span></figure>
+          <figure class="card"><span class="thumb"><img src="images/guidelines/logo-spacing.png" alt="Anatomy of a logo" loading="lazy" /></span></figure>
+        </div>
       </div>
+    </section>
 
-      <div class="grid_4">
-        <img alt="EG brand rules preview" src="images/eg/eg_homepage.gif">
+    <hr class="rule" />
+
+    <!-- Lane 2: GZERO brand -->
+    <section class="section" id="lane-gzero">
+      <div class="wrap">
+        <h2 class="section-hed">GZERO – Brand development</h2>
+        <div class="grid" style="grid-template-columns: 1fr 1.6fr; gap: 24px;">
+          <figure class="card">
+            <span class="thumb">
+              <img src="images/guidelines/GZERO_brand.gif" alt="GZERO branding" loading="lazy" />
+            </span>
+          </figure>
+          <div>
+            <p class="dek">
+              I evolved the GZERO identity for a fast editorial environment—daily news, long-form, events, and partnerships. The guidelines balance strong recognition with room to move, so producers and designers can ship quickly without breaking the brand.
+            </p>
+            <p class="dek"><a href="gzero.html">See GZERO work →</a></p>
+          </div>
+        </div>
+
+        <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px;">
+          <figure class="card"><span class="thumb"><img src="images/guidelines/publications_tree.png" alt="Brand guidelines sample" loading="lazy" /></span></figure>
+          <figure class="card"><span class="thumb"><img src="images/guidelines/GZERO_color.png" alt="Brand in use across surfaces" loading="lazy" /></span></figure>
+        </div>
       </div>
-      <div class="grid_7">
-        <p>
-          I led the build-out of a practical brand system that could flex from flagship reports to daily client materials. My focus was on clarity and adoption: logo rules, color and type scales, layout grids, and downloadable assets that let analysts and designers produce consistent work quickly.
-        </p>
+    </section>
 
+    <hr class="rule" />
+
+    <!-- Lane 3: Charts & data viz standards -->
+    <section class="section" id="lane-charts">
+      <div class="wrap">
+        <h2 class="section-hed">Charts &amp; data visualization standards</h2>
+        <div class="grid" style="grid-template-columns: 1fr 1.6fr; gap: 24px;">
+          <figure class="card">
+            <span class="thumb">
+              <img src="images/guidelines/guidelines1.png" alt="Chart spec" loading="lazy" />
+            </span>
+          </figure>
+          <div>
+            <p class="dek">
+              I standardized chart typography, color ramps, gridlines, and source/notes hierarchy—and built Excel/PPT templates so non-designers could produce work that stays readable and on brand. These rules show up everywhere from daily briefs to flagship reports.
+            </p>
+            <p class="dek"><a href="tr.html">See Top Risks →</a> &nbsp;|&nbsp; <a href="graphictruth.html">See Graphic Truth →</a></p>
+          </div>
+        </div>
+
+        <div class="grid" style="grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 16px;">
+          <figure class="card"><span class="thumb"><img src="images/guidelines/guidelines-05.png" alt="Color pairing rules" loading="lazy" /></span></figure>
+          <figure class="card"><span class="thumb"><img src="images/guidelines/chart-map.png" alt="Map spec" loading="lazy" /></span></figure>
+          <figure class="card"><span class="thumb"><img src="images/guidelines/chart-table.png" alt="Table spec" loading="lazy" /></span></figure>
+        </div>
       </div>
+    </section>
 
-      <div class="grid_12"><div class="spacer"></div></div>
-
-      <!-- Evidence strip -->
-      <div class="grid_4 thumb-row"><img alt="Cover system" src="images/guidelines/guidelines-03.png"></div>
-      <div class="grid_4 thumb-row"><img alt="Color & accessibility" src="images/guidelines/eg-accessibility.png"></div>
-      <div class="grid_4 thumb-row"><img alt="Anatomy of a logo" src="images/guidelines/logo-spacing.png"></div>
-    
-
-    <div class="grid_12"><hr class="divider"></div>
-
-    <!-- LANE 2: GZERO brand -->
-    <a id="lane-gzero"></a>
-    <div class="grid_12 lane">
-      <div class="grid_12">
-        <p class="hed">GZERO – Brand development</p><br>
-      </div>
-
-      <div class="grid_4">
-        <img alt="GZERO branding" src="images/guidelines/GZERO_brand.gif">
-      </div>
-      <div class="grid_7">
-        <p>
-          I evolved the GZERO identity for a fast editorial environment—daily news, long‑form, events, and partnerships. The guidelines balance strong recognition with room to move, so producers and designers can ship quickly without breaking the brand.
-        </p>
-        <p class="note"><a class="cta" href="gzero.html">See GZERO work →</a></p>
-      </div>
-
-      <div class="grid_12"><div class="spacer"></div></div>
-
-      <div class="grid_6 thumb-row"><img alt="Brand guidelines sample" src="images/guidelines/publications_tree.png"></div>
-      <div class="grid_6 thumb-row"><img alt="Brand in use across surfaces" src="images/guidelines/GZERO_color.png"></div>
-    </div>
-
-    <div class="grid_12"><hr class="divider"></div>
-
-   
-
-    <!-- LANE 4: Charts & data viz standards -->
-    <a id="lane-charts"></a>
-    <div class="grid_12 lane">
-      <div class="grid_12">
-        <p class="hed">Charts & data visualization standards</p><br>
-      </div>
-
-      <div class="grid_4">
-        <img alt="Chart spec" src="images/guidelines/guidelines1.png">
-      </div>
-      <div class="grid_7">
-        <p>
-          I standardized chart typography, color ramps, gridlines, and source/notes hierarchy—and built Excel/PPT templates so non‑designers could produce work that stays readable and on brand. These rules show up everywhere from daily briefs to flagship reports.
-        </p>
-        <p class="note"><a class="cta" href="tr.html">See Top Risks →</a> &nbsp;|&nbsp; <a class="cta" href="graphictruth.html">See Graphic Truth →</a></p>
-      </div>
-
-      <div class="grid_12"><div class="spacer"></div></div>
-
-      <div class="grid_4 thumb-row"><img alt="Color pairing rules" src="images/guidelines/guidelines-05.png"></div>
-      <div class="grid_4 thumb-row"><img alt="Map spec" src="images/guidelines/chart-map.png"></div>
-      <div class="grid_4 thumb-row"><img alt="Table spec" src="images/guidelines/chart-table.png"></div>
-    </div>
-
-    <div class="grid_12"><hr class="divider"></div>
+    <hr class="rule" />
 
     <!-- Closing takeaway -->
-    <div class="grid_12">
-      <p class="hed">What this enables</p><br><br>
-      <p>
-        Systems are how I scale design: clear rules, reusable assets, and examples that anyone can use. The result is faster delivery, fewer revisions, and work that looks like it came from one team—even when many hands are on it.
-      </p>
+    <section class="section">
+      <div class="wrap">
+        <h2 class="section-hed">What this enables</h2>
+        <p class="dek">
+          Systems are how I scale design: clear rules, reusable assets, and examples that anyone can use. The result is faster delivery, fewer revisions, and work that looks like it came from one team—even when many hands are on it.
+        </p>
+        <p class="dek"><a href="index.html">Back to homepage →</a></p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <small class="dek" style="color:#6b6b6b;">&copy; <span id="year"></span> Ari Winkleman</small>
     </div>
+  </footer>
 
-    <footer class="grid_12" style="margin-top:20px;">
-      <a href="index.html"><p>Back to homepage &rarr;</p></a>
-    </footer>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
 
-  </div>
-</div>
-
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-8FK0VXYYGX"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);} 
-  gtag('js', new Date());
-  gtag('config', 'G-8FK0VXYYGX');
-</script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8FK0VXYYGX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-8FK0VXYYGX');
+  </script>
 </body>
 </html>

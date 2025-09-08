@@ -92,6 +92,11 @@
       .lb-meta { flex-basis:auto; max-height:none; }
       .lb-media img { max-height:56vh; }
     }
+
+    /* Let highlight images size naturally (no crop, no absolute positioning) */
+.card .thumb.thumb--natural { aspect-ratio: auto; }
+.card .thumb.thumb--natural img { position: static; width: 100%; height: auto; display: block; }
+
   </style>
 </head>
 
@@ -255,16 +260,20 @@
     <section class="section">
       <div class="wrap">
         <p class="section-label">Highlights</p>
-        <figure class="card" style="margin-top:10px;">
-          <span class="thumb" style="aspect-ratio:auto;">
-            <img src="images/top_risks/TRArt.png" alt="Collage of Top Risks report artwork" loading="lazy" />
-          </span>
-        </figure>
-        <figure class="card">
-          <span class="thumb" style="aspect-ratio:auto;">
-            <img src="images/top_risks/TRCharts.png" alt="Sample charts from Top Risks reports" loading="lazy" />
-          </span>
-        </figure>
+   
+<figure class="card" style="margin-top:10px;">
+  <span class="thumb thumb--natural">
+    <img src="images/top_risks/TRArt.png" alt="Collage of Top Risks report artwork" loading="lazy" />
+  </span>
+</figure>
+
+
+<figure class="card">
+  <span class="thumb thumb--natural">
+    <img src="images/top_risks/TRCharts.png" alt="Sample charts from Top Risks reports" loading="lazy" />
+  </span>
+</figure>
+
         <p class="dek" style="margin-top:12px;"><a href="index.html">Back to homepage →</a></p>
       </div>
     </section>

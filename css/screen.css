@@ -1,104 +1,142 @@
 @charset "UTF-8";
-/* CSS Document */
 
-/* Normalize iOS text autosize (prevents first-paint scale changes) */
+/* iOS first-paint stability */
 html { -webkit-text-size-adjust: 100%; }
 
-/* Basics */
-body { margin:0; padding:0; background:#fff; }
-hr { height:1px; background-color:#aaa; border:none; }
+/* Color tokens */
+:root{
+  --ink:#1b1b1b;
+  --muted:#6b6b6b;
+  --accent:#0a84ff;
+  --bg:#ffffff;
 
-/* Typography */
-h1 {
-  font-family: 'Abril Fatface', Cambria, 'Hoefler Text', 'Liberation Serif', Times, 'Times New Roman', serif;
-  font-size:4em;
-  font-weight:normal;
-  margin-top:2em;
-  text-align:center;
-}
-h1 a,
-footer a { text-decoration:none; font-weight:normal; }
-p {
-  font-family:'Open Sans', Gotham, 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-size:1em; line-height:1.25em; display:inline; vertical-align:top;
-}
-a { text-decoration:underline; border-bottom:1px; font-weight:600; font-size:1em; }
-a:link, a:hover, a:visited { color:black; }
+  --container: 1000px;
+  --gutter: 16px;
 
-/* Fluid container: removes iOS/Chrome iOS auto-zoom triggers */
-#content{
-  width:100%;
-  max-width:1000px;
-  margin-left:auto;
-  margin-right:auto;
-  padding-left:16px;
-  padding-right:16px;
+  /* safe-area friendly outer padding */
+  --pad-left: max(var(--gutter), env(safe-area-inset-left));
+  --pad-right: max(var(--gutter), env(safe-area-inset-right));
 }
 
-/* Emphasis styles used in content blocks */
-#content em{ font-style:normal; font-size:1.25em; font-weight:500; color:#9F1111; }
-#content strong{ font-style:normal; font-size:.85em; font-weight:400; color:#666; }
-
-/* Media sizing */
-.grid_2 img,
-.grid_4 img,
-.grid_6 img,
-.grid_12 img{ width:100%; height:auto; margin:auto; }
-
-/* Captions */
-#caption{
-  font-family:'Open Sans', Gotham, 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-size:.75em; color:#aaa; padding-top:.75em;
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  color: var(--ink);
+  background: var(--bg);
+  font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+  line-height: 1.45;
 }
 
-/* Legacy grid padding tweaks */
-.grid_7{ vertical-align:top; padding-left:10px; }
-.grid_2{ vertical-align:top; padding-left:0; }
-.grid_4.photo{ padding-right:25px; border-right:1px solid #aaa; }
-.grid_4{ padding-right:2px; border-right:0; }
-.grid_12{ padding-right:0; border-right:0; }
+/* links */
+a { color: inherit; }
+a:hover { color: var(--accent); }
 
-/* --- New: Cards grid for blog/posts (replaces float row on mobile) --- */
-.cards-2up{ display:grid; grid-template-columns:1fr 1fr; gap:24px 16px; }
-.cards-2up .thumb{ position:relative; display:block; aspect-ratio:16/10; background:#eee; overflow:hidden; }
-.cards-2up .thumb img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
-
-/* Clearfix utility */
-.cf::after { content:""; display:table; clear:both; }
-
-/* Overflow safety to avoid 1px nudges causing iOS scaling */
-html, body { max-width:100%; overflow-x:hidden; }
-img, svg, video { max-width:100%; height:auto; }
-
-/* ===== Breakpoints ===== */
-@media screen and (max-width:1024px){
-  #content{ max-width:775px; }
+/* accessibility */
+.skip {
+  position: absolute; left: -9999px; top: auto; width: 1px; height: 1px; overflow: hidden;
+}
+.skip:focus {
+  position: static; width: auto; height: auto; padding: 8px 12px; background:#000; color:#fff;
 }
 
-@media screen and (max-width:750px){
-  #content{ max-width:500px; }
-
-  .grid_4.photo{ padding-right:0; border-right:0; }
-
-  .grid_7{ width:100%; padding-left:0; padding-top:10px; }
-  .grid_6{ width:100%; padding-right:0; padding-bottom:15px; border-bottom:0; border-right:0; }
-  .grid_4{ width:100%; padding-right:0; padding-bottom:15px; border-bottom:0; border-right:0; }
-  .grid_2{ width:48%; padding-right:0; padding-bottom:15px; border-bottom:0; border-right:0; }
-  .grid_12{ width:100%; padding-right:0; padding-left:0; padding-bottom:15px; border-bottom:0; border-right:0; }
+/* wrappers */
+.wrap {
+  width: 100%;
+  max-width: var(--container);
+  margin: 0 auto;
+  padding-left: var(--pad-left);
+  padding-right: var(--pad-right);
 }
 
-@media screen and (max-width:700px){
-  /* Make the top intro span full width; hide spacer columns */
-  .grid_2 { display:none !important; }
-  .grid_8.intro { float:none !important; width:100% !important; margin:0 !important; }
+/* header */
+.site-header { padding-top: 22px; }
+.masthead { text-align: center; margin: 0 0 6px; }
+.masthead a {
+  font-family: "Poltawski Nowy", serif;
+  font-size: clamp(28px, 3.2vw, 40px);
+  letter-spacing: .2px;
+  text-decoration: none;
+}
+.issuebar{
+  display:flex; gap:12px; justify-content:center; align-items:center; flex-wrap:wrap;
+  color:var(--muted);
+  font:700 12px/1 'Open Sans', Arial, sans-serif;
+  letter-spacing:.08em; text-transform:uppercase; padding-bottom:.9em;
+}
+.issuebar .dot{ width:.45em; height:.45em; background:var(--muted); border-radius:50%; display:inline-block; }
 
-  /* Blog/posts grid collapses to single column like EG cards */
-  .cards-2up{ grid-template-columns:1fr; }
+/* intro */
+.intro { padding: 10px 0 6px; text-align: center; }
+.prelede { font-family:"Poltawski Nowy", serif; font-size: 35px; margin: 0 0 6px; }
+.lede {
+  font: 400 clamp(16px, 1.45vw, 19px)/1.6 'Open Sans', Arial, sans-serif;
+  max-width: 75ch; margin: 0 auto 6px;
 }
 
-@media screen and (max-width:500px){
-  #content{ max-width:385px; }
+/* section rules */
+.rule {
+  height: 1px; border: 0; background: #aaa; margin: 18px 0;
+}
 
-  .grid_12{ width:100%; }
-  h1{ font-size:2em; font-weight:normal; margin-top:1em; }
+/* generic grid */
+.grid {
+  display: grid;
+  gap: 36px 16px;
+}
+
+/* cards (features) */
+.tiles .grid {
+  grid-template-columns: repeat(3, 1fr);
+}
+.card .thumb {
+  position: relative; display: block; aspect-ratio: 16/10;
+  background: #eee; overflow: hidden; border-radius: 6px;
+}
+.card .thumb img {
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display:block;
+}
+.overline {
+  font:700 12px/1 'Open Sans', Arial, sans-serif; color:var(--muted);
+  letter-spacing:.08em; text-transform:uppercase; padding-top:1em;
+}
+.hed { font-family:"Poltawski Nowy", serif; font-size: 1.5rem; line-height: 1.1; margin: 6px 0 6px; }
+.dek { font: 400 16px/1.45 'Open Sans', Arial, sans-serif; color: #2a2a2a; }
+
+/* posts */
+.section-hed {
+  font-family:"Poltawski Nowy", serif; font-size:1.8em; margin: 0 0 16px;
+}
+.grid--posts {
+  grid-template-columns: repeat(2, 1fr);
+}
+.post .thumb {
+  position: relative; display:block; aspect-ratio:16/10;
+  background:#eee; overflow:hidden; border-radius:6px;
+}
+.post .thumb img {
+  position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block;
+}
+
+/* footer */
+.site-footer { padding: 28px 0 40px; color: var(--muted); font-size: 13px; }
+
+/* universal media safety */
+img, svg, video { max-width: 100%; height: auto; display: block; }
+html, body { max-width: 100%; overflow-x: hidden; }
+
+/* responsive */
+@media (max-width: 1024px){
+  .tiles .grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 700px){
+  /* full-width look for intro content on phones */
+  .intro .wrap { padding-left: 0; padding-right: 0; }
+  .lede { padding-left: var(--pad-left); padding-right: var(--pad-right); }
+
+  .tiles .grid { grid-template-columns: 1fr; }
+  .grid--posts { grid-template-columns: 1fr; }
+}
+@media (max-width: 500px){
+  :root{ --container: 385px; }
 }

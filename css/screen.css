@@ -1,261 +1,104 @@
 @charset "UTF-8";
 /* CSS Document */
 
-/* Normalize iOS text autosize to avoid first-paint scale changes */
+/* Normalize iOS text autosize (prevents first-paint scale changes) */
 html { -webkit-text-size-adjust: 100%; }
 
+/* Basics */
+body { margin:0; padding:0; background:#fff; }
+hr { height:1px; background-color:#aaa; border:none; }
+
+/* Typography */
 h1 {
-	font-family: 'Abril Fatface', Cambria, 'Hoefler Text', 'Liberation Serif', Times, 'Times New Roman', 'serif';
-	font-size:4em;
-	font-weight:normal;
-	margin-top:2em;
-	text-align:center;
+  font-family: 'Abril Fatface', Cambria, 'Hoefler Text', 'Liberation Serif', Times, 'Times New Roman', serif;
+  font-size:4em;
+  font-weight:normal;
+  margin-top:2em;
+  text-align:center;
 }
-
-h1 a:link { text-decoration: none; }
-h1 a:visited { text-decoration: none; }
-h1 a:hover { text-decoration: none; }
-h1 a:active { text-decoration: none; }
-h1 a {font-weight:  normal;}
-
-footer a:link { text-decoration: none; }
-footer a:visited { text-decoration: none; }
-footer a:hover { text-decoration: none; }
-footer a:active { text-decoration: none; }
-footer a {font-weight:  normal;}
-
+h1 a,
+footer a { text-decoration:none; font-weight:normal; }
 p {
-	font-family: 'Open Sans', Gotham, 'Helvetica Neue', Helvetica, Arial, 'sans-serif';
-	font-size:1em;
-	line-height:1.25em;
-	display:inline;
-	vertical-align:top;
+  font-family:'Open Sans', Gotham, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size:1em; line-height:1.25em; display:inline; vertical-align:top;
 }
+a { text-decoration:underline; border-bottom:1px; font-weight:600; font-size:1em; }
+a:link, a:hover, a:visited { color:black; }
 
-hr{
-	height: 1px;
-	background-color: #aaa;
-	border: none;
-}
-
-/* FLUID container to prevent iOS/Chrome iOS auto-zoom */
+/* Fluid container: removes iOS/Chrome iOS auto-zoom triggers */
 #content{
-	width:100%;
-	max-width:1000px;        /* was width:1000px; */
-	margin-left:auto;
-	margin-right:auto;
-	padding-left:16px;
-	padding-right:16px;
+  width:100%;
+  max-width:1000px;
+  margin-left:auto;
+  margin-right:auto;
+  padding-left:16px;
+  padding-right:16px;
 }
 
-#content em{
-	font-style:normal;
-	font-size:1.25em;
-	font-weight:500;
-	color:#9F1111;
-}
+/* Emphasis styles used in content blocks */
+#content em{ font-style:normal; font-size:1.25em; font-weight:500; color:#9F1111; }
+#content strong{ font-style:normal; font-size:.85em; font-weight:400; color:#666; }
 
-#content strong{
-	font-style:normal;
-	font-size:.85em;
-	font-weight:400;
-	color:#666666;
-}
-
+/* Media sizing */
 .grid_2 img,
 .grid_4 img,
 .grid_6 img,
-.grid_12 img{
-	width:100%;
-	margin:auto;
-}
+.grid_12 img{ width:100%; height:auto; margin:auto; }
 
+/* Captions */
 #caption{
-	font-family:'Open Sans', Gotham, 'Helvetica Neue', Helvetica, Arial, 'sans-serif';
-	font-size:.75em;
-	color:#aaa;
-	padding-top:.75em;
+  font-family:'Open Sans', Gotham, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size:.75em; color:#aaa; padding-top:.75em;
 }
 
-a {
-	text-decoration:underline;
-	border-bottom:1px;
-	font-weight:600;
-	font-size:1em;
-}
+/* Legacy grid padding tweaks */
+.grid_7{ vertical-align:top; padding-left:10px; }
+.grid_2{ vertical-align:top; padding-left:0; }
+.grid_4.photo{ padding-right:25px; border-right:1px solid #aaa; }
+.grid_4{ padding-right:2px; border-right:0; }
+.grid_12{ padding-right:0; border-right:0; }
 
-a:link{ color:black; }
-a:hover{ color:black; }
-a:visited{ color:black; }
+/* --- New: Cards grid for blog/posts (replaces float row on mobile) --- */
+.cards-2up{ display:grid; grid-template-columns:1fr 1fr; gap:24px 16px; }
+.cards-2up .thumb{ position:relative; display:block; aspect-ratio:16/10; background:#eee; overflow:hidden; }
+.cards-2up .thumb img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
 
-.grid_7{
-	vertical-align:top;
-	padding-left:10px;
-}
+/* Clearfix utility */
+.cf::after { content:""; display:table; clear:both; }
 
-.grid_2{
-	vertical-align:top;
-	padding-left:0px;
-}
-
-.grid_4.photo{
-	padding-right:25px;
-	border-right:solid 1px #aaa;
-}
-
-.grid_4{
-	padding-right:2px;
-	border-right:solid 0px #aaa;
-}
-
-.grid_12{
-	padding-right:0px;
-	border-right:solid 0px #aaa;
-}
+/* Overflow safety to avoid 1px nudges causing iOS scaling */
+html, body { max-width:100%; overflow-x:hidden; }
+img, svg, video { max-width:100%; height:auto; }
 
 /* ===== Breakpoints ===== */
-@media screen and (max-width: 1024px) {
-	#content{
-		max-width:775px;     /* was width:775px; */
-	}
+@media screen and (max-width:1024px){
+  #content{ max-width:775px; }
 }
 
-@media screen and (max-width: 750px) {
-	#content{
-		max-width:500px;     /* was width:500px; */
-	}
+@media screen and (max-width:750px){
+  #content{ max-width:500px; }
 
-	.grid_4.photo{
-		padding-right:0px;
-		border-right:solid 0px #aaa;
-	}
+  .grid_4.photo{ padding-right:0; border-right:0; }
 
-	.grid_7{
-		width:100%;
-		padding-left:0px;
-		padding-top:10px;
-	}
-
-	.grid_6{
-		width:100%;
-		padding-right:0px;
-		padding-bottom:15px;
-		border-bottom:solid 0px #aaa;
-		border-right:solid 0px #fff;
-	}
-
-	.grid_4{
-		width:100%;
-		padding-right:0px;
-		padding-bottom:15px;
-		border-bottom:solid 0px #aaa;
-		border-right:solid 0px #fff;
-	}
-
-	.grid_2{
-		width:48%;
-		padding-right:0px;
-		padding-bottom:15px;
-		border-bottom:solid 0px #aaa;
-		border-right:solid 0px #fff;
-	}
-
-	.grid_12{
-		width:100%;
-		padding-right:0px;
-		padding-left: 0px;
-		padding-bottom:15px;
-		border-bottom:solid 0px #aaa;
-		border-right:solid 0px #fff;
-	}
+  .grid_7{ width:100%; padding-left:0; padding-top:10px; }
+  .grid_6{ width:100%; padding-right:0; padding-bottom:15px; border-bottom:0; border-right:0; }
+  .grid_4{ width:100%; padding-right:0; padding-bottom:15px; border-bottom:0; border-right:0; }
+  .grid_2{ width:48%; padding-right:0; padding-bottom:15px; border-bottom:0; border-right:0; }
+  .grid_12{ width:100%; padding-right:0; padding-left:0; padding-bottom:15px; border-bottom:0; border-right:0; }
 }
 
-@media screen and (max-width: 500px){
-	#content{
-		max-width:385px;    /* was width:385px; */
-		margin-left:auto;
-		margin-right:auto;
-	}
+@media screen and (max-width:700px){
+  /* Make the top intro span full width; hide spacer columns */
+  .grid_2 { display:none !important; }
+  .grid_8.intro { float:none !important; width:100% !important; margin:0 !important; }
 
-	.grid_12{ width:100%; }
-
-	h1 {
-		font-size:2em; 
-		font-weight:normal;
-		margin-top:1em;
-	}
+  /* Blog/posts grid collapses to single column like EG cards */
+  .cards-2up{ grid-template-columns:1fr; }
 }
 
-/* Mobile: make the top .grid_8 intro span full width */
-@media (max-width: 700px) {
-  .grid_2 { display: none !important; }        /* hide spacer columns */
-  .grid_8.intro {
-    float: none !important;
-    width: 100% !important;
-    margin: 0 !important;
-  }
-}
+@media screen and (max-width:500px){
+  #content{ max-width:385px; }
 
-/* simple clearfix helper */
-.cf::after {
-  content: "";
-  display: table;
-  clear: both;
-}
-
-/* (optional) make sure the tiles section is self-contained */
-.home-tiles::after {
-  content: "";
-  display: table;
-  clear: both;
-}
-
-/* if your homepage tiles are 3-up, start a new row every 3rd item */
-.home-tiles > .grid_4:nth-of-type(3n+1) {
-  clear: both;
-}
-
-
-.blog-row .blog-thumb { display:block; width:100%; height:auto; }
-@media (max-width: 700px) {
-  .blog-row .grid_3,
-  .blog-row .grid_8 {
-    float: none !important;
-    width: 100% !important;
-    margin: 0 !important;
-  }
-  /* breathing room between the stacked blocks */
-  .blog-row .grid_3 { margin-bottom: 12px !important; }
-}
-html, body { max-width: 100%; overflow-x: hidden; }
-img, svg, video { max-width: 100%; height: auto; }
-@media (max-width: 700px) {
-  .container { padding-left: 12px; padding-right: 12px; }
-}
-
-
-/* iOS zoom fix: make the container fluid and normalize text sizing */
-html { -webkit-text-size-adjust: 100%; }
-
-#content {
-  width: 100% !important;
-  max-width: 1000px !important;   /* replaces width:1000px */
-  margin-left: auto !important;
-  margin-right: auto !important;
-  padding-left: 16px;
-  padding-right: 16px;
-}
-@media (max-width: 1024px) { #content { max-width: 775px !important; } }  /* replaces width:775px */
-@media (max-width: 750px)  { #content { max-width: 500px !important; } }  /* replaces width:500px */
-@media (max-width: 500px)  { #content { max-width: 385px !important; } }  /* replaces width:385px */
-
-/* Index-only float row: prevent overflow that can also provoke scaling */
-@media (max-width: 700px) {
-  .blog-row .grid_3,
-  .blog-row .grid_8 { float: none !important; width: 100% !important; margin: 0 !important; }
-  .blog-row .grid_3 { margin-bottom: 12px !important; }
-
-  /* your top intro flanked by .grid_2 columns */
-  .grid_2 { display: none !important; }
-  .grid_8.intro { float: none !important; width: 100% !important; margin: 0 !important; }
+  .grid_12{ width:100%; }
+  h1{ font-size:2em; font-weight:normal; margin-top:1em; }
 }

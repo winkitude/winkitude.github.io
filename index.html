@@ -8,13 +8,8 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <title>Ari Winkleman</title>
   <meta name="description" content="Ari Winkleman">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <link rel="shortcut icon" href="favicon.ico" >
-
-  <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <script>window.html5 || document.write('<script src="js/vendor/html5shiv.js"><\/script>')</script>
-  <![endif]-->
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <link rel="shortcut icon" href="favicon.ico">
 
   <!-- FONTS -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -25,25 +20,27 @@
   <!-- Styles -->
   <link href="css/normalize.css" rel="stylesheet" />
   <link href="css/grid.css" rel="stylesheet" />
-  <link href="css/screen.css" rel="stylesheet" />
+  <link href="css/screen.css?v=6" rel="stylesheet" />
 
   <style>
-    /* Safe mobile insets so text never hugs the edges */
+    /* Page-local helpers (kept here so only index gets them) */
+
     :root{
       --container-pad: 16px;
       --pad-left: max(var(--container-pad), env(safe-area-inset-left));
       --pad-right: max(var(--container-pad), env(safe-area-inset-right));
+      --ink:#1b1b1b; --muted:#6b6b6b; --accent:#0a84ff;
     }
     .container { padding-left: var(--pad-left); padding-right: var(--pad-right); }
 
-    /* — Unified header styles (apply the same on every page) — */
-    .masthead{ text-align:center; padding-top: 22px; margin:0 0 6px; }
+    .masthead{ text-align:center; padding-top:22px; margin:0 0 6px; }
     .masthead a{
       font-family:"Poltawski Nowy", serif;
       font-size:clamp(28px,3.2vw,40px);
       text-decoration:none; color:var(--ink); letter-spacing:.2px;
     }
     .masthead a:hover{ color:var(--accent); }
+
     .issuebar{
       display:flex; gap:12px; justify-content:center; align-items:center; flex-wrap:wrap;
       color:var(--muted);
@@ -53,23 +50,19 @@
     .issuebar span{ white-space:nowrap; }
     .issuebar .dot{ width:.45em; height:.45em; background:var(--muted); border-radius:50%; display:inline-block; }
 
-    /* Intro (replaces any old photo/bio/hero blocks) */
-    .intro { padding: 10px 0 6px; margin-bottom: 6px; text-align: center; }
+    .intro { padding:10px 0 6px; margin-bottom:6px; text-align:center; }
     .intro .lede {
-      font: 400 clamp(16px, 1.45vw, 19px)/1.5 'Open Sans', Arial, sans-serif;
-      color: var(--ink); max-width: 75ch; margin: 0 auto 6px;
+      font:400 clamp(16px, 1.45vw, 19px)/1.5 'Open Sans', Arial, sans-serif;
+      color:var(--ink); max-width:75ch; margin:0 auto 6px;
     }
-
-     .intro .prelede {font-family:"Poltawski Nowy", serif;
-      font-size: 35px;}
-
+    .intro .prelede { font-family:"Poltawski Nowy", serif; font-size:35px; }
     .intro .meta {
-      font: 700 12px/1.2 'Open Sans', Arial, sans-serif;
-      letter-spacing: .06em; text-transform: uppercase;
-      color: var(--muted); margin: 0 0 8px;
+      font:700 12px/1.2 'Open Sans', Arial, sans-serif;
+      letter-spacing:.06em; text-transform:uppercase;
+      color:var(--muted); margin:0 0 8px;
     }
-    .intro .meta a { color: var(--muted); text-decoration: none; border-bottom: 1px solid rgba(0,0,0,.08); }
-    .intro .meta a:hover { color: var(--ink); border-bottom-color: var(--ink); }
+    .intro .meta a { color:var(--muted); text-decoration:none; border-bottom:1px solid rgba(0,0,0,.08); }
+    .intro .meta a:hover { color:var(--ink); border-bottom-color:var(--ink); }
     .intro .contact {
       display:flex; justify-content:center; align-items:center; gap:10px;
       font:700 12px/1 'Open Sans', Arial, sans-serif; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin:0;
@@ -78,31 +71,19 @@
     .contact-link:hover{ color:var(--ink); }
     .intro .dot{ width:.45em; height:.45em; background:var(--muted); border-radius:50%; display:inline-block; }
 
-    /* Explicitly retire legacy blocks if they still exist */
     .hero-intro, .photo { display:none !important; }
 
-    /* Home tiles */
-    .home-tiles {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 36px 16px;
-    }
+    /* Three-up feature tiles */
+    .home-tiles { display:grid; grid-template-columns:repeat(3,1fr); gap:36px 16px; }
     .home-tiles .grid_4 { float:none; width:auto; margin:0; }
     .home-tiles img { display:block; width:100%; height:auto; }
     .home-tiles p { margin-top:6px; min-height:3.6em; }
-
-    .home-block{ line-height:1.5em; }
     .overline { font:700 12px/1 'Open Sans', Arial, sans-serif; color:var(--muted); letter-spacing:.08em; text-transform:uppercase; padding-top:1em }
     .hed { font-family:"Poltawski Nowy", serif; font-size:1.5rem; line-height:1.1; margin:6px 0 6px; }
     .dek { font:400 16px/1.45 'Open Sans', Arial, sans-serif; color:#2a2a2a; }
 
-    .clearfix-break { clear: both; height: 0; }
-    #content .grid_4 { margin-bottom: 24px; }
-    #content .grid_4:nth-of-type(3n+1) { clear:left; }
-    #content .grid_4 img { display:block; width:100%; height:auto; }
-
-    @media (max-width: 1024px) { .home-tiles { grid-template-columns: repeat(2, 1fr); } }
-    @media (max-width: 700px)  { .home-tiles { grid-template-columns: 1fr; } }
+    @media (max-width:1024px){ .home-tiles { grid-template-columns:repeat(2,1fr); } }
+    @media (max-width:700px){ .home-tiles { grid-template-columns:1fr; } }
   </style>
 </head>
 
@@ -114,27 +95,24 @@
       <div class="issuebar" aria-label="issue dateline">
         <span>Information Design</span><span class="dot"></span><span>Branding</span><span class="dot"></span><span>Art Direction</span>
       </div>
-     
+
       <br>
-<div class="grid_2"></div>
+      <div class="grid_2"></div>
       <div class="grid_8 intro">
-       <!-- New compact intro (no portrait, no duplicate headline) -->
         <h2 class="prelede">Hi!</h2>
         <p class="lede">
-         I’m a designer who specializes in information design, brand systems, and creative direction. I take complicated ideas and make them easy to see and understand. Over the years I’ve built tools, templates, and design systems that keep teams moving fast and consistent, while also shaping flagship reports, daily visuals, and events that reach wide audiences.
-       <br><br>
-       Find me on <a href="https://www.linkedin.com/in/ari-winkleman/" target="_blank" >LinkedIn</a> or contact me via <a href="mailto:ariswinkleman@gmail.com">email</a>
+          I’m a designer who specializes in information design, brand systems, and creative direction. I take complicated ideas and make them easy to see and understand. Over the years I’ve built tools, templates, and design systems that keep teams moving fast and consistent, while also shaping flagship reports, daily visuals, and events that reach wide audiences.
+          <br><br>
+          Find me on <a href="https://www.linkedin.com/in/ari-winkleman/" target="_blank">LinkedIn</a> or contact me via <a href="mailto:ariswinkleman@gmail.com">email</a>
         </p>
       </div>
       <div class="grid_2"></div>
-      </div>
-   
+    </div>
 
     <div class="grid_12"><hr></div>
     <br>
 
-    <div class="clearfix-break" aria-hidden="true"></div>
-
+    <!-- Feature tiles -->
     <div class="home-tiles">
       <div class="grid_4 home-block">
         <a href="eg.html"><img src="images/eg/eg_homepage.gif" alt="Eurasia Group projects"></a>
@@ -174,22 +152,20 @@
 
     <div class="grid_12"><hr></div><br>
 
-    <!-- BLOG SECTION -->
+    <!-- Posts (converted from floats to grid) -->
     <div class="grid_12">
       <h2 style="font-family:'Poltawski Nowy', serif; font-size:1.8em; margin-bottom:16px;">Posts</h2>
     </div>
 
-    <div class="grid_12 blog-row">
-      <div class="grid_3">
-        <a href="posts/simpsons.html">
+    <div class="grid_12 cards-2up blog-row">
+      <article class="card">
+        <a href="posts/simpsons.html" class="thumb">
           <img class="blog-thumb" src="images/posts/choo-choo-choose.jpg" alt="Simpsons network project">
         </a>
-      </div>
-      <div class="grid_8">
         <div class="overline">Vibe coding</div>
-        <h2 class="hed">The Simpsons Relationship Network</h2>
+        <h3 class="hed">The Simpsons Relationship Network</h3>
         <p class="dek">I’ve been collecting data on Springfield’s charts, drools, and tangled web of relationships… <a href="posts/simpsons.html">Read more</a></p>
-      </div>
+      </article>
     </div>
   </div>
 </div>

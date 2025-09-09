@@ -78,6 +78,21 @@
   }
 }
 
+/* Responsive stack */
+@media (max-width:900px){
+  .gt-rows .row{ 
+    grid-template-columns:1fr; 
+  }
+
+  /* Force media on top for ALL rows, including even ones */
+  .gt-rows .row .media{ order:-1 !important; }
+  .gt-rows .row .copy{  order:0  !important; }
+
+  /* Let images size naturally on phones */
+  .gt-rows .row .media img{ max-height:none; }
+}
+
+
   </style>
 </head>
 

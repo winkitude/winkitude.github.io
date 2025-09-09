@@ -61,13 +61,23 @@
     }
     .btn:hover{ background:#111; color:#fff; }
 
+ 
     /* Responsive stack */
-    @media (max-width:700px){
-      .gt-rows .row{ grid-template-columns:1fr; }
-      .gt-rows .row .media,
-      .gt-rows .row .copy{ order:unset; }
-      .gt-rows .row .media img{ max-height:none; } /* let images grow naturally on phones */
-    }
+@media (max-width:700px){
+  .gt-rows .row{ 
+    grid-template-columns:1fr; 
+  }
+  .gt-rows .row .media{ 
+    order:-1;   /* force image on top */
+  }
+  .gt-rows .row .copy{ 
+    order:0; 
+  }
+  .gt-rows .row .media img{ 
+    max-height:none; 
+  }
+}
+
   </style>
 </head>
 

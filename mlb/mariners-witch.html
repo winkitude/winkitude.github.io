@@ -141,19 +141,7 @@ main { max-width: 760px; }                 /* narrower read width; adjust if you
 .brand a:hover { opacity: .7; }
 
 
-/* 1) Bars align from the same left edge (logo no longer pushes them) */
-.card { display: grid; grid-template-columns: 32px 68px 1fr; column-gap: 12px; }
-.rank { width: auto; text-align: right; }
-.logo {
-  width: 68px;              /* fixed column so the rest never shifts */
-  height: 44px;             /* visual height for consistency */
-  display: flex; align-items: center; justify-content: flex-start;
-  background: transparent; border-radius: 0; overflow: visible;
-}
-.logo img {
-  height: 44px; width: auto; object-fit: contain; /* natural aspect, not cropped */
-}
-.meta { min-width: 0; }     /* let text truncate nicely */
+
 
 /* 2) “Empty box” under the brand on mobile = the header divider was inheriting a horizontal rule style.
       Scope the divider styles so header shows a thin vertical bar, and hide it on small screens. */
@@ -177,6 +165,36 @@ header .divider {
   .feature .cta .btn { padding: 6px 10px; font-size: 13px; }
 }
 
+
+/* --- Fix header divider "box" under name on mobile --- */
+@media (max-width: 700px) {
+  header { flex-wrap: wrap; }                 /* allow clean wrap */
+  header > .divider,
+  .brand + .divider {                         /* target the divider after your name */
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+  }
+}
+
+/* --- Keep bars aligned regardless of logo width (if not already added) --- */
+.card { display: grid; grid-template-columns: 32px 68px 1fr; column-gap: 12px; }
+.rank { width: auto; text-align: right; }
+.logo { width: 68px; height: 44px; display:flex; align-items:center; justify-content:flex-start; background:transparent; border-radius:0; overflow:visible; }
+.logo img { height: 44px; width:auto; object-fit:contain; }
+.meta { min-width: 0; }
+
+/* --- Compact the “Spell of the Streak” section on mobile --- */
+@media (max-width: 600px) {
+  .feature { margin-top: 6px; }
+  .feature .card { padding: 8px 10px; gap: 8px; }
+  .feature .tag { display: none; }            /* hide the big witchy tag */
+  .feature .desc { display: none; }           /* hide the paragraph */
+  .feature .cta .btn { padding: 6px 10px; font-size: 13px; }
+}
 
 
 </style>

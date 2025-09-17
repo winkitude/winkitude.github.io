@@ -48,16 +48,18 @@
   }
 
   /* Header */
-  header{max-width:1100px;margin:0 auto;padding:24px 24px 10px; display:block;}
+  header{max-width:1100px;margin:0 auto;padding:24px 24px 10px;}
+  .topline{display:flex; align-items:center; gap:12px; flex-wrap:wrap;}
   .brand a{
     text-decoration:none;
-    color:#111;
+    color:var(--ink);              /* readable on dark theme */
     font-weight:600;
     letter-spacing:.2px;
     font-family:'Abril Fatface', serif;
   }
-  .brand a:hover{opacity:.7}
+  .brand a:hover{opacity:.8}
 
+  /* Title divider implemented as a pseudo-element (no extra DOM node) */
   .title{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
   .title.with-sep{position:relative;margin-left:12px;padding-left:12px}
   .title.with-sep::before{
@@ -138,11 +140,12 @@
   <div class="sparkle" aria-hidden="true"></div>
 
   <header>
-    <div class="brand"><a href="../index.html" rel="noopener" title="Ari Winkleman">Ari Winkleman</a></div>
-
-    <div class="title with-sep">
-      <img class="broom" alt="" src="data:image/svg+xml;utf8,<?xml version='1.0'?><svg xmlns='http://www.w3.org/2000/svg' width='64' height='16' viewBox='0 0 64 16'><g fill='%23b6ff6a'><rect x='0' y='6' width='44' height='4' rx='2'/><path d='M44 4h8l4 4-4 4h-8zM56 2l8 6-8 6z' opacity='.8'/></g></svg>">
-      <h1><span class="creep">Witch Era</span> MLB Records Since Sept 6, 2025</h1>
+    <div class="topline">
+      <div class="brand"><a href="../index.html" rel="noopener" title="Ari Winkleman">Ari Winkleman</a></div>
+      <div class="title with-sep">
+        <img class="broom" alt="" src="data:image/svg+xml;utf8,<?xml version='1.0'?><svg xmlns='http://www.w3.org/2000/svg' width='64' height='16' viewBox='0 0 64 16'><g fill='%23b6ff6a'><rect x='0' y='6' width='44' height='4' rx='2'/><path d='M44 4h8l4 4-4 4h-8zM56 2l8 6-8 6z' opacity='.8'/></g></svg>">
+        <h1><span class="creep">Witch Era</span> MLB Records Since Sept 6, 2025</h1>
+      </div>
     </div>
 
     <div class="sub" id="rangeNote">Loading…</div>

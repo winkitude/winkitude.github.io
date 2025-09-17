@@ -91,6 +91,63 @@
 
   /* small touch */
   .divider{height:1px;background:linear-gradient(90deg,transparent,rgba(157,119,255,.35),transparent);margin:16px 0}
+
+/* === Witch Era: single-column list + natural logos === */
+
+/* 1) Make the team list a single column */
+main { max-width: 760px; }                 /* narrower read width; adjust if you like */
+.grid { grid-template-columns: 1fr; }       /* one column */
+
+/* 2) Let logos keep their aspect ratio (no square crop) */
+.logo {
+  width: auto;              /* no fixed square */
+  height: auto;
+  flex: 0 0 auto;
+  background: transparent;  /* remove white square */
+  border-radius: 0;
+  overflow: visible;        /* don’t clip */
+  display: flex;
+  align-items: center;
+}
+.logo img {
+  height: 44px;             /* consistent visual height */
+  width: auto;              /* natural width */
+  object-fit: contain;      /* safe if an SVG pretends to be huge */
+}
+
+/* === Home link with name === */
+.home-link {
+  margin-bottom: 12px;
+}
+.home-link a {
+  font-weight: 600;
+  font-size: 18px;
+  color: var(--ink);
+  text-decoration: none;
+}
+.home-link a:hover {
+  color: var(--accent);
+  text-decoration: underline;
+}
+
+/* match Ari brand link style from other pages */
+.brand a {
+  text-decoration: none;
+  color: #ffffff;
+  font-weight: 600;
+  letter-spacing: .2px;
+  font-family: 'Abril Fatface', serif;
+}
+.brand a:hover { opacity: .7; }
+
+.divider {
+  width: 1px;
+  height: 18px;
+  background: #eaeaea;
+  margin: 0 6px;
+}
+
+
 </style>
 </head>
 <body>
@@ -98,17 +155,19 @@
   <div class="sparkle" aria-hidden="true"></div>
 
   <header>
-    <div class="title">
-      <img class="broom" alt="" src="data:image/svg+xml;utf8,<?xml version='1.0'?><svg xmlns='http://www.w3.org/2000/svg' width='64' height='16' viewBox='0 0 64 16'><g fill='%23b6ff6a'><rect x='0' y='6' width='44' height='4' rx='2'/><path d='M44 4h8l4 4-4 4h-8zM56 2l8 6-8 6z' opacity='.8'/></g></svg>">
-      <h1><span class="creep">Witch Era</span> MLB Records Since Sept 6, 2025</h1>
-    </div>
-    <div class="sub" id="rangeNote">Loading…</div>
-    <div class="controls">
-      <span class="pill">Window starts: <strong>2025-09-06</strong></span>
-      <span class="pill">Games counted: <strong id="gameCount">—</strong></span>
-      <span class="pill">Teams: <strong>30</strong></span>
-    </div>
-  </header>
+  <div class="brand"><a href="../index.html" rel="noopener" title="Ari Winkleman">Ari Winkleman</a></div><br><br>
+
+  <div class="title">
+    <img class="broom" alt="" src="...your broom svg here..." />
+    <h1><span class="creep">Witch Era</span> MLB Records Since Sept 6, 2025</h1>
+  </div>
+  <div class="sub" id="rangeNote">Loading…</div>
+  <div class="controls">
+    <span class="pill">Window starts: <strong>2025-09-06</strong></span>
+    <span class="pill">Games counted: <strong id="gameCount">—</strong></span>
+    <span class="pill">Teams: <strong>30</strong></span>
+  </div>
+</header> 
 
   <section class="tweet-wrap">
     <!-- Replace the src with your uploaded Twitter/X screenshot -->

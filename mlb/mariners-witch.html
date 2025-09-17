@@ -157,13 +157,6 @@ header .divider {
   header .divider { display: none; }  /* remove the tiny box on wrap */
 }
 
-/* 3) Make “Spell of the Streak” more compact on mobile */
-@media (max-width: 600px) {
-  .feature .card { padding: 10px 12px; gap: 10px; }
-  .feature .tag { font-size: 16px; }
-  .feature .desc { font-size: 13px; line-height: 1.35; }
-  .feature .cta .btn { padding: 6px 10px; font-size: 13px; }
-}
 
 
 /* --- Fix header divider "box" under name on mobile --- */
@@ -197,6 +190,28 @@ header .divider {
 }
 
 
+/* Scope the horizontal rule to the feature section only (not the header) */
+.feature .divider {
+  height: 1px; width: 100%;
+  background: linear-gradient(90deg,transparent,rgba(157,119,255,.35),transparent);
+  margin: 16px 0;
+}
+
+/* Header separator as a vertical line beside the title (desktop only) */
+.title.with-sep { position: relative; margin-left: 12px; padding-left: 12px; }
+.title.with-sep::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 50%; transform: translateY(-50%);
+  width: 1px; height: 18px; background: #eaeaea;
+}
+
+/* Kill the separator entirely on small screens */
+@media (max-width: 700px){
+  .title.with-sep { margin-left: 0; padding-left: 0; }
+  .title.with-sep::before { display: none; }
+}
+
 </style>
 </head>
 <body>
@@ -204,12 +219,16 @@ header .divider {
   <div class="sparkle" aria-hidden="true"></div>
 
   <header>
+
   <div class="brand"><a href="../index.html" rel="noopener" title="Ari Winkleman">Ari Winkleman</a></div>
+  <!-- REMOVE this line:
   <div class="divider" aria-hidden="true"></div>
-  <div class="title">
+  -->
+  <div class="title with-sep">
     <img class="broom" alt="" src="...your broom svg here..." />
     <h1><span class="creep">Etsy Witch Era</span> MLB Records Since Sept 6, 2025</h1>
   </div>
+
   <div class="sub" id="rangeNote">Loading…</div>
   <div class="controls">
     <span class="pill">Window starts: <strong>2025-09-06</strong></span>

@@ -140,58 +140,81 @@
 <script>
 (async function () {
   const START = '2025-09-06';
-  const today = new Date();
-  const tzDate = new Date(today.getFullYear(), today.getMonth(), today.getDate()); // local midnight
-  const end = tzDate.toISOString().slice(0,10);
-  document.getElementById('rangeNote').textContent = `Through ${end} (Final games only)`;
 
-  const url = `https://statsapi.mlb.com/api/v1/schedule?sportId=1&startDate=${START}&endDate=${end}&hydrate=team,venue,linescore&gameTypes=R,P`;
+  // Helper: format today as YYYY-MM-DD in local time (avoids UTC off-by-one)
+  const now = new Date();
+  const endLocal = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const END = [
+    endLocal.getFullYear(),
+    String(endLocal.getMonth() + 1).padStart(2, '0'),
+    String(endLocal.getDate()).padStart(2, '0')
+  ].join('-');
 
+  const setNote = (txt) => (document.getElementById('rangeNote').textContent = txt);
+  setNote(`Through ${END} (Final games only)`);
+
+  const showErr = (msg) => {
+    const el = document.getElementById('err');
+    el.style.display = '';
+    el.textContent = msg;
+  };
+
+  // The schedule endpoint sometimes uses codedGameState ('F') and/or detailedState ('Final').
+  // Using a robust check here.
+  const isFinalGame = (status = {}) => {
+    const coded = status.codedGameState || status.statusCode; // schedule often uses codedGameState
+    const detail = (status.detailedState || '').toLowerCase();
+    const abstract = (status.abstractGameState || '').toLowerCase();
+    return coded === 'F' || detail === 'final' || abstract === 'final';
+  };
+
+  // Safer score extraction: linescore may be missing on schedule; teams.{home,away}.score usually exists.
+  const getScores = (g) => {
+    const lsHome = g?.linescore?.teams?.home?.runs;
+    const lsAway = g?.linescore?.teams?.away?.runs;
+    const home = Number(lsHome ?? g?.teams?.home?.score ?? NaN);
+    const away = Number(lsAway ?? g?.teams?.away?.score ?? NaN);
+    return [home, away];
+  };
+
+  // Fetch schedule
+  const schedURL = `https://statsapi.mlb.com/api/v1/schedule?sportId=1&startDate=${START}&endDate=${END}&gameTypes=R,P&hydrate=team,linescore`;
   let data;
   try {
-    const res = await fetch(url, { cache: "no-store" });
-    if (!res.ok) throw new Error(\`HTTP \${res.status}\`);
+    const res = await fetch(schedURL, { cache: 'no-store' });
+    if (!res.ok) throw new Error(`Schedule HTTP ${res.status}`);
     data = await res.json();
   } catch (e) {
-    const err = document.getElementById('err');
-    err.style.display = '';
-    err.textContent = \`Couldn’t load MLB data: \${e.message}. Try refreshing.\`;
+    console.error('Schedule fetch failed:', e);
+    showErr(`Couldn’t load MLB schedule: ${e.message}`);
     return;
   }
 
   const records = new Map(); // teamId -> { id, name, wins, losses }
   let countedGames = 0;
 
-  function ensureTeam(t) {
+  const ensureTeam = (t) => {
     if (!records.has(t.id)) records.set(t.id, { id: t.id, name: t.name, wins: 0, losses: 0 });
     return records.get(t.id);
-  }
+  };
 
-  for (const d of (data.dates || [])) {
-    for (const g of (d.games || [])) {
-      const status = g.status || {};
-      const isFinal = status.statusCode === 'F' || status.detailedState === 'Final' || status.abstractGameState === 'Final';
-      if (!isFinal) continue;
+  for (const d of (data?.dates ?? [])) {
+    for (const g of (d?.games ?? [])) {
+      if (!isFinalGame(g.status)) continue;
 
-      const home = g.teams?.home?.team;
-      const away = g.teams?.away?.team;
-      const ls = g.linescore;
+      const homeTeam = g?.teams?.home?.team;
+      const awayTeam = g?.teams?.away?.team;
+      if (!homeTeam || !awayTeam) continue;
 
-      let hr, ar;
-      if (ls?.teams?.home?.runs != null && ls?.teams?.away?.runs != null) {
-        hr = Number(ls.teams.home.runs);
-        ar = Number(ls.teams.away.runs);
-      } else {
-        hr = Number(g.teams?.home?.score ?? NaN);
-        ar = Number(g.teams?.away?.score ?? NaN);
-      }
-      if (!isFinite(hr) || !isFinite(ar)) continue;
+      const [homeRuns, awayRuns] = getScores(g);
+      if (!Number.isFinite(homeRuns) || !Number.isFinite(awayRuns)) continue;
 
-      const H = ensureTeam({ id: home.id, name: home.name });
-      const A = ensureTeam({ id: away.id, name: away.name });
+      const H = ensureTeam({ id: homeTeam.id, name: homeTeam.name });
+      const A = ensureTeam({ id: awayTeam.id, name: awayTeam.name });
 
-      if (hr > ar) { H.wins++; A.losses++; }
-      else if (ar > hr) { A.wins++; H.losses++; }
+      if (homeRuns > awayRuns) { H.wins++; A.losses++; }
+      else if (awayRuns > homeRuns) { A.wins++; H.losses++; }
+      // ties don't exist in MLB; no action on equal
 
       countedGames++;
     }
@@ -199,28 +222,35 @@
 
   document.getElementById('gameCount').textContent = String(countedGames);
 
+  // Ensure all 30 teams render, even if 0-0 in the window
   try {
-    const teamsRes = await fetch('https://statsapi.mlb.com/api/v1/teams?sportId=1&activeStatus=Yes');
+    const teamsRes = await fetch('https://statsapi.mlb.com/api/v1/teams?sportId=1&activeStatus=Yes', { cache: 'no-store' });
+    if (!teamsRes.ok) throw new Error(`Teams HTTP ${teamsRes.status}`);
     const teamsData = await teamsRes.json();
-    for (const t of teamsData.teams || []) {
+    for (const t of (teamsData?.teams ?? [])) {
       if (!records.has(t.id)) records.set(t.id, { id: t.id, name: t.name, wins: 0, losses: 0 });
     }
-  } catch {}
+  } catch (e) {
+    console.warn('Teams fetch failed; showing only teams seen in window.', e);
+  }
 
-  const rows = Array.from(records.values()).map(t => {
-    const gp = t.wins + t.losses;
-    const wpct = gp ? t.wins / gp : 0;
-    return { ...t, gp, wpct };
-  }).sort((a,b) => b.wpct - a.wpct || b.wins - a.wins || a.name.localeCompare(b.name));
+  const rows = Array.from(records.values())
+    .map(t => {
+      const gp = t.wins + t.losses;
+      const wpct = gp ? t.wins / gp : 0;
+      return { ...t, gp, wpct };
+    })
+    .sort((a, b) => (b.wpct - a.wpct) || (b.wins - a.wins) || a.name.localeCompare(b.name));
 
   const grid = document.getElementById('grid');
   grid.innerHTML = '';
 
-  const logoURL = id => `https://www.mlbstatic.com/team-logos/team-cap-on-light/${id}.svg`;
+  const logoURL = (id) => `https://www.mlbstatic.com/team-logos/team-cap-on-light/${id}.svg`;
+
   let rank = 1;
   for (const r of rows) {
     const pct = (r.wpct * 100) || 0;
-    const pctTxt = r.gp ? r.wpct.toFixed(3).replace(/^0/,'') : '.000';
+    const pctTxt = r.gp ? r.wpct.toFixed(3).replace(/^0/, '') : '.000';
     const card = document.createElement('article');
     card.className = 'card';
     card.innerHTML = `
@@ -235,8 +265,14 @@
     grid.appendChild(card);
     rank++;
   }
+
+  // If absolutely nothing rendered, surface a helpful hint.
+  if (!rows.length) {
+    showErr('No teams to show. If you’re opening this as a local file, try serving it via a local web server (some browsers restrict fetch from file://).');
+  }
 })();
 </script>
+
 
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-8FK0VXYYGX"></script>

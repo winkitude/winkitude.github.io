@@ -141,6 +141,42 @@ main { max-width: 760px; }                 /* narrower read width; adjust if you
 .brand a:hover { opacity: .7; }
 
 
+/* 1) Bars align from the same left edge (logo no longer pushes them) */
+.card { display: grid; grid-template-columns: 32px 68px 1fr; column-gap: 12px; }
+.rank { width: auto; text-align: right; }
+.logo {
+  width: 68px;              /* fixed column so the rest never shifts */
+  height: 44px;             /* visual height for consistency */
+  display: flex; align-items: center; justify-content: flex-start;
+  background: transparent; border-radius: 0; overflow: visible;
+}
+.logo img {
+  height: 44px; width: auto; object-fit: contain; /* natural aspect, not cropped */
+}
+.meta { min-width: 0; }     /* let text truncate nicely */
+
+/* 2) “Empty box” under the brand on mobile = the header divider was inheriting a horizontal rule style.
+      Scope the divider styles so header shows a thin vertical bar, and hide it on small screens. */
+header .divider {
+  width: 1px; background: #eaeaea; margin: 0 8px;
+}
+.feature .divider {
+  height: 1px; width: 100%;
+  background: linear-gradient(90deg,transparent,rgba(157,119,255,.35),transparent);
+  margin: 16px 0;
+}
+@media (max-width: 600px) {
+  header .divider { display: none; }  /* remove the tiny box on wrap */
+}
+
+/* 3) Make “Spell of the Streak” more compact on mobile */
+@media (max-width: 600px) {
+  .feature .card { padding: 10px 12px; gap: 10px; }
+  .feature .tag { font-size: 16px; }
+  .feature .desc { font-size: 13px; line-height: 1.35; }
+  .feature .cta .btn { padding: 6px 10px; font-size: 13px; }
+}
+
 
 
 </style>

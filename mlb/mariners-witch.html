@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MLB Records Since Sept 6, 2025 — Witch Era</title>
+<meta name="description" content="Team records since Sept 6, 2025, sorted by win %, with a witchy vibe." />
+<link href="https://fonts.googleapis.com/css2?family=Creepster&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a0712;
+    --bg2:#120d1f;
+    --card:#181127;
+    --ink:#f1eaff;
+    --muted:#bda9da;
+    --accent:#9d77ff;
+    --lime:#b6ff6a;
+    --line:#2a1f3b;
+    --glow:0 0 0 transparent,0 0 30px rgba(157,119,255,.25);
+  }
+  html,body{margin:0;background:
+    radial-gradient(1200px 600px at 10% -10%, #1c1330 0%, transparent 60%),
+    radial-gradient(1000px 600px at 90% 0%, #0f0b1c 0%, transparent 55%),
+    linear-gradient(180deg, var(--bg) 0%, var(--bg2) 100%);
+    color:var(--ink);font:16px/1.45 Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; }
+  a{color:var(--accent);text-decoration:none}
+  .moon{
+    position:fixed; right:4vw; top:4vh; width:90px; aspect-ratio:1;
+    background:radial-gradient(circle at 30% 30%, #fff5d1 0%, #ffe7a3 35%, #f7d788 55%, #e0be66 70%, transparent 72%),
+               radial-gradient(circle at 60% 70%, rgba(0,0,0,.15), transparent 35%);
+    border-radius:50%; filter:drop-shadow(0 0 30px rgba(255,242,179,.2)); opacity:.5; pointer-events:none;
+  }
+  .sparkle{
+    position:fixed; inset:0; background:
+      radial-gradient(1px 1px at 12% 18%, rgba(255,255,255,.35), transparent 60%),
+      radial-gradient(1px 1px at 76% 8%, rgba(255,255,255,.25), transparent 60%),
+      radial-gradient(1px 1px at 32% 44%, rgba(255,255,255,.25), transparent 60%),
+      radial-gradient(1px 1px at 82% 56%, rgba(255,255,255,.18), transparent 60%),
+      radial-gradient(1px 1px at 6% 74%, rgba(255,255,255,.22), transparent 60%),
+      radial-gradient(1px 1px at 58% 84%, rgba(255,255,255,.3), transparent 60%);
+    opacity:.5; pointer-events:none;
+  }
+  header{max-width:1100px;margin:0 auto;padding:32px 24px 10px}
+  .title{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+  h1{margin:0;font-size:clamp(26px,5vw,40px);letter-spacing:.4px;text-shadow:var(--glow)}
+  .creep{font-family:Creepster, system-ui; color:var(--lime); letter-spacing:.5px}
+  .sub{color:var(--muted);font-size:14px;margin-top:6px}
+  .controls{margin-top:12px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+  .pill{background:var(--card);border:1px solid var(--line);border-radius:999px;padding:6px 10px;color:var(--muted);font-size:13px}
+  .broom{
+    height:16px;opacity:.9;filter:drop-shadow(0 0 12px rgba(157,119,255,.2));
+  }
+
+  /* Tweet screenshot slot */
+  .tweet-wrap{max-width:1100px;margin:14px auto 0;padding:0 24px}
+  .tweet{
+    background:var(--card); border:1px solid var(--line); border-radius:16px; overflow:hidden;
+    box-shadow:var(--glow)
+  }
+  .tweet img{display:block;width:100%;height:auto}
+
+  /* Feature link */
+  .feature{max-width:1100px;margin:14px auto 0;padding:0 24px}
+  .feature .card{
+    display:flex; gap:14px; align-items:center; background:linear-gradient(160deg,#1d1431,#20173a 60%, #241a42);
+    border:1px solid var(--line); border-radius:14px; padding:12px 14px;
+  }
+  .feature .tag{font-family:Creepster; color:var(--lime); font-size:20px}
+  .feature .desc{color:var(--muted); font-size:14px}
+  .feature .cta{margin-left:auto; white-space:nowrap}
+  .btn{
+    display:inline-block; background:var(--accent); color:#0b0a13; font-weight:700;
+    padding:8px 12px; border-radius:999px; border:0; transform:translateZ(0);
+  }
+
+  /* Grid of teams */
+  main{max-width:1100px;margin:16px auto 48px;padding:0 24px}
+  .grid{display:grid;grid-template-columns:repeat( auto-fill, minmax(260px,1fr) );gap:12px}
+  .card{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 12px}
+  .rank{width:28px;text-align:right;color:var(--muted);font-variant-numeric:tabular-nums}
+  .logo{width:44px;height:44px;flex:0 0 44px;background:#fff;border-radius:8px;display:grid;place-items:center;overflow:hidden}
+  .logo img{width:100%;height:100%;object-fit:contain}
+  .meta{flex:1 1 auto;min-width:0}
+  .team{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:700}
+  .rec{color:var(--muted);font-variant-numeric:tabular-nums;font-size:13px}
+  .wpct{font-variant-numeric:tabular-nums;font-weight:700}
+  .bar{height:6px;background:#0f0a19;border-radius:999px;overflow:hidden;box-shadow:inset 0 0 8px rgba(157,119,255,.25)}
+  .bar>i{display:block;height:100%;background:linear-gradient(90deg,var(--lime), var(--accent));}
+  footer{max-width:1100px;margin:24px auto 48px;padding:0 24px;color:var(--muted);font-size:12px}
+  .error{color:#ff9aa8}
+
+  /* small touch */
+  .divider{height:1px;background:linear-gradient(90deg,transparent,rgba(157,119,255,.35),transparent);margin:16px 0}
+</style>
+</head>
+<body>
+  <div class="moon" aria-hidden="true"></div>
+  <div class="sparkle" aria-hidden="true"></div>
+
+  <header>
+    <div class="title">
+      <img class="broom" alt="" src="data:image/svg+xml;utf8,<?xml version='1.0'?><svg xmlns='http://www.w3.org/2000/svg' width='64' height='16' viewBox='0 0 64 16'><g fill='%23b6ff6a'><rect x='0' y='6' width='44' height='4' rx='2'/><path d='M44 4h8l4 4-4 4h-8zM56 2l8 6-8 6z' opacity='.8'/></g></svg>">
+      <h1><span class="creep">Witch Era</span> MLB Records Since Sept 6, 2025</h1>
+    </div>
+    <div class="sub" id="rangeNote">Loading…</div>
+    <div class="controls">
+      <span class="pill">Window starts: <strong>2025-09-06</strong></span>
+      <span class="pill">Games counted: <strong id="gameCount">—</strong></span>
+      <span class="pill">Teams: <strong>30</strong></span>
+    </div>
+  </header>
+
+  <section class="tweet-wrap">
+    <!-- Replace the src with your uploaded Twitter/X screenshot -->
+    <figure class="tweet">
+      <img src="images/mariners-tweet.png" alt="Tweet screenshot related to the Mariners' witch era" loading="lazy">
+    </figure>
+  </section>
+
+  <section class="feature">
+    <div class="card">
+      <div class="tag" aria-hidden="true">✨ spell of the streak</div>
+      <div class="desc">The Mariners’ fan who hired an Etsy witch, and the winning run that followed. A delightful read.</div>
+      <div class="cta">
+        <a class="btn" href="https://defector.com/the-seattle-mariners-are-in-their-etsy-witch-era" target="_blank" rel="noopener">Read the Defector piece</a>
+      </div>
+    </div>
+    <div class="divider"></div>
+  </section>
+
+  <main>
+    <section class="grid" id="grid" aria-live="polite"></section>
+    <p id="err" class="error" style="display:none;"></p>
+  </main>
+
+  <footer>
+    Results show each team’s record only from 2025-09-06 through today, sorted by win percentage. Data: MLB Stats API schedule endpoint. Logos via mlbstatic team logo assets.
+  </footer>
+
+<script>
+(async function () {
+  const START = '2025-09-06';
+  const today = new Date();
+  const tzDate = new Date(today.getFullYear(), today.getMonth(), today.getDate()); // local midnight
+  const end = tzDate.toISOString().slice(0,10);
+  document.getElementById('rangeNote').textContent = `Through ${end} (Final games only)`;
+
+  const url = `https://statsapi.mlb.com/api/v1/schedule?sportId=1&startDate=${START}&endDate=${end}&hydrate=team,venue,linescore&gameTypes=R,P`;
+
+  let data;
+  try {
+    const res = await fetch(url, { cache: "no-store" });
+    if (!res.ok) throw new Error(\`HTTP \${res.status}\`);
+    data = await res.json();
+  } catch (e) {
+    const err = document.getElementById('err');
+    err.style.display = '';
+    err.textContent = \`Couldn’t load MLB data: \${e.message}. Try refreshing.\`;
+    return;
+  }
+
+  const records = new Map(); // teamId -> { id, name, wins, losses }
+  let countedGames = 0;
+
+  function ensureTeam(t) {
+    if (!records.has(t.id)) records.set(t.id, { id: t.id, name: t.name, wins: 0, losses: 0 });
+    return records.get(t.id);
+  }
+
+  for (const d of (data.dates || [])) {
+    for (const g of (d.games || [])) {
+      const status = g.status || {};
+      const isFinal = status.statusCode === 'F' || status.detailedState === 'Final' || status.abstractGameState === 'Final';
+      if (!isFinal) continue;
+
+      const home = g.teams?.home?.team;
+      const away = g.teams?.away?.team;
+      const ls = g.linescore;
+
+      let hr, ar;
+      if (ls?.teams?.home?.runs != null && ls?.teams?.away?.runs != null) {
+        hr = Number(ls.teams.home.runs);
+        ar = Number(ls.teams.away.runs);
+      } else {
+        hr = Number(g.teams?.home?.score ?? NaN);
+        ar = Number(g.teams?.away?.score ?? NaN);
+      }
+      if (!isFinite(hr) || !isFinite(ar)) continue;
+
+      const H = ensureTeam({ id: home.id, name: home.name });
+      const A = ensureTeam({ id: away.id, name: away.name });
+
+      if (hr > ar) { H.wins++; A.losses++; }
+      else if (ar > hr) { A.wins++; H.losses++; }
+
+      countedGames++;
+    }
+  }
+
+  document.getElementById('gameCount').textContent = String(countedGames);
+
+  try {
+    const teamsRes = await fetch('https://statsapi.mlb.com/api/v1/teams?sportId=1&activeStatus=Yes');
+    const teamsData = await teamsRes.json();
+    for (const t of teamsData.teams || []) {
+      if (!records.has(t.id)) records.set(t.id, { id: t.id, name: t.name, wins: 0, losses: 0 });
+    }
+  } catch {}
+
+  const rows = Array.from(records.values()).map(t => {
+    const gp = t.wins + t.losses;
+    const wpct = gp ? t.wins / gp : 0;
+    return { ...t, gp, wpct };
+  }).sort((a,b) => b.wpct - a.wpct || b.wins - a.wins || a.name.localeCompare(b.name));
+
+  const grid = document.getElementById('grid');
+  grid.innerHTML = '';
+
+  const logoURL = id => `https://www.mlbstatic.com/team-logos/team-cap-on-light/${id}.svg`;
+  let rank = 1;
+  for (const r of rows) {
+    const pct = (r.wpct * 100) || 0;
+    const pctTxt = r.gp ? r.wpct.toFixed(3).replace(/^0/,'') : '.000';
+    const card = document.createElement('article');
+    card.className = 'card';
+    card.innerHTML = `
+      <div class="rank">${rank}</div>
+      <div class="logo"><img alt="${r.name} logo" loading="lazy" src="${logoURL(r.id)}" onerror="this.style.display='none'"/></div>
+      <div class="meta">
+        <div class="team">${r.name}</div>
+        <div class="rec">${r.wins}-${r.losses} • <span class="wpct">${pctTxt}</span> • ${r.gp} G</div>
+        <div class="bar" title="${pct.toFixed(1)}% win rate"><i style="width:${pct}%;"></i></div>
+      </div>
+    `;
+    grid.appendChild(card);
+    rank++;
+  }
+})();
+</script>
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8FK0VXYYGX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-8FK0VXYYGX');
+  </script>
+</body>
+</html>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Last.fm Top 50 (2008–2025) — Bump Chart + YouTube</title>
+  <title>Last.fm Top 50 (2008–2025) — Bump Chart + Inline Video</title>
   <style>
     :root {
       --bg: #0f0f12;
@@ -27,12 +27,17 @@
     .axis line, .axis path { stroke: var(--grid); }
     .axis text { fill: var(--muted); font-size: 11px; }
     .gridline { stroke: var(--grid); stroke-dasharray: 2 2; }
-    .series { fill: none; stroke-width: 2.6px; opacity: .7; transition: opacity .2s ease, stroke-width .15s ease; mix-blend-mode: screen; cursor: pointer; }
+    .series { fill: none; stroke-width: 2.8px; opacity: .8; transition: opacity .2s ease, stroke-width .15s ease; mix-blend-mode: screen; cursor: pointer; }
     .series.hidden { opacity: .12; }
     .series.highlight { stroke-width: 4px; opacity: 1; filter: drop-shadow(0 0 2px rgba(255,255,255,0.25)); }
-    .dot { pointer-events: none; }
-    .label { font-size: 10px; fill: var(--text); paint-order: stroke; stroke: #0f0f12; stroke-width: 3px; pointer-events: auto; }
-    .tooltip { position: fixed; pointer-events: none; padding: 10px 12px; background: #101116; color: var(--text); border: 1px solid #2e3037; border-radius: 10px; font-size: 12px; max-width: 320px; box-shadow: 0 10px 40px rgba(0,0,0,.45); z-index: 9999; display: none; }
+    .dot { pointer-events: none; r: 3.2px; }
+    .label { font-size: 10.5px; fill: var(--text); paint-order: stroke; stroke: #0f0f12; stroke-width: 3px; pointer-events: auto; }
+    .tooltip { position: fixed; pointer-events: none; padding: 10px 12px; background: #101116; color: var(--text); border: 1px solid #2e3037; border-radius: 10px; font-size: 12px; max-width: 420px; box-shadow: 0 10px 40px rgba(0,0,0,.45); z-index: 9999; display: none; }
+    .tooltip .t-head { font-weight: 700; margin: 0 0 4px; font-size: 13px; }
+    .tooltip .t-meta { color: var(--muted); margin-bottom: 8px; }
+    .tooltip .t-ranks { line-height: 1.35; }
+    .tooltip .t-video { margin-top: 10px; border-top: 1px solid #2e3037; padding-top: 8px; }
+    .tooltip .t-video iframe { width: 100%; height: 220px; border: 0; display: block; border-radius: 8px; }
     .year-chip { fill: var(--text); font-weight: 700; font-size: 12px; }
     .status { font-size: 13px; color: var(--muted); margin-top: 8px; }
 
@@ -40,30 +45,6 @@
     .y-axis .tick text { display: none; }
     .y-axis .tick line { display: none; }
     .y-axis path { display: none; }
-
-    /* Player panel */
-    .player-panel {
-      position: fixed;
-      inset: auto 16px 16px auto;
-      width: min(520px, 92vw);
-      background: #0f1117;
-      border: 1px solid #2e3037;
-      border-radius: 12px;
-      box-shadow: 0 14px 60px rgba(0,0,0,.55);
-      z-index: 10000;
-      display: none;
-      overflow: hidden;
-    }
-    .player-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 10px 12px; background: #151922; border-bottom: 1px solid #2e3037; }
-    .player-title { font-size: 14px; font-weight: 650; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .player-controls { display: flex; gap: 8px; }
-    .btn { border: 0; background: #263041; color: var(--text); border-radius: 8px; padding: 6px 10px; cursor: pointer; font-weight: 600; }
-    .btn:hover { background: #2d3a50; }
-    .btn-close { background: #3a2531; }
-    .btn-close:hover { background: #4a2b3b; }
-    .player-body { aspect-ratio: 16 / 9; background: #0d0f14; }
-    .player-body iframe { width: 100%; height: 100%; border: 0; display: block; }
-    .player-hint { padding: 8px 12px; font-size: 12px; color: var(--muted); background: #101319; border-top: 1px solid #2e3037; }
   </style>
 </head>
 <body>
@@ -83,19 +64,6 @@
   </main>
   <div class="tooltip" id="tooltip"></div>
 
-  <!-- YouTube player panel -->
-  <div id="playerPanel" class="player-panel" role="dialog" aria-modal="false" aria-live="polite">
-    <div class="player-head">
-      <div class="player-title" id="playerTitle">Artist</div>
-      <div class="player-controls">
-        <button class="btn" id="pinToggle">Unpin</button>
-        <button class="btn btn-close" id="closePanel">Close</button>
-      </div>
-    </div>
-    <div class="player-body" id="playerBody"></div>
-    <div class="player-hint" id="playerHint" style="display:none"></div>
-  </div>
-
   <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
   <script>
   const START_YEAR = 2008;
@@ -106,17 +74,17 @@
   const LIGHT_GRAY = getCss("--light-gray");
   function getCss(v){ return getComputedStyle(document.documentElement).getPropertyValue(v).trim(); }
 
-  // Layout — extra space for off-chart labels
-  const LABEL_LEFT_OFFSET  = 80;  // px left of 2008 x-position
-  const LABEL_RIGHT_OFFSET = 80;  // px right of 2025 x-position
-  const GUTTER_LEFT = 220;        // left margin allowance
-  const GUTTER_RIGHT = 280;       // right margin allowance
+  // Layout — keep room for side labels, but put them close to dots
+  const LABEL_LEFT_OFFSET  = 24;  // px left of 2008 x-position
+  const LABEL_RIGHT_OFFSET = 24;  // px right of 2025 x-position
+  const GUTTER_LEFT = 160;        // left margin allowance (for long names)
+  const GUTTER_RIGHT = 200;       // right margin allowance
 
   const svg = d3.select("#chart");
   const statusEl = document.getElementById("status");
   const tooltip = document.getElementById("tooltip");
 
-  const margin = {top: 32, right: 320, bottom: 40, left: 220};
+  const margin = {top: 32, right: 260, bottom: 40, left: 180};
   const width  = 1200 - margin.left - margin.right;
   const height = 700  - margin.top  - margin.bottom;
   const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
@@ -129,46 +97,8 @@
   const dotsLayer = g.append("g").attr("class", "dots-layer");
   const labelsLayer = g.append("g").attr("class", "labels-layer");
 
-  let pinned = null;
-  let currentHoverArtist = null;
-  let currentPlayerArtist = null;
-  let hoverTimer = null;
-
-  // Player panel
-  const panel = document.getElementById("playerPanel");
-  const playerTitle = document.getElementById("playerTitle");
-  const playerBody = document.getElementById("playerBody");
-  const playerHint = document.getElementById("playerHint");
-  const pinToggle = document.getElementById("pinToggle");
-  const closePanelBtn = document.getElementById("closePanel");
-
-  function positionPanelNear(cx, cy) {
-    const pad = 12;
-    const w = Math.min(520, window.innerWidth * 0.92);
-    const h = Math.min((w / 16) * 9 + 72, window.innerHeight * 0.9);
-    let left = cx + pad;
-    let top  = cy + pad;
-    if (left + w > window.innerWidth) left = cx - w - pad;
-    if (top + h > window.innerHeight) top = cy - h - pad;
-    if (left < 8) left = 8;
-    if (top < 8) top = 8;
-    panel.style.left = left + "px";
-    panel.style.top  = top + "px";
-    panel.style.right = "auto";
-    panel.style.bottom = "auto";
-  }
-  function closePlayer() {
-    panel.style.display = "none";
-    playerBody.innerHTML = "";
-    playerHint.style.display = "none";
-    currentPlayerArtist = null;
-  }
-  pinToggle.addEventListener("click", () => {
-    if (pinned) { pinned = null; pinToggle.textContent = "Unpin"; }
-    else { pinned = playerTitle.textContent || null; pinToggle.textContent = "Pinned"; }
-  });
-  closePanelBtn.addEventListener("click", () => { pinned = null; pinToggle.textContent = "Unpin"; closePlayer(); });
-  window.addEventListener("keydown", (e) => { if (e.key === "Escape") { pinned = null; pinToggle.textContent = "Unpin"; closePlayer(); } });
+  let pinned = null;                    // artist name or null
+  let currentTooltipArtist = null;      // to avoid reloading iframe unnecessarily
 
   function extractYouTubeId(input) {
     if (!input) return null;
@@ -199,30 +129,8 @@
     return null;
   }
 
-  function openPlayerForSeries(s, anchorEvent) {
-    const q = encodeURIComponent(`${s.artist} official music video`);
-    let src;
-    if (s.videoId) {
-      src = `https://www.youtube.com/embed/${s.videoId}?rel=0&modestbranding=1`;
-    } else {
-      src = `https://www.youtube.com/embed?listType=search&list=${q}&rel=0&modestbranding=1`;
-    }
-    if (currentPlayerArtist !== s.artist) {
-      playerTitle.textContent = s.artist;
-      playerBody.innerHTML = `<iframe src="${src}" title="YouTube player for ${s.artist}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
-      currentPlayerArtist = s.artist;
-      if (!s.videoId) {
-        playerHint.style.display = "block";
-        playerHint.innerHTML = `<a href="https://www.youtube.com/results?search_query=${q}" target="_blank" rel="noopener noreferrer">Open on YouTube</a>`;
-      } else {
-        playerHint.style.display = "none";
-      }
-    }
-    panel.style.display = "block";
-    if (anchorEvent) positionPanelNear(anchorEvent.clientX, anchorEvent.clientY);
-  }
-
   function adjustLabelBounds() {
+    // Allow labels to extend into margins: [-GUTTER_LEFT, width + GUTTER_RIGHT]
     labelsLayer.selectAll("text.label.left").each(function(d){
       try {
         const bbox = this.getBBox();
@@ -247,7 +155,72 @@
     });
   }
 
-  // ---------- Load CSV with robust parsing & error handling ----------
+  // Render tooltip (stats + inline video). Recreates content only when artist changes.
+  function renderTooltipContent(s) {
+    const entry = s.firstNonZeroYear ?? "—";
+    const exit  = s.lastNonZeroYear ?? "—";
+    const items = s.points.filter(p => p.rank != null).map(p => `${p.yearLabel}: #${p.rank}`);
+    const ranks = items.join("<br>");
+
+    // Build embed src
+    const q = encodeURIComponent(`${s.artist} official music video`);
+    const src = s.videoId
+      ? `https://www.youtube.com/embed/${s.videoId}?rel=0&modestbranding=1`
+      : `https://www.youtube.com/embed?listType=search&list=${q}&rel=0&modestbranding=1`;
+
+    return `
+      <div class="t-head">${escapeHtml(s.artist)}</div>
+      <div class="t-meta">First year in Top 50: <strong>${entry}</strong> • Last nonzero year: <strong>${exit}</strong></div>
+      <div class="t-ranks">${ranks}</div>
+      <div class="t-video">
+        <iframe src="${src}" title="YouTube for ${escapeHtml(s.artist)}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+    `;
+  }
+
+  // Tooltip helpers
+  function showTooltip(event, s) {
+    // Update content only if artist changed or tooltip empty
+    if (currentTooltipArtist !== s.artist || tooltip.dataset.artist !== s.artist) {
+      tooltip.innerHTML = renderTooltipContent(s);
+      tooltip.dataset.artist = s.artist;
+      currentTooltipArtist = s.artist;
+    }
+    tooltip.style.display = "block";
+    positionTooltip(event);
+  }
+  function hideTooltip(){ if (!pinned) { tooltip.style.display = "none"; tooltip.dataset.artist = ""; } }
+  function positionTooltip(event){
+    const pad = 12;
+    const { clientX:x, clientY:y } = event;
+    // measure after display
+    const w = tooltip.offsetWidth, h = tooltip.offsetHeight;
+    let left = x + pad, top = y + pad;
+    if (left + w > window.innerWidth) left = x - w - pad;
+    if (top + h > window.innerHeight) top = y - h - pad;
+    if (left < 6) left = 6;
+    if (top < 6) top = 6;
+    tooltip.style.left = left + "px"; tooltip.style.top  = top  + "px";
+  }
+  function escapeHtml(str){ return String(str).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m])); }
+  function polylineDist2(pts, p) {
+    let best = Infinity;
+    for (let i=0; i<pts.length-1; i++) {
+      const d2 = segDist2(pts[i], pts[i+1], p);
+      if (d2 < best) best = d2;
+    }
+    return best;
+  }
+  function segDist2(a,b,p){
+    const ax=a[0], ay=a[1], bx=b[0], by=b[1], px=p[0], py=p[1];
+    const vx=bx-ax, vy=by-ay, wx=px-ax, wy=py-ay;
+    const t = Math.max(0, Math.min(1, (vx*wx+vy*wy)/(vx*vx+vy*vy || 1)));
+    const cx=ax+t*vx, cy=ay+t*vy;
+    const dx=px-cx, dy=py-cy;
+    return dx*dx+dy*dy;
+  }
+
+  // ---------- Load CSV ----------
   d3.csv("lastfm_top50.csv").then(raw => {
     try {
       const originalColumns = raw.columns.slice();
@@ -345,29 +318,28 @@
           .on("mouseleave", () => { if (!pinned) hideTooltip(); })
           .on("mouseover", function(event, d){
             if (!pinned) {
-              // Debounced hover -> video
-              if (hoverTimer) clearTimeout(hoverTimer);
-              hoverTimer = setTimeout(() => {
-                currentHoverArtist = d.artist;
-                openPlayerForSeries(d, event);
-              }, 150);
               seriesLayer.selectAll(".series").classed("hidden", true);
               d3.select(this).classed("hidden", false).classed("highlight", true);
+              showTooltip(event, d);
             }
           })
           .on("mouseout", function(){
             if (!pinned) {
-              if (hoverTimer) { clearTimeout(hoverTimer); hoverTimer = null; }
               seriesLayer.selectAll(".series").classed("hidden", false).classed("highlight", false);
             }
           })
           .on("click", function(event, d){
             event.stopPropagation();
-            pinned = d.artist;
-            pinToggle.textContent = "Pinned";
-            seriesLayer.selectAll(".series").classed("hidden", true).classed("highlight", false);
-            d3.select(this).classed("hidden", false).classed("highlight", true);
-            openPlayerForSeries(d, event);
+            if (pinned === d.artist) {
+              pinned = null;
+              hideTooltip();
+              seriesLayer.selectAll(".series").classed("hidden", false).classed("highlight", false);
+            } else {
+              pinned = d.artist;
+              seriesLayer.selectAll(".series").classed("hidden", true).classed("highlight", false);
+              d3.select(this).classed("hidden", false).classed("highlight", true);
+              showTooltip(event, d);
+            }
           }),
         update => update.attr("d", d => line(d.points)).attr("stroke", d => colorFor(d)),
         exit => exit.remove()
@@ -377,12 +349,12 @@
       dotsLayer.selectAll("*").remove();
       series.forEach(s => {
         dotsLayer.selectAll(null).data(s.points.filter(p => p.rank != null)).enter().append("circle")
-          .attr("class","dot").attr("r", 2.6)
+          .attr("class","dot")
           .attr("cx", d => x(d.yearLabel)).attr("cy", d => y(d.rank))
-          .attr("fill", colorFor(s)).attr("opacity", .9);
+          .attr("fill", colorFor(s)).attr("opacity", .95);
       });
 
-      // End labels well off the chart edges
+      // End labels close to the dots
       const leftLabels = series.filter(s => top2008.has(s.artist)).map(s => {
         const p = s.points.find(p => p.yearLabel === String(START_YEAR));
         return p && p.rank != null ? { artist: s.artist, x: x(String(START_YEAR)) - LABEL_LEFT_OFFSET, y: y(p.rank), anchor: "end", color: colorFor(s), ref: s } : null;
@@ -397,13 +369,17 @@
           .attr("x", d => d.x).attr("y", d => d.y).attr("text-anchor", d => d.anchor)
           .attr("fill", d => d.color).text(d => d.artist)
           .style("cursor","pointer")
-          .on("mouseover", (event, d) => { if (!pinned) openPlayerForSeries(d.ref, event); })
+          .on("mouseover", (event, d) => { if (!pinned) { seriesLayer.selectAll(".series").classed("hidden", true); seriesLayer.selectAll(".series").filter(s => s.artist===d.artist).classed("hidden", false).classed("highlight", true); showTooltip(event, d.ref); } })
           .on("click", (event, d) => {
             event.stopPropagation();
-            pinned = d.artist; pinToggle.textContent = "Pinned";
-            seriesLayer.selectAll(".series").classed("hidden", true).classed("highlight", false);
-            seriesLayer.selectAll(".series").filter(s => s && s.artist === d.artist).classed("hidden", false).classed("highlight", true);
-            openPlayerForSeries(d.ref, event);
+            if (pinned === d.artist) {
+              pinned = null; hideTooltip(); seriesLayer.selectAll(".series").classed("hidden", false).classed("highlight", false);
+            } else {
+              pinned = d.artist;
+              seriesLayer.selectAll(".series").classed("hidden", true).classed("highlight", false);
+              seriesLayer.selectAll(".series").filter(s => s && s.artist === d.artist).classed("hidden", false).classed("highlight", true);
+              showTooltip(event, d.ref);
+            }
           })
       );
       labelsLayer.selectAll(".label.right").data(rightLabels, d => d.artist).join(
@@ -411,13 +387,17 @@
           .attr("x", d => d.x).attr("y", d => d.y).attr("text-anchor", d => d.anchor)
           .attr("fill", d => d.color).text(d => d.artist)
           .style("cursor","pointer")
-          .on("mouseover", (event, d) => { if (!pinned) openPlayerForSeries(d.ref, event); })
+          .on("mouseover", (event, d) => { if (!pinned) { seriesLayer.selectAll(".series").classed("hidden", true); seriesLayer.selectAll(".series").filter(s => s.artist===d.artist).classed("hidden", false).classed("highlight", true); showTooltip(event, d.ref); } })
           .on("click", (event, d) => {
             event.stopPropagation();
-            pinned = d.artist; pinToggle.textContent = "Pinned";
-            seriesLayer.selectAll(".series").classed("hidden", true).classed("highlight", false);
-            seriesLayer.selectAll(".series").filter(s => s && s.artist === d.artist).classed("hidden", false).classed("highlight", true);
-            openPlayerForSeries(d.ref, event);
+            if (pinned === d.artist) {
+              pinned = null; hideTooltip(); seriesLayer.selectAll(".series").classed("hidden", false).classed("highlight", false);
+            } else {
+              pinned = d.artist;
+              seriesLayer.selectAll(".series").classed("hidden", true).classed("highlight", false);
+              seriesLayer.selectAll(".series").filter(s => s && s.artist === d.artist).classed("hidden", false).classed("highlight", true);
+              showTooltip(event, d.ref);
+            }
           })
       );
 
@@ -426,22 +406,23 @@
       // Background interactions
       svg
         .on("mousemove", (event) => {
-          if (pinned || !currentHoverArtist) return;
-          positionPanelNear(event.clientX, event.clientY);
+          if (!pinned) {
+            // reposition tooltip if visible
+            if (tooltip.style.display === "block") positionTooltip(event);
+          }
         })
         .on("mouseleave", () => {
-          if (!pinned) { currentHoverArtist = null; closePlayer(); }
+          if (!pinned) { hideTooltip(); }
           seriesLayer.selectAll(".series").classed("hidden", false).classed("highlight", false);
-          hideTooltip();
         })
         .on("click", () => {
-          if (!pinned) return; // only close on click when pinned
-          pinned = null; pinToggle.textContent = "Unpin";
-          closePlayer();
+          if (!pinned) return; // only unpin on background click when pinned
+          pinned = null;
+          hideTooltip();
           seriesLayer.selectAll(".series").classed("hidden", false).classed("highlight", false);
         });
 
-      statusEl.textContent = `Rendered ${series.length} artists across ${years.length} years. Hover to preview, click to pin.`;
+      statusEl.textContent = `Rendered ${series.length} artists across ${years.length} years. Hover to preview, click to pin/unpin.`;
     } catch (err) {
       console.error("Error while rendering chart", err);
       statusEl.textContent = "Error while rendering chart: " + (err && err.message ? err.message : err);
@@ -450,46 +431,6 @@
     console.error("Failed to load CSV", err);
     statusEl.textContent = "Could not load lastfm_top50.csv — ensure it's next to this HTML and served over http(s).";
   });
-
-  // Tooltip helpers
-  function showTooltip(event, s) {
-    const items = s.points.filter(p => p.rank != null).map(p => `${p.yearLabel}: #${p.rank}`);
-    const ranks = items.join("<br>");
-    const entry = s.firstNonZeroYear ?? "—";
-    const exit  = s.lastNonZeroYear ?? "—";
-    tooltip.innerHTML = `<strong>${escapeHtml(s.artist)}</strong><br>
-      First year in Top 50: <strong>${entry}</strong><br>
-      Last nonzero year: <strong>${exit}</strong><br><br>${ranks}`;
-    tooltip.style.display = "block";
-    positionTooltip(event);
-  }
-  function hideTooltip(){ tooltip.style.display = "none"; }
-  function positionTooltip(event){
-    const pad = 12;
-    const { clientX:x, clientY:y } = event;
-    const w = tooltip.offsetWidth, h = tooltip.offsetHeight;
-    let left = x + pad, top = y + pad;
-    if (left + w > window.innerWidth) left = x - w - pad;
-    if (top + h > window.innerHeight) top = y - h - pad;
-    tooltip.style.left = left + "px"; tooltip.style.top  = top  + "px";
-  }
-  function escapeHtml(str){ return String(str).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m])); }
-  function polylineDist2(pts, p) {
-    let best = Infinity;
-    for (let i=0; i<pts.length-1; i++) {
-      const d2 = segDist2(pts[i], pts[i+1], p);
-      if (d2 < best) best = d2;
-    }
-    return best;
-  }
-  function segDist2(a,b,p){
-    const ax=a[0], ay=a[1], bx=b[0], by=b[1], px=p[0], py=p[1];
-    const vx=bx-ax, vy=by-ay, wx=px-ax, wy=py-ay;
-    const t = Math.max(0, Math.min(1, (vx*wx+vy*wy)/(vx*vx+vy*vy || 1)));
-    const cx=ax+t*vx, cy=ay+t*vy;
-    const dx=px-cx, dy=py-cy;
-    return dx*dx+dy*dy;
-  }
   </script>
 </body>
 </html>

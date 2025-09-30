@@ -32,12 +32,12 @@
     .series.highlight { stroke-width: 4px; opacity: 1; filter: drop-shadow(0 0 2px rgba(255,255,255,0.25)); }
     .dot { pointer-events: none; r: 3.2px; }
     .label { font-size: 10.5px; fill: var(--text); paint-order: stroke; stroke: #0f0f12; stroke-width: 3px; pointer-events: auto; }
-    .tooltip { position: fixed; pointer-events: none; padding: 10px 12px; background: #101116; color: var(--text); border: 1px solid #2e3037; border-radius: 10px; font-size: 12px; max-width: 420px; box-shadow: 0 10px 40px rgba(0,0,0,.45); z-index: 9999; display: none; }
+    .tooltip { position: fixed; pointer-events: auto; padding: 10px 12px; background: #101116; color: var(--text); border: 1px solid #2e3037; border-radius: 10px; font-size: 12px; max-width: 420px; box-shadow: 0 10px 40px rgba(0,0,0,.45); z-index: 100000; display: none; }
     .tooltip .t-head { font-weight: 700; margin: 0 0 4px; font-size: 13px; }
     .tooltip .t-meta { color: var(--muted); margin-bottom: 8px; }
     .tooltip .t-ranks { line-height: 1.35; }
     .tooltip .t-video { margin-top: 10px; border-top: 1px solid #2e3037; padding-top: 8px; }
-    .tooltip .t-video iframe { width: 100%; height: 220px; border: 0; display: block; border-radius: 8px; }
+    .tooltip .t-video iframe { width: 100%; height: 260px; border: 0; display: block; border-radius: 8px; }
     .year-chip { fill: var(--text); font-weight: 700; font-size: 12px; }
     .status { font-size: 13px; color: var(--muted); margin-top: 8px; }
 
@@ -74,7 +74,7 @@
   const LIGHT_GRAY = getCss("--light-gray");
   function getCss(v){ return getComputedStyle(document.documentElement).getPropertyValue(v).trim(); }
 
-  // Layout — keep room for side labels, but put them close to dots
+  // Layout — labels close to dots but still off the chart
   const LABEL_LEFT_OFFSET  = 24;  // px left of 2008 x-position
   const LABEL_RIGHT_OFFSET = 24;  // px right of 2025 x-position
   const GUTTER_LEFT = 160;        // left margin allowance (for long names)
@@ -83,6 +83,15 @@
   const svg = d3.select("#chart");
   const statusEl = document.getElementById("status");
   const tooltip = document.getElementById("tooltip");
+  let overTooltip = false;
+  tooltip.addEventListener("mouseenter", () => { overTooltip = true; });
+  tooltip.addEventListener("mouseleave", () => {
+    overTooltip = false;
+    if (!pinned) {
+      hideTooltip();
+      seriesLayer.selectAll(".series").classed("hidden", false).classed("highlight", false);
+    }
+  });
 
   const margin = {top: 32, right: 260, bottom: 40, left: 180};
   const width  = 1200 - margin.left - margin.right;
@@ -174,13 +183,14 @@
       <div class="t-ranks">${ranks}</div>
       <div class="t-video">
         <iframe src="${src}" title="YouTube for ${escapeHtml(s.artist)}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <div style="margin-top:6px"><a href="https://www.youtube.com/results?search_query=${q}" target="_blank" rel="noopener noreferrer">Open on YouTube</a></div>
       </div>
     `;
   }
 
   // Tooltip helpers
   function showTooltip(event, s) {
-    // Update content only if artist changed or tooltip empty
+    if (pinned && pinned !== s.artist) return; // don't swap content while pinned to a different artist
     if (currentTooltipArtist !== s.artist || tooltip.dataset.artist !== s.artist) {
       tooltip.innerHTML = renderTooltipContent(s);
       tooltip.dataset.artist = s.artist;
@@ -189,7 +199,7 @@
     tooltip.style.display = "block";
     positionTooltip(event);
   }
-  function hideTooltip(){ if (!pinned) { tooltip.style.display = "none"; tooltip.dataset.artist = ""; } }
+  function hideTooltip(){ tooltip.style.display = "none"; tooltip.dataset.artist = ""; }
   function positionTooltip(event){
     const pad = 12;
     const { clientX:x, clientY:y } = event;
@@ -202,7 +212,7 @@
     if (top < 6) top = 6;
     tooltip.style.left = left + "px"; tooltip.style.top  = top  + "px";
   }
-  function escapeHtml(str){ return String(str).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m])); }
+  function escapeHtml(str){ return String(str).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',\"'\":'&#039;'}[m])); }
   function polylineDist2(pts, p) {
     let best = Infinity;
     for (let i=0; i<pts.length-1; i++) {
@@ -273,7 +283,34 @@
                       || (lowerKeys['youtube'] ? row[lowerKeys['youtube']] : undefined)
                       || (lowerKeys['video'] ? row[lowerKeys['video']] : undefined)
                       || '';
-        const videoId = extractYouTubeId(videoRaw);
+        const videoId = (function(v){
+          if (!v) return null;
+          const s = String(v).trim();
+          if (/^[A-Za-z0-9_-]{11}$/.test(s)) return s;
+          try {
+            const u = new URL(s, window.location.href);
+            const host = u.hostname.replace(/^www\./, '');
+            if (host === 'youtube.com' || host.endsWith('.youtube.com')) {
+              if (u.pathname === '/watch') {
+                const p = u.searchParams.get('v');
+                if (p && /^[A-Za-z0-9_-]{11}$/.test(p)) return p;
+              }
+              if (u.pathname.startsWith('/embed/')) {
+                const id = u.pathname.split('/')[2];
+                if (id && /^[A-Za-z0-9_-]{11}$/.test(id)) return id;
+              }
+              if (u.pathname.startsWith('/shorts/')) {
+                const id = u.pathname.split('/')[2];
+                if (id && /^[A-Za-z0-9_-]{11}$/.test(id)) return id;
+              }
+            }
+            if (host === 'youtu.be') {
+              const id = u.pathname.slice(1);
+              if (id && /^[A-Za-z0-9_-]{11}$/.test(id)) return id;
+            }
+          } catch(e) {}
+          return null;
+        })(videoRaw);
 
         return { artist: name, points, inStart, firstNonZeroYear, lastNonZeroYear, finalZero, videoId, videoRaw };
       }).filter(s => s.firstNonZeroYear !== null);
@@ -406,17 +443,17 @@
       // Background interactions
       svg
         .on("mousemove", (event) => {
-          if (!pinned) {
-            // reposition tooltip if visible
-            if (tooltip.style.display === "block") positionTooltip(event);
+          if (!pinned && tooltip.style.display === "block") {
+            positionTooltip(event);
           }
         })
         .on("mouseleave", () => {
-          if (!pinned) { hideTooltip(); }
-          seriesLayer.selectAll(".series").classed("hidden", false).classed("highlight", false);
+          if (!pinned && !overTooltip) { hideTooltip(); }
+          if (!pinned) { seriesLayer.selectAll(".series").classed("hidden", false).classed("highlight", false); }
         })
         .on("click", () => {
           if (!pinned) return; // only unpin on background click when pinned
+          if (overTooltip) return; // don't unpin while interacting with tooltip
           pinned = null;
           hideTooltip();
           seriesLayer.selectAll(".series").classed("hidden", false).classed("highlight", false);

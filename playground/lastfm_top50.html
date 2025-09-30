@@ -32,7 +32,7 @@
     .series.hidden { opacity: .12; }
     .series.highlight { stroke-width: 4px; opacity: 1; filter: drop-shadow(0 0 2px rgba(255,255,255,0.25)); }
     .dot { pointer-events: none; }
-    .label { font-size: 10px; fill: var(--text); paint-order: stroke; stroke: #0f0f12; stroke-width: 3px; }
+    .label { font-size: 10px; fill: var(--text); paint-order: stroke; stroke: #0f0f12; stroke-width: 3px; pointer-events: auto; }
     .tooltip { position: fixed; pointer-events: none; padding: 10px 12px; background: #101116; color: var(--text); border: 1px solid #2e3037; border-radius: 10px; font-size: 12px; max-width: 320px; box-shadow: 0 10px 40px rgba(0,0,0,.45); z-index: 9999; display: none; }
     .year-chip { fill: var(--text); font-weight: 700; font-size: 12px; }
     .status { font-size: 13px; color: var(--muted); margin-top: 8px; }
@@ -147,12 +147,19 @@
   const pinToggle = document.getElementById("pinToggle");
   const closePanelBtn = document.getElementById("closePanel");
 
-  function openPlayer(artist, anchorEvent) {
+  function openPlayerForSeries(s, anchorEvent) {
     const q = encodeURIComponent(`${artist} official video`);
     const origin = encodeURIComponent(window.location.origin);
     const src = `https://www.youtube.com/embed?listType=search&list=${q}&autoplay=0&origin=${origin}`;
-    playerTitle.textContent = artist;
-    playerBody.innerHTML = `<iframe src="${src}" title="YouTube player for ${artist}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+    playerTitle.textContent = s.artist;
+    playerBody.innerHTML = `<iframe src="${src}" title="YouTube player for ${s.artist}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+          if (!s.videoId) {
+            const link = document.createElement("div");
+            link.style.padding = "8px 12px";
+            link.style.fontSize = "12px";
+            link.innerHTML = `<a href="https://www.youtube.com/results?search_query=${q}" target="_blank" rel="noopener noreferrer" style="color:#8ab4f8">Open on YouTube</a>`;
+            panel.appendChild(link);
+          }
     panel.style.display = "block";
     // position near click if space allows, else stick bottom-right
     if (anchorEvent) positionPanelNear(anchorEvent.clientX, anchorEvent.clientY);
@@ -186,7 +193,38 @@
   closePanelBtn.addEventListener("click", closePlayer);
   window.addEventListener("keydown", (e) => { if (e.key === "Escape") closePlayer(); });
 
+  
+  function extractYouTubeId(input) {
+    if (!input) return null;
+    const s = String(input).trim();
+    if (/^[A-Za-z0-9_-]{11}$/.test(s)) return s;
+    try {
+      const u = new URL(s, window.location.href);
+      const host = u.hostname.replace(/^www\./, '');
+      if (host === 'youtube.com' || host.endsWith('.youtube.com')) {
+        if (u.pathname === '/watch') {
+          const v = u.searchParams.get('v');
+          if (v && /^[A-Za-z0-9_-]{11}$/.test(v)) return v;
+        }
+        if (u.pathname.startsWith('/embed/')) {
+          const id = u.pathname.split('/')[2];
+          if (id && /^[A-Za-z0-9_-]{11}$/.test(id)) return id;
+        }
+        if (u.pathname.startsWith('/shorts/')) {
+          const id = u.pathname.split('/')[2];
+          if (id && /^[A-Za-z0-9_-]{11}$/.test(id)) return id;
+        }
+      }
+      if (host === 'youtu.be') {
+        const id = u.pathname.slice(1);
+        if (id && /^[A-Za-z0-9_-]{11}$/.test(id)) return id;
+      }
+    } catch(e) {}
+    return null;
+  }
+
   // Load the wide CSV
+  // Optional columns: videoId, youtube, video
   d3.csv("lastfm_top50.csv").then(raw => {
     const columns = raw.columns;
     let artistKey = columns.find(c => c.toLowerCase().includes("artist")) || columns[0];
@@ -202,7 +240,7 @@
       yearCols.forEach(y => {
         const v = +row[String(y)] || 0;
         if (v > 0) {
-          const rank = 51 - v; // 50 -> 1
+          const rank = 51 - v;
           points.push({ yearLabel: String(y), rank, value: v });
           if (firstNonZeroYear === null) firstNonZeroYear = y;
           lastNonZeroYear = y;
@@ -212,8 +250,10 @@
       });
       const inStart = (+row[String(START_YEAR)] || 0) > 0;
       const finalZero = (+row[String(END_YEAR)] || 0) === 0;
-      return { artist: name, points, inStart, firstNonZeroYear, lastNonZeroYear, finalZero };
-    }).filter(s => s.firstNonZeroYear !== null);
+      const videoRaw = row['videoId'] || row['youtube'] || row['video'] || '';
+      const videoId = extractYouTubeId(videoRaw);
+      return { artist: name, points, inStart, firstNonZeroYear, lastNonZeroYear, finalZero, videoId, videoRaw };
+    }).filter(s => s.firstNonZeroYear !== null);(s => s.firstNonZeroYear !== null);
 
     function topSet(year) {
       const arr = series.map(s => ({ artist: s.artist, value: s.points.find(p => +p.yearLabel===year)?.value || 0 }));
@@ -261,7 +301,7 @@
           seriesLayer.selectAll(".series").classed("hidden", true).classed("highlight", false);
           d3.select(this).classed("hidden", false).classed("highlight", true);
           hideTooltip();
-          openPlayer(d.artist, event);
+          openPlayerForSeries(d, event);
           pinToggle.textContent = "Pinned";
         }),
       update => update.attr("d", d => line(d.points)).attr("stroke", d => colorFor(d)),
@@ -280,11 +320,11 @@
     // End labels
     const leftLabels = series.filter(s => top2008.has(s.artist)).map(s => {
       const p = s.points.find(p => p.yearLabel === String(START_YEAR));
-      return p && p.rank != null ? { artist: s.artist, x: x(String(START_YEAR)) - 8, y: y(p.rank), anchor: "end", color: colorFor(s) } : null;
+      return p && p.rank != null ? { artist: s.artist, x: x(String(START_YEAR)) - 8, y: y(p.rank), anchor: "end", color: colorFor(s), ref: s } : null;
     }).filter(Boolean);
     const rightLabels = series.filter(s => top2025.has(s.artist)).map(s => {
       const p = s.points.find(p => p.yearLabel === String(END_YEAR));
-      return p && p.rank != null ? { artist: s.artist, x: x(String(END_YEAR)) + 8, y: y(p.rank), anchor: "start", color: colorFor(s) } : null;
+      return p && p.rank != null ? { artist: s.artist, x: x(String(END_YEAR)) + 8, y: y(p.rank), anchor: "start", color: colorFor(s), ref: s } : null;
     }).filter(Boolean);
     labelsLayer.selectAll(".label.left").data(leftLabels, d => d.artist).join(enter => enter.append("text").attr("class","label left").attr("x", d => d.x).attr("y", d => d.y).attr("text-anchor", d => d.anchor).attr("fill", d => d.color).text(d => d.artist));
     labelsLayer.selectAll(".label.right").data(rightLabels, d => d.artist).join(enter => enter.append("text").attr("class","label right").attr("x", d => d.x).attr("y", d => d.y).attr("text-anchor", d => d.anchor).attr("fill", d => d.color).text(d => d.artist));
@@ -358,6 +398,33 @@
     }
     return best;
   }
+  
+  function adjustLabelBounds() {
+    // Ensure left and right labels don't clip outside the plotting area (0..width)
+    labelsLayer.selectAll("text.label.left").each(function(d){
+      try {
+        const bbox = this.getBBox();
+        // For 'end' anchor, x is the right edge; left edge is x - width
+        const leftEdge = d.x - bbox.width;
+        if (leftEdge < 0) {
+          const newX = bbox.width + 2;
+          d3.select(this).attr("x", newX);
+        }
+      } catch(e) {}
+    });
+    labelsLayer.selectAll("text.label.right").each(function(d){
+      try {
+        const bbox = this.getBBox();
+        // For 'start' anchor, x is left edge; right edge is x + width
+        const rightEdge = d.x + bbox.width;
+        if (rightEdge > width) {
+          const newX = width - bbox.width - 2;
+          d3.select(this).attr("x", newX);
+        }
+      } catch(e) {}
+    });
+  }
+
   function segDist2(a,b,p){
     const ax=a[0], ay=a[1], bx=b[0], by=b[1], px=p[0], py=p[1];
     const vx=bx-ax, vy=by-ay, wx=px-ax, wy=py-ay;

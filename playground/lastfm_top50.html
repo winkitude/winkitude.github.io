@@ -13,7 +13,7 @@
       --grid: #2a2b31;
       --dark-pink: #c2187a;   /* in 2008 Top 50 */
       --light-pink: #f48fb1;  /* entered after 2008 */
-      --light-gray: #bdbdc7;  /* rank > 50 (final 0 in 2025) */
+      --light-gray: #bdbdc7;  /* rank > 50 / final 0 in 2025 */
     }
     html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text);
       font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
@@ -106,19 +106,17 @@
   const LIGHT_GRAY = getCss("--light-gray");
   function getCss(v){ return getComputedStyle(document.documentElement).getPropertyValue(v).trim(); }
 
-// Label offsets & gutters (extra space beyond plot area)
-const LABEL_OFFSET_LEFT = -60;   // push left labels further left of the y-axis
-const LABEL_OFFSET_RIGHT = 60;   // push right labels further right of the last x position
-const GUTTER_LEFT = 180;         // how far labels can extend into the left margin (in g-coordinates)
-const GUTTER_RIGHT = 240;        // how far labels can extend into the right margin (in g-coordinates)
+  // Layout — extra space for off-chart labels
+  const LABEL_LEFT_OFFSET  = 80;  // px left of 2008 x-position
+  const LABEL_RIGHT_OFFSET = 80;  // px right of 2025 x-position
+  const GUTTER_LEFT = 220;        // left margin allowance
+  const GUTTER_RIGHT = 280;       // right margin allowance
 
-
-  // SVG & layout
   const svg = d3.select("#chart");
   const statusEl = document.getElementById("status");
   const tooltip = document.getElementById("tooltip");
 
-  const margin = {top: 32, right: 320, bottom: 40, left: 200};
+  const margin = {top: 32, right: 320, bottom: 40, left: 220};
   const width  = 1200 - margin.left - margin.right;
   const height = 700  - margin.top  - margin.bottom;
   const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
@@ -132,7 +130,9 @@ const GUTTER_RIGHT = 240;        // how far labels can extend into the right mar
   const labelsLayer = g.append("g").attr("class", "labels-layer");
 
   let pinned = null;
-  let hoveredArtist = null; // track which artist is currently hovered to avoid reloading the player
+  let currentHoverArtist = null;
+  let currentPlayerArtist = null;
+  let hoverTimer = null;
 
   // Player panel
   const panel = document.getElementById("playerPanel");
@@ -161,15 +161,14 @@ const GUTTER_RIGHT = 240;        // how far labels can extend into the right mar
     panel.style.display = "none";
     playerBody.innerHTML = "";
     playerHint.style.display = "none";
-    pinned = null;
-    pinToggle.textContent = "Unpin";
+    currentPlayerArtist = null;
   }
   pinToggle.addEventListener("click", () => {
     if (pinned) { pinned = null; pinToggle.textContent = "Unpin"; }
     else { pinned = playerTitle.textContent || null; pinToggle.textContent = "Pinned"; }
   });
-  closePanelBtn.addEventListener("click", closePlayer);
-  window.addEventListener("keydown", (e) => { if (e.key === "Escape") closePlayer(); });
+  closePanelBtn.addEventListener("click", () => { pinned = null; pinToggle.textContent = "Unpin"; closePlayer(); });
+  window.addEventListener("keydown", (e) => { if (e.key === "Escape") { pinned = null; pinToggle.textContent = "Unpin"; closePlayer(); } });
 
   function extractYouTubeId(input) {
     if (!input) return null;
@@ -200,7 +199,6 @@ const GUTTER_RIGHT = 240;        // how far labels can extend into the right mar
     return null;
   }
 
-  let currentPlayerArtist = null;
   function openPlayerForSeries(s, anchorEvent) {
     const q = encodeURIComponent(`${s.artist} official music video`);
     let src;
@@ -211,55 +209,38 @@ const GUTTER_RIGHT = 240;        // how far labels can extend into the right mar
     }
     if (currentPlayerArtist !== s.artist) {
       playerTitle.textContent = s.artist;
-      
+      playerBody.innerHTML = `<iframe src="${src}" title="YouTube player for ${s.artist}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
       currentPlayerArtist = s.artist;
-    }
-    
-    if (!s.videoId) {
-      playerHint.style.display = "block";
-      playerHint.innerHTML = `<a href="https://www.youtube.com/results?search_query=${q}" target="_blank" rel="noopener noreferrer">Open on YouTube</a>`;
-    } else {
-      playerHint.style.display = "none";
+      if (!s.videoId) {
+        playerHint.style.display = "block";
+        playerHint.innerHTML = `<a href="https://www.youtube.com/results?search_query=${q}" target="_blank" rel="noopener noreferrer">Open on YouTube</a>`;
+      } else {
+        playerHint.style.display = "none";
+      }
     }
     panel.style.display = "block";
     if (anchorEvent) positionPanelNear(anchorEvent.clientX, anchorEvent.clientY);
   }
 
-  
-function adjustLabelBounds() {
-  // Allow labels to extend into margins: [-GUTTER_LEFT, width + GUTTER_RIGHT]
-  labelsLayer.selectAll("text.label.left").each(function(d){
-    try {
-      const bbox = this.getBBox();
-      const leftEdge = d.x - bbox.width; // for 'end' anchor, x is right edge
-      const minLeft = -GUTTER_LEFT;
-      if (leftEdge < minLeft) {
-        const newX = minLeft + bbox.width + 2;
-        d3.select(this).attr("x", newX);
-      }
-    } catch(e) {}
-  });
-  labelsLayer.selectAll("text.label.right").each(function(d){
-    try {
-      const bbox = this.getBBox();
-      const rightEdge = d.x + bbox.width; // for 'start' anchor, x is left edge
-      const maxRight = width + GUTTER_RIGHT;
-      if (rightEdge > maxRight) {
-        const newX = maxRight - bbox.width - 2;
-        d3.select(this).attr("x", newX);
-      }
-    } catch(e) {}
-  });
-}
-
+  function adjustLabelBounds() {
+    labelsLayer.selectAll("text.label.left").each(function(d){
+      try {
+        const bbox = this.getBBox();
+        const leftEdge = d.x - bbox.width; // 'end' anchor => x is right edge
+        const minLeft = -GUTTER_LEFT;
+        if (leftEdge < minLeft) {
+          const newX = minLeft + bbox.width + 2;
+          d3.select(this).attr("x", newX);
+        }
       } catch(e) {}
     });
     labelsLayer.selectAll("text.label.right").each(function(d){
       try {
         const bbox = this.getBBox();
-        const rightEdge = d.x + bbox.width;
-        if (rightEdge > width) {
-          const newX = width - bbox.width - 2;
+        const rightEdge = d.x + bbox.width; // 'start' anchor => x is left edge
+        const maxRight = width + GUTTER_RIGHT;
+        if (rightEdge > maxRight) {
+          const newX = maxRight - bbox.width - 2;
           d3.select(this).attr("x", newX);
         }
       } catch(e) {}
@@ -345,8 +326,12 @@ function adjustLabelBounds() {
       );
 
       // Year labels
-      labelsLayer.append("text").attr("class","year-chip").attr("x", x(String(START_YEAR))).attr("y",-10).attr("text-anchor","middle").text(String(START_YEAR));
-      labelsLayer.append("text").attr("class","year-chip").attr("x", x(String(END_YEAR))).attr("y",-10).attr("text-anchor","middle").text(String(END_YEAR));
+      labelsLayer.append("text").attr("class","year-chip")
+        .attr("x", x(String(START_YEAR))).attr("y",-10)
+        .attr("text-anchor","middle").text(String(START_YEAR));
+      labelsLayer.append("text").attr("class","year-chip")
+        .attr("x", x(String(END_YEAR))).attr("y",-10)
+        .attr("text-anchor","middle").text(String(END_YEAR));
 
       const line = d3.line().defined(d => d.rank != null).x(d => x(d.yearLabel)).y(d => y(d.rank)).curve(d3.curveMonotoneX);
 
@@ -358,14 +343,30 @@ function adjustLabelBounds() {
           .attr("stroke", d => colorFor(d))
           .on("mousemove", (event, d) => { if (!pinned) showTooltip(event, d); })
           .on("mouseleave", () => { if (!pinned) hideTooltip(); })
-          .on("mouseover", function(event, d){ if (!pinned) { hoveredArtist = d.artist; openPlayerForSeries(d, event); seriesLayer.selectAll(".series").classed("hidden", true); d3.select(this).classed("hidden", false).classed("highlight", true); } })
-          .on("mouseout", function(){ if (!pinned) { seriesLayer.selectAll(".series").classed("hidden", false).classed("highlight", false); } })
+          .on("mouseover", function(event, d){
+            if (!pinned) {
+              // Debounced hover -> video
+              if (hoverTimer) clearTimeout(hoverTimer);
+              hoverTimer = setTimeout(() => {
+                currentHoverArtist = d.artist;
+                openPlayerForSeries(d, event);
+              }, 150);
+              seriesLayer.selectAll(".series").classed("hidden", true);
+              d3.select(this).classed("hidden", false).classed("highlight", true);
+            }
+          })
+          .on("mouseout", function(){
+            if (!pinned) {
+              if (hoverTimer) { clearTimeout(hoverTimer); hoverTimer = null; }
+              seriesLayer.selectAll(".series").classed("hidden", false).classed("highlight", false);
+            }
+          })
           .on("click", function(event, d){
             event.stopPropagation();
             pinned = d.artist;
+            pinToggle.textContent = "Pinned";
             seriesLayer.selectAll(".series").classed("hidden", true).classed("highlight", false);
             d3.select(this).classed("hidden", false).classed("highlight", true);
-            hideTooltip();
             openPlayerForSeries(d, event);
           }),
         update => update.attr("d", d => line(d.points)).attr("stroke", d => colorFor(d)),
@@ -381,14 +382,14 @@ function adjustLabelBounds() {
           .attr("fill", colorFor(s)).attr("opacity", .9);
       });
 
-      // End labels with series refs
+      // End labels well off the chart edges
       const leftLabels = series.filter(s => top2008.has(s.artist)).map(s => {
         const p = s.points.find(p => p.yearLabel === String(START_YEAR));
-        return p && p.rank != null ? { artist: s.artist, x: x(String(START_YEAR)) + LABEL_OFFSET_LEFT, y: y(p.rank), anchor: "end", color: colorFor(s), ref: s } : null;
+        return p && p.rank != null ? { artist: s.artist, x: x(String(START_YEAR)) - LABEL_LEFT_OFFSET, y: y(p.rank), anchor: "end", color: colorFor(s), ref: s } : null;
       }).filter(Boolean);
       const rightLabels = series.filter(s => top2025.has(s.artist)).map(s => {
         const p = s.points.find(p => p.yearLabel === String(END_YEAR));
-        return p && p.rank != null ? { artist: s.artist, x: x(String(END_YEAR)) + LABEL_OFFSET_RIGHT, y: y(p.rank), anchor: "start", color: colorFor(s), ref: s } : null;
+        return p && p.rank != null ? { artist: s.artist, x: x(String(END_YEAR)) + LABEL_RIGHT_OFFSET, y: y(p.rank), anchor: "start", color: colorFor(s), ref: s } : null;
       }).filter(Boolean);
 
       labelsLayer.selectAll(".label.left").data(leftLabels, d => d.artist).join(
@@ -396,73 +397,51 @@ function adjustLabelBounds() {
           .attr("x", d => d.x).attr("y", d => d.y).attr("text-anchor", d => d.anchor)
           .attr("fill", d => d.color).text(d => d.artist)
           .style("cursor","pointer")
-          .on("click", function(event, d){
+          .on("mouseover", (event, d) => { if (!pinned) openPlayerForSeries(d.ref, event); })
+          .on("click", (event, d) => {
             event.stopPropagation();
-            pinned = d.artist;
+            pinned = d.artist; pinToggle.textContent = "Pinned";
             seriesLayer.selectAll(".series").classed("hidden", true).classed("highlight", false);
             seriesLayer.selectAll(".series").filter(s => s && s.artist === d.artist).classed("hidden", false).classed("highlight", true);
-            hideTooltip();
             openPlayerForSeries(d.ref, event);
           })
       );
-
       labelsLayer.selectAll(".label.right").data(rightLabels, d => d.artist).join(
         enter => enter.append("text").attr("class","label right")
           .attr("x", d => d.x).attr("y", d => d.y).attr("text-anchor", d => d.anchor)
           .attr("fill", d => d.color).text(d => d.artist)
           .style("cursor","pointer")
-          .on("click", function(event, d){
+          .on("mouseover", (event, d) => { if (!pinned) openPlayerForSeries(d.ref, event); })
+          .on("click", (event, d) => {
             event.stopPropagation();
-            pinned = d.artist;
+            pinned = d.artist; pinToggle.textContent = "Pinned";
             seriesLayer.selectAll(".series").classed("hidden", true).classed("highlight", false);
             seriesLayer.selectAll(".series").filter(s => s && s.artist === d.artist).classed("hidden", false).classed("highlight", true);
-            hideTooltip();
             openPlayerForSeries(d.ref, event);
           })
       );
 
       adjustLabelBounds();
 
-      // Hover anywhere to highlight nearest series when not pinned
-      
-svg
+      // Background interactions
+      svg
         .on("mousemove", (event) => {
-          if (pinned) return;
-          let best=null, bestD=Infinity;
-          const [mx,my] = d3.pointer(event, g.node());
-          for (const s of series) {
-            const pts = s.points.filter(p => p.rank != null).map(p => [x(p.yearLabel), y(p.rank)]);
-            const d2 = polylineDist2(pts, [mx,my]);
-            if (d2 < bestD) { bestD = d2; best = s; }
-          }
-          if (best) {
-            if (hoveredArtist !== best.artist) {
-              hoveredArtist = best.artist;
-              openPlayerForSeries(best, event); // open/reload player for this artist
-            } else {
-              // just reposition the panel to follow the cursor
-              positionPanelNear(event.clientX, event.clientY);
-            }
-            seriesLayer.selectAll(".series").classed("hidden", true).classed("highlight", false);
-            seriesLayer.selectAll(".series").filter(d => d && d.artist === best.artist).classed("hidden", false).classed("highlight", true);
-            showTooltip(event, best);
-          }
+          if (pinned || !currentHoverArtist) return;
+          positionPanelNear(event.clientX, event.clientY);
         })
         .on("mouseleave", () => {
-          if (pinned) return;
-          hoveredArtist = null;
-          closePlayer();
+          if (!pinned) { currentHoverArtist = null; closePlayer(); }
           seriesLayer.selectAll(".series").classed("hidden", false).classed("highlight", false);
           hideTooltip();
         })
-        .on("click", (event) => {
-          if (!pinned) return; // clicking background when pinned should unpin and close
+        .on("click", () => {
+          if (!pinned) return; // only close on click when pinned
+          pinned = null; pinToggle.textContent = "Unpin";
           closePlayer();
           seriesLayer.selectAll(".series").classed("hidden", false).classed("highlight", false);
         });
 
-
-      statusEl.textContent = `Rendered ${series.length} artists across ${years.length} years. Click a line or label for a video.`;
+      statusEl.textContent = `Rendered ${series.length} artists across ${years.length} years. Hover to preview, click to pin.`;
     } catch (err) {
       console.error("Error while rendering chart", err);
       statusEl.textContent = "Error while rendering chart: " + (err && err.message ? err.message : err);

@@ -1,10 +1,11 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Last.fm Top 50 (2008–2025) — Bump Chart + Inline Video</title>
-  <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Last.fm Top 50 (2008–2025) — Bump Chart + Inline Video</title>
+<style>
     :root {
       --bg: #0f0f12;
       --panel: #15161a;
@@ -45,27 +46,52 @@
     .y-axis .tick text { display: none; }
     .y-axis .tick line { display: none; }
     .y-axis path { display: none; }
-  </style>
-</head>
+  
+.topline{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.brand a{
+  text-decoration:none;
+  color:var(--text);
+  font-weight:600;
+  letter-spacing:.2px;
+  font-family:'Poltawski Nowy', serif;
+}
+.brand a:hover{opacity:.8}
+.title.with-sep{position:relative;margin-left:12px;padding-left:12px}
+.title.with-sep::before{
+  content:"";position:absolute;left:0;top:50%;transform:translateY(-50%);
+  width:1px;height:18px;background:#eaeaea;
+}
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Poltawski+Nowy:wght@400;600;700&amp;display=swap" rel="stylesheet"/></head>
 <body>
-  <header>
-    <h1>Last.fm Top 50 — 2008 to 2025</h1>
-  </header>
-  <main>
-    <div class="chart-wrap">
-      <div class="legend">
-        <span><span class="swatch" style="background: var(--dark-pink)"></span> In 2008 Top 50</span>
-        <span><span class="swatch" style="background: var(--light-pink)"></span> Entered after 2008</span>
-        <span><span class="swatch" style="background: var(--light-gray)"></span> Rank &gt; 50</span>
-      </div>
-      <svg id="chart" viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid meet"></svg>
-      <div class="status" id="status">Loading lastfm_top50.csv…</div>
-    </div>
-  </main>
-  <div class="tooltip" id="tooltip"></div>
-
-  <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
-  <script>
+<header>
+<div class="topline">
+<div class="brand">
+<a href="https://winkitude.com" rel="noopener" target="_blank" title="Ari Winkleman">Ari Winkleman</a>
+</div>
+<div class="title with-sep">
+<h1>
+<a href="https://www.last.fm/user/theduckmanz" rel="noopener" style="color: inherit; text-decoration: none;" target="_blank">
+           Theduckmanz's Last.fm Top 50 — 2008 to 2025
+          </a>
+</h1>
+</div>
+</div>
+</header>
+<main>
+<div class="chart-wrap">
+<div class="legend">
+<span><span class="swatch" style="background: var(--dark-pink)"></span> In 2008 Top 50</span>
+<span><span class="swatch" style="background: var(--light-pink)"></span> Entered after 2008</span>
+<span><span class="swatch" style="background: var(--light-gray)"></span> Rank &gt; 50</span>
+</div>
+<svg id="chart" preserveaspectratio="xMidYMid meet" viewbox="0 0 1200 700"></svg>
+<div class="status" id="status">Loading lastfm_top50.csv…</div>
+</div>
+</main>
+<div class="tooltip" id="tooltip"></div>
+<script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+<script>
   const START_YEAR = 2008;
   const END_YEAR   = 2025;
 

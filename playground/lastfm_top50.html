@@ -147,19 +147,26 @@
   const pinToggle = document.getElementById("pinToggle");
   const closePanelBtn = document.getElementById("closePanel");
 
-  function openPlayerForSeries(s, anchorEvent) {
-    const q = encodeURIComponent(`${artist} official video`);
-    const origin = encodeURIComponent(window.location.origin);
-    const src = `https://www.youtube.com/embed?listType=search&list=${q}&autoplay=0&origin=${origin}`;
+  
+function openPlayerForSeries(s, anchorEvent) {
+    const q = encodeURIComponent(`${s.artist} official music video`);
+    let src;
+    if (s.videoId) {
+      src = `https://www.youtube.com/embed/${s.videoId}?rel=0&modestbranding=1`;
+    } else {
+      src = `https://www.youtube.com/embed?listType=search&list=${q}&rel=0&modestbranding=1`;
+    }
     playerTitle.textContent = s.artist;
     playerBody.innerHTML = `<iframe src="${src}" title="YouTube player for ${s.artist}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
-          if (!s.videoId) {
-            const link = document.createElement("div");
-            link.style.padding = "8px 12px";
-            link.style.fontSize = "12px";
-            link.innerHTML = `<a href="https://www.youtube.com/results?search_query=${q}" target="_blank" rel="noopener noreferrer" style="color:#8ab4f8">Open on YouTube</a>`;
-            panel.appendChild(link);
-          }
+    panel.style.display = "block";
+    if (anchorEvent) positionPanelNear(anchorEvent.clientX, anchorEvent.clientY);
+    if (!s.videoId) {
+      const hint = document.createElement("div");
+      hint.className = "player-hint";
+      hint.innerHTML = `<a href="https://www.youtube.com/results?search_query=${q}" target="_blank" rel="noopener noreferrer">Open on YouTube</a>`;
+      panel.appendChild(hint);
+    }
+}
     panel.style.display = "block";
     // position near click if space allows, else stick bottom-right
     if (anchorEvent) positionPanelNear(anchorEvent.clientX, anchorEvent.clientY);
@@ -330,8 +337,30 @@
       const p = s.points.find(p => p.yearLabel === String(END_YEAR));
       return p && p.rank != null ? { artist: s.artist, x: x(String(END_YEAR)) + 8, y: y(p.rank), anchor: "start", color: colorFor(s), ref: s } : null;
     }).filter(Boolean);
-    labelsLayer.selectAll(".label.left").data(leftLabels, d => d.artist).join(enter => enter.append("text").attr("class","label left").attr("x", d => d.x).attr("y", d => d.y).attr("text-anchor", d => d.anchor).attr("fill", d => d.color).text(d => d.artist));
-    labelsLayer.selectAll(".label.right").data(rightLabels, d => d.artist).join(enter => enter.append("text").attr("class","label right").attr("x", d => d.x).attr("y", d => d.y).attr("text-anchor", d => d.anchor).attr("fill", d => d.color).text(d => d.artist));
+    labelsLayer.selectAll(".label.left").data(leftLabels, d => d.artist).join(enter => enter.append("text").attr("class","label left").attr("x", d => d.x).attr("y", d => d.y).attr("text-anchor", d => d.anchor).attr("fill", d => d.color).text(d => d.artist)
+        .style("cursor","pointer")
+        .on("click", function(event, d){
+          event.stopPropagation();
+          pinned = d.artist;
+          seriesLayer.selectAll(".series").classed("hidden", true).classed("highlight", false);
+          seriesLayer.selectAll(".series").filter(s => s && s.artist === d.artist).classed("hidden", false).classed("highlight", true);
+          hideTooltip();
+          openPlayerForSeries(d.ref || d, event);
+        })
+    );
+    labelsLayer.selectAll(".label.right").data(rightLabels, d => d.artist).join(enter => enter.append("text").attr("class","label right").attr("x", d => d.x).attr("y", d => d.y).attr("text-anchor", d => d.anchor).attr("fill", d => d.color).text(d => d.artist)
+        .style("cursor","pointer")
+        .on("click", function(event, d){
+          event.stopPropagation();
+          pinned = d.artist;
+          seriesLayer.selectAll(".series").classed("hidden", true).classed("highlight", false);
+          seriesLayer.selectAll(".series").filter(s => s && s.artist === d.artist).classed("hidden", false).classed("highlight", true);
+          hideTooltip();
+          openPlayerForSeries(d.ref || d, event);
+        })
+    );
+
+    adjustLabelBounds();
 
     // Hover anywhere to highlight nearest series when not pinned
     svg

@@ -212,7 +212,10 @@
     if (top < 6) top = 6;
     tooltip.style.left = left + "px"; tooltip.style.top  = top  + "px";
   }
-  function escapeHtml(str){ return String(str).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',\"'\":'&#039;'}[m])); }
+  function escapeHtml(str){
+    const map = {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'};
+    return String(str).replace(/[&<>"']/g, m => map[m]);
+}
   function polylineDist2(pts, p) {
     let best = Infinity;
     for (let i=0; i<pts.length-1; i++) {

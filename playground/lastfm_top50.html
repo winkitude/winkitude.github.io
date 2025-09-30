@@ -250,7 +250,11 @@
       });
       const inStart = (+row[String(START_YEAR)] || 0) > 0;
       const finalZero = (+row[String(END_YEAR)] || 0) === 0;
-      const videoRaw = row['videoId'] || row['youtube'] || row['video'] || '';
+      const lowerKeys = Object.fromEntries(Object.keys(row).map(k => [k.toLowerCase().trim(), k]));
+      const videoRaw = (lowerKeys['videoid'] ? row[lowerKeys['videoid']] : undefined)
+                    || (lowerKeys['youtube'] ? row[lowerKeys['youtube']] : undefined)
+                    || (lowerKeys['video'] ? row[lowerKeys['video']] : undefined)
+                    || '';
       const videoId = extractYouTubeId(videoRaw);
       return { artist: name, points, inStart, firstNonZeroYear, lastNonZeroYear, finalZero, videoId, videoRaw };
     }).filter(s => s.firstNonZeroYear !== null);(s => s.firstNonZeroYear !== null);

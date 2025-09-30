@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Last.fm Top 50 Bump Chart (2006–2025)</title>
+  <title>Last.fm Top 50 Bump Chart (Auto CSV)</title>
   <style>
     :root {
       --bg: #0f0f12;
@@ -14,378 +14,131 @@
       --dark-pink: #c2187a;   /* in 2006 top 50 */
       --light-pink: #f48fb1;  /* entered after 2006 */
       --light-gray: #bdbdc7;  /* dropped segments */
-      --accent: #8ab4f8;
     }
-    html, body {
-      margin: 0; padding: 0;
-      background: var(--bg);
-      color: var(--text);
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial, sans-serif;
-    }
-    header {
-      padding: 16px 20px;
-      background: var(--panel);
-      position: sticky; top: 0; z-index: 10;
-      display: flex; gap: 12px; align-items: center; flex-wrap: wrap;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.35);
-    }
-    header h1 {
-      font-size: 18px; margin: 0; font-weight: 650; letter-spacing: .2px;
-    }
-    header .controls {
-      display: flex; gap: 10px; flex-wrap: wrap; align-items: center;
-    }
-    button, input, select, label {
-      font: inherit;
-    }
-    button {
-      background: var(--accent);
-      color: #0a0a0d;
-      border: 0;
-      border-radius: 10px;
-      padding: 8px 12px;
-      cursor: pointer;
-      font-weight: 600;
-    }
-    button.secondary {
-      background: #2b2f36;
-      color: var(--text);
-    }
-    button:disabled { opacity: .6; cursor: not-allowed; }
-    .status {
-      font-size: 13px; color: var(--muted);
-    }
+    html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+    header { padding: 16px 20px; background: var(--panel); position: sticky; top: 0; z-index: 10; box-shadow: 0 2px 8px rgba(0,0,0,.35); }
+    header h1 { font-size: 18px; margin: 0; font-weight: 650; letter-spacing: .2px; }
     main { padding: 14px 14px 24px; }
-    .chart-wrap {
-      background: var(--panel);
-      border-radius: 14px;
-      padding: 14px;
-      box-shadow: 0 6px 30px rgba(0,0,0,0.35);
-    }
-    .legend {
-      display: flex; gap: 18px; align-items: center; flex-wrap: wrap;
-      margin: 8px 2px 12px;
-      font-size: 13px;
-      color: var(--muted);
-    }
-    .legend .swatch {
-      display: inline-block; width: 14px; height: 14px; border-radius: 50%;
-      margin-right: 6px; vertical-align: -2px;
-    }
+    .chart-wrap { background: var(--panel); border-radius: 14px; padding: 14px; box-shadow: 0 6px 30px rgba(0,0,0,.35); }
+    .legend { display: flex; gap: 18px; align-items: center; flex-wrap: wrap; margin: 8px 2px 12px; font-size: 13px; color: var(--muted); }
+    .legend .swatch { width: 14px; height: 14px; border-radius: 50%; display: inline-block; margin-right: 6px; vertical-align: -2px; }
     svg { width: 100%; height: auto; display: block; }
     .axis line, .axis path { stroke: var(--grid); }
     .axis text { fill: var(--muted); font-size: 11px; }
     .gridline { stroke: var(--grid); stroke-dasharray: 2 2; }
-    .rank-label { fill: var(--muted); font-size: 10px; }
-    .series {
-      fill: none; stroke-width: 2px; opacity: .65;
-      transition: opacity .2s ease, stroke-width .15s ease;
-      mix-blend-mode: screen;
-    }
+    .series { fill: none; stroke-width: 2px; opacity: .65; transition: opacity .2s ease, stroke-width .15s ease; mix-blend-mode: screen; }
     .series.hidden { opacity: .12; }
-    .series.highlight {
-      stroke-width: 3px; opacity: 1;
-      filter: drop-shadow(0 0 2px rgba(255,255,255,0.25));
-    }
+    .series.highlight { stroke-width: 3px; opacity: 1; filter: drop-shadow(0 0 2px rgba(255,255,255,0.25)); }
     .dot { pointer-events: none; }
-    .hover-veil {
-      fill: transparent;
-      pointer-events: all;
-    }
-    .tooltip {
-      position: fixed;
-      pointer-events: none;
-      padding: 10px 12px;
-      background: #101116;
-      color: var(--text);
-      border: 1px solid #2e3037;
-      border-radius: 10px;
-      font-size: 12px;
-      max-width: 300px;
-      box-shadow: 0 10px 40px rgba(0,0,0,.45);
-      z-index: 9999;
-      display: none;
-    }
-    .note {
-      font-size: 12px; color: var(--muted);
-      margin: 8px 4px 12px;
-    }
-    .foot {
-      margin-top: 10px; font-size: 12px; color: var(--muted);
-    }
-    a { color: var(--accent); }
-    .pill {
-      display: inline-block;
-      padding: 2px 8px; border-radius: 999px; font-size: 11px; font-weight: 600;
-      background: #262934; color: var(--muted);
-      margin-left: 6px;
-    }
-    .year-label {
-      fill: var(--text);
-      font-weight: 700;
-      font-size: 12px;
-    }
+    .tooltip { position: fixed; pointer-events: none; padding: 10px 12px; background: #101116; color: var(--text); border: 1px solid #2e3037; border-radius: 10px; font-size: 12px; max-width: 320px; box-shadow: 0 10px 40px rgba(0,0,0,.45); z-index: 9999; display: none; }
+    .note { font-size: 12px; color: var(--muted); margin: 8px 4px 12px; }
+    .year-label { fill: var(--text); font-weight: 700; font-size: 12px; }
+    .status { font-size: 13px; color: var(--muted); margin-top: 8px; }
   </style>
 </head>
 <body>
   <header>
-    <h1>Last.fm Top 50 — Bump Chart <span class="pill">2006–2025</span></h1>
-    <div class="controls">
-      <label>
-        <input type="file" id="csvFile" accept=".csv" style="display:none">
-        <button class="secondary" id="csvBtn">Load CSV</button>
-      </label>
-      <button id="fetchBtn">Live fetch (Last.fm)</button>
-      <select id="smoothSel" class="secondary">
-        <option value="0">Straight lines</option>
-        <option value="1" selected>Smoothed</option>
-      </select>
-      <span class="status" id="status">No data loaded yet.</span>
-    </div>
+    <h1>Last.fm Top 50 — Bump Chart (auto CSV)</h1>
   </header>
-
   <main>
     <div class="chart-wrap">
       <div class="legend">
         <span><span class="swatch" style="background: var(--dark-pink)"></span> In 2006 Top 50</span>
         <span><span class="swatch" style="background: var(--light-pink)"></span> Entered after 2006</span>
-        <span><span class="swatch" style="background: var(--light-gray)"></span> After drop‑off</span>
+        <span><span class="swatch" style="background: var(--light-gray)"></span> After drop-off</span>
       </div>
-      <svg id="chart" viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid meet" aria-label="Top 50 bump chart"></svg>
-      <div class="note">
-        Upload a CSV with columns: <code>artist,year,rank,cumulative_scrobbles</code>. Ranks are 1–50 for each year label: <code>2006</code>, <code>2006–2007</code>, …, <code>2006–2025</code>.
-        Or use the live fetch, which aggregates <em>weekly artist charts</em> into yearly cumulative totals. Live mode caches to <code>localStorage</code> to keep API calls down.
-      </div>
-    </div>
-    <div class="foot">
-      Built with D3. Set your Last.fm <strong>username</strong> and <strong>API key</strong> in the script. If your browser blocks cross‑origin requests to Last.fm, route the API calls through a tiny proxy (Netlify/Cloudflare Worker) that simply forwards the requests.
+      <svg id="chart" viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid meet"></svg>
+      <div class="status" id="status">Loading lastfm_top50.csv…</div>
+      <div class="note">Place <code>lastfm_top50.csv</code> in the same folder as this HTML. Columns required: <code>artist,year,rank,cumulative_scrobbles</code>. Year labels like <code>2006</code>, <code>2006–2007</code>, …</div>
     </div>
   </main>
-
   <div class="tooltip" id="tooltip"></div>
-
   <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
   <script>
-  // ---------- CONFIG ----------
-  const USERNAME = "theduckmanz";
-  const API_KEY  = "24d084e4976569a65c4dab3cfc76ec46";
   const START_YEAR = 2006;
-  const END_YEAR   = 2025; // inclusive
+  const END_YEAR   = 2025;
   const DARK_PINK  = getCss("--dark-pink");
   const LIGHT_PINK = getCss("--light-pink");
   const LIGHT_GRAY = getCss("--light-gray");
+  function getCss(v){ return getComputedStyle(document.documentElement).getPropertyValue(v).trim(); }
 
-  function getCss(varName){ return getComputedStyle(document.documentElement).getPropertyValue(varName).trim(); }
-
-  // ---------- DOM Refs ----------
   const svg = d3.select("#chart");
   const statusEl = document.getElementById("status");
   const tooltip = document.getElementById("tooltip");
-  const smoothSel = document.getElementById("smoothSel");
 
   const margin = {top: 32, right: 130, bottom: 40, left: 56};
   const width  = 1200 - margin.left - margin.right;
   const height = 700  - margin.top  - margin.bottom;
-
   const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
-
   const x = d3.scalePoint().padding(0.5).range([0, width]);
-  const y = d3.scaleLinear().domain([1, 50]).range([0, height]); // rank 1 at top
-
+  const y = d3.scaleLinear().domain([1, 50]).range([0, height]);
   const xAxis = g.append("g").attr("class", "axis x-axis").attr("transform", `translate(0,${height})`);
   const yAxis = g.append("g").attr("class", "axis y-axis");
-
   const grid = g.append("g").attr("class", "grid");
   const seriesLayer = g.append("g").attr("class", "series-layer");
   const dotsLayer = g.append("g").attr("class", "dots-layer");
   const labelsLayer = g.append("g").attr("class", "labels-layer");
-  const hoverVeil = g.append("rect").attr("class", "hover-veil").attr("x",0).attr("y",0).attr("width",width).attr("height",height);
-
-  let currentData = null; // {years:[], series:[{artist, points:[{yearLabel, rank, cum}], firstYear, lastYear, in2006, droppedYear|null}]}
-
-  // ---------- UI Handlers ----------
-  document.getElementById("csvBtn").addEventListener("click", () => {
-    document.getElementById("csvFile").click();
-  });
-  document.getElementById("csvFile").addEventListener("change", handleCSVUpload);
-  document.getElementById("fetchBtn").addEventListener("click", fetchLiveData);
-  smoothSel.addEventListener("change", () => { if (currentData) draw(currentData); });
-
-  // ---------- CSV Upload ----------
-  async function handleCSVUpload(evt) {
-    const file = evt.target.files[0];
-    if (!file) return;
-    const text = await file.text();
-    const parsed = d3.csvParse(text, d3.autoType);
-    statusEl.textContent = `Loaded ${parsed.length} rows from CSV.`;
-    const data = normalizeCsv(parsed);
-    currentData = data;
-    draw(currentData);
-  }
-
-  function normalizeCsv(rows) {
-    // Expected columns: artist,year,rank,cumulative_scrobbles
-    // year labels can be "2006" or "2006–2007" etc. We'll keep as string labels.
-    const byYear = d3.group(rows, d => d.year);
-    const years = [...byYear.keys()].sort((a,b) => yearSortKey(a) - yearSortKey(b));
-
-    // Build per-artist series from ranks by year
-    const byArtistYear = d3.rollup(rows, v => v[0], d => d.artist, d => d.year);
-    const artists = [...byArtistYear.keys()];
-
-    let series = [];
-    for (const artist of artists) {
-      const points = [];
-      for (const yLabel of years) {
-        const row = byArtistYear.get(artist)?.get(yLabel);
-        if (row && +row.rank >=1 && +row.rank <= 50) {
-          points.push({ yearLabel: yLabel, rank: +row.rank, cum: +row.cumulative_scrobbles || null });
-        }
-      }
-      if (points.length === 0) continue;
-      // detect in2006, firstYear, lastYear
-      const in2006 = !!(byArtistYear.get(artist)?.get(formatYearLabel(START_YEAR)) && +byArtistYear.get(artist).get(formatYearLabel(START_YEAR)).rank <= 50);
-      const firstYear = yearLabelToEndYear(points[0].yearLabel);
-      const lastYear  = yearLabelToEndYear(points[points.length-1].yearLabel);
-      // droppedYear: if lastYear < END_YEAR and artist never returns later
-      const droppedYear = lastYear < END_YEAR ? lastYear : null;
-      series.push({ artist, points, in2006, firstYear, lastYear, droppedYear });
-    }
-
-    return { years, series };
-  }
+  const hoverVeil = g.append("rect").attr("x",0).attr("y",0).attr("width",width).attr("height",height).attr("fill","transparent");
 
   function formatYearLabel(endYear) {
-    // For 2006, label is "2006"; for 2007, "2006–2007", etc.
-    if (endYear === START_YEAR) return String(START_YEAR);
-    return `${START_YEAR}–${endYear}`;
+    endYear = +endYear;
+    return endYear === START_YEAR ? String(START_YEAR) : `${START_YEAR}–${endYear}`;
   }
-
-  function yearSortKey(label) {
-    // Map "2006" -> 2006, "2006–2007" -> 2007, etc.
-    return yearLabelToEndYear(label);
-  }
-
   function yearLabelToEndYear(label) {
     if (String(label) === String(START_YEAR)) return START_YEAR;
     const parts = String(label).split("–");
     return +parts[parts.length-1];
-    }
-
-  // ---------- Live Fetch ----------
-  async function fetchLiveData() {
-    if (USERNAME === "YOUR_LASTFM_USERNAME" || API_KEY === "YOUR_LASTFM_API_KEY") {
-      alert("Set USERNAME and API_KEY at the top of the script first.");
-      return;
-    }
-    try {
-      statusEl.textContent = "Preparing weekly chart list…";
-      const weeks = await getWeeklyChartList(USERNAME, API_KEY);
-      const weeksInRange = weeks.filter(w => w.from >= Date.UTC(START_YEAR,0,1)/1000 && w.to <= Date.UTC(END_YEAR,11,31,23,59,59)/1000);
-
-      // localStorage cache for per-week results
-      const cache = JSON.parse(localStorage.getItem("lastfmWeeklyCache") || "{}");
-
-      // Aggregate cumulative per artist at each year end
-      const yearEnds = d3.range(START_YEAR, END_YEAR+1);
-      const snapshots = new Map(yearEnds.map(y => [y, new Map()])); // year -> Map(artist -> cumulative plays)
-
-      let fetched = 0;
-      for (const w of weeksInRange) {
-        const key = `${w.from}-${w.to}`;
-        let arts;
-        if (cache[key]) {
-          arts = cache[key];
-        } else {
-          const url = new URL("https://ws.audioscrobbler.com/2.0/");
-          url.search = new URLSearchParams({
-            method: "user.getweeklyartistchart",
-            user: USERNAME,
-            from: String(w.from),
-            to: String(w.to),
-            api_key: API_KEY,
-            format: "json",
-            limit: "1000"
-          });
-          const res = await fetch(url, { mode: "cors" });
-          if (!res.ok) throw new Error("Last.fm fetch failed for a week");
-          const json = await res.json();
-          arts = (json.weeklyartistchart?.artist || []).map(a => ({
-            name: a.name,
-            plays: +a.playcount
-          }));
-          cache[key] = arts;
-          fetched += 1;
-          if (fetched % 10 === 0) {
-            localStorage.setItem("lastfmWeeklyCache", JSON.stringify(cache));
-          }
-        }
-        // add to all snapshots whose end is >= this week end
-        const weekEndYear = new Date(w.to*1000).getUTCFullYear();
-        for (const y of yearEnds) {
-          if (weekEndYear <= y) {
-            const snap = snapshots.get(y);
-            for (const a of arts) {
-              snap.set(a.name, (snap.get(a.name) || 0) + a.plays);
-            }
-          }
-        }
-        statusEl.textContent = `Aggregating… ${new Date(w.to*1000).toISOString().slice(0,10)} (${fetched} fetched)`;
-        // Basic rate limiting
-        await new Promise(r => setTimeout(r, 150));
-      }
-      // persist cache
-      localStorage.setItem("lastfmWeeklyCache", JSON.stringify(cache));
-
-      // Build rows: for each year snapshot, rank artists by cumulative plays and keep top 50
-      const rows = [];
-      for (const y of yearEnds) {
-        const arr = [...snapshots.get(y).entries()].map(([artist, cum]) => ({artist, cum}));
-        arr.sort((a,b) => d3.descending(a.cum, b.cum));
-        const top = arr.slice(0, 50);
-        top.forEach((d,i) => {
-          rows.push({ artist: d.artist, year: formatYearLabel(y), rank: i+1, cumulative_scrobbles: d.cum });
-        });
-      }
-
-      statusEl.textContent = `Computed ${rows.length} rows from live data.`;
-      const data = normalizeCsv(rows);
-      currentData = data;
-      draw(currentData);
-    } catch (err) {
-      console.error(err);
-      statusEl.textContent = "Live fetch failed. See console for details. You may need a proxy due to CORS.";
-      alert("Live fetch failed. Some browsers block Last.fm cross-origin requests. Try again via a simple proxy or upload a CSV.");
-    }
   }
 
-  async function getWeeklyChartList(user, apiKey) {
-    const url = new URL("https://ws.audioscrobbler.com/2.0/");
-    url.search = new URLSearchParams({
-      method: "user.getweeklychartlist",
-      user,
-      api_key: apiKey,
-      format: "json"
-    });
-    const res = await fetch(url, { mode: "cors" });
-    if (!res.ok) throw new Error("Failed to get weekly chart list");
-    const json = await res.json();
-    // returns { chart: [{from,to},…] }
-    return (json.weeklychartlist?.chart || []).map(c => ({ from: +c.from, to: +c.to }));
+  function yearSortKey(label){ return yearLabelToEndYear(label); }
+
+  d3.csv("lastfm_top50.csv", d3.autoType).then(raw => {
+    statusEl.textContent = `Loaded ${raw.length} rows from CSV.`;
+    const data = normalizeCsv(raw);
+    draw(data);
+  }).catch(err => {
+    console.error(err);
+    statusEl.textContent = "Could not load lastfm_top50.csv. Make sure it's next to this HTML and your server allows CSV fetches.";
+  });
+
+  function normalizeCsv(rows) {
+    // Expect: artist,year,rank,cumulative_scrobbles
+    // Accepts year labels "2006" or "2006–YYYY"
+    // Build years list
+    const byYear = d3.group(rows, d => d.year);
+    const years = [...byYear.keys()].sort((a,b) => yearSortKey(a) - yearSortKey(b));
+
+    // Per-artist per-year lookup
+    const byArtistYear = d3.rollup(rows, v => v[0], d => d.artist, d => d.year);
+    const artists = [...byArtistYear.keys()];
+
+    const series = [];
+    for (const artist of artists) {
+      const points = [];
+      for (const yLabel of years) {
+        const row = byArtistYear.get(artist)?.get(yLabel);
+        if (row && +row.rank >= 1 && +row.rank <= 50) {
+          points.push({ yearLabel: yLabel, rank: +row.rank, cum: row.cumulative_scrobbles ?? null });
+        }
+      }
+      if (!points.length) continue;
+      const in2006 = !!(byArtistYear.get(artist)?.get(String(START_YEAR)) && +byArtistYear.get(artist).get(String(START_YEAR)).rank <= 50);
+      const firstYear = yearLabelToEndYear(points[0].yearLabel);
+      const lastYear  = yearLabelToEndYear(points[points.length-1].yearLabel);
+      const droppedYear = lastYear < END_YEAR ? lastYear : null;
+      series.push({ artist, points, in2006, firstYear, lastYear, droppedYear });
+    }
+    return { years, series };
   }
 
-  // ---------- Drawing ----------
   function draw({ years, series }) {
-    statusEl.textContent = `Rendering ${series.length} artists across ${years.length} columns.`;
-
-    // X domain
-    x.domain(years);
-
-    // Axes
+    // Domains & axes
+    const xDomain = years;
+    x.domain(xDomain);
     xAxis.call(d3.axisBottom(x).tickSizeOuter(0).tickPadding(6));
     yAxis.call(d3.axisLeft(y).ticks(10).tickSizeOuter(0).tickFormat(d3.format("d")));
 
-    // grid lines for ranks
+    // Gridlines
     const ranksForGrid = d3.range(5, 51, 5);
     const gl = grid.selectAll(".gridline").data(ranksForGrid, d => d);
     gl.enter().append("line")
@@ -393,131 +146,83 @@
       .attr("x1",0).attr("x2",width)
       .attr("y1",d=>y(d)).attr("y2",d=>y(d))
       .merge(gl)
-      .transition().attr("y1",d=>y(d)).attr("y2",d=>y(d));
+      .attr("y1",d=>y(d)).attr("y2",d=>y(d));
     gl.exit().remove();
 
-    // year labels for 2006 and 2025
+    // Label 2006 and 2025 above axis if present
     labelsLayer.selectAll("*").remove();
-    const startLabelX = x(formatYearLabel(START_YEAR));
-    const endLabelX   = x(formatYearLabel(END_YEAR));
-    if (startLabelX != null) {
-      labelsLayer.append("text")
-        .attr("class","year-label")
-        .attr("x", startLabelX)
-        .attr("y", -10)
-        .attr("text-anchor","middle")
-        .text(START_YEAR);
-    }
-    if (endLabelX != null) {
-      labelsLayer.append("text")
-        .attr("class","year-label")
-        .attr("x", endLabelX)
-        .attr("y", -10)
-        .attr("text-anchor","middle")
-        .text(END_YEAR);
-    }
+    const startX = x(String(START_YEAR)) ?? x(formatYearLabel(START_YEAR));
+    const endX   = x(formatYearLabel(END_YEAR));
+    if (startX != null) labelsLayer.append("text").attr("class","year-label").attr("x",startX).attr("y",-10).attr("text-anchor","middle").text(START_YEAR);
+    if (endX   != null) labelsLayer.append("text").attr("class","year-label").attr("x",endX).attr("y",-10).attr("text-anchor","middle").text(END_YEAR);
 
-    // Line generator
-    const curve = smoothSel.value === "1" ? d3.curveMonotoneX : d3.curveLinear;
-    const line = d3.line()
-      .x(d => x(d.yearLabel))
-      .y(d => y(d.rank))
-      .curve(curve);
+    // Lines
+    const line = d3.line().x(d => x(d.yearLabel)).y(d => y(d.rank)).curve(d3.curveMonotoneX);
+    const initialTop50 = new Set(series.filter(s => s.points.some(p => p.yearLabel === String(START_YEAR) && p.rank <= 50)).map(s => s.artist));
 
-    // Precompute color status per series
-    const initialTop50 = new Set(
-      series
-        .filter(s => s.points.some(p => p.yearLabel === formatYearLabel(START_YEAR) && p.rank <= 50))
-        .map(s => s.artist)
-    );
-
-    // Draw series
     const S = seriesLayer.selectAll(".series").data(series, d => d.artist);
-
     S.enter().append("path")
       .attr("class","series")
       .attr("d", d => line(d.points))
       .attr("stroke", d => initialTop50.has(d.artist) ? DARK_PINK : LIGHT_PINK)
       .on("mousemove", (event, d) => showTooltip(event, d))
       .on("mouseleave", hideTooltip)
-      .on("mouseover", function(event,d){
-        seriesLayer.selectAll(".series").classed("hidden", true);
-        d3.select(this).classed("hidden", false).classed("highlight", true);
-      })
-      .on("mouseout", function(){
-        seriesLayer.selectAll(".series").classed("hidden", false).classed("highlight", false);
-      })
+      .on("mouseover", function(){ seriesLayer.selectAll(".series").classed("hidden", true); d3.select(this).classed("hidden", false).classed("highlight", true); })
+      .on("mouseout", function(){ seriesLayer.selectAll(".series").classed("hidden", false).classed("highlight", false); })
       .merge(S)
-      .transition()
       .attr("d", d => line(d.points))
       .attr("stroke", d => initialTop50.has(d.artist) ? DARK_PINK : LIGHT_PINK);
-
     S.exit().remove();
 
-    // Dots, including gray after-drop segments as dashed guides
+    // Drop-off gray segments & dots
     dotsLayer.selectAll("*").remove();
-
-    // For drop-offs: draw a faint gray line segment from drop year to END_YEAR at y=NaN skipped. Instead, we gray out any trailing segments beyond the artist's last point, as a dashed straight line at last rank.
     series.forEach(s => {
-      const pathPoints = s.points;
+      const pts = s.points;
       if (s.droppedYear) {
-        const last = pathPoints[pathPoints.length-1];
-        const ix1 = x(last.yearLabel);
-        const iy1 = y(last.rank);
-        const idxEnd = years.indexOf(formatYearLabel(s.droppedYear));
+        const last = pts[pts.length-1];
         const afterYears = years.filter(lab => yearLabelToEndYear(lab) > s.droppedYear);
-        if (ix1 != null && afterYears.length) {
-          const lineSeg = d3.line().x(lab => x(lab)).y(() => iy1);
+        if (afterYears.length) {
+          const seg = d3.line().x(lab => x(lab)).y(() => y(last.rank));
           seriesLayer.append("path")
             .attr("class","series")
             .attr("stroke", LIGHT_GRAY)
             .attr("stroke-dasharray","4 4")
-            .attr("d", lineSeg([last.yearLabel, ...afterYears]));
+            .attr("d", seg([last.yearLabel, ...afterYears]));
         }
       }
-      // draw dots for points
-      dotsLayer.selectAll(null)
-        .data(pathPoints.map(p => ({...p, artist: s.artist, in2006: s.in2006, firstYear: s.firstYear, lastYear: s.lastYear})))
-        .enter().append("circle")
-        .attr("class","dot")
-        .attr("r", 2.2)
-        .attr("cx", d => x(d.yearLabel))
-        .attr("cy", d => y(d.rank))
-        .attr("fill", initialTop50.has(s.artist) ? DARK_PINK : LIGHT_PINK)
-        .attr("opacity", .9);
+      dotsLayer.selectAll(null).data(pts).enter().append("circle")
+        .attr("class","dot").attr("r", 2.2)
+        .attr("cx", d => x(d.yearLabel)).attr("cy", d => y(d.rank))
+        .attr("fill", initialTop50.has(s.artist) ? DARK_PINK : LIGHT_PINK).attr("opacity", .9);
     });
 
-    // Hover across blank areas: nearest line highlight
-    hoverVeil.on("mousemove", (event) => {
-      if (!series.length) return;
-      const [mx,my] = d3.pointer(event, g.node());
-      // find nearest series by distance to its polyline
-      let best = null, bestDist = Infinity;
-      for (const s of series) {
-        const pts = s.points.map(p => [x(p.yearLabel), y(p.rank)]);
-        const d2 = polylineDist2(pts, [mx,my]);
-        if (d2 < bestDist) { bestDist = d2; best = s; }
-      }
-      if (best) {
-        seriesLayer.selectAll(".series").classed("hidden", true).classed("highlight", false);
-        seriesLayer.selectAll(".series")
-          .filter(d => d && d.artist === best.artist)
-          .classed("hidden", false).classed("highlight", true);
-        showTooltip(event, best);
-      }
-    }).on("mouseleave", () => {
-      seriesLayer.selectAll(".series").classed("hidden", false).classed("highlight", false);
-      hideTooltip();
-    });
+    // Hover anywhere to highlight nearest series
+    hoverVeil
+      .on("mousemove", (event) => {
+        let best=null, bestD=Infinity;
+        const [mx,my] = d3.pointer(event, g.node());
+        for (const s of series) {
+          const pts = s.points.map(p => [x(p.yearLabel), y(p.rank)]);
+          const d2 = polylineDist2(pts, [mx,my]);
+          if (d2 < bestD) { bestD = d2; best = s; }
+        }
+        if (best) {
+          seriesLayer.selectAll(".series").classed("hidden", true).classed("highlight", false);
+          seriesLayer.selectAll(".series").filter(d => d && d.artist === best.artist).classed("hidden", false).classed("highlight", true);
+          showTooltip(event, best);
+        }
+      })
+      .on("mouseleave", () => {
+        seriesLayer.selectAll(".series").classed("hidden", false).classed("highlight", false);
+        hideTooltip();
+      });
   }
 
-  function showTooltip(event, d) {
-    const ranks = d.points.map(p => `${p.yearLabel}: #${p.rank}`).join("<br>");
-    const entry = d.firstYear;
-    const exit  = d.lastYear < END_YEAR ? d.lastYear : "—";
-    tooltip.innerHTML = `<strong>${escapeHtml(d.artist)}</strong><br>
-      First year in Top 50: <strong>${entry}</strong><br>
-      Last year in Top 50: <strong>${exit}</strong><br><br>${ranks}`;
+  function showTooltip(event, s) {
+    const ranks = s.points.map(p => `${p.yearLabel}: #${p.rank}`).join("<br>");
+    const entry = s.firstYear;
+    const exit  = s.lastYear < END_YEAR ? s.lastYear : "—";
+    tooltip.innerHTML = `<strong>${escapeHtml(s.artist)}</strong><br>First year in Top 50: <strong>${entry}</strong><br>Last year in Top 50: <strong>${exit}</strong><br><br>${ranks}`;
     tooltip.style.display = "block";
     positionTooltip(event);
   }
@@ -529,12 +234,9 @@
     let left = x + pad, top = y + pad;
     if (left + w > window.innerWidth) left = x - w - pad;
     if (top + h > window.innerHeight) top = y - h - pad;
-    tooltip.style.left = left + "px";
-    tooltip.style.top  = top  + "px";
+    tooltip.style.left = left + "px"; tooltip.style.top  = top  + "px";
   }
-  function escapeHtml(str){ return str.replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m])); }
-
-  // squared distance from point to polyline
+  function escapeHtml(str){ return String(str).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m])); }
   function polylineDist2(pts, p) {
     let best = Infinity;
     for (let i=0; i<pts.length-1; i++) {

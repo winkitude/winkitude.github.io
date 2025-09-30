@@ -187,7 +187,7 @@
   d3.csv("lastfm_top50.csv").then(raw => {
     const columns = raw.columns;
     let artistKey = columns.find(c => c.toLowerCase().includes("artist")) || columns[0];
-    const yearCols = columns.filter(c => /^\\d{4}$/.test(c)).map(d => +d).filter(y => y >= START_YEAR && y <= END_YEAR).sort((a,b)=>a-b);
+    const yearCols = columns.filter(c => /^\d{4}$/.test(c)).map(d => +d).filter(y => y >= START_YEAR && y <= END_YEAR).sort((a,b)=>a-b);
     const years = yearCols.map(String);
     x.domain(years);
 

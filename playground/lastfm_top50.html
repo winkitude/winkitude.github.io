@@ -11,10 +11,9 @@
       --text: #e8e8ec;
       --muted: #a3a3ad;
       --grid: #2a2b31;
-      --dark-pink: #c2187a;   /* in 2008 top 50 */
+      --dark-pink: #c2187a;   /* in 2008 Top 50 */
       --light-pink: #f48fb1;  /* entered after 2008 */
-      --light-gray: #bdbdc7;  /* rank > 50 in 2025 */
-      --accent: #8ab4f8;
+      --light-gray: #bdbdc7;  /* rank > 50 (final 0 in 2025) */
     }
     html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text);
       font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
@@ -45,7 +44,7 @@
     /* Player panel */
     .player-panel {
       position: fixed;
-      inset: auto 16px 16px auto; /* default bottom-right */
+      inset: auto 16px 16px auto;
       width: min(520px, 92vw);
       background: #0f1117;
       border: 1px solid #2e3037;
@@ -55,25 +54,16 @@
       display: none;
       overflow: hidden;
     }
-    .player-head {
-      display: flex; align-items: center; justify-content: space-between;
-      gap: 8px; padding: 10px 12px; background: #151922; border-bottom: 1px solid #2e3037;
-    }
-    .player-title {
-      font-size: 14px; font-weight: 650; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-    }
+    .player-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 10px 12px; background: #151922; border-bottom: 1px solid #2e3037; }
+    .player-title { font-size: 14px; font-weight: 650; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .player-controls { display: flex; gap: 8px; }
-    .btn {
-      border: 0; background: #263041; color: var(--text); border-radius: 8px; padding: 6px 10px; cursor: pointer; font-weight: 600;
-    }
+    .btn { border: 0; background: #263041; color: var(--text); border-radius: 8px; padding: 6px 10px; cursor: pointer; font-weight: 600; }
     .btn:hover { background: #2d3a50; }
     .btn-close { background: #3a2531; }
     .btn-close:hover { background: #4a2b3b; }
     .player-body { aspect-ratio: 16 / 9; background: #0d0f14; }
     .player-body iframe { width: 100%; height: 100%; border: 0; display: block; }
-    .player-hint {
-      padding: 8px 12px; font-size: 12px; color: var(--muted); background: #101319; border-top: 1px solid #2e3037;
-    }
+    .player-hint { padding: 8px 12px; font-size: 12px; color: var(--muted); background: #101319; border-top: 1px solid #2e3037; }
   </style>
 </head>
 <body>
@@ -93,7 +83,7 @@
   </main>
   <div class="tooltip" id="tooltip"></div>
 
-  <!-- Click-to-play YouTube panel -->
+  <!-- YouTube player panel -->
   <div id="playerPanel" class="player-panel" role="dialog" aria-modal="false" aria-live="polite">
     <div class="player-head">
       <div class="player-title" id="playerTitle">Artist</div>
@@ -102,21 +92,21 @@
         <button class="btn btn-close" id="closePanel">Close</button>
       </div>
     </div>
-    <div class="player-body" id="playerBody">
-      <!-- YouTube iframe injected here -->
-    </div>
-    <div class="player-hint">Tip: Click any line to open/replace the player. Drag the window or resize the browser as needed.</div>
+    <div class="player-body" id="playerBody"></div>
+    <div class="player-hint" id="playerHint" style="display:none"></div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
   <script>
   const START_YEAR = 2008;
   const END_YEAR   = 2025;
+
   const DARK_PINK  = getCss("--dark-pink");
   const LIGHT_PINK = getCss("--light-pink");
   const LIGHT_GRAY = getCss("--light-gray");
   function getCss(v){ return getComputedStyle(document.documentElement).getPropertyValue(v).trim(); }
 
+  // SVG & layout
   const svg = d3.select("#chart");
   const statusEl = document.getElementById("status");
   const tooltip = document.getElementById("tooltip");
@@ -133,49 +123,21 @@
   const seriesLayer = g.append("g").attr("class", "series-layer");
   const dotsLayer = g.append("g").attr("class", "dots-layer");
   const labelsLayer = g.append("g").attr("class", "labels-layer");
-  const hoverVeil = g.append("rect")
-      .attr("x",0).attr("y",0).attr("width",width).attr("height",height)
-      .attr("fill","transparent")
-      .style("pointer-events","none");
 
-  let pinned = null; // when set to artist name, hover highlighting pauses
+  let pinned = null;
 
-  // Player panel helpers
+  // Player panel
   const panel = document.getElementById("playerPanel");
   const playerTitle = document.getElementById("playerTitle");
   const playerBody = document.getElementById("playerBody");
+  const playerHint = document.getElementById("playerHint");
   const pinToggle = document.getElementById("pinToggle");
   const closePanelBtn = document.getElementById("closePanel");
 
-  
-function openPlayerForSeries(s, anchorEvent) {
-    const q = encodeURIComponent(`${s.artist} official music video`);
-    let src;
-    if (s.videoId) {
-      src = `https://www.youtube.com/embed/${s.videoId}?rel=0&modestbranding=1`;
-    } else {
-      src = `https://www.youtube.com/embed?listType=search&list=${q}&rel=0&modestbranding=1`;
-    }
-    playerTitle.textContent = s.artist;
-    playerBody.innerHTML = `<iframe src="${src}" title="YouTube player for ${s.artist}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
-    panel.style.display = "block";
-    if (anchorEvent) positionPanelNear(anchorEvent.clientX, anchorEvent.clientY);
-    if (!s.videoId) {
-      const hint = document.createElement("div");
-      hint.className = "player-hint";
-      hint.innerHTML = `<a href="https://www.youtube.com/results?search_query=${q}" target="_blank" rel="noopener noreferrer">Open on YouTube</a>`;
-      panel.appendChild(hint);
-    }
-}
-    panel.style.display = "block";
-    // position near click if space allows, else stick bottom-right
-    if (anchorEvent) positionPanelNear(anchorEvent.clientX, anchorEvent.clientY);
-  }
   function positionPanelNear(cx, cy) {
     const pad = 12;
     const w = Math.min(520, window.innerWidth * 0.92);
     const h = Math.min((w / 16) * 9 + 72, window.innerHeight * 0.9);
-    // prefer right/below; adjust if overflows
     let left = cx + pad;
     let top  = cy + pad;
     if (left + w > window.innerWidth) left = cx - w - pad;
@@ -190,6 +152,7 @@ function openPlayerForSeries(s, anchorEvent) {
   function closePlayer() {
     panel.style.display = "none";
     playerBody.innerHTML = "";
+    playerHint.style.display = "none";
     pinned = null;
     pinToggle.textContent = "Unpin";
   }
@@ -200,7 +163,6 @@ function openPlayerForSeries(s, anchorEvent) {
   closePanelBtn.addEventListener("click", closePlayer);
   window.addEventListener("keydown", (e) => { if (e.key === "Escape") closePlayer(); });
 
-  
   function extractYouTubeId(input) {
     if (!input) return null;
     const s = String(input).trim();
@@ -230,172 +192,243 @@ function openPlayerForSeries(s, anchorEvent) {
     return null;
   }
 
-  // Load the wide CSV
-  // Optional columns: videoId, youtube, video
-  d3.csv("lastfm_top50.csv").then(raw => {
-    const columns = raw.columns;
-    let artistKey = columns.find(c => c.toLowerCase().includes("artist")) || columns[0];
-    const yearCols = columns.filter(c => /^\d{4}$/.test(c)).map(d => +d).filter(y => y >= START_YEAR && y <= END_YEAR).sort((a,b)=>a-b);
-    const years = yearCols.map(String);
-    x.domain(years);
+  function openPlayerForSeries(s, anchorEvent) {
+    const q = encodeURIComponent(`${s.artist} official music video`);
+    let src;
+    if (s.videoId) {
+      src = `https://www.youtube.com/embed/${s.videoId}?rel=0&modestbranding=1`;
+    } else {
+      src = `https://www.youtube.com/embed?listType=search&list=${q}&rel=0&modestbranding=1`;
+    }
+    playerTitle.textContent = s.artist;
+    playerBody.innerHTML = `<iframe src="${src}" title="YouTube player for ${s.artist}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+    if (!s.videoId) {
+      playerHint.style.display = "block";
+      playerHint.innerHTML = `<a href="https://www.youtube.com/results?search_query=${q}" target="_blank" rel="noopener noreferrer">Open on YouTube</a>`;
+    } else {
+      playerHint.style.display = "none";
+    }
+    panel.style.display = "block";
+    if (anchorEvent) positionPanelNear(anchorEvent.clientX, anchorEvent.clientY);
+  }
 
-    const series = raw.map(row => {
-      const name = row[artistKey];
-      const points = [];
-      let firstNonZeroYear = null;
-      let lastNonZeroYear  = null;
-      yearCols.forEach(y => {
-        const v = +row[String(y)] || 0;
-        if (v > 0) {
-          const rank = 51 - v;
-          points.push({ yearLabel: String(y), rank, value: v });
-          if (firstNonZeroYear === null) firstNonZeroYear = y;
-          lastNonZeroYear = y;
-        } else {
-          points.push({ yearLabel: String(y), rank: null, value: 0 });
+  function adjustLabelBounds() {
+    // Ensure left/right labels don't clip the plotting area (0..width)
+    labelsLayer.selectAll("text.label.left").each(function(d){
+      try {
+        const bbox = this.getBBox();
+        const leftEdge = d.x - bbox.width;
+        if (leftEdge < 0) {
+          const newX = bbox.width + 2;
+          d3.select(this).attr("x", newX);
         }
-      });
-      const inStart = (+row[String(START_YEAR)] || 0) > 0;
-      const finalZero = (+row[String(END_YEAR)] || 0) === 0;
-      const lowerKeys = Object.fromEntries(Object.keys(row).map(k => [k.toLowerCase().trim(), k]));
-      const videoRaw = (lowerKeys['videoid'] ? row[lowerKeys['videoid']] : undefined)
-                    || (lowerKeys['youtube'] ? row[lowerKeys['youtube']] : undefined)
-                    || (lowerKeys['video'] ? row[lowerKeys['video']] : undefined)
-                    || '';
-      const videoId = extractYouTubeId(videoRaw);
-      return { artist: name, points, inStart, firstNonZeroYear, lastNonZeroYear, finalZero, videoId, videoRaw };
-    }).filter(s => s.firstNonZeroYear !== null);(s => s.firstNonZeroYear !== null);
-
-    function topSet(year) {
-      const arr = series.map(s => ({ artist: s.artist, value: s.points.find(p => +p.yearLabel===year)?.value || 0 }));
-      arr.sort((a,b) => d3.descending(a.value, b.value));
-      return new Set(arr.slice(0, 50).filter(d => d.value > 0).map(d => d.artist));
-    }
-    const top2008 = topSet(START_YEAR);
-    const top2025 = topSet(END_YEAR);
-
-    function colorFor(s) {
-      if (s.finalZero) return LIGHT_GRAY;
-      return s.inStart ? DARK_PINK : LIGHT_PINK;
-    }
-
-    // Axes & grid
-    xAxis.call(d3.axisBottom(x).tickSizeOuter(0).tickPadding(6));
-    yAxis.call(d3.axisLeft(y).tickValues([])); // hide y ticks entirely
-    const ranksForGrid = d3.range(5, 51, 5);
-    grid.selectAll(".gridline").data(ranksForGrid, d=>d).join(
-      enter => enter.append("line").attr("class","gridline").attr("x1",0).attr("x2",width).attr("y1",d=>y(d)).attr("y2",d=>y(d)),
-      update => update.attr("y1",d=>y(d)).attr("y2",d=>y(d)),
-      exit => exit.remove()
-    );
-
-    // Label 2008 and 2025 above
-    labelsLayer.append("text").attr("class","year-chip").attr("x", x(String(START_YEAR))).attr("y",-10).attr("text-anchor","middle").text(String(START_YEAR));
-    labelsLayer.append("text").attr("class","year-chip").attr("x", x(String(END_YEAR))).attr("y",-10).attr("text-anchor","middle").text(String(END_YEAR));
-
-    const line = d3.line().defined(d => d.rank != null).x(d => x(d.yearLabel)).y(d => y(d.rank)).curve(d3.curveMonotoneX);
-
-    const S = seriesLayer.selectAll(".series").data(series, d => d.artist);
-    S.join(
-      enter => enter.append("path")
-        .attr("class","series")
-        .attr("d", d => line(d.points))
-        .attr("stroke", d => colorFor(d))
-        .on("mousemove", (event, d) => { if (!pinned) showTooltip(event, d); })
-        .on("mouseleave", () => { if (!pinned) hideTooltip(); })
-        .on("mouseover", function(){ if (!pinned) { seriesLayer.selectAll(".series").classed("hidden", true); d3.select(this).classed("hidden", false).classed("highlight", true); } })
-        .on("mouseout", function(){ if (!pinned) { seriesLayer.selectAll(".series").classed("hidden", false).classed("highlight", false); } })
-        .on("click", function(event, d){
-          event.stopPropagation();
-          // pin this selection and open player
-          pinned = d.artist;
-          seriesLayer.selectAll(".series").classed("hidden", true).classed("highlight", false);
-          d3.select(this).classed("hidden", false).classed("highlight", true);
-          hideTooltip();
-          openPlayerForSeries(d, event);
-          pinToggle.textContent = "Pinned";
-        }),
-      update => update.attr("d", d => line(d.points)).attr("stroke", d => colorFor(d)),
-      exit => exit.remove()
-    );
-
-    // Dots
-    dotsLayer.selectAll("*").remove();
-    series.forEach(s => {
-      dotsLayer.selectAll(null).data(s.points.filter(p => p.rank != null)).enter().append("circle")
-        .attr("class","dot").attr("r", 2.6)
-        .attr("cx", d => x(d.yearLabel)).attr("cy", d => y(d.rank))
-        .attr("fill", colorFor(s)).attr("opacity", .9);
+      } catch(e) {}
     });
-
-    // End labels
-    const leftLabels = series.filter(s => top2008.has(s.artist)).map(s => {
-      const p = s.points.find(p => p.yearLabel === String(START_YEAR));
-      return p && p.rank != null ? { artist: s.artist, x: x(String(START_YEAR)) - 8, y: y(p.rank), anchor: "end", color: colorFor(s), ref: s } : null;
-    }).filter(Boolean);
-    const rightLabels = series.filter(s => top2025.has(s.artist)).map(s => {
-      const p = s.points.find(p => p.yearLabel === String(END_YEAR));
-      return p && p.rank != null ? { artist: s.artist, x: x(String(END_YEAR)) + 8, y: y(p.rank), anchor: "start", color: colorFor(s), ref: s } : null;
-    }).filter(Boolean);
-    labelsLayer.selectAll(".label.left").data(leftLabels, d => d.artist).join(enter => enter.append("text").attr("class","label left").attr("x", d => d.x).attr("y", d => d.y).attr("text-anchor", d => d.anchor).attr("fill", d => d.color).text(d => d.artist)
-        .style("cursor","pointer")
-        .on("click", function(event, d){
-          event.stopPropagation();
-          pinned = d.artist;
-          seriesLayer.selectAll(".series").classed("hidden", true).classed("highlight", false);
-          seriesLayer.selectAll(".series").filter(s => s && s.artist === d.artist).classed("hidden", false).classed("highlight", true);
-          hideTooltip();
-          openPlayerForSeries(d.ref || d, event);
-        })
-    );
-    labelsLayer.selectAll(".label.right").data(rightLabels, d => d.artist).join(enter => enter.append("text").attr("class","label right").attr("x", d => d.x).attr("y", d => d.y).attr("text-anchor", d => d.anchor).attr("fill", d => d.color).text(d => d.artist)
-        .style("cursor","pointer")
-        .on("click", function(event, d){
-          event.stopPropagation();
-          pinned = d.artist;
-          seriesLayer.selectAll(".series").classed("hidden", true).classed("highlight", false);
-          seriesLayer.selectAll(".series").filter(s => s && s.artist === d.artist).classed("hidden", false).classed("highlight", true);
-          hideTooltip();
-          openPlayerForSeries(d.ref || d, event);
-        })
-    );
-
-    adjustLabelBounds();
-
-    // Hover anywhere to highlight nearest series when not pinned
-    svg
-      .on("mousemove", (event) => {
-        if (pinned) return;
-        let best=null, bestD=Infinity;
-        const [mx,my] = d3.pointer(event, g.node());
-        for (const s of series) {
-          const pts = s.points.filter(p => p.rank != null).map(p => [x(p.yearLabel), y(p.rank)]);
-          const d2 = polylineDist2(pts, [mx,my]);
-          if (d2 < bestD) { bestD = d2; best = s; }
+    labelsLayer.selectAll("text.label.right").each(function(d){
+      try {
+        const bbox = this.getBBox();
+        const rightEdge = d.x + bbox.width;
+        if (rightEdge > width) {
+          const newX = width - bbox.width - 2;
+          d3.select(this).attr("x", newX);
         }
-        if (best) {
-          seriesLayer.selectAll(".series").classed("hidden", true).classed("highlight", false);
-          seriesLayer.selectAll(".series").filter(d => d && d.artist === best.artist).classed("hidden", false).classed("highlight", true);
-          showTooltip(event, best);
+      } catch(e) {}
+    });
+  }
+
+  // ---------- Load CSV with robust parsing & error handling ----------
+  d3.csv("lastfm_top50.csv").then(raw => {
+    try {
+      const originalColumns = raw.columns.slice();
+      const trim = s => String(s == null ? "" : s).trim();
+      const normMap = new Map();
+      originalColumns.forEach(c => normMap.set(trim(c).toLowerCase(), c));
+
+      const artistKey = (normMap.get("artist"))
+                     || originalColumns.find(c => trim(c).toLowerCase().includes("artist"))
+                     || originalColumns[0];
+
+      const yearKeyMap = new Map();
+      originalColumns.forEach(c => {
+        const m = trim(c).match(/^(\d{4})$/);
+        if (m) {
+          const y = +m[1];
+          if (y >= START_YEAR && y <= END_YEAR) yearKeyMap.set(y, c);
         }
-      })
-      .on("mouseleave", () => {
-        if (pinned) return;
-        seriesLayer.selectAll(".series").classed("hidden", false).classed("highlight", false);
-        hideTooltip();
-      })
-      .on("click", (event) => {
-        if (!pinned) return;
-        const target = event.target;
-        if (target && target.closest && target.closest(".series")) return; // ignore clicks on lines
-        closePlayer();
-        seriesLayer.selectAll(".series").classed("hidden", false).classed("highlight", false);
+      });
+      const yearCols = Array.from(yearKeyMap.keys()).sort((a,b)=>a-b);
+      if (!yearCols.length) {
+        statusEl.textContent = "No year columns found (expected 2008–2025). Found headers: " + originalColumns.join(", ");
+        return;
+      }
+      const years = yearCols.map(String);
+      x.domain(years);
+
+      const series = raw.map(row => {
+        const name = row[artistKey];
+        const points = [];
+        let firstNonZeroYear = null;
+        let lastNonZeroYear  = null;
+        yearCols.forEach(y => {
+          const key = yearKeyMap.get(y);
+          const v = +row[key] || 0;
+          if (v > 0) {
+            const rank = 51 - v;
+            points.push({ yearLabel: String(y), rank, value: v });
+            if (firstNonZeroYear === null) firstNonZeroYear = y;
+            lastNonZeroYear = y;
+          } else {
+            points.push({ yearLabel: String(y), rank: null, value: 0 });
+          }
+        });
+        const inStart = (+row[yearKeyMap.get(START_YEAR)] || 0) > 0;
+        const finalZero = (+row[yearKeyMap.get(END_YEAR)] || 0) === 0;
+
+        const lowerKeys = Object.fromEntries(Object.keys(row).map(k => [k.toLowerCase().trim(), k]));
+        const videoRaw = (lowerKeys['videoid'] ? row[lowerKeys['videoid']] : undefined)
+                      || (lowerKeys['youtube'] ? row[lowerKeys['youtube']] : undefined)
+                      || (lowerKeys['video'] ? row[lowerKeys['video']] : undefined)
+                      || '';
+        const videoId = extractYouTubeId(videoRaw);
+
+        return { artist: name, points, inStart, firstNonZeroYear, lastNonZeroYear, finalZero, videoId, videoRaw };
+      }).filter(s => s.firstNonZeroYear !== null);
+
+      function topSet(year) {
+        const arr = series.map(s => ({ artist: s.artist, value: s.points.find(p => +p.yearLabel===year)?.value || 0 }));
+        arr.sort((a,b) => d3.descending(a.value, b.value));
+        return new Set(arr.slice(0, 50).filter(d => d.value > 0).map(d => d.artist));
+      }
+      const top2008 = topSet(START_YEAR);
+      const top2025 = topSet(END_YEAR);
+
+      function colorFor(s) { return s.finalZero ? LIGHT_GRAY : (s.inStart ? DARK_PINK : LIGHT_PINK); }
+
+      // Axes & grid
+      xAxis.call(d3.axisBottom(x).tickSizeOuter(0).tickPadding(6));
+      yAxis.call(d3.axisLeft(y).tickValues([]));
+      const ranksForGrid = d3.range(5, 51, 5);
+      grid.selectAll(".gridline").data(ranksForGrid, d=>d).join(
+        enter => enter.append("line").attr("class","gridline").attr("x1",0).attr("x2",width).attr("y1",d=>y(d)).attr("y2",d=>y(d)),
+        update => update.attr("y1",d=>y(d)).attr("y2",d=>y(d)),
+        exit => exit.remove()
+      );
+
+      // Year labels
+      labelsLayer.append("text").attr("class","year-chip").attr("x", x(String(START_YEAR))).attr("y",-10).attr("text-anchor","middle").text(String(START_YEAR));
+      labelsLayer.append("text").attr("class","year-chip").attr("x", x(String(END_YEAR))).attr("y",-10).attr("text-anchor","middle").text(String(END_YEAR));
+
+      const line = d3.line().defined(d => d.rank != null).x(d => x(d.yearLabel)).y(d => y(d.rank)).curve(d3.curveMonotoneX);
+
+      const S = seriesLayer.selectAll(".series").data(series, d => d.artist);
+      S.join(
+        enter => enter.append("path")
+          .attr("class","series")
+          .attr("d", d => line(d.points))
+          .attr("stroke", d => colorFor(d))
+          .on("mousemove", (event, d) => { if (!pinned) showTooltip(event, d); })
+          .on("mouseleave", () => { if (!pinned) hideTooltip(); })
+          .on("mouseover", function(){ if (!pinned) { seriesLayer.selectAll(".series").classed("hidden", true); d3.select(this).classed("hidden", false).classed("highlight", true); } })
+          .on("mouseout", function(){ if (!pinned) { seriesLayer.selectAll(".series").classed("hidden", false).classed("highlight", false); } })
+          .on("click", function(event, d){
+            event.stopPropagation();
+            pinned = d.artist;
+            seriesLayer.selectAll(".series").classed("hidden", true).classed("highlight", false);
+            d3.select(this).classed("hidden", false).classed("highlight", true);
+            hideTooltip();
+            openPlayerForSeries(d, event);
+          }),
+        update => update.attr("d", d => line(d.points)).attr("stroke", d => colorFor(d)),
+        exit => exit.remove()
+      );
+
+      // Dots
+      dotsLayer.selectAll("*").remove();
+      series.forEach(s => {
+        dotsLayer.selectAll(null).data(s.points.filter(p => p.rank != null)).enter().append("circle")
+          .attr("class","dot").attr("r", 2.6)
+          .attr("cx", d => x(d.yearLabel)).attr("cy", d => y(d.rank))
+          .attr("fill", colorFor(s)).attr("opacity", .9);
       });
 
-    statusEl.textContent = `Rendered ${series.length} artists across ${years.length} years. Click a line to open a YouTube player.`;
+      // End labels with series refs
+      const leftLabels = series.filter(s => top2008.has(s.artist)).map(s => {
+        const p = s.points.find(p => p.yearLabel === String(START_YEAR));
+        return p && p.rank != null ? { artist: s.artist, x: x(String(START_YEAR)) - 8, y: y(p.rank), anchor: "end", color: colorFor(s), ref: s } : null;
+      }).filter(Boolean);
+      const rightLabels = series.filter(s => top2025.has(s.artist)).map(s => {
+        const p = s.points.find(p => p.yearLabel === String(END_YEAR));
+        return p && p.rank != null ? { artist: s.artist, x: x(String(END_YEAR)) + 8, y: y(p.rank), anchor: "start", color: colorFor(s), ref: s } : null;
+      }).filter(Boolean);
+
+      labelsLayer.selectAll(".label.left").data(leftLabels, d => d.artist).join(
+        enter => enter.append("text").attr("class","label left")
+          .attr("x", d => d.x).attr("y", d => d.y).attr("text-anchor", d => d.anchor)
+          .attr("fill", d => d.color).text(d => d.artist)
+          .style("cursor","pointer")
+          .on("click", function(event, d){
+            event.stopPropagation();
+            pinned = d.artist;
+            seriesLayer.selectAll(".series").classed("hidden", true).classed("highlight", false);
+            seriesLayer.selectAll(".series").filter(s => s && s.artist === d.artist).classed("hidden", false).classed("highlight", true);
+            hideTooltip();
+            openPlayerForSeries(d.ref, event);
+          })
+      );
+
+      labelsLayer.selectAll(".label.right").data(rightLabels, d => d.artist).join(
+        enter => enter.append("text").attr("class","label right")
+          .attr("x", d => d.x).attr("y", d => d.y).attr("text-anchor", d => d.anchor)
+          .attr("fill", d => d.color).text(d => d.artist)
+          .style("cursor","pointer")
+          .on("click", function(event, d){
+            event.stopPropagation();
+            pinned = d.artist;
+            seriesLayer.selectAll(".series").classed("hidden", true).classed("highlight", false);
+            seriesLayer.selectAll(".series").filter(s => s && s.artist === d.artist).classed("hidden", false).classed("highlight", true);
+            hideTooltip();
+            openPlayerForSeries(d.ref, event);
+          })
+      );
+
+      adjustLabelBounds();
+
+      // Hover anywhere to highlight nearest series when not pinned
+      svg
+        .on("mousemove", (event) => {
+          if (pinned) return;
+          let best=null, bestD=Infinity;
+          const [mx,my] = d3.pointer(event, g.node());
+          for (const s of series) {
+            const pts = s.points.filter(p => p.rank != null).map(p => [x(p.yearLabel), y(p.rank)]);
+            const d2 = polylineDist2(pts, [mx,my]);
+            if (d2 < bestD) { bestD = d2; best = s; }
+          }
+          if (best) {
+            seriesLayer.selectAll(".series").classed("hidden", true).classed("highlight", false);
+            seriesLayer.selectAll(".series").filter(d => d && d.artist === best.artist).classed("hidden", false).classed("highlight", true);
+            showTooltip(event, best);
+          }
+        })
+        .on("mouseleave", () => {
+          if (pinned) return;
+          seriesLayer.selectAll(".series").classed("hidden", false).classed("highlight", false);
+          hideTooltip();
+        })
+        .on("click", (event) => {
+          if (!pinned) return;
+          closePlayer();
+          seriesLayer.selectAll(".series").classed("hidden", false).classed("highlight", false);
+        });
+
+      statusEl.textContent = `Rendered ${series.length} artists across ${years.length} years. Click a line or label for a video.`;
+    } catch (err) {
+      console.error("Error while rendering chart", err);
+      statusEl.textContent = "Error while rendering chart: " + (err && err.message ? err.message : err);
+    }
   }).catch(err => {
-    console.error(err);
-    statusEl.textContent = "Could not load lastfm_top50.csv. Make sure it is next to this HTML and your server allows CSV fetches.";
+    console.error("Failed to load CSV", err);
+    statusEl.textContent = "Could not load lastfm_top50.csv — ensure it's next to this HTML and served over http(s).";
   });
 
   // Tooltip helpers
@@ -404,11 +437,9 @@ function openPlayerForSeries(s, anchorEvent) {
     const ranks = items.join("<br>");
     const entry = s.firstNonZeroYear ?? "—";
     const exit  = s.lastNonZeroYear ?? "—";
-    const final = s.points.find(p => p.yearLabel===String(END_YEAR))?.value ?? 0;
     tooltip.innerHTML = `<strong>${escapeHtml(s.artist)}</strong><br>
       First year in Top 50: <strong>${entry}</strong><br>
-      Last nonzero year: <strong>${exit}</strong><br>
-      <br><br>${ranks}`;
+      Last nonzero year: <strong>${exit}</strong><br><br>${ranks}`;
     tooltip.style.display = "block";
     positionTooltip(event);
   }
@@ -431,33 +462,6 @@ function openPlayerForSeries(s, anchorEvent) {
     }
     return best;
   }
-  
-  function adjustLabelBounds() {
-    // Ensure left and right labels don't clip outside the plotting area (0..width)
-    labelsLayer.selectAll("text.label.left").each(function(d){
-      try {
-        const bbox = this.getBBox();
-        // For 'end' anchor, x is the right edge; left edge is x - width
-        const leftEdge = d.x - bbox.width;
-        if (leftEdge < 0) {
-          const newX = bbox.width + 2;
-          d3.select(this).attr("x", newX);
-        }
-      } catch(e) {}
-    });
-    labelsLayer.selectAll("text.label.right").each(function(d){
-      try {
-        const bbox = this.getBBox();
-        // For 'start' anchor, x is left edge; right edge is x + width
-        const rightEdge = d.x + bbox.width;
-        if (rightEdge > width) {
-          const newX = width - bbox.width - 2;
-          d3.select(this).attr("x", newX);
-        }
-      } catch(e) {}
-    });
-  }
-
   function segDist2(a,b,p){
     const ax=a[0], ay=a[1], bx=b[0], by=b[1], px=p[0], py=p[1];
     const vx=bx-ax, vy=by-ay, wx=px-ax, wy=py-ay;

@@ -133,7 +133,10 @@
   const seriesLayer = g.append("g").attr("class", "series-layer");
   const dotsLayer = g.append("g").attr("class", "dots-layer");
   const labelsLayer = g.append("g").attr("class", "labels-layer");
-  const hoverVeil = g.append("rect").attr("x",0).attr("y",0).attr("width",width).attr("height",height).attr("fill","transparent");
+  const hoverVeil = g.append("rect")
+      .attr("x",0).attr("y",0).attr("width",width).attr("height",height)
+      .attr("fill","transparent")
+      .style("pointer-events","none");
 
   let pinned = null; // when set to artist name, hover highlighting pauses
 
@@ -252,6 +255,7 @@
         .on("mouseover", function(){ if (!pinned) { seriesLayer.selectAll(".series").classed("hidden", true); d3.select(this).classed("hidden", false).classed("highlight", true); } })
         .on("mouseout", function(){ if (!pinned) { seriesLayer.selectAll(".series").classed("hidden", false).classed("highlight", false); } })
         .on("click", function(event, d){
+          event.stopPropagation();
           // pin this selection and open player
           pinned = d.artist;
           seriesLayer.selectAll(".series").classed("hidden", true).classed("highlight", false);
@@ -286,7 +290,7 @@
     labelsLayer.selectAll(".label.right").data(rightLabels, d => d.artist).join(enter => enter.append("text").attr("class","label right").attr("x", d => d.x).attr("y", d => d.y).attr("text-anchor", d => d.anchor).attr("fill", d => d.color).text(d => d.artist));
 
     // Hover anywhere to highlight nearest series when not pinned
-    hoverVeil
+    svg
       .on("mousemove", (event) => {
         if (pinned) return;
         let best=null, bestD=Infinity;
@@ -308,7 +312,9 @@
         hideTooltip();
       })
       .on("click", (event) => {
-        if (!pinned) return; // clicking background when pinned should unpin and close
+        if (!pinned) return;
+        const target = event.target;
+        if (target && target.closest && target.closest(".series")) return; // ignore clicks on lines
         closePlayer();
         seriesLayer.selectAll(".series").classed("hidden", false).classed("highlight", false);
       });

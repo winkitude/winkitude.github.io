@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <title>Ari Winkleman — GZERO Summit & Events</title>
+  <meta name="description" content="Ari Winkleman — GZERO Summit & Events" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <link rel="shortcut icon" href="favicon.ico" />
+
+  <!-- FONTS -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poltawski+Nowy:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,700;0,800;1,400&display=swap" rel="stylesheet" />
+
+  <!-- Base styles -->
+  <link href="css/normalize.css" rel="stylesheet" />
+  <link href="css/screen.css?v=10" rel="stylesheet" />
+
+  <!-- Page-local styles -->
+  <style>
+    .event-rows .row{
+      display:grid; grid-template-columns:1fr 1.6fr; gap:24px; align-items:center;
+      margin-bottom:34px;
+    }
+    .event-rows .row .thumb{
+      display:block; background:#f5f5f5; border-radius:6px; overflow:hidden;
+      aspect-ratio:16/9;
+    }
+    .event-rows .row .thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
+    .gallery .grid{ grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .gallery .wrap{ max-width: 1440px; }
+    .gallery .card{ border-radius:6px; overflow:hidden; background:#f5f5f5; }
+    .gallery .card img{ display:block; width:100%; aspect-ratio:16/9; height:auto; object-fit:cover; }
+    @media (max-width: 900px){
+      .event-rows .row{ grid-template-columns:1fr; }
+      .gallery .grid{ grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 560px){
+      .gallery .grid{ grid-template-columns: 1fr; }
+    }
+  
+    /* Simple lightbox for impactful viewing */
+    .ev-lb{ position:fixed; inset:0; background:rgba(0,0,0,.9); display:none; align-items:center; justify-content:center; z-index:9999; }
+    .ev-lb[aria-hidden="false"]{ display:flex; }
+    .ev-lb__img{ max-width:92vw; max-height:88vh; border-radius:8px; box-shadow:0 10px 30px rgba(0,0,0,.4); }
+    .ev-lb__close{ position:fixed; top:14px; right:18px; font-size:28px; color:#fff; background:none; border:0; cursor:pointer; }
+
+  
+    .ev-lb__nav{ position:fixed; top:50%; transform:translateY(-50%); background:rgba(255,255,255,.08); 
+      color:#fff; border:1px solid rgba(255,255,255,.25); width:44px; height:44px; border-radius:22px; 
+      font-size:24px; line-height:44px; text-align:center; cursor:pointer; }
+    .ev-lb__prev{ left:16px; }
+    .ev-lb__next{ right:16px; }
+
+  </style>
+</head>
+
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="site-header">
+  <div class="wrap" style="display:flex; justify-content:space-between; align-items:center;">
+    <!-- Left side -->
+    <div class="masthead">
+      <a href="index.html">Ari Winkleman</a>
+    </div>
+
+    <!-- Right side: icons -->
+    <div class="contact-icons" style="display:flex; gap:16px; align-items:center;">
+      <!-- LinkedIn -->
+      <a href="https://www.linkedin.com/in/ari-winkleman/" target="_blank" rel="noopener" aria-label="LinkedIn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M19 0h-14c-2.76 0-5 2.24-5 5v14c0 2.76 2.24 5 
+                   5 5h14c2.76 0 5-2.24 5-5v-14c0-2.76-2.24-5-5-5zm-11 
+                   19h-3v-10h3v10zm-1.5-11.27c-.97 0-1.75-.79-1.75-1.76 
+                   0-.97.78-1.76 1.75-1.76s1.75.79 
+                   1.75 1.76c0 .97-.78 1.76-1.75 1.76zm13.5 
+                   11.27h-3v-5.6c0-1.34-.03-3.07-1.87-3.07-1.87 
+                   0-2.16 1.46-2.16 2.97v5.7h-3v-10h2.88v1.36h.04c.4-.75 
+                   1.38-1.54 2.84-1.54 3.04 0 3.6 2 3.6 
+                   4.6v5.6z"/>
+        </svg>
+      </a>
+
+      <!-- Email -->
+      <a href="mailto:ariswinkleman@gmail.com" aria-label="Email">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M12 13.065l-11.99-7.065h23.98l-11.99 7.065zm0 
+                   2.935l-12-7.065v11.065h24v-11.065l-12 
+                   7.065z"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+</header>
+<br><br>
+
+  <main id="main">
+    <!-- Intro -->
+    <section class="intro">
+      <div class="wrap">
+        <h2 class="prelede">GZERO Summit &amp; Events</h2>
+        <p class="lede">
+From 2017 to 2025 I led the visual identity for GZERO’s global events, creating a system that could scale from stage screens and signage to marketing campaigns and social templates. The series grew from the first Japan summit with Ian Bremmer’s State of the World speech into a global lineup that included the LATAM Summit, the US-Canada Summit, and the Europe Summit.</p>
+        <p class="lede">
+          <strong>What I did</strong>: full event branding, on-screen graphics, banners, wayfinding, stage signage, promotional pieces, and social toolkits, along with art direction across vendors and photographers to keep everything cohesive.
+        </p>
+        <br><br>
+      </div>
+    </section>
+
+    <hr class="rule" />
+
+    <!-- Rows (hero per series) -->
+    <section class="event-rows">
+      <div class="wrap">
+
+        <!-- Europe Summit -->
+        <div class="row">
+          <a class="thumb" href="#" aria-label="GZERO Summit Europe 2025">
+            <img src="images/events/gzero-europe-2025.jpg" alt="GZERO Summit Europe 2025 control room and stage">
+          </a>
+          <div class="copy">
+            <h3 class="hed">Europe Summit</h3>
+            <p class="dek">
+The European events carried a confident, broadcast-ready tone. I helped shape the on-stage brand language and worked with teams to ensure the visuals translated across screens, signage, and photography. The goal was to make the summit feel polished and unified without losing flexibility for local production teams.            </p>
+          </div>
+        </div>
+
+        <!-- US–Canada Summit -->
+        <div class="row">
+          <a class="thumb" href="#" aria-label="US–Canada Summit">
+            <img src="images/events/us-canada-hero.jpg" alt="US–Canada Summit stage branding">
+          </a>
+          <div class="copy">
+            <h3 class="hed">US–Canada Summit</h3>
+            <p class="dek">
+This summit brought together leaders from both sides of the border, and the brand reflected that partnership. I guided the creative direction, aligning colors, type, and layout systems with GZERO’s core identity while adapting them for new hosts and venues.            </p>
+          </div>
+        </div>
+
+        <!-- LATAM Summit -->
+        <div class="row">
+          <a class="thumb" href="#" aria-label="LATAM Summit">
+            <img src="images/events/latam-2024.jpg" alt="GZERO Summit LATAM 2024 stage wall">
+          </a>
+          <div class="copy">
+            <h3 class="hed">LATAM Summit</h3>
+            <p class="dek">
+The LATAM series emphasized energy and optimism. I advised on how to extend the global brand into a vibrant regional expression, ensuring the materials—from screens to marketing pieces—felt connected to the larger family of events.            </p>
+          </div>
+        </div>
+
+        <!-- Japan (origin) -->
+        <div class="row">
+          <a class="thumb" href="#" aria-label="GZERO Summit Japan">
+            <img src="images/events/japan-2023.jpg" alt="GZERO Summit Japan stage with logo and backdrop">
+          </a>
+          <div class="copy">
+            <h3 class="hed">GZERO Summit Japan</h3>
+            <p class="dek">
+The Japan summit set the foundation for everything that followed. I led the visual direction for the first “State of the World” event and built the early design systems that still guide how GZERO’s events look and feel today.            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="rule" />
+
+    <!-- Image galleries (full-bleed, wider) -->
+    <section class="section gallery">
+      <div class="wrap">
+        <h2 class="section-hed">In the room</h2>
+        <div class="grid">
+          <figure class="card"><img src="images/events/us-canada-carney.jpg" alt="Mark Carney speaking at US–Canada Summit"></figure>
+          <figure class="card"><img src="images/events/us-canada-pritzker.jpg" alt="Governor J.B. Pritzker at US–Canada Summit"></figure>
+          <figure class="card"><img src="images/events/latam-stage.jpg" alt="LATAM Summit 2024 stage"></figure>
+          <figure class="card"><img src="images/events/us-canada-trudeau.jpg" alt="Prime Minister Justin Trudeau at US–Canada Summit"></figure>
+          <figure class="card"><img src="images/events/us-canada-ford.jpg" alt="Premier Doug Ford at US–Canada Summit"></figure>
+          <figure class="card"><img src="images/events/japan-2023-stage.jpg" alt="Rahm Emanuel GZERO Summit Japan 2023"></figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="section gallery">
+      <div class="wrap">
+        <h2 class="section-hed">Early years</h2>
+        <div class="grid">
+          <figure class="card"><img src="images/events/japan-2019.jpg" alt="Ian Bremmer GZERO Summit Japan 2019 signage"></figure>
+          <figure class="card"><img src="images/events/japan-2022-panel.jpg" alt="GZERO Summit Japan 2022 panel"></figure>
+          <figure class="card"><img src="images/events/japan-2017-signage.jpg" alt="Geopolitical Summit Japan 2017 signage"></figure>
+        </div>
+      </div>
+    </section>
+
+    <hr class="rule" />
+
+    <section class="section">
+      <div class="wrap">
+        <h2 class="section-hed">Impact &amp; growth</h2>
+        <p class="dek">
+          Over eight years, the events matured from a single flagship in Tokyo to a global platform with regional summits. My role was to keep the visual language crisp, flexible, and consistent so every photograph, video frame, and social post felt like part of the same brand.
+        </p>
+        <p class="dek"><a href="index.html">Back to homepage →</a></p>
+      </div>
+    </section>
+  </main>
+
+  <div class="ev-lb" id="evLightbox" aria-hidden="true" role="dialog" aria-modal="true">
+    <button class="ev-lb__close" aria-label="Close">×</button>
+    <button class="ev-lb__nav ev-lb__prev" aria-label="Previous">‹</button>
+    <img class="ev-lb__img" id="evLbImg" alt="">
+    <button class="ev-lb__nav ev-lb__next" aria-label="Next">›</button>
+  </div>
+
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <small class="dek" style="color:#6b6b6b;">&copy; <span id="year"></span> Ari Winkleman</small>
+    </div>
+  </footer>
+
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+
+
+  
+  <script>
+    (function(){
+      const lb = document.getElementById('evLightbox');
+      const imgEl = document.getElementById('evLbImg');
+      const closeBtn = lb.querySelector('.ev-lb__close');
+      const prevBtn = lb.querySelector('.ev-lb__prev');
+      const nextBtn = lb.querySelector('.ev-lb__next');
+
+      const evImgs = Array.from(document.querySelectorAll('.event-rows .thumb img, .gallery .card img'));
+      evImgs.forEach(img => { img.style.cursor = 'zoom-in'; });
+
+      let current = -1;
+
+      function show(i){
+        if(!evImgs.length) return;
+        current = (i + evImgs.length) % evImgs.length;
+        const src = evImgs[current].getAttribute('src');
+        const alt = evImgs[current].getAttribute('alt') || '';
+        imgEl.src = src;
+        imgEl.alt = alt;
+      }
+
+      function openAt(i){
+        show(i);
+        lb.setAttribute('aria-hidden','false');
+        document.body.style.overflow = 'hidden';
+      }
+      function close(){
+        lb.setAttribute('aria-hidden','true');
+        imgEl.removeAttribute('src');
+        document.body.style.overflow = '';
+      }
+
+      function prev(){ show(current - 1); }
+      function next(){ show(current + 1); }
+
+      // Wire clicks: gallery images
+      document.querySelectorAll('.gallery .card img').forEach((img) => {
+        img.addEventListener('click', () => openAt(evImgs.indexOf(img)));
+      });
+
+      // Wire clicks: hero thumbs (anchors) - prevent default
+      document.querySelectorAll('.event-rows .thumb').forEach(anchor => {
+        const img = anchor.querySelector('img');
+        if(!img) return;
+        anchor.addEventListener('click', (e) => {
+          e.preventDefault();
+          openAt(evImgs.indexOf(img));
+        });
+      });
+
+      // Controls
+      closeBtn.addEventListener('click', close);
+      lb.addEventListener('click', (e) => { if(e.target === lb) close(); });
+      prevBtn.addEventListener('click', (e) => { e.stopPropagation(); prev(); });
+      nextBtn.addEventListener('click', (e) => { e.stopPropagation(); next(); });
+
+      document.addEventListener('keydown', (e) => {
+        if(lb.getAttribute('aria-hidden') === 'true') return;
+        if(e.key === 'Escape') close();
+        if(e.key === 'ArrowLeft') prev();
+        if(e.key === 'ArrowRight') next();
+      });
+    })();
+  </script>
+
+
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8FK0VXYYGX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-8FK0VXYYGX');
+  </script>
+</body>
+</html>

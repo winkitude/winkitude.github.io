@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-  <title>Last.fm Top 50 (2008–2025) — Bump Chart + Year Lists (Exact CSV Mapping)</title>
+  <title>Last.fm Top 50 (2008–2025) — Bump Chart + Year Lists (Robust Mapping)</title>
   <style>
     :root {
       --bg: #0f0f12;
@@ -48,7 +48,6 @@
     .y-axis .tick line { display: none; }
     .y-axis path { display: none; }
 
-    /* Year lists section */
     .yearlists { margin-top: 18px; display: grid; gap: 14px; grid-template-columns: repeat(12, 1fr); }
     .col { grid-column: span 12; background: var(--card); border: 1px solid var(--stroke); border-radius: 12px; padding: 12px; }
     @media (min-width: 900px) { .col { grid-column: span 4; } }
@@ -105,7 +104,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
   <script>
-  /* ========================= BUMP CHART (unchanged core) ========================= */
+  /* ========================= BUMP CHART (same as prior working build) ========================= */
   const START_YEAR = 2008;
   const END_YEAR   = 2025;
   const DARK_PINK  = getCss("--dark-pink");
@@ -140,20 +139,10 @@
   }
   function adjustLabelBounds() {
     labelsLayer.selectAll("text.label.left").each(function(d){
-      try {
-        const bbox = this.getBBox();
-        const leftEdge = d.x - bbox.width;
-        const minLeft = -GUTTER_LEFT;
-        if (leftEdge < minLeft) d3.select(this).attr("x", minLeft + bbox.width + 2);
-      } catch(e) {}
+      try { const bbox = this.getBBox(); const leftEdge = d.x - bbox.width; const minLeft = -GUTTER_LEFT; if (leftEdge < minLeft) d3.select(this).attr("x", minLeft + bbox.width + 2);} catch(e) {}
     });
     labelsLayer.selectAll("text.label.right").each(function(d){
-      try {
-        const bbox = this.getBBox();
-        const rightEdge = d.x + bbox.width;
-        const maxRight = width + GUTTER_RIGHT;
-        if (rightEdge > maxRight) d3.select(this).attr("x", maxRight - bbox.width - 2);
-      } catch(e) {}
+      try { const bbox = this.getBBox(); const rightEdge = d.x + bbox.width; const maxRight = width + GUTTER_RIGHT; if (rightEdge > maxRight) d3.select(this).attr("x", maxRight - bbox.width - 2);} catch(e) {}
     });
   }
 
@@ -196,7 +185,6 @@
                    || originalColumns.find(c => trim(c).toLowerCase().includes("artist"))
                    || originalColumns[0];
 
-    const START_YEAR = 2008, END_YEAR = 2025;
     const yearKeyMap = new Map();
     originalColumns.forEach(c => {
       const m = trim(c).match(/^(\d{4})$/);
@@ -263,7 +251,7 @@
       exit => exit.remove()
     );
 
-    // Year chips
+    // Year labels
     labelsLayer.append("text").attr("class","year-chip")
       .attr("x", x(String(START_YEAR))).attr("y",-10)
       .attr("text-anchor","middle").text(String(START_YEAR));
@@ -369,7 +357,6 @@
     statusEl.textContent = `Rendered ${series.length} artists across ${years.length} years. Hover to preview, click to pin/unpin.`;
     adjustLabelBounds();
 
-    // Tooltip with inline video (uses optional videoId column)
     function renderTooltipContent(s) {
       const entry = s.firstNonZeroYear ?? "—";
       const exit  = s.lastNonZeroYear ?? "—";
@@ -415,52 +402,44 @@
     statusEl.textContent = "Could not load lastfm_top50.csv — ensure it's next to this HTML and served over http(s).";
   });
 
-  /* ========================= YEAR LISTS (EXACT MAPPING) ========================= */
+  /* ========================= YEAR LISTS (ROBUST MAPPING) ========================= */
   const UI = {
     artists: { select: document.getElementById("year-artists"), list: document.getElementById("list-artists") },
     songs:   { select: document.getElementById("year-songs"),   list: document.getElementById("list-songs") },
     albums:  { select: document.getElementById("year-albums"),  list: document.getElementById("list-albums") }
   };
 
-  // Helper: attempt to pick a column by exact name (case-insensitive)
-  function pickExact(cols, name){
-    const lc = name.toLowerCase();
-    return cols.find(c => c.toLowerCase() === lc) || null;
+  function norm(s){ return String(s||'').toLowerCase().replace(/[^a-z0-9]+/g,'_'); }
+  function pickNorm(cols, targets){
+    const nc = new Map(cols.map(c => [norm(c), c]));
+    for (const t of targets){ const f = nc.get(norm(t)); if (f) return f; }
+    return null;
   }
-  // Helper: parse int safely
-  function toPlays(x){
-    if (x == null) return 0;
-    const n = +String(x).replace(/[, ]/g,"");
-    return Number.isFinite(n) ? n : 0;
-  }
+  function toPlays(x){ if (x==null) return 0; const n = +String(x).replace(/[, ]/g,''); return Number.isFinite(n)?n:0; }
 
   d3.csv("Top_lastfm.csv").then(rows => {
     const cols = rows.columns.slice();
 
-    // Required columns (case-insensitive)
-    const yearCol = pickExact(cols, "Year") || pickExact(cols, "year");
+    const yearCol = pickNorm(cols, ["Year"]);
     if (!yearCol) throw new Error("Top_lastfm.csv must include a 'Year' column.");
 
-    // Artists
-    const aNameCol  = pickExact(cols, "Top_Yearly_Artist");
-    const aPlaysCol = pickExact(cols, "Top_Yearly_Plays");
+    // Artists: accept Top_Yearly_* OR Top_Overall_*
+    const aNameCol  = pickNorm(cols, ["Top_Yearly_Artist", "Top_Overall_Artist"]);
+    const aPlaysCol = pickNorm(cols, ["Top_Yearly_Plays",  "Top_Overall_Plays"]);
+    const aImgCol   = pickNorm(cols, ["Top_Yearly_Image", "Artist_Image", "Top_Overall_Image"]);
 
     // Tracks
-    const tTitleCol  = pickExact(cols, "Top_Track");
-    const tArtistCol = pickExact(cols, "Top_Track_Artist");
-    const tPlaysCol  = pickExact(cols, "Top_Track_Plays");
+    const tTitleCol  = pickNorm(cols, ["Top_Track"]);
+    const tArtistCol = pickNorm(cols, ["Top_Track_Artist"]);
+    const tPlaysCol  = pickNorm(cols, ["Top_Track_Plays"]);
+    const tImgCol    = pickNorm(cols, ["Top_Track_Image", "Track_Image"]);
 
     // Albums
-    const alTitleCol  = pickExact(cols, "Top_Album");
-    const alArtistCol = pickExact(cols, "Top_Album_Artist");
-    const alPlaysCol  = pickExact(cols, "Top_Album_Plays");
+    const alTitleCol  = pickNorm(cols, ["Top_Album"]);
+    const alArtistCol = pickNorm(cols, ["Top_Album_Artist"]);
+    const alPlaysCol  = pickNorm(cols, ["Top_Album_Plays"]);
+    const alImgCol    = pickNorm(cols, ["Top_Album_Image", "Album_Image"]);
 
-    // Optional image columns
-    const aImgCol  = pickExact(cols, "Top_Yearly_Image") || pickExact(cols, "Artist_Image");
-    const tImgCol  = pickExact(cols, "Top_Track_Image")  || pickExact(cols, "Track_Image");
-    const alImgCol = pickExact(cols, "Top_Album_Image")  || pickExact(cols, "Album_Image");
-
-    // Build maps by year
     const byYearArtists = new Map();
     const byYearSongs   = new Map();
     const byYearAlbums  = new Map();
@@ -469,62 +448,34 @@
       const year = +r[yearCol];
       if (!Number.isFinite(year)) return;
 
-      // Artist entry
       if (aNameCol && aPlaysCol && r[aNameCol]) {
         const arr = byYearArtists.get(year) || [];
-        arr.push({
-          title: r[aNameCol],
-          subtitle: "", // artist list doesn't need subtitle
-          plays: toPlays(r[aPlaysCol]),
-          img: aImgCol ? (r[aImgCol] || "").trim() : ""
-        });
+        arr.push({ title: r[aNameCol], subtitle: "", plays: toPlays(r[aPlaysCol]), img: aImgCol ? (r[aImgCol]||"").trim() : "" });
         byYearArtists.set(year, arr);
       }
-
-      // Song entry
       if (tTitleCol && tArtistCol && tPlaysCol && r[tTitleCol]) {
         const arr = byYearSongs.get(year) || [];
-        arr.push({
-          title: r[tTitleCol],
-          subtitle: r[tArtistCol] || "",
-          plays: toPlays(r[tPlaysCol]),
-          img: tImgCol ? (r[tImgCol] || "").trim() : ""
-        });
+        arr.push({ title: r[tTitleCol], subtitle: r[tArtistCol]||"", plays: toPlays(r[tPlaysCol]), img: tImgCol ? (r[tImgCol]||"").trim() : "" });
         byYearSongs.set(year, arr);
       }
-
-      // Album entry
       if (alTitleCol && alArtistCol && alPlaysCol && r[alTitleCol]) {
         const arr = byYearAlbums.get(year) || [];
-        arr.push({
-          title: r[alTitleCol],
-          subtitle: r[alArtistCol] || "",
-          plays: toPlays(r[alPlaysCol]),
-          img: alImgCol ? (r[alImgCol] || "").trim() : ""
-        });
+        arr.push({ title: r[alTitleCol], subtitle: r[alArtistCol]||"", plays: toPlays(r[alPlaysCol]), img: alImgCol ? (r[alImgCol]||"").trim() : "" });
         byYearAlbums.set(year, arr);
       }
     });
 
-    // Sort each year by plays desc
+    // Sort by plays desc
     for (const m of [byYearArtists, byYearSongs, byYearAlbums]) {
-      for (const [y, arr] of m.entries()) {
-        arr.sort((a,b) => (b.plays||0) - (a.plays||0));
-      }
+      for (const [y, arr] of m.entries()) arr.sort((a,b)=>(b.plays||0)-(a.plays||0));
     }
 
-    // Choose available years (prefer 2008..2025 if present)
     const allYears = Array.from(new Set([...byYearArtists.keys(), ...byYearSongs.keys(), ...byYearAlbums.keys()])).sort((a,b)=>a-b);
-    const preferRange = allYears.filter(y => y >= START_YEAR && y <= END_YEAR);
-    const years = preferRange.length ? preferRange : allYears;
+    const years = allYears.filter(y=>y>=START_YEAR && y<=END_YEAR).length ? allYears.filter(y=>y>=START_YEAR && y<=END_YEAR) : allYears;
 
     function fillSelect(sel){
       sel.innerHTML = "";
-      years.forEach(y => {
-        const opt = document.createElement("option");
-        opt.value = y; opt.textContent = y;
-        sel.appendChild(opt);
-      });
+      years.forEach(y => { const o=document.createElement('option'); o.value=y; o.textContent=y; sel.appendChild(o); });
       sel.value = years[years.length-1];
     }
     fillSelect(UI.artists.select);
@@ -533,25 +484,17 @@
 
     function renderList(container, list, limit=10){
       container.innerHTML = "";
-      (list || []).slice(0, limit).forEach(it => {
-        const row = document.createElement("div"); row.className = "row";
-        const thumb = document.createElement("div"); thumb.className = "thumb";
-        if (it.img) {
-          const img = document.createElement("img");
-          img.src = it.img; img.alt = it.title || "art";
-          img.referrerPolicy = "no-referrer";
-          img.onerror = () => { thumb.textContent = "No img"; };
-          thumb.appendChild(img);
-        } else {
-          thumb.textContent = "No img";
-        }
-        const text = document.createElement("div");
-        const t = document.createElement("div"); t.className = "title"; t.textContent = it.title || "—";
-        const s = document.createElement("div"); s.className = "subtitle"; s.textContent = it.subtitle || "";
+      (list||[]).slice(0,limit).forEach(it => {
+        const row = document.createElement('div'); row.className='row';
+        const thumb = document.createElement('div'); thumb.className='thumb';
+        if (it.img){ const img=document.createElement('img'); img.src=it.img; img.alt=it.title||'art'; img.referrerPolicy='no-referrer'; img.onerror=()=>{thumb.textContent='No img';}; thumb.appendChild(img); }
+        else { thumb.textContent='No img'; }
+        const text=document.createElement('div');
+        const t=document.createElement('div'); t.className='title'; t.textContent=it.title||'—';
+        const s=document.createElement('div'); s.className='subtitle'; s.textContent=it.subtitle||'';
         text.appendChild(t); if (it.subtitle) text.appendChild(s);
-        const plays = document.createElement("div"); plays.className = "plays"; plays.textContent = Number.isFinite(it.plays) ? Intl.NumberFormat().format(it.plays) : "—";
-        row.appendChild(thumb); row.appendChild(text); row.appendChild(plays);
-        container.appendChild(row);
+        const plays=document.createElement('div'); plays.className='plays'; plays.textContent=Number.isFinite(it.plays)?Intl.NumberFormat().format(it.plays):'—';
+        row.appendChild(thumb); row.appendChild(text); row.appendChild(plays); container.appendChild(row);
       });
     }
 
@@ -559,13 +502,11 @@
     function updateSongs(){   renderList(UI.songs.list,   byYearSongs.get(+UI.songs.select.value),   10); }
     function updateAlbums(){  renderList(UI.albums.list,  byYearAlbums.get(+UI.albums.select.value), 10); }
 
-    // Initial
+    // Initial + listeners
     updateArtists(); updateSongs(); updateAlbums();
-
-    // Listeners
-    UI.artists.select.addEventListener("change", updateArtists);
-    UI.songs.select.addEventListener("change",   updateSongs);
-    UI.albums.select.addEventListener("change",  updateAlbums);
+    UI.artists.select.addEventListener('change', updateArtists);
+    UI.songs.select.addEventListener('change',   updateSongs);
+    UI.albums.select.addEventListener('change',  updateAlbums);
   }).catch(err => {
     console.error("Failed to load Top_lastfm.csv", err);
     document.getElementById("col-artists").querySelector(".list").innerHTML =

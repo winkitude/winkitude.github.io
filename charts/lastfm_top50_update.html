@@ -3,68 +3,103 @@
 <head>
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-  <title>Last.fm Top 50 (2008–2025) — Bump Chart + Year Lists (Dynamic Images)</title>
+  <title>Last.fm Top 50 (2008–2025) — Drag City Edition</title>
   <style>
+    /* ===== Drag City–ish vibe: newsprint cream, bold black borders, sticker headers, minimal color ===== */
     :root {
-      --bg: #0f0f12;
-      --panel: #15161a;
-      --panel2:#12131a;
-      --text: #e8e8ec;
-      --muted: #a3a3ad;
-      --grid: #2a2b31;
-      --dark-pink: #c2187a;
-      --light-pink: #f48fb1;
-      --light-gray: #bdbdc7;
-      --card: #14161c;
-      --stroke: #2e3037;
+      --bg: #f6f3e7;         /* newsprint */
+      --panel: #fffdf6;      /* off-white */
+      --panel2:#fff8ea;      /* slightly warmer */
+      --text: #101010;       /* near-black text */
+      --muted: #585858;      /* muted gray */
+      --grid: #d9d3c6;       /* light paper grid */
+      --ink: #0b0b0b;        /* heavy black */
+      --dark-pink: #c2187a;  /* category: in 2008 */
+      --light-pink: #f2a9c3; /* category: entered after 2008 */
+      --light-gray: #8e8e8e; /* category: rank > 50 */
+      --card: #fffdfa;
+      --stroke: #0b0b0b;
     }
     html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text);
       font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
-    header { padding: 16px 20px; background: var(--panel); position: sticky; top: 0; z-index: 10; box-shadow: 0 2px 8px rgba(0,0,0,.35); }
-    header h1 { font-size: 18px; margin: 0; font-weight: 650; letter-spacing: .2px; }
-    main { padding: 14px 14px 24px; }
-    .chart-wrap { background: var(--panel2); border-radius: 14px; padding: 14px; box-shadow: 0 6px 30px rgba(0,0,0,.35); }
-    .legend { display: flex; gap: 18px; align-items: center; flex-wrap: wrap; margin: 8px 2px 12px; font-size: 13px; color: var(--muted); }
-    .legend .swatch { width: 14px; height: 14px; border-radius: 50%; display: inline-block; margin-right: 6px; vertical-align: -2px; }
-    svg { width: 100%; height: auto; display: block; }
+    header { padding: 18px 20px; background: var(--panel); position: sticky; top: 0; z-index: 10; box-shadow: 0 2px 0 var(--ink); border-bottom: 3px solid var(--ink); }
+    header h1 { font-size: 18px; margin: 0; font-weight: 800; letter-spacing: .3px; text-transform: uppercase; }
+    main { padding: 16px; }
+
+    .chart-wrap { background: var(--panel2); border-radius: 6px; padding: 14px; border: 3px solid var(--ink); box-shadow: 6px 6px 0 var(--ink); }
+    .legend { display: flex; gap: 18px; align-items: center; flex-wrap: wrap; margin: 8px 2px 12px; font-size: 13px; color: var(--muted);
+      padding: 6px 10px; border: 2px solid var(--ink); display:inline-flex; background:#fff; transform: rotate(-0.6deg); }
+    .legend .swatch { width: 12px; height: 12px; border-radius: 2px; display: inline-block; margin-right: 6px; vertical-align: -2px; border:1.5px solid var(--ink); }
+
+    svg { width: 100%; height: auto; display: block; background: #fff; border: 2px solid var(--ink); }
+
     .axis line, .axis path { stroke: var(--grid); }
-    .axis text { fill: var(--muted); font-size: 11px; }
-    .gridline { stroke: var(--grid); stroke-dasharray: 2 2; }
-    .series { fill: none; stroke-width: 2.8px; opacity: .8; transition: opacity .2s ease, stroke-width .15s ease; mix-blend-mode: screen; cursor: pointer; }
+    .axis text { fill: var(--muted); font-size: 11px; font-weight: 700; letter-spacing:.2px; }
+    .gridline { stroke: var(--grid); stroke-dasharray: 4 3; }
+
+    .series {
+      fill: none; stroke-width: 3.2px; opacity: .85;
+      transition: opacity .15s ease, stroke-width .12s ease;
+      cursor: pointer; mix-blend-mode: multiply;
+    }
     .series.hidden { opacity: .12; }
-    .series.highlight { stroke-width: 4px; opacity: 1; filter: drop-shadow(0 0 2px rgba(255,255,255,0.25)); }
-    .dot { pointer-events: none; r: 3.2px; }
-    .label { font-size: 10.5px; fill: var(--text); paint-order: stroke; stroke: #0f0f12; stroke-width: 3px; pointer-events: auto; }
-    .tooltip { position: fixed; pointer-events: auto; padding: 10px 12px; background: #101116; color: var(--text); border: 1px solid var(--stroke); border-radius: 10px; font-size: 12px; max-width: 420px; box-shadow: 0 10px 40px rgba(0,0,0,.45); z-index: 100000; display: none; }
-    .tooltip .t-head { font-weight: 700; margin: 0 0 4px; font-size: 13px; }
-    .tooltip .t-meta { color: var(--muted); margin-bottom: 8px; }
-    .tooltip .t-ranks { line-height: 1.35; }
-    .tooltip .t-video { margin-top: 10px; border-top: 1px solid var(--stroke); padding-top: 8px; }
-    .tooltip .t-video iframe { width: 100%; height: 260px; border: 0; display: block; border-radius: 8px; }
-    .year-chip { fill: var(--text); font-weight: 700; font-size: 12px; }
-    .status { font-size: 13px; color: var(--muted); margin-top: 8px; }
+    .series.highlight { stroke-width: 4.6px; opacity: 1; filter: drop-shadow(0 1px 0 var(--ink)); }
+    .dot { pointer-events: none; r: 3.8px; }
 
-    .y-axis .tick text { display: none; }
-    .y-axis .tick line { display: none; }
-    .y-axis path { display: none; }
+    .label { font-size: 11.5px; fill: var(--ink); paint-order: stroke; stroke: #ffffff; stroke-width: 4px; pointer-events: auto; font-weight: 800; }
+    .year-chip { fill: var(--ink); font-weight: 900; font-size: 12px; }
 
-    .yearlists { margin-top: 18px; display: grid; gap: 14px; grid-template-columns: repeat(12, 1fr); }
-    .col { grid-column: span 12; background: var(--card); border: 1px solid var(--stroke); border-radius: 12px; padding: 12px; }
-    @media (min-width: 900px) { .col { grid-column: span 4; } }
-    .col-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 8px; }
-    .col-head h3 { margin: 0; font-size: 14px; font-weight: 700; }
-    .col-head select { background: #0f1218; color: var(--text); border: 1px solid var(--stroke); border-radius: 8px; padding: 6px 8px; font-size: 13px; }
+    .status { font-size: 13px; color: var(--muted); margin-top: 8px; font-weight:700; }
+
+    /* Hide y-axis ticks and numbers */
+    .y-axis .tick text, .y-axis .tick line, .y-axis path { display: none; }
+
+    /* ===== Year lists ===== */
+    .yearlists { margin-top: 18px; display: grid; gap: 16px; grid-template-columns: repeat(12, 1fr); }
+    .col { grid-column: span 12; background: var(--card); border: 3px solid var(--ink); border-radius: 6px; padding: 12px; box-shadow: 6px 6px 0 var(--ink); }
+    @media (min-width: 980px) { .col { grid-column: span 4; } }
+
+    .col-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
+    .col-head h3 {
+      margin: 0; font-size: 13px; font-weight: 900; text-transform: uppercase; letter-spacing:.5px;
+      background: var(--ink); color: #fff; padding: 6px 10px; border:2px solid var(--ink); transform: rotate(-1deg);
+      box-shadow: 3px 3px 0 var(--ink);
+    }
+    .col-head select {
+      background: #fff; color: var(--ink); border: 2px solid var(--ink); border-radius: 4px; padding: 6px 8px; font-size: 13px; font-weight: 700;
+    }
+
     .list { display: grid; gap: 6px; }
-    .row { display: grid; grid-template-columns: 40px 1fr auto; align-items: center; gap: 10px; background: #0f1117; border: 1px solid var(--stroke); border-radius: 10px; padding: 6px; min-height: 48px; }
-    .thumb { width: 40px; height: 40px; border-radius: 8px; background: #222532; overflow: hidden; display: grid; place-items:center; font-size: 11px; color: var(--muted); }
-    .thumb img { width: 100%; height: 100%; object-fit: cover; display:block; }
-    .title { font-size: 13px; font-weight: 650; line-height: 1.2; }
-    .subtitle { color: var(--muted); font-size: 12px; }
-    .plays { font-variant-numeric: tabular-nums; font-size: 12px; color: var(--muted); padding-right: 6px; }
+
+    .row {
+      display: grid; grid-template-columns: 40px 1fr auto; align-items: center; gap: 10px;
+      background: #fff; border: 2px solid var(--ink); border-radius: 4px; padding: 6px; min-height: 48px;
+      transition: background .12s ease, color .12s ease;
+    }
+    .row:hover { background: var(--ink); color: #fff; }
+    .row:hover .subtitle, .row:hover .plays { color: #fff; }
+
+    /* Artists list (no images) */
+    .row.no-thumb { grid-template-columns: 1fr auto; }
+
+    .thumb { width: 40px; height: 40px; border-radius: 3px; background: #e8e6dd; overflow: hidden; display: grid; place-items:center; font-size: 11px; color: var(--muted); border:1px solid var(--ink); }
+    .thumb img { width: 100%; height: 100%; object-fit: cover; display:block; filter: grayscale(100%) contrast(115%); }
+
+    .title { font-size: 13px; font-weight: 800; line-height: 1.1; letter-spacing:.2px; }
+    .subtitle { color: var(--muted); font-size: 12px; font-weight:700; }
+    .plays { font-variant-numeric: tabular-nums; font-size: 12px; color: var(--muted); padding-right: 6px; font-weight:800; }
+    .plays::before { content: "▶ "; opacity:.6; }
+
+    .tooltip { position: fixed; pointer-events: auto; padding: 10px 12px; background: #fff; color: var(--ink); border: 3px solid var(--ink); border-radius: 6px; font-size: 12px; max-width: 420px; box-shadow: 6px 6px 0 var(--ink); z-index: 100000; display: none; }
+    .tooltip .t-head { font-weight: 900; margin: 0 0 4px; font-size: 13px; text-transform: uppercase; }
+    .tooltip .t-meta { color: var(--muted); margin-bottom: 8px; font-weight:700; }
+    .tooltip .t-ranks { line-height: 1.35; font-weight:700; }
+    .tooltip .t-video { margin-top: 10px; border-top: 2px dashed var(--ink); padding-top: 8px; }
+    .tooltip .t-video iframe { width: 100%; height: 260px; border: 0; display: block; border-radius: 4px; filter: grayscale(100%) contrast(110%); }
   </style>
 </head>
 <body>
-  <header><h1>Last.fm Top 50 — 2008 to 2025</h1></header>
+  <header><h1>Last.fm Top 50 — 2008 to 2025 (Drag City)</h1></header>
   <main>
     <div class="chart-wrap">
       <div class="legend">
@@ -222,7 +257,7 @@
     function positionTooltip(event){ const pad = 12; const { clientX:x, clientY:y } = event; const w = tooltip.offsetWidth, h = tooltip.offsetHeight; let left = x + pad, top = y + pad; if (left + w > window.innerWidth) left = x - w - pad; if (top + h > window.innerHeight) top = y - h - pad; if (left < 6) left = 6; if (top < 6) top = 6; tooltip.style.left = left + "px"; tooltip.style.top  = top  + "px"; }
   }).catch(err => { console.error("Failed to load lastfm_top50.csv", err); statusEl.textContent = "Could not load lastfm_top50.csv — ensure it's next to this HTML and served over http(s)."; });
 
-  /* ========================= YEAR LISTS (ROBUST MAPPING + DYNAMIC IMAGES) ========================= */
+  /* ========================= YEAR LISTS (No images for Artists) ========================= */
   const UI = {
     artists: { select: document.getElementById("year-artists"), list: document.getElementById("list-artists") },
     songs:   { select: document.getElementById("year-songs"),   list: document.getElementById("list-songs") },
@@ -232,44 +267,17 @@
   function pickNorm(cols, targets){ const nc = new Map(cols.map(c => [norm(c), c])); for (const t of targets){ const f = nc.get(norm(t)); if (f) return f; } return null; }
   function toPlays(x){ if (x==null) return 0; const n = +String(x).replace(/[, ]/g,''); return Number.isFinite(n)?n:0; }
 
-  // iTunes search fallback for images (no API key required)
+  // iTunes fallback for songs/albums only
   const artworkCache = new Map();
   function bestArtSize(url){ return url ? url.replace(/\/[0-9]{2,4}x[0-9]{2,4}bb\./, "/256x256bb.") : url; }
   async function fetchItunesArtwork(kind, title, artist){
-    const key = `${kind}|${title}|${artist}`.toLowerCase();
-    if (artworkCache.has(key)) return artworkCache.get(key);
-    let entity = "song";
-    if (kind === "artist") entity = "musicArtist";
-    else if (kind === "album") entity = "album";
+    let entity = "song"; if (kind === "album") entity = "album"; if (kind === "artist") return ""; // no fetch for artists
+    const key = `${kind}|${title}|${artist}`.toLowerCase(); if (artworkCache.has(key)) return artworkCache.get(key);
     const term = encodeURIComponent([title, artist].filter(Boolean).join(" "));
     const url  = `https://itunes.apple.com/search?term=${term}&media=music&entity=${entity}&limit=5`;
-    try {
-      const res = await fetch(url);
-      const json = await res.json();
-      const results = Array.isArray(json.results) ? json.results : [];
-      if (!results.length) { artworkCache.set(key, ""); return ""; }
-      // Simple match scoring
-      const normText = s => (s||"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim();
-      const wantArtist = normText(artist);
-      const wantTitle  = normText(title);
-      let best = results[0], bestScore = -1;
-      for (const r of results){
-        const rArtist = normText(r.artistName);
-        const rTitle  = normText(r.trackName || r.collectionName || r.artistName);
-        let score = 0;
-        if (wantArtist && rArtist.includes(wantArtist)) score += 2;
-        if (wantTitle  && rTitle.includes(wantTitle))   score += 2;
-        if (entity==="musicArtist" && !wantTitle) score += 1;
-        if (score > bestScore){ best = r; bestScore = score; }
-      }
-      const art = bestArtSize(best.artworkUrl100 || best.artworkUrl60 || "");
-      artworkCache.set(key, art || "");
-      return art || "";
-    } catch (e) {
-      console.warn("iTunes artwork fetch failed", e);
-      artworkCache.set(key, "");
-      return "";
-    }
+    try { const res = await fetch(url); const json = await res.json(); const results = Array.isArray(json.results) ? json.results : []; if (!results.length) { artworkCache.set(key, ""); return ""; }
+      const art = bestArtSize(results[0].artworkUrl100 || results[0].artworkUrl60 || ""); artworkCache.set(key, art || ""); return art || "";
+    } catch (e) { artworkCache.set(key, ""); return ""; }
   }
 
   d3.csv("Top_lastfm.csv").then(rows => {
@@ -277,7 +285,6 @@
     const yearCol = pickNorm(cols, ["Year"]); if (!yearCol) throw new Error("Top_lastfm.csv must include a 'Year' column.");
     const aNameCol  = pickNorm(cols, ["Top_Yearly_Artist", "Top_Overall_Artist"]);
     const aPlaysCol = pickNorm(cols, ["Top_Yearly_Plays",  "Top_Overall_Plays"]);
-    const aImgCol   = pickNorm(cols, ["Top_Yearly_Image", "Artist_Image", "Top_Overall_Image"]);
     const tTitleCol  = pickNorm(cols, ["Top_Track"]);
     const tArtistCol = pickNorm(cols, ["Top_Track_Artist"]);
     const tPlaysCol  = pickNorm(cols, ["Top_Track_Plays"]);
@@ -292,7 +299,7 @@
       const year = +r[yearCol]; if (!Number.isFinite(year)) return;
       if (aNameCol && aPlaysCol && r[aNameCol]) {
         const arr = byYearArtists.get(year) || [];
-        arr.push({ kind:"artist", title: r[aNameCol], subtitle: "", plays: toPlays(r[aPlaysCol]), img: aImgCol ? (r[aImgCol]||"").trim() : "" });
+        arr.push({ kind:"artist", title: r[aNameCol], subtitle: "", plays: toPlays(r[aPlaysCol]) });
         byYearArtists.set(year, arr);
       }
       if (tTitleCol && tArtistCol && tPlaysCol && r[tTitleCol]) {
@@ -313,36 +320,35 @@
     function fillSelect(sel){ sel.innerHTML=""; years.forEach(y => { const o=document.createElement('option'); o.value=y; o.textContent=y; sel.appendChild(o); }); sel.value = years[years.length-1]; }
     fillSelect(UI.artists.select); fillSelect(UI.songs.select); fillSelect(UI.albums.select);
 
-    async function renderList(container, list, limit=10){
+    async function renderList(container, list, limit=10, opts={ showThumb:true }){
       container.innerHTML = "";
       for (const it of (list||[]).slice(0,limit)){
-        const row = document.createElement('div'); row.className='row';
-        const thumb = document.createElement('div'); thumb.className='thumb';
+        const row = document.createElement('div'); row.className = 'row' + (opts.showThumb ? '' : ' no-thumb');
+        if (opts.showThumb){
+          const thumb = document.createElement('div'); thumb.className='thumb';
+          if (it.img){
+            const img=document.createElement('img'); img.src=it.img; img.alt=it.title||'art'; img.referrerPolicy='no-referrer'; img.onerror=()=>{thumb.textContent='No img';}; thumb.appendChild(img);
+          } else {
+            thumb.textContent='…';
+            const art = await fetchItunesArtwork(it.kind, it.title, it.subtitle);
+            thumb.textContent='';
+            if (art){ const img=document.createElement('img'); img.src=art; img.alt=it.title||'art'; img.referrerPolicy='no-referrer'; img.onerror=()=>{thumb.textContent='No img';}; thumb.appendChild(img); }
+            else { thumb.textContent='No img'; }
+          }
+          row.appendChild(thumb);
+        }
         const text=document.createElement('div');
         const t=document.createElement('div'); t.className='title'; t.textContent=it.title||'—';
         const s=document.createElement('div'); s.className='subtitle'; s.textContent=it.subtitle||'';
         text.appendChild(t); if (it.subtitle) text.appendChild(s);
         const plays=document.createElement('div'); plays.className='plays'; plays.textContent=Number.isFinite(it.plays)?Intl.NumberFormat().format(it.plays):'—';
-
-        // Image: CSV value or dynamic fetch via iTunes
-        if (it.img){
-          const img=document.createElement('img'); img.src=it.img; img.alt=it.title||'art'; img.referrerPolicy='no-referrer'; img.onerror=()=>{thumb.textContent='No img';}; thumb.appendChild(img);
-        } else {
-          thumb.textContent='…';
-          // try to fetch
-          const art = await fetchItunesArtwork(it.kind, it.title, it.subtitle);
-          thumb.textContent='';
-          if (art){ const img=document.createElement('img'); img.src=art; img.alt=it.title||'art'; img.referrerPolicy='no-referrer'; img.onerror=()=>{thumb.textContent='No img';}; thumb.appendChild(img); }
-          else { thumb.textContent='No img'; }
-        }
-
-        row.appendChild(thumb); row.appendChild(text); row.appendChild(plays); container.appendChild(row);
+        row.appendChild(text); row.appendChild(plays); container.appendChild(row);
       }
     }
 
-    function updateArtists(){ renderList(UI.artists.list, byYearArtists.get(+UI.artists.select.value), 10); }
-    function updateSongs(){   renderList(UI.songs.list,   byYearSongs.get(+UI.songs.select.value),   10); }
-    function updateAlbums(){  renderList(UI.albums.list,  byYearAlbums.get(+UI.albums.select.value), 10); }
+    function updateArtists(){ renderList(UI.artists.list, byYearArtists.get(+UI.artists.select.value), 10, { showThumb:false }); }
+    function updateSongs(){   renderList(UI.songs.list,   byYearSongs.get(+UI.songs.select.value),   10, { showThumb:true }); }
+    function updateAlbums(){  renderList(UI.albums.list,  byYearAlbums.get(+UI.albums.select.value), 10, { showThumb:true }); }
 
     updateArtists(); updateSongs(); updateAlbums();
     UI.artists.select.addEventListener('change', updateArtists);
@@ -351,7 +357,7 @@
   }).catch(err => {
     console.error("Failed to load Top_lastfm.csv", err);
     document.getElementById("col-artists").querySelector(".list").innerHTML =
-      "<div class='row'><div class='thumb'>!</div><div>Could not load Top_lastfm.csv</div><div></div></div>";
+      "<div class='row no-thumb'><div>Could not load Top_lastfm.csv</div><div></div></div>";
   });
   </script>
 </body>

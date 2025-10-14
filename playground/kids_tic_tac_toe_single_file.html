@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tic‑Tac‑Toe for Kids</title>
+  <style>
+    :root{
+      --bg:#FAF8EF;
+      --board:#FFFFFF;
+      --line:#E9E4D8;
+      --text:#1F2937;
+      --accent:#7CB4B8; /* pulled from one of Ari's palettes */
+      --x:#F56E28;      /* friendly orange */
+      --o:#0C0A3E;      /* deep navy */
+      --win:#9AE6B4;    /* soft green */
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      background:var(--bg); color:var(--text); display:flex; align-items:center; justify-content:center;
+    }
+    .wrap{ width: min(720px, 92vw); margin: 4vmin auto; text-align:center; }
+    h1{ font-size: clamp(28px, 6vw, 40px); margin: 0 0 8px; }
+    .sub{ font-size: clamp(14px, 3.5vw, 16px); opacity:.8; margin-bottom:16px }
+
+    .toolbar{ display:flex; flex-wrap:wrap; gap:10px; justify-content:center; align-items:center; margin: 10px 0 18px; }
+    .btn{
+      border: 2px solid var(--accent); background:#fff; color:var(--text); padding:10px 14px; border-radius:999px; cursor:pointer; font-weight:700;
+      transition: transform .05s ease, background .2s ease; user-select:none; touch-action:manipulation;
+    }
+    .btn[aria-pressed="true"], .btn.primary{ background:var(--accent); color:#fff }
+    .btn:active{ transform: scale(.98) }
+
+    .score{ display:flex; gap:10px; justify-content:center; margin: 6px 0 16px }
+    .score .card{ background:#fff; border:1px solid var(--line); border-radius:16px; padding:10px 14px; min-width:110px }
+    .score .label{ font-size:13px; opacity:.7 }
+    .score .val{ font-size:22px; font-weight:800 }
+
+    .board{ width:min(520px, 92vw); aspect-ratio:1/1; margin: 0 auto; display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+    .cell{
+      background:var(--board); border-radius:18px; border: 2px solid var(--line);
+      display:flex; align-items:center; justify-content:center; font-size: clamp(40px, 12vw, 80px); font-weight:900; cursor:pointer; position:relative;
+      transition: background .2s ease, transform .05s ease;
+    }
+    .cell:active{ transform: scale(.98) }
+    .cell[data-mark="X"]{ color:var(--x) }
+    .cell[data-mark="O"]{ color:var(--o) }
+    .cell[aria-disabled="true"]{ cursor:not-allowed }
+
+    .status{ margin:14px 0 8px; font-size: clamp(16px, 3.8vw, 20px); font-weight:700 }
+    .note{ font-size:13px; opacity:.7; margin-bottom: 10px }
+
+    .win{ background: linear-gradient(0deg, var(--win), var(--win)) !important; }
+
+    .footer{ margin-top: 18px; font-size:12px; opacity:.6 }
+      /* avatar styles */
+    .avatar {
+      width: 40px; height: 40px; border-radius: 999px; border:2px solid var(--line);
+      background:#fff center/cover no-repeat; flex:0 0 auto;
+      display:inline-flex; align-items:center; justify-content:center; font-size:18px; font-weight:900;
+      margin-right:8px;
+    }
+    .score .card{ display:flex; align-items:center; gap:8px }
+    .score .text{ display:flex; flex-direction:column; align-items:flex-start }
+
+    .avatar-bar{ display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin: 6px 0 12px }
+    .avatar-btn{ border:1px dashed var(--accent); background:#fff; border-radius:999px; padding:8px 12px; cursor:pointer; font-weight:700 }
+    .avatar-btn:active{ transform:scale(.98) }
+      /* additional sizing and image rules */
+    .cell{ aspect-ratio:1/1; background-position:center; background-size:cover }
+
+    /* modal camera */
+    .modal{ position:fixed; inset:0; background:rgba(0,0,0,.6); display:none; align-items:center; justify-content:center; padding:16px; z-index:50 }
+    .modal.open{ display:flex }
+    .modal .sheet{ background:#fff; border-radius:16px; width:min(560px,96vw); padding:12px; display:flex; flex-direction:column; gap:10px; align-items:center }
+    .modal video, .modal canvas{ width:100%; border-radius:12px; background:#000 }
+    .modal .row{ display:flex; gap:10px; flex-wrap:wrap; justify-content:center }
+  </style>
+</head>
+<body>
+  <div class="wrap" role="application" aria-label="Tic Tac Toe game">
+    <h1>✨ Tic‑Tac‑Toe</h1>
+    <div class="sub">Big buttons. Friendly colors. Made for little hands.</div>
+
+    <div class="toolbar" aria-label="Game mode">
+      <button type="button" class="btn" id="mode2p" aria-pressed="true">👫 Two Players</button>
+      <button type="button" class="btn" id="modeCpu" aria-pressed="false">🤖 Vs. Robot (easy)</button>
+      <button type="button" class="btn" id="reset">🔄 New Round</button>
+      <button type="button" class="btn" id="clear">🧹 Clear Scores</button>
+    </div>
+
+    <div class="score" aria-live="polite">
+      <div class="card">
+        <div class="avatar" id="ax" aria-hidden="true">X</div>
+        <div class="text"><div class="label" id="lblX">Player X</div><div class="val" id="sx">0</div></div>
+      </div>
+      <div class="card"><div class="text"><div class="label" id="lblT">Ties</div><div class="val" id="st">0</div></div></div>
+      <div class="card">
+        <div class="avatar" id="ao" aria-hidden="true">O</div>
+        <div class="text"><div class="label" id="lblO">Player O</div><div class="val" id="so">0</div></div>
+      </div>
+    </div>
+
+    <div class="avatar-bar" aria-label="Set player photos and names">
+      <input type="file" id="pickX" accept="image/*" capture="user" hidden>
+      <button type="button" class="avatar-btn" id="btnPickX">🖼️ Upload X Photo</button>
+      <button type="button" class="avatar-btn" id="btnCamX">📸 Take X Photo</button>
+      <input type="text" id="nameX" class="avatar-btn" placeholder="Player X name" style="border-style:solid;" />
+
+      <input type="file" id="pickO" accept="image/*" capture="user" hidden>
+      <button type="button" class="avatar-btn" id="btnPickO">🖼️ Upload O Photo</button>
+      <button type="button" class="avatar-btn" id="btnCamO">📸 Take O Photo</button>
+      <input type="text" id="nameO" class="avatar-btn" placeholder="Player O name" style="border-style:solid;" />
+    </div>
+
+    <!-- Camera Modal -->
+    <div class="modal" id="camModal" role="dialog" aria-modal="true" aria-label="Camera">
+      <div class="sheet">
+        <video id="camVideo" playsinline autoplay></video>
+        <canvas id="camCanvas" hidden></canvas>
+        <div class="row">
+          <button type="button" class="btn" id="btnSnap">📷 Capture</button>
+          <button type="button" class="btn" id="btnUse" disabled>✅ Use Photo</button>
+          <button type="button" class="btn" id="btnClose">✖️ Close</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="status" id="status">X goes first!</div>
+    <div class="note">Tap a square to place your mark.</div>
+
+    <div class="board" id="board" role="grid" aria-label="Board">
+      <button class="cell" role="gridcell" aria-label="Row 1, Column 1" data-i="0"></button>
+      <button class="cell" role="gridcell" aria-label="Row 1, Column 2" data-i="1"></button>
+      <button class="cell" role="gridcell" aria-label="Row 1, Column 3" data-i="2"></button>
+      <button class="cell" role="gridcell" aria-label="Row 2, Column 1" data-i="3"></button>
+      <button class="cell" role="gridcell" aria-label="Row 2, Column 2" data-i="4"></button>
+      <button class="cell" role="gridcell" aria-label="Row 2, Column 3" data-i="5"></button>
+      <button class="cell" role="gridcell" aria-label="Row 3, Column 1" data-i="6"></button>
+      <button class="cell" role="gridcell" aria-label="Row 3, Column 2" data-i="7"></button>
+      <button class="cell" role="gridcell" aria-label="Row 3, Column 3" data-i="8"></button>
+    </div>
+
+    <div class="footer">Pro tip: Kids can play together or try the friendly robot. No ads. No trackers.</div>
+  </div>
+
+  <script>
+(()=>{
+  const $ = (id)=>document.getElementById(id);
+  const boardEl = $('board');
+  const statusEl = $('status');
+  const sxEl = $('sx');
+  const soEl = $('so');
+  const stEl = $('st');
+  const btnReset = $('reset');
+  const btnClear = $('clear');
+  const mode2p = $('mode2p');
+  const modeCpu = $('modeCpu');
+  const ax = $('ax');
+  const ao = $('ao');
+  const btnPickX = $('btnPickX');
+  const btnPickO = $('btnPickO');
+  const btnCamX = $('btnCamX');
+  const btnCamO = $('btnCamO');
+  const pickX = $('pickX');
+  const pickO = $('pickO');
+  const nameX = $('nameX');
+  const nameO = $('nameO');
+  const camModal = $('camModal');
+  const camVideo = $('camVideo');
+  const camCanvas = $('camCanvas');
+  const btnSnap = $('btnSnap');
+  const btnUse = $('btnUse');
+  const btnClose = $('btnClose');
+  const lblX = $('lblX');
+  const lblT = $('lblT');
+  const lblO = $('lblO');
+
+  const wins = [
+    [0,1,2],[3,4,5],[6,7,8],
+    [0,3,6],[1,4,7],[2,5,8],
+    [0,4,8],[2,4,6]
+  ];
+
+  let board = Array(9).fill(null);
+  let turn = 'X';
+  let scores = {X:0, O:0, T:0};
+  let vsCpu = false;
+  const cells = boardEl ? [...boardEl.querySelectorAll('.cell')] : [];
+
+  function speak(text){ if(statusEl) statusEl.textContent = text; }
+
+  function setMode(cpu){
+    vsCpu = cpu;
+    mode2p?.setAttribute('aria-pressed', String(!cpu));
+    modeCpu?.setAttribute('aria-pressed', String(cpu));
+    newRound();
+  }
+
+  function getAvatarUrl(player){
+    try{ return localStorage.getItem('avatar'+player) || ''; }catch(e){ return ''; }
+  }
+  function setAvatar(player, dataUrl){
+    const el = player==='X' ? ax : ao;
+    if(!el) return;
+    if(dataUrl){ el.style.backgroundImage = `url(${dataUrl})`; el.textContent = ''; }
+    else { el.style.backgroundImage = ''; el.textContent = player; }
+  }
+
+  function render(){
+    const avX = getAvatarUrl('X');
+    const avO = getAvatarUrl('O');
+    cells.forEach((c, i)=>{
+      c.textContent = '';
+      c.dataset.mark = board[i] ?? '';
+      c.classList.toggle('win', false);
+      c.setAttribute('aria-disabled', board[i] ? 'true' : 'false');
+      if(board[i]==='X' && avX){ c.style.backgroundImage = `url(${avX})`; }
+      else if(board[i]==='O' && avO){ c.style.backgroundImage = `url(${avO})`; }
+      else { c.style.backgroundImage = ''; c.textContent = board[i] ?? ''; }
+    });
+    const nx = (localStorage.getItem('nameX')||'Player X');
+    const no = (localStorage.getItem('nameO')||'Player O');
+    if(lblX) lblX.textContent = nx;
+    if(lblO) lblO.textContent = no;
+    if(lblT) lblT.textContent = 'Ties';
+    if(sxEl) sxEl.textContent = scores.X;
+    if(soEl) soEl.textContent = scores.O;
+    if(stEl) stEl.textContent = scores.T;
+  }
+
+  function available(){ return board.map((v,i)=>v?null:i).filter(v=>v!==null); }
+
+  function checkWin(b=board){
+    for(const [a,b2,c] of wins){
+      if(b[a] && b[a]===b[b2] && b[a]===b[c]) return {player:b[a], line:[a,b2,c]};
+    }
+    if(!b.includes(null)) return {player:'T', line:[]};
+    return null;
+  }
+
+  function mark(i){
+    if(board[i] || checkWin()) return;
+    board[i] = turn;
+    render();
+    const res = checkWin();
+    if(res){
+      if(res.player==='T'){
+        scores.T++; speak("It's a tie! Try again.");
+      } else {
+        scores[res.player]++;
+        res.line.forEach(idx=>cells[idx].classList.add('win'));
+        speak(`${res.player} wins!`);
+      }
+      render();
+      return;
+    }
+    turn = turn==='X' ? 'O' : 'X';
+    speak(`${turn} turn`);
+    if(vsCpu && turn==='O') setTimeout(cpuMove, 350);
+  }
+
+  function cpuMove(){
+    const idxWin = findBest('O'); if(idxWin!==null) return mark(idxWin);
+    const idxBlock = findBest('X'); if(idxBlock!==null) return mark(idxBlock);
+    if(board[4]===null) return mark(4);
+    const empty = available();
+    const corners = empty.filter(i=>[0,2,6,8].includes(i));
+    const pool = corners.length? corners: empty;
+    const choice = pool[Math.floor(Math.random()*pool.length)];
+    if(choice!==undefined) mark(choice);
+  }
+  function findBest(player){
+    for(const [a,b,c] of wins){
+      const line = [a,b,c];
+      const marks = line.map(i=>board[i]);
+      const countP = marks.filter(m=>m===player).length;
+      const countEmpty = line.filter(i=>board[i]===null).length;
+      if(countP===2 && countEmpty===1){ return line.find(i=>board[i]===null); }
+    }
+    return null;
+  }
+
+  function newRound(){ board = Array(9).fill(null); turn='X'; speak('X goes first!'); render(); }
+  function clearScores(){ scores = {X:0, O:0, T:0}; newRound(); }
+
+  boardEl?.addEventListener('click', (e)=>{
+    const cell = e.target.closest('.cell'); if(!cell) return;
+    const i = Number(cell.dataset.i); mark(i);
+  });
+  btnReset?.addEventListener('click', newRound);
+  btnClear?.addEventListener('click', clearScores);
+  mode2p?.addEventListener('click', ()=> setMode(false));
+  modeCpu?.addEventListener('click', ()=> setMode(true));
+
+  function handlePick(input, player){
+    const file = input?.files && input.files[0]; if(!file) return;
+    const reader = new FileReader();
+    reader.onload = e => { const url = e.target.result; try{ localStorage.setItem('avatar'+player, url);}catch(_){} setAvatar(player, url); render(); };
+    reader.readAsDataURL(file); input.value='';
+  }
+  btnPickX?.addEventListener('click', ()=> pickX?.click());
+  btnPickO?.addEventListener('click', ()=> pickO?.click());
+  pickX?.addEventListener('change', ()=> handlePick(pickX, 'X'));
+  pickO?.addEventListener('change', ()=> handlePick(pickO, 'O'));
+
+  // Camera
+  let camStream=null, camTarget='X', capturedData='';
+  async function openCamera(target){
+    camTarget = target; capturedData=''; if(btnUse) btnUse.disabled = true; if(camCanvas) camCanvas.hidden = true;
+    try{
+      camStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode:'user' }, audio:false });
+      if(camVideo) camVideo.srcObject = camStream;
+      await camVideo?.play?.();
+      camModal?.classList.add('open');
+    }catch(err){ alert('Camera not available. You can upload a photo instead.'); }
+  }
+  function closeCamera(){ if(camStream){ camStream.getTracks().forEach(t=>t.stop()); camStream=null; } camModal?.classList.remove('open'); }
+  function snap(){
+    const w = camVideo?.videoWidth||0, h = camVideo?.videoHeight||0; if(!w||!h) return;
+    camCanvas.width = w; camCanvas.height = h; const ctx = camCanvas.getContext('2d');
+    ctx.drawImage(camVideo, 0, 0, w, h); camCanvas.hidden = false;
+    capturedData = camCanvas.toDataURL('image/jpeg', 0.9);
+    if(btnUse) btnUse.disabled = !capturedData;
+  }
+  function useCapture(){ if(!capturedData) return; try{ localStorage.setItem('avatar'+camTarget, capturedData);}catch(_){} setAvatar(camTarget, capturedData); render(); closeCamera(); }
+
+  btnCamX?.addEventListener('click', ()=> openCamera('X'));
+  btnCamO?.addEventListener('click', ()=> openCamera('O'));
+  btnSnap?.addEventListener('click', snap);
+  btnUse?.addEventListener('click', useCapture);
+  btnClose?.addEventListener('click', closeCamera);
+
+  function saveName(which, val){ try{ localStorage.setItem('name'+which, val);}catch(_){} render(); }
+  nameX?.addEventListener('input', ()=> saveName('X', nameX.value.trim()||'Player X'));
+  nameO?.addEventListener('input', ()=> saveName('O', nameO.value.trim()||'Player O'));
+
+  try{
+    const axSaved = localStorage.getItem('avatarX'); if(axSaved) setAvatar('X', axSaved);
+    const aoSaved = localStorage.getItem('avatarO'); if(aoSaved) setAvatar('O', aoSaved);
+    const nx = localStorage.getItem('nameX'); if(nx && nameX) nameX.value = nx;
+    const no = localStorage.getItem('nameO'); if(no && nameO) nameO.value = no;
+  }catch(_){ }
+
+  try{ render(); }catch(e){ console.error(e); }
+})();
+</script>
+</body>
+</html>

@@ -1168,8 +1168,6 @@
 </div>
 </div>
 </div>
-
-
 <!--
   Proxy-aware loader for NHL data (images + season stats)
   HOW TO USE:
@@ -1373,6 +1371,97 @@
     lb.addEventListener('click', (e)=>{ if (e.target === lb) { lb.classList.remove('active'); document.body.style.overflow='auto'; }});
   }
   document.addEventListener('keydown', (e)=>{ if (e.key === 'Escape') { lb?.classList.remove('active'); document.body.style.overflow='auto'; }});
+})();
+</script>
+
+<script>
+// --- Patch: switch to NHL WEB 'player landing' (per-season stats) and robust ID search ---
+(function(){
+  const PROXY = 'https://pederson-neely.ariswinkleman.workers.dev';
+  const NHL_WEB  = `${PROXY}/nhl-web`;
+  const NHL_STAT = `${PROXY}/nhl-stats`; // kept for fallback, but primary is landing
+  const HEADSHOT = (id, size=168) => `https://cms.nhl.bamgrid.com/images/headshots/current/${size}x${size}/${id}.jpg`;
+
+  // Prefer landing endpoint for season-by-season stats (includes team and per-season totals)
+  window.getSeasonStats = async function(name){
+    const id = (window.PLAYER_ID && window.PLAYER_ID[name]) || await window.findNhlPersonId(name);
+    if (!id) throw new Error("Couldn't resolve player ID.");
+
+    // 1) Try landing endpoint
+    try{
+      const resp = await fetch(`${NHL_WEB}/v1/player/${id}/landing`, {credentials:'omit'});
+      if (resp.ok){
+        const j = await resp.json();
+        // Some variants use 'seasons' or 'seasonTotals'
+        const seasons = j?.seasons || j?.seasonTotals || [];
+        const rows = seasons.map(s => {
+          // normalize fields
+          const season = (s.seasonId || s.season || '').toString();
+          const team = s.teamName || s.teamAbbrev || s.team || '';
+          const gp = s.gamesPlayed ?? s.gp ?? s.games ?? 0;
+          const g  = s.goals ?? s.g ?? 0;
+          const a  = s.assists ?? s.a ?? 0;
+          const pim= s.pim ?? 0;
+          const pm = (typeof s.plusMinus === 'number') ? s.plusMinus : undefined;
+
+          function seasonPretty(y8){ return y8 && y8.length===8 ? `${y8.slice(0,4)}-${y8.slice(4)}` : (y8||''); }
+          return { season: seasonPretty(season), team, gp, g, a, pim, pm };
+        }).filter(r => r.gp); // keep rows with games
+        if (rows.length) return rows;
+      }
+    }catch(e){ /* continue to fallback */ }
+
+    // 2) Fallback to stats yearByYear if landing failed completely
+    try{
+      const resp = await fetch(`${NHL_STAT}/api/v1/people/${id}/stats?stats=yearByYear`);
+      if (resp.ok){
+        const j = await resp.json();
+        const splits = j?.stats?.[0]?.splits || [];
+        const nhl = splits.filter(s => (s.league?.name||'').toLowerCase().includes('national hockey league'));
+        if (nhl.length){
+          const rows = nhl.map(s => ({
+            season: (s.season && (s.season.slice(0,4)+'-'+s.season.slice(4))) || '',
+            team: s.team?.name || '',
+            gp: s.stat?.games ?? 0,
+            g:  s.stat?.goals ?? 0,
+            a:  s.stat?.assists ?? 0,
+            pim: s.stat?.pim ?? 0,
+            pm:  s.stat?.plusMinus
+          }));
+          return rows;
+        }
+      }
+    }catch(e){}
+
+    throw new Error("No stats available from landing or stats API.");
+  };
+
+  // More robust ID search: try NHL web search first (works even when stats origin is flaky)
+  window.findNhlPersonId = async function(name){
+    // api-web search
+    try{
+      const r = await fetch(`${NHL_WEB}/search/player?culture=en-us&limit=10&q=${encodeURIComponent(name)}`);
+      if (r.ok){
+        const j = await r.json();
+        const hit = (j?.players||[]).find(p => (p?.name||'').toLowerCase() === name.toLowerCase()) || (j?.players||[])[0];
+        if (hit?.id) return hit.id;
+      }
+    }catch(e){}
+
+    // fallback: stats people (may be unreliable from some edges)
+    try{
+      const r = await fetch(`${NHL_STAT}/api/v1/people?fullName=${encodeURIComponent(name)}`);
+      if (r.ok){
+        const j = await r.json();
+        return j?.people?.[0]?.id ?? null;
+      }
+    }catch(e){}
+
+    return null;
+  };
+
+  // Quick self-test in console
+  console.log('[Patch] Using /v1/player/{id}/landing for season stats');
 })();
 </script>
 </body>

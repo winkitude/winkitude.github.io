@@ -1373,7 +1373,6 @@
   document.addEventListener('keydown', (e)=>{ if (e.key === 'Escape') { lb?.classList.remove('active'); document.body.style.overflow='auto'; }});
 })();
 </script>
-
 <script>
 // --- Patch: switch to NHL WEB 'player landing' (per-season stats) and robust ID search ---
 (function(){
@@ -1462,6 +1461,85 @@
 
   // Quick self-test in console
   console.log('[Patch] Using /v1/player/{id}/landing for season stats');
+})();
+</script>
+
+<script>
+// --- FINAL PATCH: Use ONLY NHL Web search + player landing (no Stats API calls) ---
+(function(){
+  
+  const PROXY   = 'https://pederson-neely.ariswinkleman.workers.dev';
+  const NHL_WEB = `${PROXY}/nhl-web`;
+  const HEADSHOT = (id, size=168) => `${PROXY}/img/headshots/current/${size}x${size}/${id}.jpg`;
+  const PLACEHOLDER = 'https://via.placeholder.com/168?text=No+Image';
+
+
+  // Optional hardcoded IDs to speed up
+  window.PLAYER_ID = Object.assign(window.PLAYER_ID || {}, {
+    "Cam Neely": 8449812,
+    "Barry Pederson": 8450271,
+    "Glen Wesley": 8452371,
+    "Kyle McLaren": 8462040,
+    "Sergei Samsonov": 8466035,
+    "Jeff Hackett": 8447449,
+    "Brad Boyes": 8468504,
+    "Milan Lucic": 8473473,
+    "Martin Jones": 8474889,
+    "Jeff Jillson": 8467887,
+    "Marty Reasoner": 8464967,
+    "Yan Stastny": 8470223,
+    "Dennis Wideman": 8469770,
+    "Nathan Horton": 8470596,
+    "Gregory Campbell": 8470169
+  });
+
+  async function fetchJSON(url, {timeoutMs=10000} = {}){
+    const ctrl = new AbortController();
+    const t = setTimeout(()=>ctrl.abort(), timeoutMs);
+    try{
+      const res = await fetch(url, {signal: ctrl.signal, credentials:'omit'});
+      if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
+      return await res.json();
+    } finally { clearTimeout(t); }
+  }
+
+  // Robust ID finder using api-web search
+  window.findNhlPersonId = async function(name){
+    const j = await fetchJSON(`${NHL_WEB}/v1/search/player?culture=en-us&limit=10&q=${encodeURIComponent(name)}`);
+    const lower = name.toLowerCase();
+    const hit = (j?.players||[]).find(p => (p?.name||'').toLowerCase() === lower) || (j?.players||[])[0];
+    return hit?.id || null;
+  };
+
+  // Season-by-season stats from landing
+  window.getSeasonStats = async function(name){
+    const id = (window.PLAYER_ID && window.PLAYER_ID[name]) || await window.findNhlPersonId(name);
+    if (!id) throw new Error("Couldn't resolve player ID.");
+    const j = await fetchJSON(`${NHL_WEB}/v1/player/${id}/landing`);
+    const seasons = j?.seasons || j?.seasonTotals || [];
+    const rows = seasons.map(s => {
+      const season8 = (s.seasonId || s.season || '').toString();
+      const season = season8 && season8.length===8 ? `${season8.slice(0,4)}-${season8.slice(4)}` : (season8||'');
+      const team = s.teamName || s.teamAbbrev || s.team || '';
+      const gp = s.gamesPlayed ?? s.gp ?? s.games ?? 0;
+      const g  = s.goals ?? s.g ?? 0;
+      const a  = s.assists ?? s.a ?? 0;
+      const pim= s.pim ?? 0;
+      const pm = (typeof s.plusMinus === 'number') ? s.plusMinus : undefined;
+      return { season, team, gp, g, a, pim, pm };
+    }).filter(r => r.gp);
+    if (!rows.length) throw new Error('No NHL seasons found on landing.');
+    return rows;
+  };
+
+  // Photo resolver (headshot CDN by NHL ID, fallback to existing thumb/placeholder)
+  window.getPlayerPhotoUrl = async function(name, fallbackThumb){
+    const id = (window.PLAYER_ID && window.PLAYER_ID[name]) || await window.findNhlPersonId(name);
+    if (id) return HEADSHOT(id, 168);
+    return fallbackThumb || PLACEHOLDER;
+  };
+
+  console.log('[Landing-only] Using api-web search + player landing endpoints only.');
 })();
 </script>
 </body>

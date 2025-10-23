@@ -1193,20 +1193,24 @@
         </div>
     </div>
 
-    <script>
+   <script>
 /* --- NHL API helpers --- */
 const NHL_API = 'https://statsapi.web.nhl.com/api/v1';
 const HEADSHOT = (id, size = 168) =>
   `https://cms.nhl.bamgrid.com/images/headshots/current/${size}x${size}/${id}.jpg`;
+const PLACEHOLDER = 'https://cms.nhl.bamgrid.com/images/headshots/current/168x168/skater.jpg';
+
+/* Known name fixes for NHL API lookups */
+const NAME_FIXES = new Map([
+  ['Johnathan Aitken', 'Jonathan Aitken'],
+]);
 
 const playerData = {
-  // Keep your existing entries, but add fullName for reliable lookup.
-  // Optional: add known nhlId for speed (skips lookup).
   'barry-pederson': { fullName: 'Barry Pederson', position: 'Center' },
   'cam-neely': { fullName: 'Cam Neely', position: 'Right Wing' },
   'glen-wesley': { fullName: 'Glen Wesley', position: 'Defense' },
   'kyle-mclaren': { fullName: 'Kyle McLaren', position: 'Defense' },
-  'johnathan-aitken': { fullName: 'Johnathan Aitken', position: 'Defense' },
+  'johnathan-aitken': { fullName: 'Johnathan Aitken', position: 'Defense' }, // fixed in code
   'sergei-samsonov': { fullName: 'Sergei Samsonov', position: 'Left Wing' },
   'jeff-jillson': { fullName: 'Jeff Jillson', position: 'Defense' },
   'jeff-hackett': { fullName: 'Jeff Hackett', position: 'Goalie' },
@@ -1224,50 +1228,59 @@ const playerData = {
   'sean-kuraly': { fullName: 'Sean Kuraly', position: 'Center' },
   'trent-frederic': { fullName: 'Trent Frederic', position: 'Center' },
   'andrew-peeke': { fullName: 'Andrew Peeke', position: 'Defense' },
-  'shane-lachance': { fullName: 'Shane Lachance', position: 'Left Wing' }, // prospect; may not exist in API
-  'maximus-wanner': { fullName: 'Maximus Wanner', position: 'Defense' },   // prospect; may not exist in API
-  'william-moore': { fullName: 'William Moore', position: 'Forward' }      // prospect; may not exist in API
+  'shane-lachance': { fullName: 'Shane Lachance', position: 'Left Wing' },
+  'maximus-wanner': { fullName: 'Maximus Wanner', position: 'Defense' },
+  'william-moore': { fullName: 'William Moore', position: 'Forward' }
 };
 
-// Cache to avoid duplicate network calls
+// Cache
 const cache = {
   idByName: new Map(),      // fullName -> nhlId
   statsById: new Map()      // nhlId -> splits[]
 };
 
-async function getNhlId(fullName) {
-  if (!fullName) return null;
+async function getNhlId(fullNameRaw) {
+  if (!fullNameRaw) return null;
+  const fullName = NAME_FIXES.get(fullNameRaw) || fullNameRaw;
   if (cache.idByName.has(fullName)) return cache.idByName.get(fullName);
 
-  const url = `${NHL_API}/people?fullName=${encodeURIComponent(fullName)}`;
-  const res = await fetch(url);
-  if (!res.ok) return null;
-
-  const data = await res.json();
-  const person = (data.people || [])[0];
-  const id = person ? person.id : null;
-  cache.idByName.set(fullName, id);
-  return id;
+  try {
+    const url = `${NHL_API}/people?fullName=${encodeURIComponent(fullName)}`;
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`people lookup failed: ${res.status}`);
+    const data = await res.json();
+    const person = (data.people || [])[0];
+    const id = person ? person.id : null;
+    cache.idByName.set(fullName, id);
+    return id;
+  } catch (err) {
+    console.warn('NHL ID lookup error:', err);
+    cache.idByName.set(fullName, null);
+    return null;
+  }
 }
 
 async function getYearByYearStats(nhlId) {
   if (!nhlId) return [];
   if (cache.statsById.has(nhlId)) return cache.statsById.get(nhlId);
 
-  const url = `${NHL_API}/people/${nhlId}/stats?stats=yearByYear`;
-  const res = await fetch(url);
-  if (!res.ok) return [];
-
-  const data = await res.json();
-  const splits = (((data.stats || [])[0] || {}).splits || [])
-    // NHL seasons only
-    .filter(s => s.league && s.league.name === 'NHL');
-  cache.statsById.set(nhlId, splits);
-  return splits;
+  try {
+    const url = `${NHL_API}/people/${nhlId}/stats?stats=yearByYear`;
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`stats failed: ${res.status}`);
+    const data = await res.json();
+    const splits = (((data.stats || [])[0] || {}).splits || [])
+      .filter(s => s.league && s.league.name === 'NHL');
+    cache.statsById.set(nhlId, splits);
+    return splits;
+  } catch (err) {
+    console.warn('NHL stats error:', err);
+    cache.statsById.set(nhlId, []);
+    return [];
+  }
 }
 
 function seasonLabel(season) {
-  // "19851986" -> "1985–86"
   if (!season || season.length !== 8) return season || '';
   const y1 = season.slice(0, 4);
   const y2 = season.slice(4);
@@ -1325,69 +1338,69 @@ function renderSeasonRows(container, splits, playerPosition) {
   });
 }
 
-/* --- Lightbox + event wiring (modified) --- */
+/* --- Lightbox + event wiring (robust) --- */
 
-async function openLightbox(playerKey) {
-  const meta = playerData[playerKey];
-  if (!meta) return;
-
-  // Resolve NHL ID
-  const nhlId = meta.nhlId || await getNhlId(meta.fullName);
-  meta.nhlId = nhlId || null;
-
-  // Update header text
-  document.getElementById('lightbox-name').textContent = meta.fullName || '';
-  document.getElementById('lightbox-position').textContent = meta.position || '';
-
-  // Swap headshot to official NHL headshot if we have an id; otherwise keep current image in the card
-  const headshotEl = document.getElementById('lightbox-headshot');
-  if (nhlId) {
-    headshotEl.src = HEADSHOT(nhlId, 168);
-    headshotEl.alt = meta.fullName;
-  } else {
-    // fallback: try to read the thumbnail from the clicked item
-    const thumb = document.querySelector(`.player-item[data-player="${playerKey}"] img.player-headshot`);
-    headshotEl.src = thumb ? thumb.src : '';
-    headshotEl.alt = meta.fullName || '';
-  }
-
-  // Loading state
-  const statsGrid = document.getElementById('stats-grid');
-  statsGrid.innerHTML = `<div class="loading-stats">Loading season-by-season stats…</div>`;
-
-  // Fetch and render per-season stats
-  const splits = nhlId ? await getYearByYearStats(nhlId) : [];
-  renderSeasonRows(statsGrid, splits, meta.position);
-
-  // Show lightbox
+function showLightbox() {
   document.getElementById('lightbox').classList.add('active');
   document.body.style.overflow = 'hidden';
 }
-
 function closeLightbox() {
   document.getElementById('lightbox').classList.remove('active');
   document.body.style.overflow = 'auto';
 }
+window.closeLightbox = closeLightbox; // keep button onclick working
 
-// Close lightbox when clicking outside content
+async function openLightbox(playerKey, clickedThumb) {
+  const meta = playerData[playerKey] || {};
+  const displayName = meta.fullName || (clickedThumb?.closest('.player-item')?.querySelector('.player-name')?.textContent?.trim()) || '';
+  const position = meta.position || '';
+
+  // Populate header immediately
+  const headshotEl = document.getElementById('lightbox-headshot');
+  const fallbackSrc = clickedThumb?.src || PLACEHOLDER;
+  headshotEl.src = fallbackSrc;
+  headshotEl.alt = displayName;
+  headshotEl.onerror = () => { headshotEl.src = PLACEHOLDER; };
+
+  document.getElementById('lightbox-name').textContent = displayName;
+  document.getElementById('lightbox-position').textContent = position;
+
+  const statsGrid = document.getElementById('stats-grid');
+  statsGrid.innerHTML = `<div class="loading-stats">Loading season-by-season stats…</div>`;
+
+  // Open immediately (don’t wait on network)
+  showLightbox();
+
+  // Resolve NHL ID + stats in background
+  const nhlId = meta.nhlId || await getNhlId(displayName);
+  if (nhlId) {
+    // swap to official headshot (if available)
+    headshotEl.src = HEADSHOT(nhlId, 168);
+    headshotEl.onerror = () => { headshotEl.src = fallbackSrc || PLACEHOLDER; };
+  }
+
+  const splits = nhlId ? await getYearByYearStats(nhlId) : [];
+  renderSeasonRows(statsGrid, splits, position);
+}
+
+/* Event delegation (safer if nodes change) */
+document.addEventListener('click', (e) => {
+  const item = e.target.closest('.player-item[data-player]');
+  if (!item) return;
+  const key = item.getAttribute('data-player');
+  const thumb = item.querySelector('img.player-headshot');
+  openLightbox(key, thumb);
+});
+
+/* Close handlers */
 document.getElementById('lightbox').addEventListener('click', function(e) {
   if (e.target === this) closeLightbox();
 });
-
-// Close with Escape
 document.addEventListener('keydown', function(e) {
   if (e.key === 'Escape') closeLightbox();
 });
 
-// Attach click handlers to all player items
-document.querySelectorAll('.player-item[data-player]').forEach(item => {
-  item.addEventListener('click', function() {
-    const playerKey = this.getAttribute('data-player');
-    openLightbox(playerKey);
-  });
-});
-
-/* Keep your IntersectionObserver code as-is (or copy from your existing file) */
+/* Reveal-on-scroll */
 const observerOptions = { threshold: 0.3, rootMargin: '0px 0px -100px 0px' };
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {

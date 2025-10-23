@@ -194,3 +194,24 @@ html, body { max-width: 100%; overflow-x: hidden; }
     object-fit: contain;
   }
 }
+
+
+
+/* Keep each side to its content width */
+.site-header .wrap { display: flex; justify-content: space-between; align-items: center; }
+.masthead, .contact-icons { flex: 0 0 auto; }
+
+/* Make the masthead link only as wide as its text */
+.masthead a { display: inline-block; position: relative; }
+
+/* Ensure icons sit above any accidental overlays */
+.contact-icons { position: relative; z-index: 2; }
+.contact-icons a { display: inline-flex; align-items: center; }
+
+
+/* If you discover a pseudo-element or header background overlaying, ignore clicks on it */
+.site-header::before,
+.site-header::after { pointer-events: none; }
+
+/* (Optional) belt-and-suspenders: allow clicks on the SVG itself */
+.contact-icons svg { pointer-events: auto; cursor: pointer; }

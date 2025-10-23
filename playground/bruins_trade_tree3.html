@@ -1463,16 +1463,13 @@
   console.log('[Patch] Using /v1/player/{id}/landing for season stats');
 })();
 </script>
-
 <script>
 // --- FINAL PATCH: Use ONLY NHL Web search + player landing (no Stats API calls) ---
 (function(){
-  
   const PROXY   = 'https://pederson-neely.ariswinkleman.workers.dev';
   const NHL_WEB = `${PROXY}/nhl-web`;
-  const HEADSHOT = (id, size=168) => `${PROXY}/img/headshots/current/${size}x${size}/${id}.jpg`;
+  const HEADSHOT = (id, size=168) => `https://cms.nhl.bamgrid.com/images/headshots/current/${size}x${size}/${id}.jpg`;
   const PLACEHOLDER = 'https://via.placeholder.com/168?text=No+Image';
-
 
   // Optional hardcoded IDs to speed up
   window.PLAYER_ID = Object.assign(window.PLAYER_ID || {}, {
@@ -1540,6 +1537,35 @@
   };
 
   console.log('[Landing-only] Using api-web search + player landing endpoints only.');
+})();
+</script>
+
+<script>
+// --- Image patch: prefer TheSportsDB -> card thumbnail -> placeholder (avoid BAM headshots) ---
+(function(){
+  const PLACEHOLDER = 'https://via.placeholder.com/168?text=No+Image';
+
+  async function sportsdbUrlByName(name){
+    try{
+      const r = await fetch(`https://www.thesportsdb.com/api/v1/json/3/searchplayers.php?p=${encodeURIComponent(name)}`, {mode:'cors'});
+      const j = await r.json();
+      const p = j && j.player && j.player[0];
+      if (!p) return null;
+      // prefer transparent cutout, then thumb, then fanart
+      return p.strCutout || p.strThumb || p.strRender || null;
+    }catch(e){
+      return null;
+    }
+  }
+
+  // Override the global helper used by our lightbox
+  window.getPlayerPhotoUrl = async function(name, fallbackThumb){
+    const u = await sportsdbUrlByName(name);
+    if (u) return u;
+    return fallbackThumb || PLACEHOLDER;
+  };
+
+  console.log('[Images] Using TheSportsDB for player photos (no BAM CDN).');
 })();
 </script>
 </body>

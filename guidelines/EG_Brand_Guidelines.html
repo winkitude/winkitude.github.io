@@ -1,0 +1,332 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Eurasia Group — Brand Guidelines (v2)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --eg-navy:#00205B; --eg-blue-1:#1D4F91; --eg-blue-2:#3A5DAE; --eg-cyan:#00A3E0; --eg-gray-53:#8D9092;
+      --eg-aqua:#005A70; --eg-lightb:#25CCD3; --eg-purple1:#5F259F; --eg-purple2:#7D55C7; --eg-darkgreen:#658D18;
+      --eg-lightgreen:#97D700; --eg-dirtygreen:#949300; --eg-lime:#C4D600; --eg-gold:#FFCD00; --eg-brown:#D19000;
+      --eg-orange1:#FF6900; --eg-orange2:#DC582A; --eg-red1:#EF3340; --eg-red2:#BA0C2F;
+      --bg:#ffffff; --ink:#0f172a; --ink-2:#334155; --border:#e5e7eb; --maxw:1200px; --radius:14px;
+      --shadow:0 6px 24px rgba(0,0,0,.06); --focus:0 0 0 3px rgba(0,163,224,.35);
+    }
+    *{box-sizing:border-box} html,body{height:100%}
+    body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;color:var(--ink);background:var(--bg);line-height:1.55}
+    .sitehead{position:sticky;top:0;z-index:10;backdrop-filter:saturate(150%) blur(8px);background:rgba(255,255,255,.8);border-bottom:1px solid var(--border)}
+    .sitehead .inner{max-width:var(--maxw);margin:0 auto;display:flex;align-items:center;gap:16px;padding:12px 20px}
+    .branddot{width:14px;height:14px;border-radius:50%;background:var(--eg-navy)} .brandtitle{font-weight:700;letter-spacing:.2px}
+    .version{margin-left:auto;color:var(--ink-2);font-size:12px}
+    .wrap{display:grid;grid-template-columns:300px 1fr;min-height:100vh}
+    @media (max-width:1000px){.wrap{grid-template-columns:1fr}}
+    .sidebar{border-right:1px solid var(--border);padding:20px;position:sticky;top:49px;height:calc(100vh - 49px);overflow:auto;background:#fafbfc}
+    @media (max-width:1000px){.sidebar{position:static;height:auto}}
+    .navlabel{margin:16px 0 8px;font-weight:700;font-size:12px;text-transform:uppercase;color:var(--ink-2);letter-spacing:.08em}
+    .snav a{display:block;padding:10px 12px;margin:4px 0;border-radius:10px;color:var(--ink);text-decoration:none;border:1px solid transparent}
+    .snav a:hover{background:rgba(0,32,91,.06)} .snav a:focus{outline:none;box-shadow:var(--focus);border-color:transparent}
+    main{padding:24px;max-width:var(--maxw);width:100%;margin:0 auto}
+    .card{border:1px solid var(--border);border-radius:var(--radius);padding:20px;background:#fff;box-shadow:var(--shadow)}
+    .lede{color:var(--ink-2);margin-top:6px}
+    .grid{display:grid;gap:16px} .cols-2{grid-template-columns:repeat(2,1fr)} .cols-3{grid-template-columns:repeat(3,1fr)} .cols-4{grid-template-columns:repeat(4,1fr)}
+    @media (max-width:1000px){.cols-2,.cols-3,.cols-4{grid-template-columns:1fr}}
+    .swatch{border:1px solid var(--border);border-radius:12px;overflow:hidden;background:#fff}
+    .chip{height:80px} .meta{padding:12px;font-size:13px;display:grid;gap:2px}
+    .badge{font-size:11px;padding:2px 6px;border-radius:6px;border:1px solid var(--border);display:inline-block}
+    .pass{background:#e8f7ee;border-color:#b5e3c8} .fail{background:#fde8ea;border-color:#f5c2c7}
+    .usage{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media (max-width:1000px){.usage{grid-template-columns:1fr}}
+    .do,.dont{border:1px solid var(--border);border-radius:12px;overflow:hidden;background:#fff}
+    .do header,.dont header{padding:8px 12px;font-weight:700;font-size:13px} .do header{background:#e8f7ee}.dont header{background:#fde8ea}
+    .do .body,.dont .body{padding:16px}
+    /* Clean media boxes (no pattern) */
+    .example{min-height:140px;border:1px solid var(--border);border-radius:10px;background:#fff;display:flex;align-items:center;justify-content:center;color:var(--ink-2);padding:10px;margin:10px 0}
+    .example img{max-width:100%;max-height:100%;object-fit:contain;display:block}
+    /* Category sizing */
+    .example--logo{height:200px}
+    .example--diagram{height:240px}
+    .example--chart{height:240px}
+    .example--dont{height:170px}
+    table{width:100%;border-collapse:collapse;font-size:14px}
+    th,td{border-bottom:1px solid var(--border);text-align:left;padding:10px 8px} th{color:var(--ink-2);font-weight:600}
+    .btn{display:inline-block;padding:10px 14px;border-radius:10px;border:1px solid var(--border);text-decoration:none;color:var(--eg-navy)}
+    .btn:focus{outline:none;box-shadow:var(--focus)}
+    .navy{background:var(--eg-navy)}.blue1{background:var(--eg-blue-1)}.blue2{background:var(--eg-blue-2)}.cyan{background:var(--eg-cyan)}.gray53{background:var(--eg-gray-53)}
+    .aqua{background:var(--eg-aqua)}.lightb{background:var(--eg-lightb)}.purple1{background:var(--eg-purple1)}.purple2{background:var(--eg-purple2)}
+    .darkgreen{background:var(--eg-darkgreen)}.lightgreen{background:var(--eg-lightgreen)}.dirtygreen{background:var(--eg-dirtygreen)}.lime{background:var(--eg-lime)}
+    .gold{background:var(--eg-gold)}.brown{background:var(--eg-brown)}.orange1{background:var(--eg-orange1)}.orange2{background:var(--eg-orange2)}
+    .red1{background:var(--eg-red1)}.red2{background:var(--eg-red2)}
+    h2{margin:8px 0 6px} h3{margin:0 0 8px}
+    .kicker{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-2);margin-bottom:4px}
+    .hero{border:1px solid var(--border);border-radius:12px;height:400px;display:flex;align-items:center;justify-content:center;color:var(--ink-2);background:#fff;overflow:hidden}
+    .hero img{width:100%;height:100%;object-fit:cover;display:block;border-radius:12px}
+    .hero.hero--contain img{object-fit:contain;background:#fff}
+    .font-sample{padding:12px;border:1px solid var(--border);border-radius:10px}
+    .font-acumin{font-family:"acumin-pro","Acumin Pro","Inter",Arial,Helvetica,sans-serif}
+    .font-source{font-family:"source-serif-pro","Source Serif","Georgia","Times New Roman",serif}
+  </style>
+</head>
+<body>
+  <header class="sitehead">
+    <div class="inner">
+      <span class="branddot"></span>
+      <div class="brandtitle">Eurasia Group — Brand Guidelines</div>
+      <div class="version">v2 • October 2025</div>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <aside class="sidebar">
+      <nav class="snav">
+        <div class="navlabel">Start here</div>
+        <a href="#start">Overview</a>
+        <a href="#downloads">Downloads</a>
+        <div class="navlabel">Identity</div>
+        <a href="#logo">Logo system</a>
+        <a href="#color">Color system</a>
+        <a href="#type">Typography</a>
+        <div class="navlabel">Data</div>
+        <a href="#charts">Charts & data viz</a>
+      </nav>
+    </aside>
+
+    <main>
+      <!-- START -->
+      <section id="start" class="card">
+        <div class="kicker">Brand overview</div>
+        <h2>Brand overview</h2>
+        <div class="hero"><img src="img/brand-hero.png" alt="Eurasia Group brand highlights"></div>
+        <p>Eurasia Group is the leading global research and advisory firm. We live in an era of volatility and uncertainty, one that generates both risks and opportunities for businesses and investors. The Eurasia Group logo reflects this view by using the shape of our initials to symbolize a fragmented globe. We are committed to helping clients understand and navigate this changing geopolitical landscape and make better informed decisions in an uncertain world.</p>
+        <p>The idea of “politics first” is central to our work. Politics is the lens through which we view the world and the starting point for our interactions with clients. Much has changed as Eurasia Group has expanded, but the politics first approach—and the commitment to analysis that is free of political bias and the influence of private interests—has not.</p>
+        <p class="lede" style="margin-top:12px">This site is the enforceable source of truth for non‑designers and vendors producing EG materials.</p>
+      </section>
+
+      <!-- LOGO -->
+      <section id="logo" class="card" style="margin-top:16px">
+        <div class="kicker">Identity</div>
+        <h2>Logo system</h2>
+        <p class="lede">Use the primary logo wherever possible. Maintain clear space equal to half the logomark square on all sides. Minimum digital size: 24px height.</p>
+
+        <h3>Approved logos</h3>
+        <div class="grid cols-4" style="margin-top:12px">
+          <div class="swatch">
+            <div class="example example--logo"><img src="img/eg_logo_primary_pos.svg" alt="EG primary logo (positive)"></div>
+            <div class="meta"><strong>Primary (positive)</strong><span>img/eg_logo_primary_pos.svg</span></div>
+          </div>
+          <div class="swatch">
+            <div class="example example--logo"><img src="img/eg_logo_primary_rev.svg" alt="EG primary logo (reversed)"></div>
+            <div class="meta"><strong>Primary (reversed)</strong><span>img/eg_logo_primary_rev.svg</span></div>
+          </div>
+          <div class="swatch">
+            <div class="example example--logo"><img src="img/eg_logo_horizontal_pos.svg" alt="EG horizontal logo (positive)"></div>
+            <div class="meta"><strong>Horizontal (positive)</strong><span>img/eg_logo_horizontal_pos.svg</span></div>
+          </div>
+          <div class="swatch">
+            <div class="example example--logo"><img src="img/eg_logo_onecolor_navy.svg" alt="EG one-color navy"></div>
+            <div class="meta"><strong>One‑color (navy/black)</strong><span>img/eg_logo_onecolor_navy.svg</span></div>
+          </div>
+        </div>
+
+        <h3 style="margin-top:16px">With/without tagline</h3>
+        <div class="grid cols-2">
+          <div class="swatch">
+            <div class="example example--logo"><img src="img/eg_logo_primary_pos_tag.svg" alt="EG primary with tagline"></div>
+            <div class="meta"><strong>With tagline</strong><span>img/eg_logo_primary_pos_tag.svg</span></div>
+          </div>
+          <div class="swatch">
+            <div class="example example--logo"><img src="img/eg_logo_primary_pos.svg" alt="EG primary no tagline"></div>
+            <div class="meta"><strong>Without tagline</strong><span>img/eg_logo_primary_pos.svg</span></div>
+          </div>
+        </div>
+
+        <h3 style="margin-top:16px">Clear space & minimum size</h3>
+        <div class="swatch">
+          <div class="example example--diagram"><img src="img/eg_logo_clearspace.png" alt="Logo clear space diagram"></div>
+          <div class="meta">Maintain clearance equal to half the logomark square on all sides; min height 24px.</div>
+        </div>
+
+        <h3 style="margin-top:16px">Incorrect usage</h3>
+        <div class="usage" style="margin-top:12px">
+          <div class="dont">
+            <header>Don't</header>
+            <div class="body">
+              <div class="grid cols-3">
+                <div class="example example--dont"><img src="img/eg_logo_dont_stretch.png" alt="Don't stretch"></div>
+                <div class="example example--dont"><img src="img/eg_logo_dont_recolor.png" alt="Don't recolor"></div>
+                <div class="example example--dont"><img src="img/eg_logo_dont_lowcontrast.png" alt="Don't use on low contrast"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- COLOR -->
+      <section id="color" class="card" style="margin-top:16px">
+        <div class="kicker">Identity</div>
+        <h2>Color system</h2>
+        <p class="lede">Use high‑contrast pairings for text. Reserve cyan/gold/orange for accents and large display elements. Accessibility indicators are calculated for each swatch (text on white).</p>
+
+        <h3>Primary palette</h3>
+        <div class="grid cols-3" style="margin-top:12px">
+          <div class="swatch" data-hex="#00205B">
+            <div class="chip navy"></div>
+            <div class="meta"><strong>Navy</strong><span>#00205B</span><span>RGB 0 32 91</span><span>CMYK 100 93 33 32</span><span class="badge" data-aa>…</span></div>
+          </div>
+          <div class="swatch" data-hex="#1D4F91">
+            <div class="chip blue1"></div>
+            <div class="meta"><strong>Blue 1</strong><span>#1D4F91</span><span>RGB 29 79 145</span><span>CMYK 97 77 14 2</span><span class="badge" data-aa>…</span></div>
+          </div>
+          <div class="swatch" data-hex="#3A5DAE">
+            <div class="chip blue2"></div>
+            <div class="meta"><strong>Blue 2</strong><span>#3A5DAE</span><span>RGB 58 93 174</span><span>CMYK 85 70 0 0</span><span class="badge" data-aa>…</span></div>
+          </div>
+          <div class="swatch" data-hex="#00A3E0">
+            <div class="chip cyan"></div>
+            <div class="meta"><strong>Cyan</strong><span>#00A3E0</span><span>RGB 0 163 224</span><span>CMYK 80 18 0 0</span><span class="badge" data-aa>…</span></div>
+          </div>
+          <div class="swatch" data-hex="#8D9092">
+            <div class="chip gray53"></div>
+            <div class="meta"><strong>Gray 53%</strong><span>#8D9092</span><span>RGB 141 144 146</span><span>CMYK 0 0 0 53</span><span class="badge" data-aa>…</span></div>
+          </div>
+        </div>
+
+        <h3 style="margin-top:16px">Extended palette</h3>
+        <p class="lede">Extended colors support infographics, thematic emphasis, and event branding. Use sparingly; prefer Navy and Blues for core identity. Each swatch shows an accessibility check for small text on white.</p>
+        <div class="grid cols-4" style="margin-top:12px">
+          <div class="swatch" data-hex="#005A70"><div class="chip aqua"></div><div class="meta"><strong>Aqua</strong><span>#005A70</span><span class="badge" data-aa>…</span></div></div>
+          <div class="swatch" data-hex="#25CCD3"><div class="chip lightb"></div><div class="meta"><strong>Light Blue</strong><span>#25CCD3</span><span class="badge" data-aa>…</span></div></div>
+          <div class="swatch" data-hex="#5F259F"><div class="chip purple1"></div><div class="meta"><strong>Purple 1</strong><span>#5F259F</span><span class="badge" data-aa>…</span></div></div>
+          <div class="swatch" data-hex="#7D55C7"><div class="chip purple2"></div><div class="meta"><strong>Purple 2</strong><span>#7D55C7</span><span class="badge" data-aa>…</span></div></div>
+          <div class="swatch" data-hex="#658D18"><div class="chip darkgreen"></div><div class="meta"><strong>Dark Green</strong><span>#658D18</span><span class="badge" data-aa>…</span></div></div>
+          <div class="swatch" data-hex="#97D700"><div class="chip lightgreen"></div><div class="meta"><strong>Light Green</strong><span>#97D700</span><span class="badge" data-aa>…</span></div></div>
+          <div class="swatch" data-hex="#949300"><div class="chip dirtygreen"></div><div class="meta"><strong>Olive</strong><span>#949300</span><span class="badge" data-aa>…</span></div></div>
+          <div class="swatch" data-hex="#C4D600"><div class="chip lime"></div><div class="meta"><strong>Lime</strong><span>#C4D600</span><span class="badge" data-aa>…</span></div></div>
+          <div class="swatch" data-hex="#FFCD00"><div class="chip gold"></div><div class="meta"><strong>Gold</strong><span>#FFCD00</span><span class="badge" data-aa>…</span></div></div>
+          <div class="swatch" data-hex="#D19000"><div class="chip brown"></div><div class="meta"><strong>Brown</strong><span>#D19000</span><span class="badge" data-aa>…</span></div></div>
+          <div class="swatch" data-hex="#FF6900"><div class="chip orange1"></div><div class="meta"><strong>Orange 1</strong><span>#FF6900</span><span class="badge" data-aa>…</span></div></div>
+          <div class="swatch" data-hex="#DC582A"><div class="chip orange2"></div><div class="meta"><strong>Orange 2</strong><span>#DC582A</span><span class="badge" data-aa>…</span></div></div>
+          <div class="swatch" data-hex="#EF3340"><div class="chip red1"></div><div class="meta"><strong>Red 1</strong><span>#EF3340</span><span class="badge" data-aa>…</span></div></div>
+          <div class="swatch" data-hex="#BA0C2F"><div class="chip red2"></div><div class="meta"><strong>Red 2</strong><span>#BA0C2F</span><span class="badge" data-aa>…</span></div></div>
+        </div>
+      </section>
+
+      <!-- TYPE -->
+      <section id="type" class="card" style="margin-top:16px">
+        <div class="kicker">Identity</div>
+        <h2>Typography</h2>
+        <p class="lede">Primary: Acumin Pro. Editorial accent: Source Serif. Microsoft fallback: Arial/Calibri.</p>
+        <table>
+          <thead><tr><th>Role</th><th>Font</th><th>Weights</th><th>Notes</th></tr></thead>
+          <tbody>
+            <tr><td>H1–H2</td><td>Acumin Pro</td><td>Bold / Black</td><td>Tight letter‑spacing at large sizes</td></tr>
+            <tr><td>H3–H6</td><td>Acumin Pro</td><td>Semibold / Bold</td><td>Use consistent scale</td></tr>
+            <tr><td>Body</td><td>Acumin Pro</td><td>Regular / Medium</td><td>16–18px web, 1.5 line height</td></tr>
+            <tr><td>Editorial pull</td><td>Source Serif</td><td>Regular / Bold</td><td>Use sparingly</td></tr>
+            <tr><td>Office docs</td><td>Arial / Calibri</td><td>Regular / Bold</td><td>Fallback where licensing is limited</td></tr>
+          </tbody>
+        </table>
+        <div class="grid cols-2" style="margin-top:12px">
+          <div class="font-sample font-acumin">
+            <strong>Acumin Pro (example)</strong><br>
+            Politics first: clear, direct, and legible. Headlines carry the story; body text supports with analysis.
+          </div>
+          <div class="font-sample font-source">
+            <strong>Source Serif (example)</strong><br>
+            Editorial pull quotes and long‑form accents pair with Acumin for a balanced, authoritative tone.
+          </div>
+        </div>
+        <p style="font-size:12px;color:var(--ink-2);margin-top:8px">Note: To render Acumin Pro and Source Serif via Adobe Fonts, add your kit JS and map families to <code>acumin-pro</code> and <code>source-serif-pro</code>.</p>
+      </section>
+
+      <!-- CHARTS -->
+      <section id="charts" class="card" style="margin-top:16px">
+        <div class="kicker">Data</div>
+        <h2>Charts & data visualization</h2>
+        <p class="lede">Use standardized artboard sizes, font specs, and labeling rules. Colors follow the identity system above.</p>
+
+        <h3>Standard sizes</h3>
+        <table>
+          <thead><tr><th>Context</th><th>Artboard</th><th>Export</th></tr></thead>
+          <tbody>
+            <tr><td>Notes/web embed</td><td>Max width 650px</td><td>PNG 650px wide</td></tr>
+            <tr><td>Slide (half)</td><td>650 × 650px</td><td>PNG 650px square</td></tr>
+            <tr><td>Slide (full)</td><td>1300 × 650px</td><td>PNG 1300×650</td></tr>
+          </tbody>
+        </table>
+
+        <h3 style="margin-top:12px">Type specs</h3>
+        <table>
+          <thead><tr><th>Element</th><th>Spec</th></tr></thead>
+          <tbody>
+            <tr><td>Title</td><td>Arial Bold 18pt (web equivalent 20–22px)</td></tr>
+            <tr><td>Subtitle / Unit</td><td>Arial Italic 16pt</td></tr>
+            <tr><td>Axis & Labels</td><td>Arial Regular 12–14pt</td></tr>
+            <tr><td>Source line</td><td>Arial Regular 10pt</td></tr>
+          </tbody>
+        </table>
+
+        <h3 style="margin-top:12px">Examples</h3>
+        <div class="grid cols-3">
+          <div class="swatch">
+            <div class="example example--chart"><img src="img/chart_example_line.png" alt="Line chart example"></div>
+            <div class="meta"><strong>Line chart</strong><span>img/chart_example_line.png</span></div>
+          </div>
+          <div class="swatch">
+            <div class="example example--chart"><img src="img/chart_example_bar.png" alt="Bar chart example"></div>
+            <div class="meta"><strong>Bar chart</strong><span>img/chart_example_bar.png</span></div>
+          </div>
+          <div class="swatch">
+            <div class="example example--chart"><img src="img/chart_example_map.png" alt="Map example"></div>
+            <div class="meta"><strong>Map</strong><span>img/chart_example_map.png</span></div>
+          </div>
+        </div>
+
+        <h3 style="margin-top:12px">Labeling rules</h3>
+        <ul>
+          <li>Titles are concise, left‑aligned, and descriptive.</li>
+          <li>Always include unit labels and a clear source line.</li>
+          <li>Axis labels in sentence case; avoid overcrowding ticks.</li>
+          <li>Legends above or below the chart, not floating over data.</li>
+        </ul>
+      </section>
+
+      <!-- DOWNLOADS -->
+      <section id="downloads" class="card" style="margin-top:16px">
+        <div class="kicker">Resources</div>
+        <h2>Downloads</h2>
+        <div class="grid cols-2" style="margin-top:12px">
+          <a class="btn" href="#" title="Upload and link the logo package">Logos (SVG/PNG)</a>
+        </div>
+      </section>
+
+      <footer style="margin:24px 0 60px;color:var(--ink-2);font-size:13px">
+        Questions or asset requests? <a class="btn" href="#" aria-label="Contact brand">Contact Brand</a>
+      </footer>
+    </main>
+  </div>
+
+  <script>
+  // Accessibility check for each swatch against white background
+  function hexToRgb(hex){const h=hex.replace('#','');const bigint=parseInt(h,16);return{r:(bigint>>16)&255,g:(bigint>>8)&255,b:bigint&255};}
+  function srgbToLin(c){c/=255;return c<=0.03928?c/12.92:Math.pow((c+0.055)/1.055,2.4);}
+  function relLum({r,g,b}){const R=srgbToLin(r),G=srgbToLin(g),B=srgbToLin(b);return 0.2126*R+0.7152*G+0.0722*B;}
+  function contrast(hex1,hex2){const L1=relLum(hexToRgb(hex1)),L2=relLum(hexToRgb(hex2));const lighter=Math.max(L1,L2),darker=Math.min(L1,L2);return(lighter+0.05)/(darker+0.05);}
+  function labelForRatio(r){const ratio=Math.round(r*100)/100; if(ratio>=7)return{text:`AAA ${ratio}:1`,cls:'pass'}; if(ratio>=4.5)return{text:`AA ${ratio}:1`,cls:'pass'}; if(ratio>=3.0)return{text:`Large only ${ratio}:1`,cls:'fail'}; return{text:`Fail ${ratio}:1`,cls:'fail'};}
+  document.querySelectorAll('.swatch[data-hex]').forEach(sw=>{const hex=sw.getAttribute('data-hex');const badge=sw.querySelector('[data-aa]');if(!badge)return;const r=contrast(hex,'#FFFFFF');const {text,cls}=labelForRatio(r);badge.textContent=text;badge.classList.add(cls);});
+  </script>
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8FK0VXYYGX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-8FK0VXYYGX');
+  </script>
+
+</body>
+</html>

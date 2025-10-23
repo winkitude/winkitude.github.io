@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Bruins Tree — Debug Build</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;margin:0;padding:0;background:#0b1220;color:#e8eefc}
+    .diag{background:#111b33;padding:16px 20px;border-bottom:1px solid #223;position:sticky;top:0;z-index:999}
+    .diag h1{font-size:18px;margin:0 0 8px 0}
+    .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+    .card{background:#0f172a;border:1px solid #23304a;border-radius:10px;padding:10px;font-size:14px}
+    .ok{color:#7ef7c7} .bad{color:#ff9887} .warn{color:#ffd27e}
+    code{background:#152140;border:1px solid #27385e;border-radius:6px;padding:2px 6px}
+    a{color:#9ec5ff}
+    .content{padding:22px}
+    .btn{background:#1e3a8a;color:#fff;border:0;border-radius:8px;padding:8px 10px;cursor:pointer}
+    .small{font-size:12px;opacity:.8}
+    .log{white-space:pre-wrap;background:#0c1224;border:1px solid #223;border-radius:8px;padding:8px;margin-top:8px;max-height:180px;overflow:auto}
+    .tree-placeholder{margin-top:18px;padding:16px;border:1px dashed #3a4b76;border-radius:12px;color:#a8b3cf}
+  </style>
+</head>
+<body>
+  <div class="diag">
+    <h1>Diagnostics</h1>
+    <div class="grid">
+      <div class="card" id="c-proxy"><strong>Proxy Reachable:</strong> <span class="warn">testing…</span></div>
+      <div class="card" id="c-stats"><strong>Sample Stats:</strong> <span class="warn">testing…</span></div>
+      <div class="card" id="c-image"><strong>Headshot Image:</strong> <span class="warn">testing…</span></div>
+      <div class="card" id="c-dom"><strong>Player Items Found:</strong> <span class="warn">testing…</span></div>
+    </div>
+    <div class="small">Worker: <code id="proxyVal"></code></div>
+    <button class="btn small" id="btn-retry">Retry Tests</button>
+    <div class="log" id="log"></div>
+  </div>
+
+  <div class="content">
+    <div class="tree-placeholder">
+      This is the <em>debug</em> build. If the four checks above are all green, your production page should populate. 
+      Upload this file next to your main HTML (e.g., <code>debug.html</code>) and open it on GitHub Pages.
+    </div>
+  </div>
+
+  <script>
+    const PROXY = 'https://pederson-neely.ariswinkleman.workers.dev'; // your worker
+    const NHL_STAT = `${PROXY}/nhl-stats`;
+    const NHL_WEB = `${PROXY}/nhl-web`;
+    const HEADSHOT = (id, size=168)=>`https://cms.nhl.bamgrid.com/images/headshots/current/${size}x${size}/${id}.jpg`;
+
+    const log = (m)=>{ const el=document.getElementById('log'); el.textContent += m + '\\n'; console.log(m); };
+
+    async function testProxy(){
+      document.getElementById('proxyVal').textContent = PROXY;
+      const card = document.getElementById('c-proxy');
+      try{
+        const r = await fetch(`${NHL_STAT}/api/v1/people?fullName=Cam%20Neely`, {mode:'cors'});
+        const j = await r.json();
+        const ok = !!(j && j.people && j.people[0] && j.people[0].id);
+        card.innerHTML = `<strong>Proxy Reachable:</strong> <span class="${ok?'ok':'bad'}">${ok?'OK':'FAILED'}</span>`;
+        log('Proxy test: ' + (ok?'OK':'FAILED'));
+        return ok;
+      }catch(e){
+        card.innerHTML = `<strong>Proxy Reachable:</strong> <span class="bad">FAILED</span>`;
+        log('Proxy error: ' + e);
+        return false;
+      }
+    }
+
+    async function testStats(){
+      const card = document.getElementById('c-stats');
+      try{
+        const id=8449812; // Neely
+        const r = await fetch(`${NHL_STAT}/api/v1/people/${id}/stats?stats=yearByYear`);
+        const j = await r.json();
+        const splits = j?.stats?.[0]?.splits||[];
+        const ok = splits.length>2;
+        card.innerHTML = `<strong>Sample Stats:</strong> <span class="${ok?'ok':'bad'}">${ok?'OK':'FAILED'}</span>`;
+        log('Stats test: ' + (ok?'OK':'FAILED'));
+        return ok;
+      }catch(e){
+        card.innerHTML = `<strong>Sample Stats:</strong> <span class="bad">FAILED</span>`;
+        log('Stats error: ' + e);
+        return false;
+      }
+    }
+
+    async function testImage(){
+      const card = document.getElementById('c-image');
+      try{
+        const url = HEADSHOT(8449812);
+        await new Promise((res,rej)=>{
+          const img = new Image();
+          img.onload = ()=>res();
+          img.onerror = (e)=>rej(e);
+          img.src = url;
+        });
+        card.innerHTML = `<strong>Headshot Image:</strong> <span class="ok">OK</span>`;
+        log('Image test: OK');
+        return true;
+      }catch(e){
+        card.innerHTML = `<strong>Headshot Image:</strong> <span class="bad">FAILED</span>`;
+        log('Image error: ' + e);
+        return false;
+      }
+    }
+
+    async function testDom(){
+      const card = document.getElementById('c-dom');
+      const count = document.querySelectorAll('.player-item[data-player]').length;
+      const ok = count>0;
+      card.innerHTML = `<strong>Player Items Found:</strong> <span class="${ok?'ok':'bad'}">${ok?count+' found':'0 found'}</span>`;
+      log('DOM test: ' + (ok?count+' items':'0 items'));
+      return ok;
+    }
+
+    async function runAll(){
+      document.getElementById('log').textContent='';
+      await testProxy();
+      await testStats();
+      await testImage();
+      await testDom();
+    }
+    runAll();
+    document.getElementById('btn-retry').addEventListener('click', runAll);
+  </script>
+</body>
+</html>

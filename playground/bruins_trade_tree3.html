@@ -1,0 +1,1644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>From Pederson to... Peeke and Wanner</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background: #f5f1e8;
+            color: #2a2a2a;
+            overflow-x: hidden;
+        }
+
+        .header {
+            position: sticky;
+            top: 0;
+            background: #2a2a2a;
+            color: #f5f1e8;
+            padding: 20px;
+            text-align: center;
+            z-index: 100;
+            border-bottom: 4px solid #ffb81c;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .intro {
+            max-width: 700px;
+            margin: 80px auto;
+            padding: 0 30px;
+            text-align: center;
+        }
+
+        .intro h2 {
+            font-size: 42px;
+            margin-bottom: 30px;
+            line-height: 1.2;
+        }
+
+        .intro p {
+            font-size: 20px;
+            line-height: 1.6;
+            color: #555;
+        }
+
+        .timeline-container {
+            position: relative;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 100px 30px;
+        }
+
+        .timeline-line {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: #d4d4d4;
+            transform: translateX(-50%);
+        }
+
+        .trade-event {
+            position: relative;
+            margin-bottom: 180px;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .trade-event.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .date-marker {
+            position: absolute;
+            left: 50%;
+            top: -10px;
+            transform: translateX(-50%);
+            background: #2a2a2a;
+            color: #ffb81c;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 14px;
+            z-index: 2;
+            white-space: nowrap;
+        }
+
+        .trade-icon {
+            position: absolute;
+            left: 50%;
+            top: 35px;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 50px;
+            background: #ffb81c;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            z-index: 2;
+            border: 4px solid #f5f1e8;
+        }
+
+        .trade-icon.draft {
+            background: #4a90e2;
+        }
+
+        .connection-line {
+            position: absolute;
+            left: 50%;
+            top: 85px;
+            width: 3px;
+            height: 70px;
+            background: #ffb81c;
+            transform: translateX(-50%);
+            z-index: 1;
+        }
+
+        .connection-line.draft {
+            background: #4a90e2;
+        }
+
+        .trade-content {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 105px;
+            gap: 40px;
+        }
+
+        .team-box {
+            flex: 1;
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .team-box.left {
+            margin-right: 50px;
+        }
+
+        .team-box.right {
+            margin-left: 50px;
+        }
+
+        .team-box.center {
+            margin: 0 auto;
+            max-width: 500px;
+        }
+
+        .team-name {
+            font-weight: 700;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+            color: #666;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .team-logo {
+            width: 24px;
+            height: 24px;
+            object-fit: contain;
+        }
+
+        .player-item {
+            margin: 12px 0;
+            padding: 10px;
+            background: #f9f9f9;
+            border-radius: 4px;
+            border-left: 3px solid #ffb81c;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .player-item:hover {
+            background: #f0f0f0;
+        }
+
+        .player-item.current-asset {
+            background: #fff3cd;
+            border-left: 3px solid #28a745;
+        }
+
+        .player-item.current-asset:hover {
+            background: #ffe8a1;
+        }
+
+        .player-headshot {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            background: #e0e0e0;
+            flex-shrink: 0;
+        }
+
+        .player-info {
+            flex: 1;
+        }
+
+        .player-name {
+            font-weight: 700;
+            font-size: 16px;
+            margin-bottom: 4px;
+        }
+
+        .player-detail {
+            font-size: 13px;
+            color: #666;
+            line-height: 1.4;
+        }
+
+        .stats-icon {
+            font-size: 20px;
+            color: #666;
+            flex-shrink: 0;
+        }
+
+        .trade-note {
+            margin-top: 20px;
+            padding: 15px;
+            background: #e8f4f8;
+            border-left: 4px solid #4a90e2;
+            border-radius: 4px;
+            font-size: 14px;
+            color: #555;
+            font-style: italic;
+        }
+
+        /* Lightbox styles */
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .lightbox.active {
+            display: flex;
+        }
+
+        .lightbox-content {
+            background: white;
+            border-radius: 12px;
+            max-width: 600px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #2a2a2a;
+            color: white;
+            border: none;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            font-size: 20px;
+            cursor: pointer;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .lightbox-close:hover {
+            background: #ffb81c;
+        }
+
+        .lightbox-header {
+            padding: 30px;
+            border-bottom: 2px solid #f0f0f0;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .lightbox-headshot {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            background: #e0e0e0;
+        }
+
+        .lightbox-player-info h2 {
+            font-size: 28px;
+            margin-bottom: 5px;
+        }
+
+        .lightbox-player-info p {
+            color: #666;
+            font-size: 16px;
+        }
+
+        .lightbox-body {
+            padding: 30px;
+        }
+
+        .stats-section {
+            margin-bottom: 25px;
+        }
+
+        .stats-section h3 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #2a2a2a;
+            border-bottom: 2px solid #ffb81c;
+            padding-bottom: 8px;
+        }
+
+        .season-stats {
+            margin-bottom: 10px;
+            padding: 12px;
+            background: #f9f9f9;
+            border-radius: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+        }
+
+        .season-info {
+            flex: 1;
+        }
+
+        .season-year {
+            font-weight: 700;
+            color: #2a2a2a;
+            margin-bottom: 2px;
+        }
+
+        .season-team {
+            color: #666;
+            font-size: 12px;
+        }
+
+        .season-stats-line {
+            color: #2a2a2a;
+            font-family: 'Courier New', monospace;
+            white-space: nowrap;
+        }
+
+        .loading-stats {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+        }
+
+        .outro {
+            max-width: 700px;
+            margin: 100px auto 80px;
+            padding: 0 30px;
+            text-align: center;
+        }
+
+        .outro h2 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+
+        .outro p {
+            font-size: 18px;
+            line-height: 1.6;
+            color: #555;
+        }
+
+        @media (max-width: 768px) {
+            .trade-content {
+                flex-direction: column;
+            }
+
+            .team-box.left,
+            .team-box.right {
+                margin: 0;
+            }
+
+            .timeline-line {
+                left: 30px;
+            }
+
+            .date-marker,
+            .trade-icon {
+                left: 30px;
+            }
+
+            .connection-line {
+                left: 30px;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>From Pederson to... Peeke and Wanner</h1>
+    </div>
+
+    <div class="intro">
+        <h2>The Trade Tree That Changed the Bruins</h2>
+        <p>In June 1985, the Boston Bruins traded Barry Pederson to Vancouver for Cam Neely and a first-round pick. What happened next is one of the most remarkable trade trees in NHL history.</p>
+    </div>
+
+    <div class="timeline-container">
+        <div class="timeline-line"></div>
+
+        <!-- Trade 1: 1985 -->
+        <div class="trade-event" data-event="1">
+            <div class="date-marker">Jun 6, 1985</div>
+            <div class="trade-icon">⇄</div>
+            <div class="trade-content">
+                <div class="team-box left">
+                    <div class="team-name">
+                        <img src="https://assets.nhle.com/logos/nhl/svg/VAN_light.svg" alt="VAN" class="team-logo">
+                        To Vancouver Canucks
+                    </div>
+                    <div class="player-item" data-player="barry-pederson">
+                        <img src="https://cms.nhl.bamgrid.com/images/headshots/current/168x168/8445482.jpg" alt="Barry Pederson" class="player-headshot">
+                        <div class="player-info">
+                            <div class="player-name">Barry Pederson</div>
+                        </div>
+                        <span class="stats-icon">📊</span>
+                    </div>
+                </div>
+                <div class="team-box right">
+                    <div class="team-name">
+                        <img src="https://assets.nhle.com/logos/nhl/svg/BOS_light.svg" alt="BOS" class="team-logo">
+                        To Boston Bruins
+                    </div>
+                    <div class="player-item" data-player="cam-neely">
+                        <img src="https://cms.nhl.bamgrid.com/images/headshots/current/168x168/8447947.jpg" alt="Cam Neely" class="player-headshot">
+                        <div class="player-info">
+                            <div class="player-name">Cam Neely</div>
+                        </div>
+                        <span class="stats-icon">📊</span>
+                    </div>
+                    <div class="player-item">
+                        <img src="https://cms.nhl.bamgrid.com/images/headshots/current/168x168/skater.jpg" alt="Draft Pick" class="player-headshot">
+                        <div class="player-info">
+                            <div class="player-name">1st round draft pick 1987</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Trade 2: 1987 -->
+        <div class="trade-event" data-event="2">
+            <div class="connection-line draft"></div>
+            <div class="date-marker">Jun 13, 1987</div>
+            <div class="trade-icon draft">📋</div>
+            <div class="trade-content">
+                <div class="team-box center">
+                    <div class="team-name">
+                        <img src="https://assets.nhle.com/logos/nhl/svg/BOS_light.svg" alt="BOS" class="team-logo">
+                        Boston drafts (from Vancouver)
+                    </div>
+                    <div class="player-item" data-player="glen-wesley">
+                        <img src="https://cms.nhl.bamgrid.com/images/headshots/current/168x168/8451539.jpg" alt="Glen Wesley" class="player-headshot">
+                        <div class="player-info">
+                            <div class="player-name">Glen Wesley</div>
+                            <div class="player-detail">1st round (3rd overall)</div>
+                        </div>
+                        <span class="stats-icon">📊</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Trade 3: 1994 -->
+        <div class="trade-event" data-event="3">
+            <div class="connection-line"></div>
+            <div class="date-marker">Aug 26, 1994</div>
+            <div class="trade-icon">⇄</div>
+            <div class="trade-content">
+                <div class="team-box left">
+                    <div class="team-name">
+                        <img src="https://assets.nhle.com/logos/nhl/svg/CAR_light.svg" alt="HFD" class="team-logo">
+                        To Hartford Whalers
+                    </div>
+                    <div class="player-item" data-player="glen-wesley">
+                        <img src="https://cms.nhl.bamgrid.com/images/headshots/current/168x168/8451539.jpg" alt="Glen Wesley" class="player-headshot">
+                        <div class="player-info">
+                            <div class="player-name">Glen Wesley</div>
+                        </div>
+                        <span class="stats-icon">📊</span>
+                    </div>
+                </div>
+                <div class="team-box right">
+                    <div class="team-name">
+                        <img src="https://assets.nhle.com/logos/nhl/svg/BOS_light.svg" alt="BOS" class="team-logo">
+                        To Boston Bruins
+                    </div>
+                    <div class="player-item">
+                        <img src="https://cms.nhl.bamgrid.com/images/headshots/current/168x168/skater.jpg" alt="Draft Pick" class="player-headshot">
+                        <div class="player-info">
+                            <div class="player-name">1st round draft pick 1995</div>
+                        </div>
+                    </div>
+                    <div class="player-item">
+                        <img src="https://cms.nhl.bamgrid.com/images/headshots/current/168x168/skater.jpg" alt="Draft Pick" class="player-headshot">
+                        <div class="player-info">
+                            <div class="player-name">1st round draft pick 1996</div>
+                        </div>
+                    </div>
+                    <div class="player-item">
+                        <img src="https://cms.nhl.bamgrid.com/images/headshots/current/168x168/skater.jpg" alt="Draft Pick" class="player-headshot">
+                        <div class="player-info">
+                            <div class="player-name">1st round draft pick 1997</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Trade 4: 1995 -->
+        <div class="trade-event" data-event="4">
+            <div class="connection-line draft"></div>
+            <div class="date-marker">Jul 8, 1995</div>
+            <div class="trade-icon draft">📋</div>
+            <div class="trade-content">
+                <div class="team-box center">
+                    <div class="team-name">
+                        <img src="https://assets.nhle.com/logos/nhl/svg/BOS_light.svg" alt="BOS" class="team-logo">
+                        Boston drafts (from Hartford)
+                    </div>
+                    <div class="player-item" data-player="kyle-mclaren">
+                        <img src="https://cms.nhl.bamgrid.com/images/headshots/current/168x168/8467840.jpg" alt="Kyle McLaren" class="player-headshot">
+                        <div class="player-info">
+                            <div class="player-name">Kyle McLaren</div>
+                            <div class="player-detail">1st round (9th overall)</div>
+                        </div>
+                        <span class="stats-icon">📊</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Trade 5: 1996 -->
+        <div class="trade-event" data-event="5">
+            <div class="connection-line draft"></div>
+            <div class="date-marker">Jun 22, 1996</div>
+            <div class="trade-icon draft">📋</div>
+            <div class="trade-content">
+                <div class="team-box center">
+                    <div class="team-name">
+                        <img src="https://assets.nhle.com/logos/nhl/svg/BOS_light.svg" alt="BOS" class="team-logo">
+                        Boston drafts (from Hartford)
+                    </div>
+                    <div class="player-item" data-player="johnathan-aitken">
+                        <img src="https://cms.nhl.bamgrid.com/images/headshots/current/168x168/8468073.jpg" alt="Johnathan Aitken" class="player-headshot">
+                        <div class="player-info">
+                            <div class="player-name">Johnathan Aitken</div>
+                            <div class="player-detail">1st round (8th overall)</div>
+                        </div>
+                        <span class="stats-icon">📊</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Trade 6: 1997 -->
+        <div class="trade-event" data-event="6">
+            <div class="connection-line draft"></div>
+            <div class="date-marker">Jun 21, 1997</div>
+            <div class="trade-icon draft">📋</div>
+            <div class="trade-content">
+                <div class="team-box center">
+                    <div class="team-name">
+                        <img src="https://assets.nhle.com/logos/nhl/svg/BOS_light.svg" alt="BOS" class="team-logo">
+                        Boston drafts (from Hartford)
+                    </div>
+                    <div class="player-item" data-player="sergei-samsonov">
+                        <img src="https://cms.nhl.bamgrid.com/images/headshots/current/168x168/8459436.jpg" alt="Sergei Samsonov" class="player-headshot">
+                        <div class="player-info">
+                            <div class="player-name">Sergei Samsonov</div>
+                            <div class="player-detail">1st round (8th overall)</div>
+                        </div>
+                        <span class="stats-icon">📊</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Trade 7: 2003 -->
+        <div class="trade-event" data-event="7">
+            <div class="connection-line"></div>
+            <div class="date-marker">Jun 24, 2003</div>
+            <div class="trade-icon">⇄</div>
+            <div class="trade-content">
+                <div class="team-box left">
+                    <div class="team-name">
+                        <img src="https://assets.nhle.com/logos/nhl/svg/SJS_light.svg" alt="SJS" class="team-logo">
+                        To San Jose Sharks
+                    </div>
+                    <div class="player-item" data-player="kyle-mclaren">
+                        <img src="https://cms.nhl.bamgrid.com/images/headshots/current/168x168/8467840.jpg" alt="Kyle McLaren" class="player-headshot">
+                        <div class="player-info">
+                            <div class="player-name">Kyle McLaren</div>
+                        </div>
+                        <span class="stats-icon">📊</span>
+                    </div>
+                </div>
+                <div class="team-box right">
+                    <div class="team-name">
+                        <img src="https://assets.nhle.com/logos/nhl/svg/BOS_light.svg" alt="BOS" class="team-logo">
+                        To Boston Bruins
+                    </div>
+                    <div class="player-item">
+                        <img src="https://cms.nhl.bamgrid.com/images/headshots/current/168x168/skater.jpg" alt="Draft Pick" class="player-headshot">
+                        <div class="player-info">
+                            <div class="player-name">4th round draft pick 2004</div>
+                        </div>
+                    </div>
+                    <div class="player-item" data-player="jeff-jillson">
+                        <img src="https://cms.nhl.bamgrid.com/images/headshots/current/168x168/8470186.jpg" alt="Jeff Jillson" class="player-headshot">
+                        <div class="player-info">
+                            <div class="player-name">Jeff Jillson</div>
+                        </div>
+                        <span class="stats-icon">📊</span>
+                    </div>
+                    <div class="player-item" data-player="jeff-hackett">
+                        <img src="https://cms.nhl.bamgrid.com/images/headshots/current/168x168/8450293.jpg" alt="Jeff Hackett" class="player-headshot">
+                        <div class="player-info">
+                            <div class="player-name">Jeff Hackett</div>
+                        </div>
+                        <span class="stats-icon">📊</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Trade 8: 2004 -->
+        <div class="trade-event" data-event="8">
+            <div class="connection-line"></div>
+            <div class="date-marker">Mar 9, 2004</div>
+            <div class="trade-icon">⇄</div>
+            <div class="trade-content">
+                <div class="team-box left">
+                    <div class="team-name">
+                        <img src="https://assets.nhle.com/logos/nhl/svg/SJS_light.svg" alt="SJS" class="team-logo">
+                        To San Jose Sharks
+                    </div>
+                    <div class="player-item" data-player="jeff-jillson">
+                        <img src="https://cms.nhl.bamgrid.com/images/headshots/current/168x168/8470186.jpg" alt="Jeff Jillson" class="player-headshot">
+                        <div class="player-info">
+                            <div class="player-name">Jeff Jillson</div>
+                        </div>
+                        <span class="stats-icon">📊</span>
+                    </div>
+                </div>
+                <div class="team-box right">
+                    <div class="team-name">
+                        <img src="https://assets.nhle.com/logos/nhl/svg/BOS_light.svg" alt="BOS" class="team-logo">
+                        To Boston Bruins
+                    </div>
+                    <div class="player-item" data-player="brad-boyes">
+                        <img src="https://cms.nhl.bamgrid.com/images/headshots/current/168x168/8470828.jpg" alt="Brad Boyes" class="player-headshot">
+                        <div class="player-info">
+                            <div class="player-name">Brad Boyes</div>
+                        </div>
+                        <span class="stats-icon">📊</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Trade 9: 2006 -->
+        <div class="trade-event" data-event="9">
+            <div class="connection-line"></div>
+            <div class="date-marker">Mar 9, 2006</div>
+            <div class="trade-icon">⇄</div>
+            <div class="trade-content">
+                <div class="team-box left">
+                    <div class="team-name">
+                        <img src="https://assets.nhle.com/logos/nhl/svg/EDM_light.svg" alt="EDM" class="team-logo">
+                        To Edmonton Oilers
+                    </div>
+                    <div class="player-item" data-player="sergei-samsonov">
+                        <img src="https://cms.nhl.bamgrid.com/images/headshots/current/168x168/8459436.jpg" alt="Sergei Samsonov" class="player-headshot">
+                        <div class="player-info">
+                            <div class="player-name">Sergei Samsonov</div>
+                        </div>
+                        <span class="stats-icon">📊</span>
+                    </div>
+                </div>
+                <div class="team-box right">
+                    <div class="team-name">
+                        <img src="https://assets.nhle.com/logos/nhl/svg/BOS_light.svg" alt="BOS" class="team-logo">
+                        To Boston Bruins
+                    </div>
+                    <div class="player-item" data-player="marty-reasoner">
+                        <img src="https://cms.nhl.bamgrid.com/images/headshots/current/168x168/8467911.jpg" alt="Marty Reasoner" class="player-headshot">
+                        <div class="player-info">
+                            <div class="player-name">Marty Reasoner</div>
+                        </div>
+                        <span class="stats-icon">📊</span>
+                    </div>
+                    <div class="player-item" data-player="yan-stastny">
+                        <img src="https://cms.nhl.bamgrid.com/images/headshots/current/168x168/8471230.jpg" alt="Yan Stastny" class="player-headshot">
+                        <div class="player-info">
+                            <div class="player-name">Yan Stastny</div>
+                        </div>
+                        <span class="stats-icon">📊</span>
+                    </div>
+                    <div class="player-item">
+                        <img src="https://cms.nhl.bamgrid.com/images/headshots/current/168x168/skater.jpg" alt="Draft Pick" class="player-headshot">
+                        <div class="player-info">
+                            <div class="player-name">2nd round draft pick 2006</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Trade 10: 2006 Draft -->
+        <div class="trade-event" data-event="10">
+            <div class="connection-line draft"></div>
+            <div class="date-marker">Jun 24, 2006</div>
+            <div class="trade-icon draft">📋</div>
+            <div class="trade-content">
+                <div class="team-box center">
+                    <div class="team-name">
+                        <img src="https://assets.nhle.com/logos/nhl/svg/BOS_light.svg" alt="BOS" class="team-logo">
+                        Boston drafts (from Edmonton)
+                    </div>
+                    <div class="player-item" data-player="milan-lucic">
+                        <img src="https://cms.nhl.bamgrid.com/images/headshots/current/168x168/8473419.jpg" alt="Milan Lucic" class="player-headshot">
+                        <div class="player-info">
+                            <div class="player-name">Milan Lucic</div>
+                            <div class="player-detail">2nd round (50th overall)</div>
+                        </div>
+                        <span class="stats-icon">📊</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Trade 11: 2007 -->
+        <div class="trade-event" data-event="11">
+            <div class="connection-line"></div>
+            <div class="date-marker">Jan 18, 2007</div>
+            <div class="trade-icon">⇄</div>
+            <div class="trade-content">
+                <div class="team-box left">
+                    <div class="team-name">
+                        <img src="https://assets.nhle.com/logos/nhl/svg/STL_light.svg" alt="STL" class="team-logo">
+                        To St. Louis Blues
+                    </div>
+                    <div class="player-item" data-player="yan-stastny">
+                        <img src="https://cms.nhl.bamgrid.com/images/headshots/current/168x168/8471230.jpg" alt="Yan Stastny" class="player-headshot">
+                        <div class="player-info">
+                            <div class="player-name">Yan Stastny</div>
+                        </div>
+                        <span class="stats-icon">📊</span>
+                    </div>
+                </div>
+                <div class="team-box right">
+                    <div class="team-name">
+                        <img src="https://assets.nhle.com/logos/nhl/svg/BOS_light.svg" alt="BOS" class="team-logo">
+                        To Boston Bruins
+                    </div>
+                    <div class="player-item">
+                        <img src="https://cms.nhl.bamgrid.com/images/headshots/current/168x168/skater.jpg" alt="Draft Pick" class="player-headshot">
+                        <div class="player-info">
+                            <div class="player-name">5th round draft pick 2007</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Trade 12: 2007 Feb -->
+        <div class="trade-event" data-event="12">
+            <div class="connection-line"></div>
+            <div class="date-marker">Feb 27, 2007</div>
+            <div class="trade-icon">⇄</div>
+            <div class="trade-content">
+                <div class="team-box left">
+                    <div class="team-name">
+                        <img src="https://assets.nhle.com/logos/nhl/svg/STL_light.svg" alt="STL" class="team-logo">
+                        To St. Louis Blues
+                    </div>
+                    <div class="player-item" data-player="brad-boyes">
+                        <img src="https://cms.nhl.bamgrid.com/images/headshots/current/168x168/8470828.jpg" alt="Brad Boyes" class="player-headshot">
+                        <div class="player-info">
+                            <div class="player-name">Brad Boyes</div>
+                        </div>
+                        <span class="stats-icon">📊</span>
+                    </div>
+                </div>
+                <div class="team-box right">
+                    <div class="team-name">
+                        <img src="https://assets.nhle.com/logos/nhl/svg/BOS_light.svg" alt="BOS" class="team-logo">
+                        To Boston Bruins
+                    </div>
+                    <div class="player-item" data-player="dennis-wideman">
+                        <img src="https://cms.nhl.bamgrid.com/images/headshots/current/168x168/8470940.jpg" alt="Dennis Wideman" class="player-headshot">
+                        <div class="player-info">
+                            <div class="player-name">Dennis Wideman</div>
+                        </div>
+                        <span class="stats-icon">📊</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Trade 13: 2007 Jun -->
+        <div class="trade-event" data-event="13">
+            <div class="connection-line draft"></div>
+            <div class="date-marker">Jun 23, 2007</div>
+            <div class="trade-icon draft">📋</div>
+            <div class="trade-content">
+                <div class="team-box center">
+                    <div class="team-name">
+                        <img src="https://assets.nhle.com/logos/nhl/svg/BOS_light.svg" alt="BOS" class="team-logo">
+                        Boston drafts (from St. Louis)
+                    </div>
+                    <div class="player-item" data-player="denis-reul">
+                        <img src="https://cms.nhl.bamgrid.com/images/headshots/current/168x168/skater.jpg" alt="Denis Reul" class="player-headshot">
+                        <div class="player-info">
+                            <div class="player-name">Denis Reul</div>
+                            <div class="player-detail">5th round (130th overall)</div>
+                        </div>
+                        <span class="stats-icon">📊</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Trade 14: 2010 -->
+        <div class="trade-event" data-event="14">
+            <div class="connection-line"></div>
+            <div class="date-marker">Jun 25, 2010</div>
+            <div class="trade-icon">⇄</div>
+            <div class="trade-content">
+                <div class="team-box left">
+                    <div class="team-name">
+                        <img src="https://assets.nhle.com/logos/nhl/svg/FLA_light.svg" alt="FLA" class="team-logo">
+                        To Florida Panthers
+                    </div>
+                    <div class="player-item" data-player="dennis-wideman">
+                        <img src="https://cms.nhl.bamgrid.com/images/headshots/current/168x168/8470940.jpg" alt="Dennis Wideman" class="player-headshot">
+                        <div class="player-info">
+                            <div class="player-name">Dennis Wideman</div>
+                        </div>
+                        <span class="stats-icon">📊</span>
+                    </div>
+                </div>
+                <div class="team-box right">
+                    <div class="team-name">
+                        <img src="https://assets.nhle.com/logos/nhl/svg/BOS_light.svg" alt="BOS" class="team-logo">
+                        To Boston Bruins
+                    </div>
+                    <div class="player-item">
+                        <img src="https://cms.nhl.bamgrid.com/images/headshots/current/168x168/skater.jpg" alt="Draft Pick" class="player-headshot">
+                        <div class="player-info">
+                            <div class="player-name">1st round draft pick 2010</div>
+                        </div>
+                    </div>
+                    <div class="player-item">
+                        <img src="https://cms.nhl.bamgrid.com/images/headshots/current/168x168/skater.jpg" alt="Draft Pick" class="player-headshot">
+                        <div class="player-info">
+                            <div class="player-name">3rd round draft pick 2011</div>
+                        </div>
+                    </div>
+                    <div class="player-item" data-player="nathan-horton">
+                        <img src="https://cms.nhl.bamgrid.com/images/headshots/current/168x168/8471239.jpg" alt="Nathan Horton" class="player-headshot">
+                        <div class="player-info">
+                            <div class="player-name">Nathan Horton</div>
+                        </div>
+                        <span class="stats-icon">📊</span>
+                    </div>
+                    <div class="player-item" data-player="gregory-campbell">
+                        <img src="https://cms.nhl.bamgrid.com/images/headshots/current/168x168/8470277.jpg" alt="Gregory Campbell" class="player-headshot">
+                        <div class="player-info">
+                            <div class="player-name">Gregory Campbell</div>
+                        </div>
+                        <span class="stats-icon">📊</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Trade 15: 2015 Jan -->
+        <div class="trade-event" data-event="15">
+            <div class="connection-line"></div>
+            <div class="date-marker">Jan 26, 2015</div>
+            <div class="trade-icon">⇄</div>
+            <div class="trade-content">
+                <div class="team-box left">
+                    <div class="team-name">
+                        <img src="https://assets.nhle.com/logos/nhl/svg/LAK_light.svg" alt="LAK" class="team-logo">
+                        To Los Angeles Kings
+                    </div>
+                    <div class="player-item" data-player="milan-lucic">
+                        <img src="https://cms.nhl.bamgrid.com/images/headshots/current/168x168/8473419.jpg" alt="Milan Lucic" class="player-headshot">
+                        <div class="player-info">
+                            <div class="player-name">Milan Lucic</div>
+                        </div>
+                        <span class="stats-icon">📊</span>
+                    </div>
+                </div>
+                <div class="team-box right">
+                    <div class="team-name">
+                        <img src="https://assets.nhle.com/logos/nhl/svg/BOS_light.svg" alt="BOS" class="team-logo">
+                        To Boston Bruins
+                    </div>
+                    <div class="player-item" data-player="martin-jones">
+                        <img src="https://cms.nhl.bamgrid.com/images/headshots/current/168x168/8474889.jpg" alt="Martin Jones" class="player-headshot">
+                        <div class="player-info">
+                            <div class="player-name">Martin Jones</div>
+                        </div>
+                        <span class="stats-icon">📊</span>
+                    </div>
+                    <div class="player-item" data-player="colin-miller">
+                        <img src="https://cms.nhl.bamgrid.com/images/headshots/current/168x168/8476396.jpg" alt="Colin Miller" class="player-headshot">
+                        <div class="player-info">
+                            <div class="player-name">Colin Miller</div>
+                        </div>
+                        <span class="stats-icon">📊</span>
+                    </div>
+                    <div class="player-item">
+                        <img src="https://cms.nhl.bamgrid.com/images/headshots/current/168x168/skater.jpg" alt="Draft Pick" class="player-headshot">
+                        <div class="player-info">
+                            <div class="player-name">1st round draft pick 2015</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Trade 16: 2015 Jun -->
+        <div class="trade-event" data-event="16">
+            <div class="connection-line draft"></div>
+            <div class="date-marker">Jun 26, 2015</div>
+            <div class="trade-icon draft">📋</div>
+            <div class="trade-content">
+                <div class="team-box center">
+                    <div class="team-name">
+                        <img src="https://assets.nhle.com/logos/nhl/svg/BOS_light.svg" alt="BOS" class="team-logo">
+                        Boston drafts (from Los Angeles)
+                    </div>
+                    <div class="player-item" data-player="jakub-zboril">
+                        <img src="https://cms.nhl.bamgrid.com/images/headshots/current/168x168/8478414.jpg" alt="Jakub Zboril" class="player-headshot">
+                        <div class="player-info">
+                            <div class="player-name">Jakub Zboril</div>
+                            <div class="player-detail">1st round (15th overall)</div>
+                        </div>
+                        <span class="stats-icon">📊</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Trade 17: 2016 -->
+        <div class="trade-event" data-event="17">
+            <div class="connection-line"></div>
+            <div class="date-marker">Jan 30, 2016</div>
+            <div class="trade-icon">⇄</div>
+            <div class="trade-content">
+                <div class="team-box left">
+                    <div class="team-name">
+                        <img src="https://assets.nhle.com/logos/nhl/svg/SJS_light.svg" alt="SJS" class="team-logo">
+                        To San Jose Sharks
+                    </div>
+                    <div class="player-item" data-player="martin-jones">
+                        <img src="https://cms.nhl.bamgrid.com/images/headshots/current/168x168/8474889.jpg" alt="Martin Jones" class="player-headshot">
+                        <div class="player-info">
+                            <div class="player-name">Martin Jones</div>
+                        </div>
+                        <span class="stats-icon">📊</span>
+                    </div>
+                </div>
+                <div class="team-box right">
+                    <div class="team-name">
+                        <img src="https://assets.nhle.com/logos/nhl/svg/BOS_light.svg" alt="BOS" class="team-logo">
+                        To Boston Bruins
+                    </div>
+                    <div class="player-item" data-player="sean-kuraly">
+                        <img src="https://cms.nhl.bamgrid.com/images/headshots/current/168x168/8476374.jpg" alt="Sean Kuraly" class="player-headshot">
+                        <div class="player-info">
+                            <div class="player-name">Sean Kuraly</div>
+                        </div>
+                        <span class="stats-icon">📊</span>
+                    </div>
+                    <div class="player-item">
+                        <img src="https://cms.nhl.bamgrid.com/images/headshots/current/168x168/skater.jpg" alt="Draft Pick" class="player-headshot">
+                        <div class="player-info">
+                            <div class="player-name">1st round draft pick 2016</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Trade 18: 2016 Draft -->
+        <div class="trade-event" data-event="18">
+            <div class="connection-line draft"></div>
+            <div class="date-marker">Jun 24, 2016</div>
+            <div class="trade-icon draft">📋</div>
+            <div class="trade-content">
+                <div class="team-box center">
+                    <div class="team-name">
+                        <img src="https://assets.nhle.com/logos/nhl/svg/BOS_light.svg" alt="BOS" class="team-logo">
+                        Boston drafts (from San Jose)
+                    </div>
+                    <div class="player-item" data-player="trent-frederic">
+                        <img src="https://cms.nhl.bamgrid.com/images/headshots/current/168x168/8479403.jpg" alt="Trent Frederic" class="player-headshot">
+                        <div class="player-info">
+                            <div class="player-name">Trent Frederic</div>
+                            <div class="player-detail">1st round (29th overall)</div>
+                        </div>
+                        <span class="stats-icon">📊</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Trade 19: 2024 -->
+        <div class="trade-event" data-event="19">
+            <div class="connection-line"></div>
+            <div class="date-marker">Mar 8, 2024</div>
+            <div class="trade-icon">⇄</div>
+            <div class="trade-content">
+                <div class="team-box left">
+                    <div class="team-name">
+                        <img src="https://assets.nhle.com/logos/nhl/svg/CBJ_light.svg" alt="CBJ" class="team-logo">
+                        To Columbus Blue Jackets
+                    </div>
+                    <div class="player-item" data-player="jakub-zboril">
+                        <img src="https://cms.nhl.bamgrid.com/images/headshots/current/168x168/8478414.jpg" alt="Jakub Zboril" class="player-headshot">
+                        <div class="player-info">
+                            <div class="player-name">Jakub Zboril</div>
+                        </div>
+                        <span class="stats-icon">📊</span>
+                    </div>
+                </div>
+                <div class="team-box right">
+                    <div class="team-name">
+                        <img src="https://assets.nhle.com/logos/nhl/svg/BOS_light.svg" alt="BOS" class="team-logo">
+                        To Boston Bruins
+                    </div>
+                    <div class="player-item current-asset" data-player="andrew-peeke">
+                        <img src="https://cms.nhl.bamgrid.com/images/headshots/current/168x168/8478498.jpg" alt="Andrew Peeke" class="player-headshot">
+                        <div class="player-info">
+                            <div class="player-name">Andrew Peeke</div>
+                        </div>
+                        <span class="stats-icon">📊</span>
+                    </div>
+                    <div class="player-item current-asset">
+                        <img src="https://cms.nhl.bamgrid.com/images/headshots/current/168x168/skater.jpg" alt="Draft Pick" class="player-headshot">
+                        <div class="player-info">
+                            <div class="player-name">3rd round draft pick 2027</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Trade 20: 2025 -->
+        <div class="trade-event" data-event="20">
+            <div class="connection-line"></div>
+            <div class="date-marker">Mar 5, 2025</div>
+            <div class="trade-icon">⇄</div>
+            <div class="trade-content">
+                <div class="team-box left">
+                    <div class="team-name">
+                        <img src="https://assets.nhle.com/logos/nhl/svg/NJD_light.svg" alt="NJD" class="team-logo">
+                        To New Jersey Devils
+                    </div>
+                    <div class="player-item" data-player="shane-lachance">
+                        <img src="https://cms.nhl.bamgrid.com/images/headshots/current/168x168/skater.jpg" alt="Shane Lachance" class="player-headshot">
+                        <div class="player-info">
+                            <div class="player-name">Shane Lachance</div>
+                        </div>
+                        <span class="stats-icon">📊</span>
+                    </div>
+                </div>
+                <div class="team-box right">
+                    <div class="team-name">
+                        <img src="https://assets.nhle.com/logos/nhl/svg/BOS_light.svg" alt="BOS" class="team-logo">
+                        To Boston Bruins
+                    </div>
+                    <div class="player-item current-asset" data-player="maximus-wanner">
+                        <img src="https://cms.nhl.bamgrid.com/images/headshots/current/168x168/skater.jpg" alt="Maximus Wanner" class="player-headshot">
+                        <div class="player-info">
+                            <div class="player-name">Maximus Wanner</div>
+                        </div>
+                        <span class="stats-icon">📊</span>
+                    </div>
+                    <div class="player-item current-asset">
+                        <img src="https://cms.nhl.bamgrid.com/images/headshots/current/168x168/skater.jpg" alt="Draft Pick" class="player-headshot">
+                        <div class="player-info">
+                            <div class="player-name">2nd round draft pick 2025 (via St. Louis)</div>
+                        </div>
+                    </div>
+                    <div class="player-item current-asset">
+                        <img src="https://cms.nhl.bamgrid.com/images/headshots/current/168x168/skater.jpg" alt="Draft Pick" class="player-headshot">
+                        <div class="player-info">
+                            <div class="player-name">4th round draft pick 2026</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="trade-note">
+                Three-team trade: Trent Frederic, Petr Hauser, and Max Jones went to Edmonton Oilers
+            </div>
+        </div>
+
+        <!-- Trade 21: 2025 Draft -->
+        <div class="trade-event" data-event="21">
+            <div class="connection-line draft"></div>
+            <div class="date-marker">Jun 28, 2025</div>
+            <div class="trade-icon draft">📋</div>
+            <div class="trade-content">
+                <div class="team-box center">
+                    <div class="team-name">
+                        <img src="https://assets.nhle.com/logos/nhl/svg/BOS_light.svg" alt="BOS" class="team-logo">
+                        Boston drafts (via St. Louis)
+                    </div>
+                    <div class="player-item current-asset" data-player="william-moore">
+                        <img src="https://cms.nhl.bamgrid.com/images/headshots/current/168x168/skater.jpg" alt="William Moore" class="player-headshot">
+                        <div class="player-info">
+                            <div class="player-name">William Moore</div>
+                            <div class="player-detail">2nd round (51st overall)</div>
+                        </div>
+                        <span class="stats-icon">📊</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="outro">
+        <h2>40 Years of Hockey History</h2>
+        <p>From one trade in 1985, the Boston Bruins created a web of transactions spanning four decades. Hall of Famer Cam Neely, key pieces of the 2011 Stanley Cup team, and dozens of draft picks—all traced back to Barry Pederson.</p>
+    </div>
+
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox">
+        <div class="lightbox-content">
+            <button class="lightbox-close" onclick="closeLightbox()">×</button>
+            <div class="lightbox-header">
+                <img id="lightbox-headshot" src="" alt="" class="lightbox-headshot">
+                <div class="lightbox-player-info">
+                    <h2 id="lightbox-name"></h2>
+                    <p id="lightbox-position"></p>
+                </div>
+            </div>
+            <div class="lightbox-body">
+                <div class="stats-section">
+                    <h3>Career Statistics</h3>
+                    <div class="stats-grid" id="stats-grid"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+/* --- NHL API helpers --- */
+const NHL_API = 'https://statsapi.web.nhl.com/api/v1';
+const HEADSHOT = (id, size = 168) =>
+  `https://cms.nhl.bamgrid.com/images/headshots/current/${size}x${size}/${id}.jpg`;
+
+const playerData = {
+  // Keep your existing entries, but add fullName for reliable lookup.
+  // Optional: add known nhlId for speed (skips lookup).
+  'barry-pederson': { fullName: 'Barry Pederson', position: 'Center' },
+  'cam-neely': { fullName: 'Cam Neely', position: 'Right Wing' },
+  'glen-wesley': { fullName: 'Glen Wesley', position: 'Defense' },
+  'kyle-mclaren': { fullName: 'Kyle McLaren', position: 'Defense' },
+  'johnathan-aitken': { fullName: 'Johnathan Aitken', position: 'Defense' },
+  'sergei-samsonov': { fullName: 'Sergei Samsonov', position: 'Left Wing' },
+  'jeff-jillson': { fullName: 'Jeff Jillson', position: 'Defense' },
+  'jeff-hackett': { fullName: 'Jeff Hackett', position: 'Goalie' },
+  'brad-boyes': { fullName: 'Brad Boyes', position: 'Right Wing' },
+  'marty-reasoner': { fullName: 'Marty Reasoner', position: 'Center' },
+  'yan-stastny': { fullName: 'Yan Stastny', position: 'Center' },
+  'milan-lucic': { fullName: 'Milan Lucic', position: 'Left Wing' },
+  'dennis-wideman': { fullName: 'Dennis Wideman', position: 'Defense' },
+  'denis-reul': { fullName: 'Denis Reul', position: 'Defense' },
+  'nathan-horton': { fullName: 'Nathan Horton', position: 'Right Wing' },
+  'gregory-campbell': { fullName: 'Gregory Campbell', position: 'Center' },
+  'martin-jones': { fullName: 'Martin Jones', position: 'Goalie' },
+  'colin-miller': { fullName: 'Colin Miller', position: 'Defense' },
+  'jakub-zboril': { fullName: 'Jakub Zbořil', position: 'Defense' },
+  'sean-kuraly': { fullName: 'Sean Kuraly', position: 'Center' },
+  'trent-frederic': { fullName: 'Trent Frederic', position: 'Center' },
+  'andrew-peeke': { fullName: 'Andrew Peeke', position: 'Defense' },
+  'shane-lachance': { fullName: 'Shane Lachance', position: 'Left Wing' }, // prospect; may not exist in API
+  'maximus-wanner': { fullName: 'Maximus Wanner', position: 'Defense' },   // prospect; may not exist in API
+  'william-moore': { fullName: 'William Moore', position: 'Forward' }      // prospect; may not exist in API
+};
+
+// Cache to avoid duplicate network calls
+const cache = {
+  idByName: new Map(),      // fullName -> nhlId
+  statsById: new Map()      // nhlId -> splits[]
+};
+
+async function getNhlId(fullName) {
+  if (!fullName) return null;
+  if (cache.idByName.has(fullName)) return cache.idByName.get(fullName);
+
+  const url = `${NHL_API}/people?fullName=${encodeURIComponent(fullName)}`;
+  const res = await fetch(url);
+  if (!res.ok) return null;
+
+  const data = await res.json();
+  const person = (data.people || [])[0];
+  const id = person ? person.id : null;
+  cache.idByName.set(fullName, id);
+  return id;
+}
+
+async function getYearByYearStats(nhlId) {
+  if (!nhlId) return [];
+  if (cache.statsById.has(nhlId)) return cache.statsById.get(nhlId);
+
+  const url = `${NHL_API}/people/${nhlId}/stats?stats=yearByYear`;
+  const res = await fetch(url);
+  if (!res.ok) return [];
+
+  const data = await res.json();
+  const splits = (((data.stats || [])[0] || {}).splits || [])
+    // NHL seasons only
+    .filter(s => s.league && s.league.name === 'NHL');
+  cache.statsById.set(nhlId, splits);
+  return splits;
+}
+
+function seasonLabel(season) {
+  // "19851986" -> "1985–86"
+  if (!season || season.length !== 8) return season || '';
+  const y1 = season.slice(0, 4);
+  const y2 = season.slice(4);
+  return `${y1}–${y2.slice(2)}`;
+}
+
+function statLine(stat, isGoalie) {
+  if (isGoalie) {
+    const gp = stat.games ?? 0;
+    const w = stat.wins ?? 0;
+    const l = stat.losses ?? 0;
+    const ot = stat.ot ?? 0;
+    const gaa = stat.goalAgainstAverage != null ? Number(stat.goalAgainstAverage).toFixed(2) : '—';
+    const sv = stat.savePercentage != null ? Number(stat.savePercentage).toFixed(3) : '—';
+    const so = stat.shutouts ?? 0;
+    return `GP ${gp} | W-L-OT ${w}-${l}-${ot} | GAA ${gaa} | SV% ${sv} | SO ${so}`;
+  } else {
+    const gp = stat.games ?? 0;
+    const g = stat.goals ?? 0;
+    const a = stat.assists ?? 0;
+    const pts = stat.points ?? (g + a);
+    const pim = stat.pim ?? 0;
+    const pm = stat.plusMinus;
+    return `GP ${gp} | G ${g} | A ${a} | PTS ${pts} | PIM ${pim}` + (pm != null ? ` | +/- ${pm}` : '');
+  }
+}
+
+function isGoaliePosition(positionStr) {
+  return (positionStr || '').toLowerCase().includes('goal');
+}
+
+function renderSeasonRows(container, splits, playerPosition) {
+  container.innerHTML = '';
+  if (!splits.length) {
+    container.innerHTML = `<div class="loading-stats">No NHL season data available.</div>`;
+    return;
+  }
+  const goalie = isGoaliePosition(playerPosition);
+
+  splits.forEach(s => {
+    const teamName = s.team ? s.team.name : '';
+    const year = seasonLabel(s.season);
+    const line = statLine(s.stat || {}, goalie);
+
+    const row = document.createElement('div');
+    row.className = 'season-stats';
+    row.innerHTML = `
+      <div class="season-info">
+        <div class="season-year">${year}</div>
+        <div class="season-team">${teamName}</div>
+      </div>
+      <div class="season-stats-line">${line}</div>
+    `;
+    container.appendChild(row);
+  });
+}
+
+/* --- Lightbox + event wiring (modified) --- */
+
+async function openLightbox(playerKey) {
+  const meta = playerData[playerKey];
+  if (!meta) return;
+
+  // Resolve NHL ID
+  const nhlId = meta.nhlId || await getNhlId(meta.fullName);
+  meta.nhlId = nhlId || null;
+
+  // Update header text
+  document.getElementById('lightbox-name').textContent = meta.fullName || '';
+  document.getElementById('lightbox-position').textContent = meta.position || '';
+
+  // Swap headshot to official NHL headshot if we have an id; otherwise keep current image in the card
+  const headshotEl = document.getElementById('lightbox-headshot');
+  if (nhlId) {
+    headshotEl.src = HEADSHOT(nhlId, 168);
+    headshotEl.alt = meta.fullName;
+  } else {
+    // fallback: try to read the thumbnail from the clicked item
+    const thumb = document.querySelector(`.player-item[data-player="${playerKey}"] img.player-headshot`);
+    headshotEl.src = thumb ? thumb.src : '';
+    headshotEl.alt = meta.fullName || '';
+  }
+
+  // Loading state
+  const statsGrid = document.getElementById('stats-grid');
+  statsGrid.innerHTML = `<div class="loading-stats">Loading season-by-season stats…</div>`;
+
+  // Fetch and render per-season stats
+  const splits = nhlId ? await getYearByYearStats(nhlId) : [];
+  renderSeasonRows(statsGrid, splits, meta.position);
+
+  // Show lightbox
+  document.getElementById('lightbox').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('active');
+  document.body.style.overflow = 'auto';
+}
+
+// Close lightbox when clicking outside content
+document.getElementById('lightbox').addEventListener('click', function(e) {
+  if (e.target === this) closeLightbox();
+});
+
+// Close with Escape
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeLightbox();
+});
+
+// Attach click handlers to all player items
+document.querySelectorAll('.player-item[data-player]').forEach(item => {
+  item.addEventListener('click', function() {
+    const playerKey = this.getAttribute('data-player');
+    openLightbox(playerKey);
+  });
+});
+
+/* Keep your IntersectionObserver code as-is (or copy from your existing file) */
+const observerOptions = { threshold: 0.3, rootMargin: '0px 0px -100px 0px' };
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) entry.target.classList.add('visible');
+  });
+}, observerOptions);
+document.querySelectorAll('.trade-event').forEach(event => observer.observe(event));
+const firstEvent = document.querySelector('.trade-event'); if (firstEvent) firstEvent.classList.add('visible');
+</script>
+
+</body>
+</html>
+<!-- Appended fallback loader using api-web.nhle.com game logs -->
+<script>
+/* =====================
+   Robust player lightbox loader with API fallbacks
+   - Primary: statsapi.web.nhl.com yearByYear (fast, season list provided)
+   - Fallback: api-web.nhle.com game logs per season (aggregated)
+   ===================== */
+
+(function() {
+  const STATSAPI = 'https://statsapi.web.nhl.com/api/v1';
+  const NHLWEB = 'https://api-web.nhle.com/v1';
+  const HEADSHOT = (id, size=168) => `https://cms.nhl.bamgrid.com/images/headshots/current/${size}x${size}/${id}.jpg`;
+  const PLACEHOLDER = 'https://cms.nhl.bamgrid.com/images/headshots/current/168x168/skater.jpg';
+
+  // Name fixes to improve ID resolution
+  const NAME_FIXES = new Map([['Johnathan Aitken', 'Jonathan Aitken']]);
+
+  // Try/catch wrapper with timeout
+  async function fetchJSON(url, {timeoutMs=6000} = {}) {
+    const ctrl = new AbortController();
+    const t = setTimeout(() => ctrl.abort(), timeoutMs);
+    try {
+      const res = await fetch(url, {signal: ctrl.signal});
+      if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
+      return await res.json();
+    } finally {
+      clearTimeout(t);
+    }
+  }
+
+  const cache = {
+    idByName: new Map(),
+    ybyById: new Map(),
+    glByKey: new Map() // `${id}-${season}-2` -> aggregated stats
+  };
+
+  function seasonLabel(season) {
+    if (!season || season.length !== 8) return season || '';
+    const y1 = season.slice(0,4); const y2 = season.slice(4);
+    return `${y1}–${y2.slice(2)}`;
+  }
+
+  function isGoalie(position='') { return position.toLowerCase().includes('goal'); }
+
+  function renderRows(container, rows, isGoalieFlag) {
+    container.innerHTML = '';
+    if (!rows.length) {
+      container.innerHTML = `<div class="loading-stats">No season data available.</div>`;
+      return;
+    }
+    rows.forEach(r => {
+      const line = isGoalieFlag
+        ? `GP ${r.gp||0} | W-L-OT ${r.w||0}-${r.l||0}-${r.ot||0} | GAA ${r.gaa ?? '—'} | SV% ${r.sv ?? '—'} | SO ${r.so||0}`
+        : `GP ${r.gp||0} | G ${r.g||0} | A ${r.a||0} | PTS ${(r.g||0)+(r.a||0)} | PIM ${r.pim||0}` + (r.pm!=null?` | +/- ${r.pm}`:'')
+      const row = document.createElement('div');
+      row.className = 'season-stats';
+      row.innerHTML = `
+        <div class="season-info">
+          <div class="season-year">${seasonLabel(r.season)}</div>
+          <div class="season-team">${r.team||''}</div>
+        </div>
+        <div class="season-stats-line">${line}</div>
+      `;
+      container.appendChild(row);
+    });
+  }
+
+  async function resolvePlayerId(fullNameRaw) {
+    if (!fullNameRaw) return null;
+    const fullName = NAME_FIXES.get(fullNameRaw) || fullNameRaw;
+    if (cache.idByName.has(fullName)) return cache.idByName.get(fullName);
+    // Use STATSAPI people lookup to resolve ID (most stable option to find IDs)
+    try {
+      const data = await fetchJSON(`${STATSAPI}/people?fullName=${encodeURIComponent(fullName)}`, {timeoutMs: 7000});
+      const id = data?.people?.[0]?.id ?? null;
+      cache.idByName.set(fullName, id);
+      return id;
+    } catch(e) {
+      console.warn('ID lookup failed for', fullName, e);
+      cache.idByName.set(fullName, null);
+      return null;
+    }
+  }
+
+  async function getYearByYear(nhlId) {
+    if (!nhlId) return [];
+    if (cache.ybyById.has(nhlId)) return cache.ybyById.get(nhlId);
+    try {
+      const data = await fetchJSON(`${STATSAPI}/people/${nhlId}/stats?stats=yearByYear`, {timeoutMs: 7000});
+      const splits = data?.stats?.[0]?.splits?.filter(s => s?.league?.name === 'NHL') || [];
+      cache.ybyById.set(nhlId, splits);
+      return splits;
+    } catch(e) {
+      console.warn('yearByYear failed for', nhlId, e);
+      cache.ybyById.set(nhlId, []);
+      return [];
+    }
+  }
+
+  // Aggregate one season of api-web game logs into season totals
+  function aggregateFromGameLogs(games, isGoalieFlag) {
+    const sum = (a,b)=>a+(b||0);
+    if (isGoalieFlag) {
+      let gp=0,w=0,l=0,ot=0,so=0,ga=0,sa=0,toiSec=0;
+      games.forEach(g => {
+        gp += 1;
+        const dec = g?.decision;
+        if (dec==='W') w++; else if (dec==='L') l++; else if (dec==='OT') ot++;
+        so += (g?.shutouts || g?.isShutout || 0) ? 1 : 0;
+        ga += g?.goalsAgainst ?? g?.ga ?? 0;
+        sa += g?.shotsAgainst ?? g?.sa ?? 0;
+        const toi = (g?.toi || g?.timeOnIce || '0:00').split(':');
+        toiSec += (+toi[0])*60 + (+toi[1]||0);
+      });
+      const gaa = toiSec ? (ga * 3600 / toiSec).toFixed(2) : '—';
+      const sv = sa ? (1 - (ga/sa)).toFixed(3) : '—';
+      return { gp, w, l, ot, so, gaa, sv };
+    } else {
+      let gp=0,g=0,a=0,pim=0,pm=null;
+      games.forEach(x => {
+        gp += 1;
+        g = sum(g, x?.goals ?? x?.g);
+        a = sum(a, x?.assists ?? x?.a);
+        pim = sum(pim, x?.pim);
+        if (typeof x?.plusMinus === 'number') pm = (pm ?? 0) + x.plusMinus;
+      });
+      return { gp, g, a, pim, pm };
+    }
+  }
+
+  async function apiWebSeasonTotals(nhlId, season, isGoalieFlag) {
+    const key = `${nhlId}-${season}-2`;
+    if (cache.glByKey.has(key)) return cache.glByKey.get(key);
+    try {
+      const data = await fetchJSON(`${NHLWEB}/player/${nhlId}/game-log/${season}/2`, {timeoutMs: 7000});
+      const games = data?.gameLog || data || []; // be permissive
+      // Derive team name from first game (works for single-team seasons)
+      const team = games?.[0]?.teamName || games?.[0]?.teamAbbrev || '';
+      const agg = aggregateFromGameLogs(games, isGoalieFlag);
+      const row = { season, team, ...agg };
+      cache.glByKey.set(key, row);
+      return row;
+    } catch(e) {
+      console.warn('api-web game-log failed for', nhlId, season, e);
+      cache.glByKey.set(key, null);
+      return null;
+    }
+  }
+
+  async function buildRowsForPlayer(nhlId, playerPosition) {
+    const goalie = isGoalie(playerPosition);
+    // First try official yearByYear to get the list of seasons + team
+    const yby = await getYearByYear(nhlId);
+    if (yby.length) {
+      // Render using YBY data
+      return yby.map(s => {
+        const st = s.stat || {};
+        const team = s?.team?.name || s?.team?.triCode || '';
+        if (goalie) {
+          return {
+            season: s.season, team,
+            gp: st.games ?? 0, w: st.wins ?? 0, l: st.losses ?? 0, ot: st.ot ?? 0,
+            gaa: (st.goalAgainstAverage != null) ? Number(st.goalAgainstAverage).toFixed(2) : '—',
+            sv: (st.savePercentage != null) ? Number(st.savePercentage).toFixed(3) : '—',
+            so: st.shutouts ?? 0
+          };
+        } else {
+          const g = st.goals ?? 0, a = st.assists ?? 0;
+          return {
+            season: s.season, team,
+            gp: st.games ?? 0, g, a, pim: st.pim ?? 0, pm: st.plusMinus
+          };
+        }
+      });
+    }
+    // If YBY is empty, derive a reasonable season range to try (1980 to current)
+    const startYear = 1980;
+    const now = new Date(); const curYear = now.getMonth() >= 6 ? now.getFullYear() : now.getFullYear()-1;
+    const rows = [];
+    for (let y = startYear; y <= curYear; y++) {
+      const season = `${y}${y+1}`; // e.g., 19801981
+      const r = await apiWebSeasonTotals(nhlId, season, goalie);
+      if (r && r.gp) rows.push(r);
+    }
+    return rows;
+  }
+
+  async function openLightboxApiWebAware(playerKey, clickedThumb) {
+    const item = document.querySelector(`.player-item[data-player="${playerKey}"]`);
+    const displayName = item?.querySelector('.player-name')?.textContent?.trim() ||
+                        clickedThumb?.alt || '';
+    const positionText = item?.querySelector('.player-position')?.textContent?.trim() || '';
+
+    const headshotEl = document.getElementById('lightbox-headshot');
+    const nameEl = document.getElementById('lightbox-name');
+    const posEl = document.getElementById('lightbox-position');
+    const grid = document.getElementById('stats-grid');
+
+    const fallbackSrc = clickedThumb?.src || PLACEHOLDER;
+    headshotEl.src = fallbackSrc;
+    headshotEl.alt = displayName;
+    headshotEl.onerror = () => { headshotEl.src = PLACEHOLDER; };
+
+    nameEl.textContent = displayName || '';
+    posEl.textContent = positionText || '';
+    grid.innerHTML = `<div class="loading-stats">Loading season-by-season stats…</div>`;
+
+    // Open now
+    document.getElementById('lightbox').classList.add('active');
+    document.body.style.overflow = 'hidden';
+
+    // Resolve ID
+    const nhlId = await resolvePlayerId(displayName);
+    if (nhlId) {
+      headshotEl.src = HEADSHOT(nhlId, 168);
+      headshotEl.onerror = () => { headshotEl.src = fallbackSrc || PLACEHOLDER; };
+    }
+
+    let rows = [];
+    if (nhlId) {
+      rows = await buildRowsForPlayer(nhlId, positionText);
+    }
+    renderRows(grid, rows, isGoalie(positionText));
+  }
+
+  // Wire up click handler (delegated)
+  document.addEventListener('click', (e) => {
+    const item = e.target.closest('.player-item[data-player]');
+    if (!item) return;
+    const key = item.getAttribute('data-player');
+    const thumb = item.querySelector('img.player-headshot');
+    openLightboxApiWebAware(key, thumb);
+  });
+
+  // Keep existing close handlers intact
+  const lb = document.getElementById('lightbox');
+  if (lb) {
+    lb.addEventListener('click', (e) => { if (e.target === lb) { lb.classList.remove('active'); document.body.style.overflow='auto'; }});
+  }
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { const box=document.getElementById('lightbox'); if (box) { box.classList.remove('active'); document.body.style.overflow='auto'; }}});
+})();
+</script>

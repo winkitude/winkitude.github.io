@@ -1400,25 +1400,19 @@ const firstEvent = document.querySelector('.trade-event'); if (firstEvent) first
 
 </body>
 </html>
-<!-- Appended fallback loader using api-web.nhle.com game logs -->
-<script>
-/* =====================
-   Robust player lightbox loader with API fallbacks
-   - Primary: statsapi.web.nhl.com yearByYear (fast, season list provided)
-   - Fallback: api-web.nhle.com game logs per season (aggregated)
-   ===================== */
 
+<!-- Appended fallback loader using api-web.nhle.com game logs (v2 with api-web ID search fallback) -->
+<script>
 (function() {
   const STATSAPI = 'https://statsapi.web.nhl.com/api/v1';
   const NHLWEB = 'https://api-web.nhle.com/v1';
   const HEADSHOT = (id, size=168) => `https://cms.nhl.bamgrid.com/images/headshots/current/${size}x${size}/${id}.jpg`;
   const PLACEHOLDER = 'https://cms.nhl.bamgrid.com/images/headshots/current/168x168/skater.jpg';
 
-  // Name fixes to improve ID resolution
   const NAME_FIXES = new Map([['Johnathan Aitken', 'Jonathan Aitken']]);
+  const GOALIE_NAMES = new Set(['Jeff Hackett','Martin Jones']); // extend as needed
 
-  // Try/catch wrapper with timeout
-  async function fetchJSON(url, {timeoutMs=6000} = {}) {
+  async function fetchJSON(url, {timeoutMs=7000} = {}) {
     const ctrl = new AbortController();
     const t = setTimeout(() => ctrl.abort(), timeoutMs);
     try {
@@ -1433,25 +1427,28 @@ const firstEvent = document.querySelector('.trade-event'); if (firstEvent) first
   const cache = {
     idByName: new Map(),
     ybyById: new Map(),
-    glByKey: new Map() // `${id}-${season}-2` -> aggregated stats
+    seasonAgg: new Map() // key: `${id}-${season}-2`
   };
 
   function seasonLabel(season) {
     if (!season || season.length !== 8) return season || '';
-    const y1 = season.slice(0,4); const y2 = season.slice(4);
+    const y1 = season.slice(0,4), y2 = season.slice(4);
     return `${y1}–${y2.slice(2)}`;
   }
 
-  function isGoalie(position='') { return position.toLowerCase().includes('goal'); }
+  function isGoalie(displayName, positionText='') {
+    if (positionText.toLowerCase().includes('goal')) return true;
+    return GOALIE_NAMES.has(displayName.trim());
+  }
 
-  function renderRows(container, rows, isGoalieFlag) {
+  function renderRows(container, rows, goalie) {
     container.innerHTML = '';
     if (!rows.length) {
       container.innerHTML = `<div class="loading-stats">No season data available.</div>`;
       return;
     }
     rows.forEach(r => {
-      const line = isGoalieFlag
+      const line = goalie
         ? `GP ${r.gp||0} | W-L-OT ${r.w||0}-${r.l||0}-${r.ot||0} | GAA ${r.gaa ?? '—'} | SV% ${r.sv ?? '—'} | SO ${r.so||0}`
         : `GP ${r.gp||0} | G ${r.g||0} | A ${r.a||0} | PTS ${(r.g||0)+(r.a||0)} | PIM ${r.pim||0}` + (r.pm!=null?` | +/- ${r.pm}`:'')
       const row = document.createElement('div');
@@ -1467,130 +1464,124 @@ const firstEvent = document.querySelector('.trade-event'); if (firstEvent) first
     });
   }
 
-  async function resolvePlayerId(fullNameRaw) {
-    if (!fullNameRaw) return null;
-    const fullName = NAME_FIXES.get(fullNameRaw) || fullNameRaw;
-    if (cache.idByName.has(fullName)) return cache.idByName.get(fullName);
-    // Use STATSAPI people lookup to resolve ID (most stable option to find IDs)
+  async function resolveIdStatsApi(name) {
+    const fixed = NAME_FIXES.get(name) || name;
     try {
-      const data = await fetchJSON(`${STATSAPI}/people?fullName=${encodeURIComponent(fullName)}`, {timeoutMs: 7000});
-      const id = data?.people?.[0]?.id ?? null;
-      cache.idByName.set(fullName, id);
-      return id;
+      const data = await fetchJSON(`${STATSAPI}/people?fullName=${encodeURIComponent(fixed)}`);
+      return data?.people?.[0]?.id ?? null;
     } catch(e) {
-      console.warn('ID lookup failed for', fullName, e);
-      cache.idByName.set(fullName, null);
       return null;
     }
   }
 
-  async function getYearByYear(nhlId) {
-    if (!nhlId) return [];
-    if (cache.ybyById.has(nhlId)) return cache.ybyById.get(nhlId);
+  async function resolveIdApiWebSearch(name) {
+    // Try NHL web site search
     try {
-      const data = await fetchJSON(`${STATSAPI}/people/${nhlId}/stats?stats=yearByYear`, {timeoutMs: 7000});
+      const data = await fetchJSON(`${NHLWEB}/search/player?culture=en-us&limit=10&q=${encodeURIComponent(name)}`);
+      const hit = (data?.players || []).find(p => (p?.name || '').toLowerCase() === name.toLowerCase());
+      return hit?.id ?? (data?.players?.[0]?.id ?? null);
+    } catch(e) {
+      return null;
+    }
+  }
+
+  async function resolvePlayerId(name) {
+    if (!name) return null;
+    if (cache.idByName.has(name)) return cache.idByName.get(name);
+    let id = await resolveIdStatsApi(name);
+    if (!id) id = await resolveIdApiWebSearch(name);
+    cache.idByName.set(name, id ?? null);
+    return id ?? null;
+  }
+
+  async function getYearByYear(id) {
+    if (!id) return [];
+    if (cache.ybyById.has(id)) return cache.ybyById.get(id);
+    try {
+      const data = await fetchJSON(`${STATSAPI}/people/${id}/stats?stats=yearByYear`);
       const splits = data?.stats?.[0]?.splits?.filter(s => s?.league?.name === 'NHL') || [];
-      cache.ybyById.set(nhlId, splits);
+      cache.ybyById.set(id, splits);
       return splits;
     } catch(e) {
-      console.warn('yearByYear failed for', nhlId, e);
-      cache.ybyById.set(nhlId, []);
+      cache.ybyById.set(id, []);
       return [];
     }
   }
 
-  // Aggregate one season of api-web game logs into season totals
-  function aggregateFromGameLogs(games, isGoalieFlag) {
-    const sum = (a,b)=>a+(b||0);
-    if (isGoalieFlag) {
+  function aggregateGameLogs(games, goalie) {
+    if (goalie) {
       let gp=0,w=0,l=0,ot=0,so=0,ga=0,sa=0,toiSec=0;
-      games.forEach(g => {
-        gp += 1;
-        const dec = g?.decision;
-        if (dec==='W') w++; else if (dec==='L') l++; else if (dec==='OT') ot++;
-        so += (g?.shutouts || g?.isShutout || 0) ? 1 : 0;
+      for (const g of games) {
+        gp++;
+        if (g?.decision==='W') w++; else if (g?.decision==='L') l++; else if (g?.decision==='OT') ot++;
+        if (g?.isShutout || g?.shutouts) so++;
         ga += g?.goalsAgainst ?? g?.ga ?? 0;
         sa += g?.shotsAgainst ?? g?.sa ?? 0;
-        const toi = (g?.toi || g?.timeOnIce || '0:00').split(':');
-        toiSec += (+toi[0])*60 + (+toi[1]||0);
-      });
+        const [mm='0', ss='0'] = (g?.timeOnIce || g?.toi || '0:00').split(':');
+        toiSec += (+mm)*60 + (+ss);
+      }
       const gaa = toiSec ? (ga * 3600 / toiSec).toFixed(2) : '—';
-      const sv = sa ? (1 - (ga/sa)).toFixed(3) : '—';
-      return { gp, w, l, ot, so, gaa, sv };
+      const sv = sa ? (1 - ga/sa).toFixed(3) : '—';
+      return {gp,w,l,ot,so,gaa,sv};
     } else {
       let gp=0,g=0,a=0,pim=0,pm=null;
-      games.forEach(x => {
-        gp += 1;
-        g = sum(g, x?.goals ?? x?.g);
-        a = sum(a, x?.assists ?? x?.a);
-        pim = sum(pim, x?.pim);
+      for (const x of games) {
+        gp++;
+        g += x?.goals ?? x?.g ?? 0;
+        a += x?.assists ?? x?.a ?? 0;
+        pim += x?.pim ?? 0;
         if (typeof x?.plusMinus === 'number') pm = (pm ?? 0) + x.plusMinus;
-      });
-      return { gp, g, a, pim, pm };
+      }
+      return {gp,g,a,pim,pm};
     }
   }
 
-  async function apiWebSeasonTotals(nhlId, season, isGoalieFlag) {
-    const key = `${nhlId}-${season}-2`;
-    if (cache.glByKey.has(key)) return cache.glByKey.get(key);
+  async function apiWebSeasonTotals(id, season, goalie) {
+    const key = `${id}-${season}-2`;
+    if (cache.seasonAgg.has(key)) return cache.seasonAgg.get(key);
     try {
-      const data = await fetchJSON(`${NHLWEB}/player/${nhlId}/game-log/${season}/2`, {timeoutMs: 7000});
-      const games = data?.gameLog || data || []; // be permissive
-      // Derive team name from first game (works for single-team seasons)
-      const team = games?.[0]?.teamName || games?.[0]?.teamAbbrev || '';
-      const agg = aggregateFromGameLogs(games, isGoalieFlag);
+      const data = await fetchJSON(`${NHLWEB}/player/${id}/game-log/${season}/2`);
+      const games = data?.gameLog || data || [];
+      if (!games.length) { cache.seasonAgg.set(key, null); return null; }
+      const team = games[0]?.teamName || games[0]?.teamAbbrev || '';
+      const agg = aggregateGameLogs(games, goalie);
       const row = { season, team, ...agg };
-      cache.glByKey.set(key, row);
+      cache.seasonAgg.set(key, row);
       return row;
     } catch(e) {
-      console.warn('api-web game-log failed for', nhlId, season, e);
-      cache.glByKey.set(key, null);
+      cache.seasonAgg.set(key, null);
       return null;
     }
   }
 
-  async function buildRowsForPlayer(nhlId, playerPosition) {
-    const goalie = isGoalie(playerPosition);
-    // First try official yearByYear to get the list of seasons + team
-    const yby = await getYearByYear(nhlId);
+  async function buildRows(id, goalie) {
+    const yby = await getYearByYear(id);
     if (yby.length) {
-      // Render using YBY data
       return yby.map(s => {
         const st = s.stat || {};
         const team = s?.team?.name || s?.team?.triCode || '';
-        if (goalie) {
-          return {
-            season: s.season, team,
-            gp: st.games ?? 0, w: st.wins ?? 0, l: st.losses ?? 0, ot: st.ot ?? 0,
-            gaa: (st.goalAgainstAverage != null) ? Number(st.goalAgainstAverage).toFixed(2) : '—',
-            sv: (st.savePercentage != null) ? Number(st.savePercentage).toFixed(3) : '—',
-            so: st.shutouts ?? 0
-          };
-        } else {
-          const g = st.goals ?? 0, a = st.assists ?? 0;
-          return {
-            season: s.season, team,
-            gp: st.games ?? 0, g, a, pim: st.pim ?? 0, pm: st.plusMinus
-          };
-        }
+        return goalie
+          ? { season: s.season, team, gp: st.games||0, w: st.wins||0, l: st.losses||0, ot: st.ot||0,
+              gaa: (st.goalAgainstAverage!=null) ? Number(st.goalAgainstAverage).toFixed(2) : '—',
+              sv: (st.savePercentage!=null) ? Number(st.savePercentage).toFixed(3) : '—',
+              so: st.shutouts||0 }
+          : { season: s.season, team, gp: st.games||0, g: st.goals||0, a: st.assists||0, pim: st.pim||0, pm: st.plusMinus };
       });
     }
-    // If YBY is empty, derive a reasonable season range to try (1980 to current)
-    const startYear = 1980;
-    const now = new Date(); const curYear = now.getMonth() >= 6 ? now.getFullYear() : now.getFullYear()-1;
+    // No YBY: probe seasons with api-web (limit to plausible career span to cut noise)
     const rows = [];
-    for (let y = startYear; y <= curYear; y++) {
-      const season = `${y}${y+1}`; // e.g., 19801981
-      const r = await apiWebSeasonTotals(nhlId, season, goalie);
+    const start = 1980, now = new Date(), cur = (now.getMonth()>=6 ? now.getFullYear() : now.getFullYear()-1);
+    for (let y = start; y <= cur; y++) {
+      const season = `${y}${y+1}`;
+      const r = await apiWebSeasonTotals(id, season, goalie);
       if (r && r.gp) rows.push(r);
     }
     return rows;
   }
 
-  async function openLightboxApiWebAware(playerKey, clickedThumb) {
+  async function openLightboxEnhanced(playerKey, clickedThumb) {
     const item = document.querySelector(`.player-item[data-player="${playerKey}"]`);
-    const displayName = item?.querySelector('.player-name')?.textContent?.trim() ||
-                        clickedThumb?.alt || '';
+    const displayName = item?.querySelector('.player-name')?.textContent?.trim() || clickedThumb?.alt || '';
     const positionText = item?.querySelector('.player-position')?.textContent?.trim() || '';
 
     const headshotEl = document.getElementById('lightbox-headshot');
@@ -1607,38 +1598,27 @@ const firstEvent = document.querySelector('.trade-event'); if (firstEvent) first
     posEl.textContent = positionText || '';
     grid.innerHTML = `<div class="loading-stats">Loading season-by-season stats…</div>`;
 
-    // Open now
     document.getElementById('lightbox').classList.add('active');
     document.body.style.overflow = 'hidden';
 
-    // Resolve ID
-    const nhlId = await resolvePlayerId(displayName);
-    if (nhlId) {
-      headshotEl.src = HEADSHOT(nhlId, 168);
+    const id = await resolvePlayerId(displayName);
+    if (id) {
+      headshotEl.src = HEADSHOT(id, 168);
       headshotEl.onerror = () => { headshotEl.src = fallbackSrc || PLACEHOLDER; };
+      const goalie = isGoalie(displayName, positionText);
+      const rows = await buildRows(id, goalie);
+      renderRows(grid, rows, goalie);
+    } else {
+      grid.innerHTML = `<div class="loading-stats">Couldn’t resolve player ID.</div>`;
     }
-
-    let rows = [];
-    if (nhlId) {
-      rows = await buildRowsForPlayer(nhlId, positionText);
-    }
-    renderRows(grid, rows, isGoalie(positionText));
   }
 
-  // Wire up click handler (delegated)
   document.addEventListener('click', (e) => {
     const item = e.target.closest('.player-item[data-player]');
     if (!item) return;
     const key = item.getAttribute('data-player');
     const thumb = item.querySelector('img.player-headshot');
-    openLightboxApiWebAware(key, thumb);
+    openLightboxEnhanced(key, thumb);
   });
-
-  // Keep existing close handlers intact
-  const lb = document.getElementById('lightbox');
-  if (lb) {
-    lb.addEventListener('click', (e) => { if (e.target === lb) { lb.classList.remove('active'); document.body.style.overflow='auto'; }});
-  }
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { const box=document.getElementById('lightbox'); if (box) { box.classList.remove('active'); document.body.style.overflow='auto'; }}});
 })();
 </script>

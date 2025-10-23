@@ -2,31 +2,39 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Debug — Landing + TheSportsDB</title>
+  <title>Proxy Diagnostics — Landing + TSDB</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;margin:0;background:#0b1220;color:#e8eefc}
-    .wrap{max-width:780px;margin:30px auto;padding:0 16px}
+    .wrap{max-width:900px;margin:30px auto;padding:0 16px}
     .card{background:#0f172a;border:1px solid #223;border-radius:10px;padding:14px;margin-bottom:10px}
-    .ok{color:#7ef7c7}.bad{color:#ff9887}
+    .ok{color:#7ef7c7}.bad{color:#ff9887}.warn{color:#ffd27e}
+    code{background:#152140;border:1px solid #27385e;border-radius:6px;padding:2px 6px}
+    pre{white-space:pre-wrap;word-break:break-word;background:#0c1224;border:1px solid #223;border-radius:8px;padding:8px;max-height:240px;overflow:auto}
   </style>
 </head>
 <body>
   <div class="wrap">
-    <div class="card" id="a">Landing: testing…</div>
-    <div class="card" id="b">TheSportsDB image: testing…</div>
+    <div class="card" id="a">Landing fetch: <span class="warn">testing…</span></div>
+    <div class="card"><strong>Raw /diag/landing output</strong><pre id="diag"></pre></div>
+    <div class="card" id="b">TheSportsDB image: <span class="warn">testing…</span></div>
     <img id="img" style="display:block;margin-top:8px;max-height:168px;border-radius:8px" />
   </div>
   <script>
-    const PROXY='https://pederson-neely.ariswinkleman.workers.dev', NHL_WEB=`${PROXY}/nhl-web`;
+    const PROXY='https://pederson-neely.ariswinkleman.workers.dev';
     async function testLanding(){
       const el=document.getElementById('a');
+      const raw=document.getElementById('diag');
       try{
-        const r = await fetch(`${NHL_WEB}/v1/player/8449812/landing`);
+        const r = await fetch(`${PROXY}/diag/landing?id=8449812`);
         const j = await r.json();
-        const ok = Array.isArray(j?.seasons) && j.seasons.length>0;
-        el.innerHTML = 'Landing: ' + (ok?'<span class="ok">OK</span>':'<span class="bad">FAILED</span>');
-      }catch(e){ el.innerHTML='Landing: <span class="bad">FAILED</span>'; }
+        raw.textContent = JSON.stringify(j, null, 2);
+        const ok = j && j.ok === true && j.status === 200;
+        el.innerHTML = 'Landing fetch: ' + (ok?'<span class="ok">OK</span>':'<span class="bad">FAILED</span>');
+      }catch(e){
+        el.innerHTML='Landing fetch: <span class="bad">FAILED</span>';
+        raw.textContent = String(e);
+      }
     }
     async function testTSDB(){
       const el=document.getElementById('b');

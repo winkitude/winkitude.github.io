@@ -1539,7 +1539,6 @@
   console.log('[Landing-only] Using api-web search + player landing endpoints only.');
 })();
 </script>
-
 <script>
 // --- Image patch: prefer TheSportsDB -> card thumbnail -> placeholder (avoid BAM headshots) ---
 (function(){
@@ -1566,6 +1565,67 @@
   };
 
   console.log('[Images] Using TheSportsDB for player photos (no BAM CDN).');
+})();
+</script>
+
+<script>
+// --- Robust Landing fetch with graceful fallback to local stats_cache.json ---
+(function(){
+  const PROXY = 'https://pederson-neely.ariswinkleman.workers.dev';
+  const NHL_WEB = `${PROXY}/nhl-web`;
+
+  async function fetchJSON(url, opts={}){
+    const ctrl = new AbortController();
+    const t = setTimeout(()=>ctrl.abort(), opts.timeoutMs || 10000);
+    try{
+      const r = await fetch(url, {signal: ctrl.signal});
+      if (!r.ok) throw new Error('HTTP '+r.status);
+      return await r.json();
+    } finally { clearTimeout(t); }
+  }
+
+  // Override getSeasonStats to try multiple landing shapes and then local cache
+  window.getSeasonStats = async function(name){
+    // Prefer prefilled ID map if available
+    const idMap = window.PLAYER_ID || {};
+    let id = idMap[name];
+    if (!id){
+      // Use existing search helper from previous patch (api-web search)
+      if (window.findNhlPersonId) id = await window.findNhlPersonId(name);
+    }
+    if (!id) throw new Error("Couldn't resolve player ID.");
+
+    // Try landing straight
+    try{
+      const j = await fetchJSON(`${NHL_WEB}/v1/player/${id}/landing`, {timeoutMs:10000});
+      // Try multiple shapes
+      const seasons = j?.seasons || j?.seasonTotals || j?.seasonTotalsRegular || [];
+      const rows = (seasons || []).map(s => {
+        const s8 = String(s.seasonId || s.season || '');
+        const season = s8 && s8.length===8 ? `${s8.slice(0,4)}-${s8.slice(4)}` : s8;
+        const team = s.teamName || s.teamAbbrev || s.team || '';
+        const gp = s.gamesPlayed ?? s.gp ?? s.games ?? 0;
+        const g  = s.goals ?? s.g ?? 0;
+        const a  = s.assists ?? s.a ?? 0;
+        const pim= s.pim ?? 0;
+        const pm = (typeof s.plusMinus === 'number') ? s.plusMinus : undefined;
+        return { season, team, gp, g, a, pim, pm };
+      }).filter(r => r.gp);
+      if (rows.length) return rows;
+    }catch(e){
+      // continue to fallback
+    }
+
+    // Fallback: local JSON cache if present
+    try{
+      const cache = await fetchJSON('stats_cache.json', {timeoutMs:1500});
+      if (cache && cache[name]) return cache[name];
+    }catch(e){}
+
+    throw new Error('No stats available from landing or local cache.');
+  };
+
+  console.log('[Stats] Robust landing fetch + local fallback active.');
 })();
 </script>
 </body>

@@ -1228,13 +1228,15 @@
         if (p.strCutout) return p.strCutout;
         if (p.strThumb) return p.strThumb;
       }
-    }catch{}
+    }catch (e) {}
     return fallbackThumb || PLACEHOLDER;
   }
 
   async function getSeasonStats(name){
     const id = PLAYER_ID[name] || await findNhlPersonId(name);
-    if (!id) throw new Error(\"Couldn't resolve player ID.\");
+   if (!id) {
+  throw new Error('Could not resolve player ID.');
+}
 
     // NHL Stats yearByYear
     try{
@@ -1628,5 +1630,48 @@
   console.log('[Stats] Robust landing fetch + local fallback active.');
 })();
 </script>
+
+<script>
+/* Force-safe images: prefer TheSportsDB, else keep the card thumb, else placeholder. */
+(function () {
+  const PLACEHOLDER = 'https://via.placeholder.com/168?text=No+Image';
+
+  async function tsdbUrlByName(name) {
+    try {
+      const r = await fetch('https://www.thesportsdb.com/api/v1/json/3/searchplayers.php?p=' + encodeURIComponent(name));
+      const j = await r.json();
+      const p = j && j.player && j.player[0];
+      return p?.strCutout || p?.strThumb || p?.strRender || null;
+    } catch { return null; }
+  }
+
+  async function normalizeHeadshots() {
+    const cards = document.querySelectorAll('.player-item[data-player]');
+    for (const card of cards) {
+      const name = card.querySelector('.player-name')?.textContent?.trim() || '';
+      const img = card.querySelector('img.player-headshot');
+      if (!img) continue;
+
+      const src = (img.getAttribute('src') || '').toLowerCase();
+
+      // If it's clearly a BAM URL or a bare filename, replace it.
+      const looksBad = src.includes('bamgrid.com') ||
+                       /^[0-9]+\.(jpg|jpeg|png)$/.test(src) ||
+                       /(^|\/)skater\.jpg$/.test(src);
+
+      if (looksBad || !src) {
+        const u = name ? (await tsdbUrlByName(name)) : null;
+        img.src = u || img.src || PLACEHOLDER;
+      }
+      img.onerror = () => { img.src = PLACEHOLDER; };
+    }
+  }
+
+  // Run now and re-run once after JS patches finish
+  window.addEventListener('DOMContentLoaded', normalizeHeadshots);
+  setTimeout(normalizeHeadshots, 1200);
+})();
+</script>
+
 </body>
 </html>

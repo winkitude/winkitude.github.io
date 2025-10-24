@@ -1,0 +1,173 @@
+
+<!DOCTYPE html>
+<html class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Ari Winkleman – Defense Priorities Charts</title>
+  <meta name="description" content="Defense Priorities charts by Ari Winkleman">
+  <meta name="viewport" content="width=device-width">
+  <link rel="shortcut icon" href="../favicon.ico">
+
+  <!-- FONTS -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poltawski+Nowy:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,700;0,800;1,400&display=swap" rel="stylesheet">
+
+  <!-- Site Styles (same stack as the rest of the site) -->
+  <link href="../css/normalize.css" rel="stylesheet" />
+  <link href="../css/grid.css" rel="stylesheet" />
+  <link href="../css/screen.css" rel="stylesheet" />
+
+  <!-- Scoped helpers for blog formatting (non-destructive) -->
+  <style>
+    .eyebrow { font-family:'Open Sans', Arial, sans-serif; font-weight:700; letter-spacing:.06em; font-size:.9em; text-transform:uppercase; color:#222; }
+    .byline, .meta { font-family:'Open Sans', Arial, sans-serif; font-size:.9em; color:#444; }
+    .meta span { margin-right:10px; }
+    figure { margin: 0 0 16px 0; }
+    figure img { width:100%; height:auto; display:block; border-radius:6px; }
+    figcaption { font-family:'Open Sans', Arial, sans-serif; font-size:.9em; color:#444; margin-top:6px; }
+    .pullquote { font-family:'Open Sans', Arial, sans-serif; font-size:1.15em; line-height:1.5; font-weight:700; border-left:4px solid #111; padding:10px 14px; margin:18px 0; }
+    .detail-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; }
+    @media (max-width:750px){ .detail-grid{ grid-template-columns:1fr; } }
+    .tags { margin-top:6px; }
+    .tag { display:inline-block; border:1px solid #ddd; border-radius:14px; padding:4px 10px; font-size:.85em; margin-right:6px; }
+    .post-nav { display:flex; justify-content:space-between; gap:10px; }
+    .post-nav a { text-decoration:none; }
+
+    #content { max-width: 1000px; margin: 0 auto; }
+    .lane-title { font-family: 'Open Sans', Arial, sans-serif; font-size: 1.5em; line-height: 1.25em; }
+    .spacer { height: 10px; }
+    .thumb-row img { width: 100%; height: auto; display: block; border-radius: 4px; }
+    .pill { display:inline-block; padding:4px 8px; border:1px solid #e5e5e5; border-radius:16px; font:600 12px 'Open Sans', Arial, sans-serif; background:#fff; }
+    .cta { text-decoration: underline; font-weight: 700; }
+    .lane { margin-bottom: 20px; }
+    .divider { margin: 10px 0 20px; border: 0; border-top: 1px solid #e5e5e5; }
+    .note { font: 13px/1.4 'Open Sans', Arial, sans-serif; color:#333; }
+
+    .masthead{ text-align:center; padding-top: 22px; margin:0 0 6px; }
+    .masthead a{ font-family:"Poltawski Nowy", serif; font-size:clamp(28px,3.2vw,40px); text-decoration:none; color:#111; letter-spacing:.2px; }
+    .masthead a:hover{ color:#333; }
+    .issuebar{ display:flex; gap:12px; justify-content:center; align-items:center; flex-wrap:wrap; color:#777; font:700 12px/1 'Open Sans', Arial, sans-serif; letter-spacing:.08em; text-transform:uppercase; padding-bottom:.9em; }
+    .issuebar span{ white-space:nowrap; }
+    .issuebar .dot{ width:.45em; height:.45em; background:#aaa; border-radius:50%; display:inline-block; }
+
+    :root{ --container-pad: 16px; --pad-left: max(var(--container-pad), env(safe-area-inset-left)); --pad-right: max(var(--container-pad), env(safe-area-inset-right)); }
+  </style>
+</head>
+<body>
+<div class="container clearfix">
+  <div id="content">
+    <header class="site-header">
+      <div class="wrap" style="display:flex; justify-content:space-between; align-items:center;">
+        <div class="masthead">
+          <a href="../index.html">Ari Winkleman</a>
+        </div>
+        <div class="contact-icons" style="display:flex; gap:16px; align-items:center;">
+          <a href="https://www.linkedin.com/in/ari-winkleman/" target="_blank" rel="noopener" aria-label="LinkedIn" title="LinkedIn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M19 0h-14c-2.76 0-5 2.24-5 5v14c0 2.76 2.24 5 5 5h14c2.76 0 5-2.24 5-5v-14c0-2.76-2.24-5-5-5zm-11 19h-3v-10h3v10zm-1.5-11.27c-.97 0-1.75-.79-1.75-1.76 0-.97.78-1.76 1.75-1.76s1.75.79 1.75 1.76c0 .97-.78 1.76-1.75 1.76zm13.5 11.27h-3v-5.6c0-1.34-.03-3.07-1.87-3.07-1.87 0-2.16 1.46-2.16 2.97v5.7h-3v-10h2.88v1.36h.04c.4-.75 1.38-1.54 2.84-1.54 3.04 0 3.6 2 3.6 4.6v5.6z"/>
+            </svg>
+          </a>
+          <a href="mailto:ariswinkleman@gmail.com" aria-label="Email" title="Email">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 13.065l-11.99-7.065h23.98l-11.99 7.065zm0 2.935l-12-7.065v11.065h24v-11.065l-12 7.065z"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </header>
+    <br><br>
+
+    <!-- HERO -->
+    <div class="grid_12 photo">
+      <figure>
+        <a href="#" target="_blank"><img src="../images/posts/dp-hero.png" alt="Defense Priorities charts — hero montage"></a>
+        <figcaption>Selected charts from Defense Priorities work.</figcaption>
+      </figure>
+    </div>
+    <div class="grid_12">
+      <div class="eyebrow">PUBLISHED CHARTS</div>
+      <p style="font-family:'Abril Fatface', serif; font-size:1.5em; line-height:1.25em; margin:.4em 0 .6em;">
+        Defense Priorities: Visualizing US strategy, alliances, and costs
+      </p>
+      <p class="byline">October 2025</p>
+      <div class="meta" style="margin-top:6px;">
+        <span>Role: Designer, editor, data wrangler</span>
+        <span>Tools: Illustrator, Excel</span>
+      </div>
+      <p>
+        A small collection of published charts created for Defense Priorities, focused on spending, alliance dynamics, and the trade‑offs of US commitments abroad. Where possible, I link to the accompanying articles or threads.
+      </p>
+      <div class="tags">
+        <span class="tag">defense</span>
+        <span class="tag">geopolitics</span>
+        <span class="tag">charts</span>
+        <span class="tag">data viz</span>
+      </div>
+    </div>
+
+    <div class="grid_12"></div><br>
+
+    <!-- POST BODY -->
+    <div class="grid_12">
+      <div class="pullquote">Clarity first: simple type hierarchy, restrained palette, and clean sourcing so the argument sits with the data, not the decoration.</div>
+    </div>
+
+    <!-- Chart 1 -->
+    <div class="grid_12">
+      <figure>
+        <a href="#" target="_blank"><img src="../images/posts/dp-nato-burden.png" alt="NATO defense burden sharing chart"></a>
+        <figcaption>NATO burden sharing over time. Source: NATO, SIPRI.</figcaption>
+      </figure>
+    </div>
+
+    <!-- Chart 2 and 3 side-by-side -->
+    <div class="grid_12 detail-grid">
+      <figure>
+        <a href="#" target="_blank"><img src="../images/posts/dp-ukraine-aid.png" alt="US aid to Ukraine chart"></a>
+        <figcaption>US aid to Ukraine by category. Source: CRS, OMB.</figcaption>
+      </figure>
+      <figure>
+        <a href="#" target="_blank"><img src="../images/posts/dp-mideast-troops.png" alt="US troop levels in the Middle East chart"></a>
+        <figcaption>US troop presence in the Middle East (selected hubs).</figcaption>
+      </figure>
+    </div>
+
+    <!-- Chart 4 -->
+    <div class="grid_12">
+      <figure>
+        <a href="#" target="_blank"><img src="../images/posts/dp-defense-outlays-gdp.png" alt="US defense outlays as share of GDP"></a>
+        <figcaption>US defense outlays as % of GDP. Source: OMB Table 8.4.</figcaption>
+      </figure>
+    </div>
+
+    <!-- Notes / Sources -->
+    <div class="grid_12">
+      <p class="note">
+        Notes: All charts designed for fast scanning on web/social and export at print resolution. Colors follow client palette; typography tuned for legibility across small sizes.
+      </p>
+      <p class="meta">
+        Want the process details? <a href="mailto:ariswinkleman@gmail.com">Email me</a> and I’ll share data notes and working files where permitted.
+      </p>
+    </div>
+
+    <!-- Footer -->
+    <div class="grid_12">
+      <hr>
+      <footer class="grid_12">
+        <a href="../index.html"><p>Back to homepage &rarr;</p></a>
+      </footer>
+    </div>
+  </div>
+</div>
+
+<!-- Google tag (optional, matches site) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8FK0VXYYGX"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-8FK0VXYYGX');
+</script>
+</body>
+</html>

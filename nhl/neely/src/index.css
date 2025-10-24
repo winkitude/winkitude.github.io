@@ -1,0 +1,69 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    --background: 220 30% 8%;
+    --foreground: 210 40% 98%;
+
+    --card: 220 28% 12%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 220 28% 12%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 45 100% 51%;
+    --primary-foreground: 0 0% 0%;
+
+    --secondary: 0 0% 15%;
+    --secondary-foreground: 45 100% 51%;
+
+    --muted: 0 0% 12%;
+    --muted-foreground: 45 20% 60%;
+
+    --accent: 45 100% 51%;
+    --accent-foreground: 0 0% 0%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 45 30% 25%;
+    --input: 45 30% 25%;
+    --ring: 45 100% 51%;
+
+    --radius: 0.75rem;
+
+    /* Bruins-themed colors */
+    --bruins-gold: 45 100% 51%;
+    --bruins-gold-light: 45 100% 60%;
+    --bruins-gold-dark: 45 100% 40%;
+    --bruins-black: 0 0% 0%;
+    --bruins-black-light: 0 0% 10%;
+    
+    /* Gradients */
+    --gradient-gold: linear-gradient(135deg, hsl(45 100% 51% / 0.2), hsl(0 0% 0%));
+    --gradient-glow: linear-gradient(180deg, hsl(45 100% 51% / 0.1), transparent);
+    
+    /* Shadows */
+    --glow-gold: 0 0 40px hsl(45 100% 51% / 0.3);
+    --shadow-elevated: 0 10px 40px -10px hsl(0 0% 0% / 0.5);
+    
+    /* Animations */
+    --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}

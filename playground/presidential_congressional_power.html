@@ -6,68 +6,67 @@
   <title>American Presidential & Congressional Power — Timeline</title>
   <style>
     :root{
-      --bg:#f6f7f9; --card:#ffffff; --ink:#111827; --sub:#6b7280; --border:#e5e7eb;
+      /* Tweak these to micro‑match your PDF */
+      --bg:#ffffff;            /* PDF white */
+      --ink:#111827;           /* near‑black */
+      --sub:#4b5563;           /* labels */
+      --rule:#e5e7eb;          /* hairline rules */
+      --card:#ffffff;
       --blue:#2563eb; --red:#dc2626; --amber:#d97706; --slate:#334155; --emerald:#047857; --neutral:#6b7280;
+      --gutter:14px;           /* column gutter */
+      --vr:10px;               /* vertical rhythm */
+      --band-h:38px;           /* year band height */
+      --radius:10px;           /* small rounding like print */
     }
     *{box-sizing:border-box}
     html,body{height:100%}
-    body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji"}
-    h1,h2,h3{margin:0 0 .5rem}
+    body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.35 system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial}
     img{max-width:100%;display:block}
 
-    /* Header */
-    .header{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.9);backdrop-filter:saturate(1.1) blur(8px);border-bottom:1px solid var(--border)}
-    .header-inner{max-width:1400px;margin:0 auto;padding:.6rem 1rem;display:flex;gap:.75rem;align-items:center;justify-content:space-between}
-    .navbtn{border:1px solid var(--border);background:#fff;border-radius:999px;padding:.45rem .6rem;cursor:pointer}
-    .navbtn svg{width:18px;height:18px}
+    /* Page frame, no sticky chrome; simple scroll like a PDF */
+    .page{max-width:980px;margin:0 auto;padding:16px 14px}
+    .title{font-weight:800;font-size:18px;margin:0 0 8px}
+    .subtitle{color:var(--sub);font-size:12px;margin:0 0 16px}
 
-    /* Horizontal scroller */
-    .scroller{max-width:1400px;margin:0 auto;padding:12px .5rem 28px;display:grid;grid-auto-flow:column;grid-auto-columns:100vw;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth}
-    @media(min-width:768px){.scroller{grid-auto-columns:80vw}}
-    @media(min-width:1200px){.scroller{grid-auto-columns:60vw}}
-    .slide{scroll-snap-align:start;padding:0 6px}
+    /* Continuous timeline blocks */
+    .block{padding:12px 0;border-bottom:1px solid var(--rule)}
+    .band{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+    .year{font-weight:800;font-size:22px;letter-spacing:.3px}
+    .ticks{flex:1;height:6px;background:repeating-linear-gradient(to right, var(--rule) 0 2px, transparent 2px 12px);border-radius:999px}
 
-    /* Slide card (4‑year block) */
-    .block{background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:0 1px 2px rgba(0,0,0,.04);overflow:hidden}
-    .block-inner{padding:18px}
+    /* Compact stacked content (portrait → meta → map → stats → chart) */
+    .grid{display:grid;grid-template-columns:1fr;gap:var(--gutter)}
+    @media(min-width:800px){
+      .grid{grid-template-columns:160px 1fr 240px}
+    }
 
-    /* Top timeline band */
-    .band{position:relative;border:1px solid var(--border);border-radius:12px;padding:10px 12px;background:linear-gradient(180deg,#fff, #fafafa)}
-    .band .year{font-weight:800;font-size:28px;letter-spacing:.5px}
-    .band .ticks{margin-top:8px;height:8px;background:repeating-linear-gradient(to right, #e5e7eb 0 2px, transparent 2px 10px);border-radius:999px}
-
-    /* Row: president compact */
-    .row{display:grid;gap:12px;margin-top:14px}
-    @media(min-width:900px){.row{grid-template-columns:1.2fr 1.8fr}}
-    .pres{display:flex;gap:12px;align-items:flex-start}
-    .portrait{width:72px;height:72px;border-radius:10px;overflow:hidden;background:#f3f4f6;flex:0 0 auto}
-    .badge{display:inline-flex;gap:6px;align-items:center;margin-top:6px;border-radius:999px;padding:3px 9px;font-size:12px;color:#fff}
+    .portrait{width:120px;max-width:100%;height:120px;border-radius:var(--radius);overflow:hidden;background:#f3f4f6}
+    .meta h2{font-size:16px;line-height:1.15;margin:0 0 4px;font-weight:800}
+    .badge{display:inline-flex;gap:6px;align-items:center;border-radius:999px;padding:3px 8px;font-size:11px;color:#fff}
     .dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.9)}
-    .sub{color:var(--sub);font-size:13px}
+    .kv{font-size:12px;color:var(--sub)}
 
-    /* Map + stats condensed */
-    .mapstats{display:grid;grid-template-columns:2fr 1fr;gap:10px}
-    .map{border:1px solid var(--border);border-radius:12px;padding:6px;background:#fff}
-    .mapbox{aspect-ratio:16/9;background:#fafafa;border-radius:10px;display:grid;place-items:center;color:#9ca3af;font-size:13px;overflow:hidden}
-    .stats{border:1px solid var(--border);border-radius:12px;padding:10px;display:flex;flex-direction:column;gap:8px}
-    .kpi-label{font-size:12px;color:var(--sub)}
+    .map{border:1px solid var(--rule);border-radius:var(--radius);padding:6px}
+    .mapbox{aspect-ratio:16/9;background:#fafafa;border-radius:8px;display:grid;place-items:center;color:#9ca3af;font-size:12px;overflow:hidden}
+
+    .stats{border:1px solid var(--rule);border-radius:var(--radius);padding:8px;display:grid;grid-template-columns:1fr;gap:8px}
+    .kpi-label{font-size:11px;color:var(--sub)}
     .kpi-value{font-weight:800;font-size:18px}
     .kpi-sub{color:#9ca3af;font-weight:600}
 
-    /* Chart */
-    .chart-wrap{margin-top:14px}
-    .chart-head{display:flex;align-items:baseline;justify-content:space-between}
-    .chart-title{font-size:15px;font-weight:700}
+    /* Chart (tight) */
+    .chart{margin-top:8px}
+    .chart-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:4px}
+    .chart-title{font-size:13px;font-weight:700}
     .chart-sub{font-size:11px;color:var(--sub)}
-    .svgbar{width:100%;height:120px}
+    .svgbar{width:100%;height:110px}
 
-    /* Legend */
-    .legend{max-width:1400px;margin:2px auto 48px;padding:0 1rem;display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
-    @media(min-width:900px){.legend{grid-template-columns:repeat(6,1fr)}}
-    .chip{display:flex;align-items:center;gap:8px;font-size:12px}
+    /* Party swatches for legend (optional footer) */
+    .legend{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:14px 0 24px}
+    @media(min-width:800px){.legend{grid-template-columns:repeat(6,1fr)}}
+    .chip{display:flex;align-items:center;gap:6px;font-size:12px}
     .sw{width:12px;height:12px;border-radius:3px}
 
-    /* Party swatches */
     .p-Democratic{background:var(--blue)}
     .p-Republican{background:var(--red)}
     .p-Whig{background:var(--amber)}
@@ -77,30 +76,25 @@
   </style>
 </head>
 <body>
-  <header class="header" role="banner">
-    <div class="header-inner">
-      <h1 style="font-weight:800;font-size:18px">American Presidential & Congressional Power</h1>
-      <div style="display:flex;gap:8px">
-        <button class="navbtn" id="btnPrev" aria-label="Previous"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
-        <button class="navbtn" id="btnNext" aria-label="Next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button>
-      </div>
+  <div class="page">
+    <h1 class="title">American Presidential & Congressional Power</h1>
+    <p class="subtitle">Continuous timeline — compact, stacked layout tuned for phone and print‑like scroll</p>
+
+    <div id="timeline"></div>
+
+    <div class="legend" aria-label="Party legend">
+      <div class="chip"><span class="sw p-Democratic"></span><span>Democratic</span></div>
+      <div class="chip"><span class="sw p-Republican"></span><span>Republican</span></div>
+      <div class="chip"><span class="sw p-Whig"></span><span>Whig</span></div>
+      <div class="chip"><span class="sw p-Federalist"></span><span>Federalist</span></div>
+      <div class="chip"><span class="sw p-Democratic-Republican"></span><span>Democratic-Republican</span></div>
+      <div class="chip"><span class="sw p-Other"></span><span>Other</span></div>
     </div>
-  </header>
-
-  <main id="app" class="scroller" tabindex="0" aria-label="Horizontal presidential timeline"></main>
-
-  <section class="legend" aria-label="Party legend">
-    <div class="chip"><span class="sw p-Democratic"></span><span>Democratic</span></div>
-    <div class="chip"><span class="sw p-Republican"></span><span>Republican</span></div>
-    <div class="chip"><span class="sw p-Whig"></span><span>Whig</span></div>
-    <div class="chip"><span class="sw p-Federalist"></span><span>Federalist</span></div>
-    <div class="chip"><span class="sw p-Democratic-Republican"></span><span>Democratic-Republican</span></div>
-    <div class="chip"><span class="sw p-Other"></span><span>Other</span></div>
-  </section>
+  </div>
 
   <script>
-    // ---------- Party colors (stroke fill for charts) ----------
-    const PARTY_STROKES = {
+    // Party colors (for badges / bars)
+    const PARTY_COLORS = {
       "Democratic": getComputedStyle(document.documentElement).getPropertyValue('--blue') || '#2563eb',
       "Republican": getComputedStyle(document.documentElement).getPropertyValue('--red') || '#dc2626',
       "Whig": getComputedStyle(document.documentElement).getPropertyValue('--amber') || '#d97706',
@@ -109,7 +103,7 @@
       "Other": getComputedStyle(document.documentElement).getPropertyValue('--neutral') || '#6b7280'
     };
 
-    // ---------- Data (one entry per presidential election / 4‑year block) ----------
+    // Data (same schema, continuous order)
     const DATA = [
       { id:"george-washington-1789", yearElected:1789, name:"George Washington", party:"Other", portraitUrl:"images/presidents/washington.jpg", electoralVotesWon:69, electoralVotesTotal:69, popularVotePercent:100, electoralMapUrl:"images/maps/1789.png", congress:{house:{leadingParty:"Pro-Administration",leadingSharePct:100}, senate:{leadingParty:"Pro-Administration",leadingSharePct:100}} },
       { id:"abraham-lincoln-1860", yearElected:1860, name:"Abraham Lincoln", party:"Republican", portraitUrl:"images/presidents/lincoln.jpg", electoralVotesWon:180, electoralVotesTotal:303, popularVotePercent:39.8, electoralMapUrl:"images/maps/1860.png", congress:{house:{leadingParty:"Republican",leadingSharePct:56}, senate:{leadingParty:"Republican",leadingSharePct:55}} },
@@ -120,63 +114,59 @@
       { id:"barack-obama-2008", yearElected:2008, name:"Barack Obama", party:"Democratic", portraitUrl:"images/presidents/obama.jpg", electoralVotesWon:365, electoralVotesTotal:538, popularVotePercent:52.92, electoralMapUrl:"images/maps/2008.png", congress:{house:{leadingParty:"Democratic",leadingSharePct:59}, senate:{leadingParty:"Democratic",leadingSharePct:59}} }
     ];
 
-    // ---------- Utilities ----------
     const pct = (n) => `${Math.round(n * 10) / 10}%`;
-    const partyStroke = (party) => PARTY_STROKES[party] || PARTY_STROKES['Other'];
+    const partyColor = (p) => PARTY_COLORS[p] || PARTY_COLORS['Other'];
 
-    // ---------- Render four‑year blocks as full‑screen slides (phone = 1 block per screen) ----------
-    const app = document.getElementById('app');
+    const el = (sel, ctx=document) => ctx.querySelector(sel);
+    const timeline = el('#timeline');
+
     function render(){
-      app.innerHTML = DATA.map(entry => block(entry)).join('');
+      timeline.innerHTML = DATA.map(row).join('');
       bindCharts();
     }
 
-    function block(entry){
+    function row(entry){
       const evPct = (entry.electoralVotesWon/entry.electoralVotesTotal)*100;
-      const fill = partyStroke(entry.party);
+      const fill = partyColor(entry.party);
       return `
-      <section class="slide" aria-label="${entry.yearElected} term">
-        <article class="block">
-          <div class="block-inner">
-            <div class="band">
-              <div class="year">${entry.yearElected}</div>
-              <div class="ticks" aria-hidden="true"></div>
-            </div>
+        <section class="block" aria-label="${entry.yearElected} ${entry.name}">
+          <div class="band">
+            <div class="year">${entry.yearElected}</div>
+            <div class="ticks" aria-hidden="true"></div>
+          </div>
 
-            <div class="row">
-              <div class="pres">
-                <div class="portrait"><img src="${entry.portraitUrl}" alt="${entry.name} portrait"></div>
+          <div class="grid">
+            <div>
+              <div class="portrait"><img src="${entry.portraitUrl}" alt="${entry.name} portrait"></div>
+            </div>
+            <div class="meta">
+              <h2>${entry.name}</h2>
+              <div class="badge" style="background:${fill}"><span class="dot"></span><span>${entry.party}</span></div>
+              <div class="kv" style="margin-top:6px"><strong>Elected:</strong> ${entry.yearElected}</div>
+
+              <div class="chart">
+                <div class="chart-head"><div class="chart-title">Congressional Power</div><div class="chart-sub">Leading party % in House & Senate</div></div>
+                <svg class="svgbar" role="img" aria-label="House and Senate leading party share" data-party="${entry.party}" data-house="${entry.congress.house.leadingSharePct}" data-senate="${entry.congress.senate.leadingSharePct}" data-houseLabel="${entry.congress.house.leadingParty}" data-senateLabel="${entry.congress.senate.leadingParty}"></svg>
+              </div>
+            </div>
+            <div>
+              <div class="map">
+                <div class="mapbox">${entry.electoralMapUrl ? `<img src="${entry.electoralMapUrl}" alt="${entry.yearElected} electoral map" style="width:100%;height:100%;object-fit:contain"/>` : 'electoral map'}</div>
+              </div>
+              <div class="stats" style="margin-top:var(--vr)">
                 <div>
-                  <h2 style="font-size:18px;font-weight:800;line-height:1.1">${entry.name}</h2>
-                  <div class="badge" style="background:${fill}"><span class="dot"></span><span>${entry.party}</span></div>
-                  <div class="sub" style="margin-top:4px"><strong>Elected:</strong> ${entry.yearElected}</div>
+                  <div class="kpi-label">Electoral Vote</div>
+                  <div class="kpi-value">${entry.electoralVotesWon} <span class="kpi-sub">/ ${entry.electoralVotesTotal}</span></div>
+                  <div class="kv">≈ ${pct(evPct)}</div>
+                </div>
+                <div>
+                  <div class="kpi-label">Popular Vote</div>
+                  <div class="kpi-value">${pct(entry.popularVotePercent)}</div>
                 </div>
               </div>
-              <div class="mapstats">
-                <div class="map">
-                  <div class="mapbox">${entry.electoralMapUrl ? `<img src="${entry.electoralMapUrl}" alt="${entry.yearElected} electoral map" style="width:100%;height:100%;object-fit:contain"/>` : 'electoral map'}</div>
-                </div>
-                <div class="stats">
-                  <div>
-                    <div class="kpi-label">Electoral Vote</div>
-                    <div class="kpi-value">${entry.electoralVotesWon} <span class="kpi-sub">/ ${entry.electoralVotesTotal}</span></div>
-                    <div class="sub">≈ ${pct(evPct)}</div>
-                  </div>
-                  <div>
-                    <div class="kpi-label">Popular Vote</div>
-                    <div class="kpi-value">${pct(entry.popularVotePercent)}</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="chart-wrap">
-              <div class="chart-head"><div class="chart-title">Congressional Power</div><div class="chart-sub">Leading party share in each chamber</div></div>
-              <svg class="svgbar" role="img" aria-label="Stacked bars for House and Senate showing leading party share" data-party="${entry.party}" data-house="${entry.congress.house.leadingSharePct}" data-senate="${entry.congress.senate.leadingSharePct}" data-houseLabel="${entry.congress.house.leadingParty}" data-senateLabel="${entry.congress.senate.leadingParty}"></svg>
             </div>
           </div>
-        </article>
-      </section>`;
+        </section>`;
     }
 
     function bindCharts(){
@@ -186,43 +176,30 @@
         const senate = +svg.getAttribute('data-senate');
         const houseLabel = svg.getAttribute('data-houseLabel');
         const senateLabel = svg.getAttribute('data-senateLabel');
-        const fill = partyStroke(party);
+        const fill = partyColor(party);
+
         while(svg.firstChild) svg.removeChild(svg.firstChild);
-        const W = svg.clientWidth || svg.parentElement.clientWidth; const H = svg.clientHeight || 120;
-        const pad = 20, gap = 22, barH = 24;
+        const W = svg.clientWidth || svg.parentElement.clientWidth; const H = svg.clientHeight || 110;
+        const pad = 20, gap = 18, barH = 22;
         svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
-        function titleNode(text){ const tt = document.createElementNS('http://www.w3.org/2000/svg','title'); tt.textContent = text; return tt; }
+
+        function addTitle(n,t){ const tt=document.createElementNS('http://www.w3.org/2000/svg','title'); tt.textContent=t; n.appendChild(tt) }
         function row(y, label, pct, labelParty){
-          const clamped = Math.min(Math.max(pct,0),100);
-          const leadW = (W - pad*2) * clamped / 100;
-          const trailW = (W - pad*2) - leadW;
+          const v = Math.min(Math.max(pct,0),100);
+          const leadW = (W - pad*2) * v / 100;
           const g = document.createElementNS('http://www.w3.org/2000/svg','g');
-          const t = document.createElementNS('http://www.w3.org/2000/svg','text'); t.setAttribute('x', pad); t.setAttribute('y', y - 6); t.setAttribute('font-size','11'); t.setAttribute('fill','#374151'); t.textContent = label; g.appendChild(t);
-          const r1 = document.createElementNS('http://www.w3.org/2000/svg','rect'); r1.setAttribute('x', pad); r1.setAttribute('y', y); r1.setAttribute('width', leadW); r1.setAttribute('height', barH); r1.setAttribute('rx','6'); r1.setAttribute('fill', fill); r1.appendChild(titleNode(`${labelParty}: ${clamped.toFixed(1)}%`)); g.appendChild(r1);
-          const r2 = document.createElementNS('http://www.w3.org/2000/svg','rect'); r2.setAttribute('x', pad + leadW); r2.setAttribute('y', y); r2.setAttribute('width', Math.max(trailW,0)); r2.setAttribute('height', barH); r2.setAttribute('rx','6'); r2.setAttribute('fill', '#e5e7eb'); r2.appendChild(titleNode(`${(100-clamped).toFixed(1)}% other`)); g.appendChild(r2);
-          const tx = document.createElementNS('http://www.w3.org/2000/svg','text'); tx.setAttribute('x', pad + Math.max(leadW - 4, 4)); tx.setAttribute('y', y + barH/2 + 4); tx.setAttribute('text-anchor','end'); tx.setAttribute('font-size','11'); tx.setAttribute('fill','#ffffff'); tx.setAttribute('font-weight','700'); tx.textContent = `${clamped.toFixed(1)}%`; g.appendChild(tx);
+          const tl = document.createElementNS('http://www.w3.org/2000/svg','text'); tl.setAttribute('x', pad); tl.setAttribute('y', y - 6); tl.setAttribute('font-size','10'); tl.setAttribute('fill','#374151'); tl.textContent = label; g.appendChild(tl);
+          const r1 = document.createElementNS('http://www.w3.org/2000/svg','rect'); r1.setAttribute('x', pad); r1.setAttribute('y', y); r1.setAttribute('width', leadW); r1.setAttribute('height', barH); r1.setAttribute('rx','6'); r1.setAttribute('fill', fill); addTitle(r1, `${labelParty}: ${v.toFixed(1)}%`); g.appendChild(r1);
+          const r2 = document.createElementNS('http://www.w3.org/2000/svg','rect'); r2.setAttribute('x', pad + leadW); r2.setAttribute('y', y); r2.setAttribute('width', (W - pad*2) - leadW); r2.setAttribute('height', barH); r2.setAttribute('rx','6'); r2.setAttribute('fill', '#e5e7eb'); addTitle(r2, `${(100-v).toFixed(1)}% other`); g.appendChild(r2);
+          const tx = document.createElementNS('http://www.w3.org/2000/svg','text'); tx.setAttribute('x', pad + Math.max(leadW - 4, 4)); tx.setAttribute('y', y + barH/2 + 3); tx.setAttribute('text-anchor','end'); tx.setAttribute('font-size','10'); tx.setAttribute('fill','#ffffff'); tx.setAttribute('font-weight','700'); tx.textContent = `${v.toFixed(1)}%`; g.appendChild(tx);
           svg.appendChild(g);
         }
-        row(36,'House', house, houseLabel);
-        row(36 + gap + barH,'Senate', senate, senateLabel);
-        const l0 = document.createElementNS('http://www.w3.org/2000/svg','text'); l0.setAttribute('x', 8); l0.setAttribute('y', H - 6); l0.setAttribute('font-size','10'); l0.setAttribute('fill','#9ca3af'); l0.textContent = '0%'; svg.appendChild(l0);
-        const l1 = document.createElementNS('http://www.w3.org/2000/svg','text'); l1.setAttribute('x', W - 20); l1.setAttribute('y', H - 6); l1.setAttribute('font-size','10'); l1.setAttribute('fill','#9ca3af'); l1.setAttribute('text-anchor','end'); l1.textContent = '100%'; svg.appendChild(l1);
+        row(32,'House', house, houseLabel);
+        row(32 + gap + barH,'Senate', senate, senateLabel);
       });
     }
 
-    // ---------- Navigation (snap by block = ~4 years) ----------
-    const scroller = document.querySelector('.scroller');
-    document.getElementById('btnPrev').addEventListener('click', () => step(-1));
-    document.getElementById('btnNext').addEventListener('click', () => step(1));
-    document.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight') step(1); if (e.key === 'ArrowLeft') step(-1); });
-    function step(dir){ const child = scroller.firstElementChild; const w = child ? child.clientWidth : scroller.clientWidth; scroller.scrollBy({left: dir * (w + 10), behavior:'smooth'}); }
-
     render();
   </script>
-
-  <!-- CSV schema (optional)
-    id,name,portraitUrl,party,yearElected,electoralVotesWon,electoralVotesTotal,popularVotePercent,electoralMapUrl,houseLeadingParty,houseLeadingSharePct,senateLeadingParty,senateLeadingSharePct,notes
-    barack-obama-2008,Barack Obama,images/presidents/obama.jpg,Democratic,2008,365,538,52.92,images/maps/2008.png,Democratic,59,Democratic,59,First African American President.
-  -->
 </body>
 </html>

@@ -19,7 +19,7 @@
       --row-year:26px;      
       --row-map:150px;      
       --row-votes:44px;     
-      --row-congress:118px; /* vertical mini bars area */
+      --row-congress:120px; /* vertical mini bars area */
       --row-notes:auto;     
     }
     *{box-sizing:border-box}
@@ -34,7 +34,7 @@
 
     /* LEFT LABELS aligned to same row grid */
     .labels{position:sticky;left:0;top:0;align-self:start;border-right:1px solid var(--rule);padding-right:12px;background:#fff;box-shadow:8px 0 8px -8px rgba(0,0,0,.08);z-index:5}
-    .labels-grid{display:grid;grid-template-rows:var(--row-party) var(--row-portrait) var(--row-name) var(--row-year) var(--row-map) var(--row-votes) var(--row-congress) var(--row-notes);row-gap:10px}
+    .labels-grid,.col-grid{display:grid;grid-template-rows:var(--row-party) var(--row-portrait) var(--row-name) var(--row-year) var(--row-map) var(--row-votes) var(--row-congress) var(--row-notes);row-gap:10px}
     .labels .cell{display:flex;align-items:flex-end}
     .labels .cell b{font:700 13px/1 system-ui}
     .labels .hint{color:var(--sub);font-size:12px;margin-top:4px}
@@ -42,7 +42,6 @@
     /* RIGHT: year columns */
     .timeline{display:grid;grid-auto-flow:column;grid-auto-columns:var(--colw);gap:0;overflow:auto}
     .col{border-right:1px solid var(--rule);padding:0 12px}
-    .col-grid{display:grid;grid-template-rows:var(--row-party) var(--row-portrait) var(--row-name) var(--row-year) var(--row-map) var(--row-votes) var(--row-congress) var(--row-notes);row-gap:10px}
 
     .band{height:12px;border-radius:6px}
     .portrait{width:var(--portrait);height:var(--portrait);border-radius:8px;overflow:hidden;background:var(--muted)}
@@ -61,10 +60,10 @@
     /* ====== Vertical mini charts (per column, 4 bars per chamber) ====== */
     .mini-charts{display:grid;grid-template-columns:1fr;gap:8px}
     .mini-title{font:700 12px/1 system-ui;color:#111}
-    .vbars{display:grid;grid-auto-flow:column;grid-auto-columns:22px;gap:8px;height:100px;border-bottom:1px solid var(--rule);align-items:end}
+    .vbars{display:grid;grid-auto-flow:column;grid-auto-columns:22px;gap:8px;height:96px;border-bottom:1px solid var(--rule);align-items:end}
     .vbar{display:flex;flex-direction:column-reverse;justify-content:flex-start;width:100%;height:100%;position:relative}
     .seg{width:100%}
-    .vlabel{position:absolute;bottom:-14px;left:50%;transform:translateX(-50%);font:600 10px/1 system-ui;color:#555;white-space:nowrap}
+    .vlabel{position:absolute;bottom:-12px;left:50%;transform:translateX(-50%);font:600 10px/1 system-ui;color:#555;white-space:nowrap}
 
     /* party fallbacks */
     .p-Democratic{background:var(--party-dem)}
@@ -99,142 +98,142 @@
   </div>
 
   <script>
-    const CSS = (v)=>getComputedStyle(document.documentElement).getPropertyValue(v).trim();
-    const PARTY = {
-      'Democratic': CSS('--party-dem'),
-      'Republican': CSS('--party-rep'),
-      'Federalist': CSS('--party-federalist'),
-      'Democratic-Republican': CSS('--party-demrep'),
-      'Whig': CSS('--party-whig'),
-      'Pro-Administration': CSS('--party-proadmin'),
-      'Know-Nothing': CSS('--party-knownothing'),
-      'National Republican': CSS('--party-national-rep'),
-      'Union': CSS('--party-union'),
-      'Progressive': CSS('--party-progressive'),
-      'Other': CSS('--party-other')
-    };
+    (function(){
+      const CSS = (v)=>getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+      const PARTY = {
+        'Democratic': CSS('--party-dem'),
+        'Republican': CSS('--party-rep'),
+        'Federalist': CSS('--party-federalist'),
+        'Democratic-Republican': CSS('--party-demrep'),
+        'Whig': CSS('--party-whig'),
+        'Pro-Administration': CSS('--party-proadmin'),
+        'Know-Nothing': CSS('--party-knownothing'),
+        'National Republican': CSS('--party-national-rep'),
+        'Union': CSS('--party-union'),
+        'Progressive': CSS('--party-progressive'),
+        'Other': CSS('--party-other')
+      };
 
-    const PARTY_ORDER = ['Democratic','Republican','Democratic-Republican','Federalist','Whig','National Republican','Know-Nothing','Union','Progressive','Pro-Administration','Other'];
-    const orderIdx = p => PARTY_ORDER.indexOf(p) === -1 ? 999 : PARTY_ORDER.indexOf(p);
-    const sortSegments = segs => segs.slice().sort((a,b)=> orderIdx(a.party) - orderIdx(b.party));
+      const PARTY_ORDER = ['Democratic','Republican','Democratic-Republican','Federalist','Whig','National Republican','Know-Nothing','Union','Progressive','Pro-Administration','Other'];
+      const orderIdx = p => { const i = PARTY_ORDER.indexOf(p); return i === -1 ? 999 : i; };
+      const sortSegments = segs => (segs||[]).slice().sort((a,b)=> orderIdx(a.party) - orderIdx(b.party));
+      const round1 = n => Math.round(n*10)/10;
 
-    // Data schema includes vertical stacks per year for House/Senate
-    const DATA = [
-      {
-        id:'washington-1789', name:'George Washington', year:1789, band:'Pro-Administration',
-        portrait:'images/presidents/washington.jpg', map:'images/maps/1789.png',
-        electoral:'69 / 69', popular:'100%',
-        notes:[
-          'North Carolina ratified the US Constitution 1789',
-          'Rhode Island ratified the US Constitution 1790',
-          'Bill of Rights ratified 1791',
-          'Vermont admitted as the 14th state 1791'
-        ],
-        senateYears:[
-          [{party:'Pro-Administration',pct:100}],
-          [{party:'Pro-Administration',pct:100}],
-          [{party:'Pro-Administration',pct:100}],
-          [{party:'Pro-Administration',pct:100}]
-        ],
-        houseYears:[
-          [{party:'Pro-Administration',pct:100}],
-          [{party:'Pro-Administration',pct:100}],
-          [{party:'Pro-Administration',pct:100}],
-          [{party:'Pro-Administration',pct:100}]
-        ]
-      },
-      {
-        id:'adams-1796', name:'John Adams', year:1796, band:'Federalist',
-        portrait:'images/presidents/adams.jpg', map:'images/maps/1796.png',
-        electoral:'71 / 139', popular:'53.4%',
-        notes:["Pinckney's Treaty 1796",'XYZ Affair 1797','USMC established 1798','Alien & Sedition Acts 1798'],
-        senateYears:[
-          [{party:'Federalist',pct:69.2},{party:'Democratic-Republican',pct:30.8}],
-          [{party:'Federalist',pct:68.8},{party:'Democratic-Republican',pct:31.2}],
-          [{party:'Federalist',pct:64.7},{party:'Democratic-Republican',pct:35.3}],
-          [{party:'Federalist',pct:70.0},{party:'Democratic-Republican',pct:30.0}]
-        ],
-        houseYears:[
-          [{party:'Federalist',pct:56.6},{party:'Democratic-Republican',pct:43.4}],
-          [{party:'Federalist',pct:52.4},{party:'Democratic-Republican',pct:47.6}],
-          [{party:'Federalist',pct:53.1},{party:'Democratic-Republican',pct:46.9}],
-          [{party:'Federalist',pct:52.8},{party:'Democratic-Republican',pct:47.2}]
-        ]
-      },
-      {
-        id:'jefferson-1800', name:'Thomas Jefferson', year:1800, band:'Democratic-Republican',
-        portrait:'images/presidents/jefferson.jpg', map:'images/maps/1800.png',
-        electoral:'73 / 138', popular:'61.4%',
-        notes:['Election tie resolved by House','Ohio admitted 1803'],
-        senateYears:[
-          [{party:'Democratic-Republican',pct:53.1},{party:'Federalist',pct:46.9}],
-          [{party:'Democratic-Republican',pct:73.5},{party:'Federalist',pct:26.5}],
-          [{party:'Democratic-Republican',pct:79.4},{party:'Federalist',pct:20.6}],
-          [{party:'Democratic-Republican',pct:82.4},{party:'Federalist',pct:17.6}]
-        ],
-        houseYears:[
-          [{party:'Democratic-Republican',pct:64.2},{party:'Federalist',pct:35.8}],
-          [{party:'Democratic-Republican',pct:72.5},{party:'Federalist',pct:27.5}],
-          [{party:'Democratic-Republican',pct:80.3},{party:'Federalist',pct:19.7}],
-          [{party:'Democratic-Republican',pct:81.7},{party:'Federalist',pct:18.3}]
-        ]
+      // Data schema includes vertical stacks per year for House/Senate
+      const DATA = [
+        {
+          id:'washington-1789', name:'George Washington', year:1789, band:'Pro-Administration',
+          portrait:'images/presidents/washington.jpg', map:'images/maps/1789.png',
+          electoral:'69 / 69', popular:'100%',
+          notes:[
+            'North Carolina ratified the US Constitution 1789',
+            'Rhode Island ratified the US Constitution 1790',
+            'Bill of Rights ratified 1791',
+            'Vermont admitted as the 14th state 1791'
+          ],
+          senateYears:[
+            [{party:'Pro-Administration',pct:100}],
+            [{party:'Pro-Administration',pct:100}],
+            [{party:'Pro-Administration',pct:100}],
+            [{party:'Pro-Administration',pct:100}]
+          ],
+          houseYears:[
+            [{party:'Pro-Administration',pct:100}],
+            [{party:'Pro-Administration',pct:100}],
+            [{party:'Pro-Administration',pct:100}],
+            [{party:'Pro-Administration',pct:100}]
+          ]
+        },
+        {
+          id:'adams-1796', name:'John Adams', year:1796, band:'Federalist',
+          portrait:'images/presidents/adams.jpg', map:'images/maps/1796.png',
+          electoral:'71 / 139', popular:'53.4%',
+          notes:["Pinckney's Treaty 1796",'XYZ Affair 1797','USMC established 1798','Alien & Sedition Acts 1798'],
+          senateYears:[
+            [{party:'Federalist',pct:69.2},{party:'Democratic-Republican',pct:30.8}],
+            [{party:'Federalist',pct:68.8},{party:'Democratic-Republican',pct:31.2}],
+            [{party:'Federalist',pct:64.7},{party:'Democratic-Republican',pct:35.3}],
+            [{party:'Federalist',pct:70.0},{party:'Democratic-Republican',pct:30.0}]
+          ],
+          houseYears:[
+            [{party:'Federalist',pct:56.6},{party:'Democratic-Republican',pct:43.4}],
+            [{party:'Federalist',pct:52.4},{party:'Democratic-Republican',pct:47.6}],
+            [{party:'Federalist',pct:53.1},{party:'Democratic-Republican',pct:46.9}],
+            [{party:'Federalist',pct:52.8},{party:'Democratic-Republican',pct:47.2}]
+          ]
+        },
+        {
+          id:'jefferson-1800', name:'Thomas Jefferson', year:1800, band:'Democratic-Republican',
+          portrait:'images/presidents/jefferson.jpg', map:'images/maps/1800.png',
+          electoral:'73 / 138', popular:'61.4%',
+          notes:['Election tie resolved by House','Ohio admitted 1803'],
+          senateYears:[
+            [{party:'Democratic-Republican',pct:53.1},{party:'Federalist',pct:46.9}],
+            [{party:'Democratic-Republican',pct:73.5},{party:'Federalist',pct:26.5}],
+            [{party:'Democratic-Republican',pct:79.4},{party:'Federalist',pct:20.6}],
+            [{party:'Democratic-Republican',pct:82.4},{party:'Federalist',pct:17.6}]
+          ],
+          houseYears:[
+            [{party:'Democratic-Republican',pct:64.2},{party:'Federalist',pct:35.8}],
+            [{party:'Democratic-Republican',pct:72.5},{party:'Federalist',pct:27.5}],
+            [{party:'Democratic-Republican',pct:80.3},{party:'Federalist',pct:19.7}],
+            [{party:'Democratic-Republican',pct:81.7},{party:'Federalist',pct:18.3}]
+          ]
+        }
+      ];
+
+      const timeline = document.getElementById('timeline');
+      timeline.innerHTML = DATA.map(renderCol).join('');
+
+      function renderCol(d){
+        const bandColor = PARTY[d.band] || '#cfcfcf';
+        const notes = (d.notes||[]).map(t=>`<li>${t}</li>`).join('');
+        const mini = renderMini(d, (d.year||0) + 1); // true years under bars
+        return `<article class="col"><div class="col-grid">
+          <div class="band" style="background:${bandColor}"></div>
+          <div class="portrait">${d.portrait?`<img src="${d.portrait}" alt="${d.name} portrait">`:''}</div>
+          <div class="name">${d.name||''}</div>
+          <div class="year">${d.year||''}</div>
+          <div class="map"><div class="box">${d.map?`<img src="${d.map}" alt="${d.year} electoral map">`:'electoral map'}</div></div>
+          <div class="votes"><b>electoral</b><div class="kv">${d.electoral||''}</div><b>popular</b><div class="kv">${d.popular||''}</div></div>
+          ${mini}
+          ${notes?`<ul class="notes">${notes}</ul>`:''}
+        </div></article>`;
       }
-    ];
 
-    // Render columns
-    const timeline = document.getElementById('timeline');
-    timeline.innerHTML = DATA.map(renderCol).join('');
+      function renderMini(d, startYear){
+        const senate = renderVBars(d.senateYears || [], startYear);
+        const house  = renderVBars(d.houseYears  || [], startYear);
+        return `<div class="mini-charts">
+          <div>
+            <div class="mini-title">Senate</div>
+            ${senate}
+          </div>
+          <div>
+            <div class="mini-title">House</div>
+            ${house}
+          </div>
+        </div>`;
+      }
 
-    function renderCol(d){
-      const bandColor = PARTY[d.band] || '#cfcfcf';
-      const notes = (d.notes||[]).map(t=>`<li>${t}</li>`).join('');
-      const mini = renderMini(d, d.year+1); // use actual years beneath bars
-      return `<article class="col"><div class="col-grid">
-        <div class="band" style="background:${bandColor}"></div>
-        <div class="portrait">${d.portrait?`<img src="${d.portrait}" alt="${d.name} portrait">`:''}</div>
-        <div class="name">${d.name}</div>
-        <div class="year">${d.year}</div>
-        <div class="map"><div class="box">${d.map?`<img src="${d.map}" alt="${d.year} electoral map">`:'electoral map'}</div></div>
-        <div class="votes"><b>electoral</b><div class="kv">${d.electoral}</div><b>popular</b><div class="kv">${d.popular}</div></div>
-        ${mini}
-        ${notes?`<ul class="notes">${notes}</ul>`:''}
-      </div></article>`;
-    }
-
-    // Vertical stacked bars (4 per chamber) inside the grid row, aligned with labels
-    function renderMini(d, startYear){
-      const senate = renderVBars(d.senateYears || [], startYear);
-      const house  = renderVBars(d.houseYears  || [], startYear);
-      return `<div class="mini-charts">
-        <div>
-          <div class="mini-title">Senate</div>
-          ${senate}
-        </div>
-        <div>
-          <div class="mini-title">House</div>
-          ${house}
-        </div>
-      </div>`;
-    }
-
-    function renderVBars(years, startYear){
-      const bars = years.map((yearSegs, i)=>{
-        const normalized = normalizeTo100(sortSegments(yearSegs));
-        const segs = normalized.map(s=>{
-          const color = PARTY[s.party] || CSS('--party-other');
-          return `<div class="seg" title="${s.party}: ${round1(s.pct)}%" style="height:${s.pct}%; background:${color}"></div>`;
+      function renderVBars(years, startYear){
+        const bars = (years||[]).map((yearSegs, i)=>{
+          const normalized = normalizeTo100(sortSegments(yearSegs||[]));
+          const segs = normalized.map(s=>{
+            const color = PARTY[s.party] || CSS('--party-other');
+            return `<div class="seg" title="${s.party}: ${round1(s.pct)}%" style="height:${s.pct}%; background:${color}"></div>`;
+          }).join('');
+          const labelYear = (startYear||0) + i;
+          return `<div class="vbar">${segs}<div class="vlabel">${labelYear}</div></div>`;
         }).join('');
-        const labelYear = (startYear||0) + i; // show true years under bars
-        return `<div class="vbar">${segs}<div class="vlabel">${labelYear}</div></div>`;
-      }).join('');
-      return `<div class="vbars">${bars}</div>`;
-    }
+        return `<div class="vbars">${bars}</div>`;
+      }
 
-    function normalizeTo100(segs){
-      const sum = segs.reduce((a,b)=>a+(b.pct||0),0) || 1;
-      return segs.map(s=> ({party:s.party, pct:(s.pct/sum)*100}));
-    }
-    const round1 = n => Math.round(n*10)/10;
+      function normalizeTo100(segs){
+        const sum = segs.reduce((a,b)=>a+(+b.pct||0),0) || 1;
+        return segs.map(s=> ({party:s.party, pct: (+s.pct||0)/sum*100}));
+      }
+    })();
   </script>
 </body>
 </html>

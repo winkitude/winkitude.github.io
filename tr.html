@@ -32,11 +32,10 @@
 
   <!-- Page-local styles -->
   <style>
-    /* Covers grid */
-    .covers .grid { grid-template-columns: repeat(5, 1fr); gap: 18px; }
-    @media (max-width: 1024px){ .covers .grid { grid-template-columns: repeat(4, 1fr); } }
-    @media (max-width: 750px){  .covers .grid { grid-template-columns: repeat(2, 1fr); } }
+    /* Utility from existing file */
+    .section-label { font-family: 'Open Sans', Arial, sans-serif; font-size:1.2em; font-weight:700; margin: 20px 0 8px; }
 
+    /* Cover chips */
     .cover-card { position: relative; display:block; border-radius:6px; overflow:hidden; background:#f5f5f5; }
     .cover-card img { display:block; width:100%; height:auto; }
     .year-tag {
@@ -51,8 +50,6 @@
       text-decoration:none;
     }
     .view-report:hover { text-decoration: underline; }
-
-    .section-label { font-family: 'Open Sans', Arial, sans-serif; font-size:1.2em; font-weight:700; margin: 20px 0 8px; }
 
     /* Lightbox */
     .lb-overlay { position:fixed; inset:0; background:rgba(255,255,255,.98); display:none; align-items:center; justify-content:center; z-index:9999; }
@@ -93,10 +90,47 @@
       .lb-media img { max-height:56vh; }
     }
 
-    /* Let highlight images size naturally (no crop, no absolute positioning) */
-.card .thumb.thumb--natural { aspect-ratio: auto; }
-.card .thumb.thumb--natural img { position: static; width: 100%; height: auto; display: block; }
+    /* Natural image sizing */
+    .card .thumb.thumb--natural { aspect-ratio: auto; }
+    .card .thumb.thumb--natural img { position: static; width: 100%; height: auto; display: block; }
 
+    /* ===== Phases ===== */
+    .phases .phase { margin: 34px 0 44px; }
+    .phases .phase h3 {
+      font-family: 'Poltawski Nowy', Georgia, serif;
+      font-weight: 700;
+      font-size: 28px;
+      margin: 0 0 8px;
+      letter-spacing: .2px;
+    }
+    .phases .phase p { font: 15px/1.6 'Open Sans', Arial, sans-serif; color:#222; margin: 6px 0 14px; }
+
+    /* Expanded copy style */
+    .phase-copy { font: 15px/1.65 'Open Sans', Arial, sans-serif; color:#222; margin-bottom: 12px; }
+
+    /* Year covers inside phases */
+    .year-row { margin: 8px 0 18px; }
+    .year-label { font: 12px/1 'Open Sans', Arial, sans-serif; text-transform: uppercase; letter-spacing:.06em; color:#444; margin-bottom:8px; }
+    .year-covers { display:grid; grid-template-columns: repeat(6, minmax(120px, 1fr)); gap:12px; }
+    @media (max-width: 1100px){ .year-covers { grid-template-columns: repeat(5, 1fr); } }
+    @media (max-width: 900px){  .year-covers { grid-template-columns: repeat(4, 1fr); } }
+    @media (max-width: 700px){  .year-covers { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 520px){  .year-covers { grid-template-columns: repeat(2, 1fr); } }
+
+    /* Big image grid: 2 per row, minimal gaps, no captions */
+    .phase-grid { display:grid; grid-template-columns: repeat(2, 1fr); gap:8px; }
+    @media (max-width: 700px){ .phase-grid { grid-template-columns: 1fr; gap:8px; } }
+
+    .slot-card { border:none; border-radius:0; overflow:hidden; background:#fff; }
+    .slot-card .thumb.thumb--natural img { display:block; width:100%; height:auto; }
+
+    /* Placeholder (shown until you swap to <img>) */
+    .slot-box {
+      aspect-ratio: 16 / 9;
+      display:flex; align-items:center; justify-content:center;
+      font:13px/1.3 'Open Sans', Arial, sans-serif; color:#888;
+      background: repeating-linear-gradient(45deg, #fafafa, #fafafa 10px, #f2f2f2 10px, #f2f2f2 20px);
+    }
   </style>
 </head>
 
@@ -156,154 +190,175 @@
 
     <hr class="rule" />
 
-    <!-- Covers grid -->
-    <section class="covers">
+    <!-- ===== Phases (per-year covers live inside each phase) ===== -->
+    <section class="phases">
       <div class="wrap">
-        <div class="grid">
-          <!-- 2016 -->
-          <article class="card">
-            <a href="#" class="cover-card"
-               data-year="2016"
-               data-report="https://www.eurasiagroup.net/issues/top-risks-2016"
-               data-images="TopRisks-2016_1.png|2016 Top Risks report cover,TopRisks-2016_Spread1.png|Spread on the 5th Risk,TopRisks-2016_Spread2.png|Spread on the 4th risk,TopRisks-2016_Spread3.png|Chart of where ISIS inspired killings happened">
-              <img src="images/top_risks/2016TR.png" alt="Top Risks 2016 cover" loading="lazy" />
-              <span class="year-tag">2016</span>
-              <span class="view-report" title="View report" aria-label="View report" data-link>View report</span>
-            </a>
-          </article>
+        <p class="section-label">Campaign Phases & Impact</p>
 
-          <!-- 2017 -->
-          <article class="card">
-            <a href="#" class="cover-card"
-               data-year="2017"
-               data-report="https://www.eurasiagroup.net/issues/top-risks-2017"
-               data-images="TopRisks-2017_1.png|2017 Top Risks report cover,TopRisks-2017_Spread1.png|Spread on the first risk,TopRisks-2017_Spread2.png|Spread on the 6th risk,TopRisks-2017_Spread3.png|Chart on North Korea's weapons program from 2013-2016,TopRisks-2017_Spread4.png|Timeline on Erdogan's march toward consolidation of power">
-              <img src="images/top_risks/2017TR.png" alt="Top Risks 2017 cover" loading="lazy" />
-              <span class="year-tag">2017</span>
-              <span class="view-report" title="View report" aria-label="View report" data-link>View report</span>
-            </a>
-          </article>
+        <!-- Phase 1 -->
+        <div class="phase" id="phase-foundations">
+          <h3>Foundations (2016–2018)</h3>
+          <p class="phase-copy">I joined the Top Risks sprint as a hands-on designer focused on charts, spreads, and production support. In these first years I learned the rhythm of a high-stakes, short runway launch—building reliable templates, cleaning messy data, and turning shifting storylines into clear layouts under deadline.</p>
+          <p class="phase-copy">This period set the baseline: dependable files, consistent type and grid, and a data-viz style that could scale across the report and early social/email extensions.</p>
 
-          <!-- 2018 -->
-          <article class="card">
-            <a href="#" class="cover-card"
-               data-year="2018"
-               data-report="https://www.eurasiagroup.net/issues/top-risks-2018"
-               data-images="TopRisks-2018_1.png|2018 Top Risks report cover,TopRisks-2018_Spread1.png|Spread on the first risk,TopRisks-2018_Spread2.png|Spread on the sixth risk,TopRisks-2018_Spread3.png|Chart of Mexican Pesos per dollar over three elections (2000, 2006, 2012),TopRisks-2018_Spread4.png|Infographic on the global tech cold war between the US and China">
-              <img src="images/top_risks/2018TR.png" alt="Top Risks 2018 cover" loading="lazy" />
-              <span class="year-tag">2018</span>
-              <span class="view-report" title="View report" aria-label="View report" data-link>View report</span>
-            </a>
-          </article>
+          <!-- Year covers -->
+          <div class="year-row">
+            <div class="year-label">Years in this phase</div>
+            <div class="year-covers">
+              <!-- 2016 -->
+              <a href="#" class="cover-card"
+                 data-year="2016"
+                 data-report="https://www.eurasiagroup.net/issues/top-risks-2016"
+                 data-images="TopRisks-2016_1.png|2016 Top Risks report cover,TopRisks-2016_Spread1.png|Spread on the 5th Risk,TopRisks-2016_Spread2.png|Spread on the 4th risk,TopRisks-2016_Spread3.png|Chart of where ISIS inspired killings happened">
+                <img src="images/top_risks/2016TR.png" alt="Top Risks 2016 cover" loading="lazy" />
+                <span class="year-tag">2016</span>
+                <span class="view-report" title="View report" aria-label="View report" data-link>View report</span>
+              </a>
 
-          <!-- 2019 -->
-          <article class="card">
-            <a href="#" class="cover-card"
-               data-year="2019"
-               data-report="https://www.eurasiagroup.net/issues/top-risks-for-2019"
-               data-images="TopRisks-2019_1.png|2019 Top Risks report cover,TopRisks-2019_Spread1.png|Spread of the second risk,TopRisks-2019_Spread2.png|Spread of the 8th risk,TopRisks-2019_Spread3.png|Collage for the 8th risk on Mexico featuring AMLO and a stock line,TopRisks-2019_Spread4.png|Collage from the second risk where Trump and Xi are shaking hands,TopRisks-2019_Spread5.png|Decision tree on who you should vote for in the Nigeria election-Buhari or Atiku,TopRisks-2019_Spread6.png|Map of incidents in the Kerch Strait between Ukraine and Russia">
-              <img src="images/top_risks/2019TR.png" alt="Top Risks 2019 cover" loading="lazy" />
-              <span class="year-tag">2019</span>
-              <span class="view-report" title="View report" aria-label="View report" data-link>View report</span>
-            </a>
-          </article>
+              <!-- 2017 -->
+              <a href="#" class="cover-card"
+                 data-year="2017"
+                 data-report="https://www.eurasiagroup.net/issues/top-risks-2017"
+                 data-images="TopRisks-2017_1.png|2017 Top Risks report cover,TopRisks-2017_Spread1.png|Spread on the first risk,TopRisks-2017_Spread2.png|Spread on the 6th risk,TopRisks-2017_Spread3.png|Chart on North Korea's weapons program from 2013-2016,TopRisks-2017_Spread4.png|Timeline on Erdogan's march toward consolidation of power">
+                <img src="images/top_risks/2017TR.png" alt="Top Risks 2017 cover" loading="lazy" />
+                <span class="year-tag">2017</span>
+                <span class="view-report" title="View report" aria-label="View report" data-link>View report</span>
+              </a>
 
-          <!-- 2020 -->
-          <article class="card">
-            <a href="#" class="cover-card"
-               data-year="2020"
-               data-report="https://www.eurasiagroup.net/issues/top-risks-2020"
-               data-images="TopRisks-2020_1.png|2020 Top Risks report cover,TopRisks-2020_Spread1.png|Spread on the first risk,TopRisks-2020_Spread2.png|Spread on the tenth risk,TopRisks-2020_Spread3.png|Latin America presidential approval ratings">
-              <img src="images/top_risks/2020TR.png" alt="Top Risks 2020 cover" loading="lazy" />
-              <span class="year-tag">2020</span>
-              <span class="view-report" title="View report" aria-label="View report" data-link>View report</span>
-            </a>
-          </article>
+              <!-- 2018 -->
+              <a href="#" class="cover-card"
+                 data-year="2018"
+                 data-report="https://www.eurasiagroup.net/issues/top-risks-2018"
+                 data-images="TopRisks-2018_1.png|2018 Top Risks report cover,TopRisks-2018_Spread1.png|Spread on the first risk,TopRisks-2018_Spread2.png|Spread on the sixth risk,TopRisks-2018_Spread3.png|Chart of Mexican Pesos per dollar over three elections (2000, 2006, 2012),TopRisks-2018_Spread4.png|Infographic on the global tech cold war between the US and China">
+                <img src="images/top_risks/2018TR.png" alt="Top Risks 2018 cover" loading="lazy" />
+                <span class="year-tag">2018</span>
+                <span class="view-report" title="View report" aria-label="View report" data-link>View report</span>
+              </a>
+            </div>
+          </div>
 
-          <!-- 2021 -->
-          <article class="card">
-            <a href="#" class="cover-card"
-               data-year="2021"
-               data-report="https://www.eurasiagroup.net/issues/top-risks-2021"
-               data-images="TopRisks-2021_1.png|2021 Top Risks report cover,TopRisks-2021_Spread1.png|Spread of the third risk,TopRisks-2021_Spread2.png|Spread of the second risk,TopRisks-2021_Spread3.png|Map of upcoming elections in Latin America,TopRisks-2021_Spread4.png|Chart plotting out the fiscal breakeven oil prices in the Middle East and North Africa in 2021">
-              <img src="images/top_risks/2021TR.png" alt="Top Risks 2021 cover" loading="lazy" />
-              <span class="year-tag">2021</span>
-              <span class="view-report" title="View report" aria-label="View report" data-link>View report</span>
-            </a>
-          </article>
-
-          <!-- 2022 -->
-          <article class="card">
-            <a href="#" class="cover-card"
-               data-year="2022"
-               data-report="https://www.eurasiagroup.net/issues/top-risks-2022"
-               data-images="TopRisks-2022_1.png|2022 Top Risks report cover,TopRisks-2022_Spread1.png|Spread of the fourth risk,TopRisks-2022_Spread2.png|Spread of the fifth risk,TopRisks-2022_Spread3.png|Chart on Xi Jinping's dominance of Communist Party discourse,TopRisks-2022_Spread4.png|Illustratiob on tech companies and where they stand on being Globalists, National champions, or Techno-utopians">
-              <img src="images/top_risks/2022TR.png" alt="Top Risks 2022 cover" loading="lazy" />
-              <span class="year-tag">2022</span>
-              <span class="view-report" title="View report" aria-label="View report" data-link>View report</span>
-            </a>
-          </article>
-
-          <!-- 2023 -->
-          <article class="card">
-            <a href="#" class="cover-card"
-               data-year="2023"
-               data-report="https://www.eurasiagroup.net/issues/top-risks-2023"
-               data-images="TopRisks-2023_1.png|2023 Top Risks report cover,TopRisks-2023_Spread1.png|Spread of the third risk,TopRisks-2023_Spread2.png|Spread of the 8th risk,TopRisks-2023_Spread3.png|Chart plotting Xi jinping's dominance over top Communist Party bodies,TopRisks-2023_Spread4.png|Chart plotting the rise of partisan animosity in the US">
-              <img src="images/top_risks/2023TR.png" alt="Top Risks 2023 cover" loading="lazy" />
-              <span class="year-tag">2023</span>
-              <span class="view-report" title="View report" aria-label="View report" data-link>View report</span>
-            </a>
-          </article>
-
-          <!-- 2024 -->
-          <article class="card">
-            <a href="#" class="cover-card"
-               data-year="2024"
-               data-report="https://www.eurasiagroup.net/issues/top-risks-2024"
-               data-images="TopRisks-2024_1.png|2016 Top Risks report cover,TopRisks-2024_Spread1.png|Spread of the first risk,TopRisks-2024_Spread2.png|Spread of the fifth risk,TopRisks-2024_Spread3.png|Chart plotting the delince of confidence in America's political and social institutions,TopRisks-2024_Spread4.png|Map showing the US personnel locations and numbers in the Middle East">
-              <img src="images/top_risks/2024TR.png" alt="Top Risks 2024 cover" loading="lazy" />
-              <span class="year-tag">2024</span>
-              <span class="view-report" title="View report" aria-label="View report" data-link>View report</span>
-            </a>
-          </article>
-
-          <!-- 2025 -->
-          <article class="card">
-            <a href="#" class="cover-card"
-               data-year="2025"
-               data-report="https://www.eurasiagroup.net/issues/top-risks-2025"
-               data-images="TopRisks-2025_1.png|2025 Top Risks report cover,TopRisks-2025_Spread1.png|Spread of the second risk,TopRisks-2025_Spread2.png|Spread of the sixth risk,TopRisks-2025_Spread3.png|Stacked bar chart showing the potential impact of Trump's proposed tariff hikes,TopRisks-2025_Spread4.png|Scatter plot showing AI's models are quickly approaching human-level performance against benchmarks">
-              <img src="images/top_risks/2025TR.png" alt="Top Risks 2025 cover" loading="lazy" />
-              <span class="year-tag">2025</span>
-              <span class="view-report" title="View report" aria-label="View report" data-link>View report</span>
-            </a>
-          </article>
+          <!-- Big image slots (2 per row, no captions) -->
+          <div class="phase-grid">
+            <figure class="card slot-card"><img src="images/top_risks/TopRisks-2016_Spread1.png"></figure>
+            <figure class="card slot-card"><img src="images/top_risks/TopRisks-2016_Spread3.png"></figure>
+            <figure class="card slot-card"><img src="images/top_risks/TopRisks-2017_Spread1.png"></figure>
+            <figure class="card slot-card"><img src="images/top_risks/TopRisks-2018_Spread3.png"></figure>
+          </div>
         </div>
-      </div>
-    </section>
 
-    <hr class="rule" />
+        <hr class="rule" />
 
-    <!-- Highlights -->
-    <section class="section">
-      <div class="wrap">
-        <p class="section-label">Highlights</p>
-   
-<figure class="card" style="margin-top:10px;">
-  <span class="thumb thumb--natural">
-    <img src="images/top_risks/TRArt.png" alt="Collage of Top Risks report artwork" loading="lazy" />
-  </span>
-</figure>
+        <!-- Phase 2 -->
+        <div class="phase" id="phase-expansion">
+          <h3>Expansion & Experimentation (2019–2021)</h3>
+          <p class="phase-copy">With the core process running smoothly, I widened the scope—bringing a sharper visual language, breaking out new illustration/collage directions, and packaging the story for multiple channels (web, social, TV). The work became more modular, faster to adapt, and easier to reuse across the campaign.</p>
+          <p class="phase-copy">I also iterated on the data-viz system: clearer legends and annotations, stronger hierarchy, and chart styles that read quickly on small screens without losing rigor.</p>
 
+          <div class="year-row">
+            <div class="year-label">Years in this phase</div>
+            <div class="year-covers">
+              <!-- 2019 -->
+              <a href="#" class="cover-card"
+                 data-year="2019"
+                 data-report="https://www.eurasiagroup.net/issues/top-risks-for-2019"
+                 data-images="TopRisks-2019_1.png|2019 Top Risks report cover,TopRisks-2019_Spread1.png|Spread of the second risk,TopRisks-2019_Spread2.png|Spread of the 8th risk,TopRisks-2019_Spread3.png|Collage for the 8th risk on Mexico featuring AMLO and a stock line,TopRisks-2019_Spread4.png|Collage from the second risk where Trump and Xi are shaking hands,TopRisks-2019_Spread5.png|Decision tree on who you should vote for in the Nigeria election-Buhari or Atiku,TopRisks-2019_Spread6.png|Map of incidents in the Kerch Strait between Ukraine and Russia">
+                <img src="images/top_risks/2019TR.png" alt="Top Risks 2019 cover" loading="lazy" />
+                <span class="year-tag">2019</span>
+                <span class="view-report" title="View report" aria-label="View report" data-link>View report</span>
+              </a>
 
-<figure class="card">
-  <span class="thumb thumb--natural">
-    <img src="images/top_risks/TRCharts.png" alt="Sample charts from Top Risks reports" loading="lazy" />
-  </span>
-</figure>
+              <!-- 2020 -->
+              <a href="#" class="cover-card"
+                 data-year="2020"
+                 data-report="https://www.eurasiagroup.net/issues/top-risks-2020"
+                 data-images="TopRisks-2020_1.png|2020 Top Risks report cover,TopRisks-2020_Spread1.png|Spread on the first risk,TopRisks-2020_Spread2.png|Spread on the tenth risk,TopRisks-2020_Spread3.png|Latin America presidential approval ratings">
+                <img src="images/top_risks/2020TR.png" alt="Top Risks 2020 cover" loading="lazy" />
+                <span class="year-tag">2020</span>
+                <span class="view-report" title="View report" aria-label="View report" data-link>View report</span>
+              </a>
 
-        <p class="dek" style="margin-top:12px;"><a href="index.html">Back to homepage →</a></p>
+              <!-- 2021 -->
+              <a href="#" class="cover-card"
+                 data-year="2021"
+                 data-report="https://www.eurasiagroup.net/issues/top-risks-2021"
+                 data-images="TopRisks-2021_1.png|2021 Top Risks report cover,TopRisks-2021_Spread1.png|Spread of the third risk,TopRisks-2021_Spread2.png|Spread of the second risk,TopRisks-2021_Spread3.png|Map of upcoming elections in Latin America,TopRisks-2021_Spread4.png|Chart plotting out the fiscal breakeven oil prices in the Middle East and North Africa in 2021">
+                <img src="images/top_risks/2021TR.png" alt="Top Risks 2021 cover" loading="lazy" />
+                <span class="year-tag">2021</span>
+                <span class="view-report" title="View report" aria-label="View report" data-link>View report</span>
+              </a>
+            </div>
+          </div>
+
+          <div class="phase-grid">
+            <figure class="card slot-card"><img src="images/top_risks/TopRisks-2019_Spread1.png"></figure>
+            <figure class="card slot-card"><img src="images/top_risks/TopRisks-2019_Spread5.png"></figure>
+            <figure class="card slot-card"><img src="images/top_risks/TopRisks-2020_Spread1.png"></figure>
+            <figure class="card slot-card"><img src="images/top_risks/TopRisks-2021_Spread1.png"></figure>
+          </div>
+        </div>
+
+        <hr class="rule" />
+
+        <!-- Phase 3 -->
+        <div class="phase" id="phase-direction">
+          <h3>Creative Direction & Delivery (2022–2025)</h3>
+          <p class="phase-copy">I owned the end-to-end launch—setting the creative direction, aligning stakeholders, and delivering integrated campaigns across social, web, email, and events. We shipped on time with limited resources by tightening the pipeline, reusing smartly, and standardizing components without losing visual punch.</p>
+          <p class="phase-copy">This period focused on scale and consistency: a campaign system that holds together across platforms and still allows for bold art and clear, fast-reading charts that travel well on TV and online.</p>
+
+          <div class="year-row">
+            <div class="year-label">Years in this phase</div>
+            <div class="year-covers">
+              <!-- 2022 -->
+              <a href="#" class="cover-card"
+                 data-year="2022"
+                 data-report="https://www.eurasiagroup.net/issues/top-risks-2022"
+                 data-images="TopRisks-2022_1.png|2022 Top Risks report cover,TopRisks-2022_Spread1.png|Spread of the fourth risk,TopRisks-2022_Spread2.png|Spread of the fifth risk,TopRisks-2022_Spread3.png|Chart on Xi Jinping's dominance of Communist Party discourse,TopRisks-2022_Spread4.png|Illustratiob on tech companies and where they stand on being Globalists, National champions, or Techno-utopians">
+                <img src="images/top_risks/2022TR.png" alt="Top Risks 2022 cover" loading="lazy" />
+                <span class="year-tag">2022</span>
+                <span class="view-report" title="View report" aria-label="View report" data-link>View report</span>
+              </a>
+
+              <!-- 2023 -->
+              <a href="#" class="cover-card"
+                 data-year="2023"
+                 data-report="https://www.eurasiagroup.net/issues/top-risks-2023"
+                 data-images="TopRisks-2023_1.png|2023 Top Risks report cover,TopRisks-2023_Spread1.png|Spread of the third risk,TopRisks-2023_Spread2.png|Spread of the 8th risk,TopRisks-2023_Spread3.png|Chart plotting Xi jinping's dominance over top Communist Party bodies,TopRisks-2023_Spread4.png|Chart plotting the rise of partisan animosity in the US">
+                <img src="images/top_risks/2023TR.png" alt="Top Risks 2023 cover" loading="lazy" />
+                <span class="year-tag">2023</span>
+                <span class="view-report" title="View report" aria-label="View report" data-link>View report</span>
+              </a>
+
+              <!-- 2024 -->
+              <a href="#" class="cover-card"
+                 data-year="2024"
+                 data-report="https://www.eurasiagroup.net/issues/top-risks-2024"
+                 data-images="TopRisks-2024_1.png|2016 Top Risks report cover,TopRisks-2024_Spread1.png|Spread of the first risk,TopRisks-2024_Spread2.png|Spread of the fifth risk,TopRisks-2024_Spread3.png|Chart plotting the delince of confidence in America's political and social institutions,TopRisks-2024_Spread4.png|Map showing the US personnel locations and numbers in the Middle East">
+                <img src="images/top_risks/2024TR.png" alt="Top Risks 2024 cover" loading="lazy" />
+                <span class="year-tag">2024</span>
+                <span class="view-report" title="View report" aria-label="View report" data-link>View report</span>
+              </a>
+
+              <!-- 2025 -->
+              <a href="#" class="cover-card"
+                 data-year="2025"
+                 data-report="https://www.eurasiagroup.net/issues/top-risks-2025"
+                 data-images="TopRisks-2025_1.png|2025 Top Risks report cover,TopRisks-2025_Spread1.png|Spread of the second risk,TopRisks-2025_Spread2.png|Spread of the sixth risk,TopRisks-2025_Spread3.png|Stacked bar chart showing the potential impact of Trump's proposed tariff hikes,TopRisks-2025_Spread4.png|Scatter plot showing AI's models are quickly approaching human-level performance against benchmarks">
+                <img src="images/top_risks/2025TR.png" alt="Top Risks 2025 cover" loading="lazy" />
+                <span class="year-tag">2025</span>
+                <span class="view-report" title="View report" aria-label="View report" data-link>View report</span>
+              </a>
+            </div>
+          </div>
+
+          <div class="phase-grid">
+            <figure class="card slot-card"><img src="images/top_risks/TopRisks-2022_Spread1.png"></figure>
+            <figure class="card slot-card"><img src="images/top_risks/TopRisks-2023_Spread2.png"></figure>
+            <figure class="card slot-card"><img src="images/top_risks/TopRisks-2024_Spread2.png"></figure>
+            <figure class="card slot-card"><img src="images/top_risks/TopRisks-2025_Spread1.png"></figure>
+          </div>
+        </div>
+
+        <p class="dek" style="margin-top:16px;"><a href="index.html">Back to homepage →</a></p>
       </div>
     </section>
   </main>
@@ -432,20 +487,12 @@
       const blurb    = card.getAttribute('data-blurb') || '';
       const coverEl  = card.querySelector('img');
       const coverSrc = coverEl ? coverEl.getAttribute('src') : '';
-      const coverFn  = fileName(coverSrc);
 
       const parsed = parseImages(card.getAttribute('data-images') || '', coverSrc, year);
 
       // Start on first non-cover image if present
       let start = 0;
-      if (parsed.length) {
-        const firstIsCover = fileName(parsed[0].src) === coverFn;
-        if (firstIsCover && parsed.length > 1) start = 1;
-        if (!firstIsCover) {
-          const nci = parsed.findIndex(x => fileName(x.src) !== coverFn);
-          start = nci === -1 ? 0 : nci;
-        }
-      }
+      if (parsed.length > 1) start = 1;
 
       currentImages = parsed.length ? parsed : [{ src: coverSrc, alt: `Top Risks ${year} cover` }];
       currentImageIndex = Math.min(Math.max(start,0), currentImages.length-1);

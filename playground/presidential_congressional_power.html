@@ -19,8 +19,9 @@
       --row-year:26px;      
       --row-map:150px;      
       --row-votes:44px;     
-      --row-congress:120px; /* vertical mini bars area */
+      --row-congress:128px; /* vertical mini bars area */
       --row-notes:auto;     
+      --bar-gap:2px;        /* gap between yearly vertical bars (0 for none) */
     }
     *{box-sizing:border-box}
     html,body{height:100%}
@@ -28,6 +29,11 @@
     img{max-width:100%;display:block}
     .wrap{padding:18px}
     h2{margin:0 0 8px;font:700 20px/1 system-ui}
+
+    /* ====== legend ====== */
+    .legend{margin:6px 0 14px;display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px}
+    .chip{display:flex;align-items:center;gap:6px;font-size:12px;color:#111}
+    .sw{width:12px;height:12px;border-radius:3px;background:#ccc}
 
     /* ====== TOP: Presidential Power (horizontal columns) ====== */
     .top{display:grid;grid-template-columns:220px 1fr;gap:20px;align-items:start}
@@ -37,7 +43,6 @@
     .labels-grid,.col-grid{display:grid;grid-template-rows:var(--row-party) var(--row-portrait) var(--row-name) var(--row-year) var(--row-map) var(--row-votes) var(--row-congress) var(--row-notes);row-gap:10px}
     .labels .cell{display:flex;align-items:flex-end}
     .labels .cell b{font:700 13px/1 system-ui}
-    .labels .hint{color:var(--sub);font-size:12px;margin-top:4px}
 
     /* RIGHT: year columns */
     .timeline{display:grid;grid-auto-flow:column;grid-auto-columns:var(--colw);gap:0;overflow:auto}
@@ -58,14 +63,13 @@
     .notes li{margin:4px 0}
 
     /* ====== Vertical mini charts (per column, 4 bars per chamber) ====== */
-    .mini-charts{display:grid;grid-template-columns:1fr;gap:8px}
+    .mini-charts{display:grid;grid-template-columns:1fr;gap:8px;height:var(--row-congress)}
     .mini-title{font:700 12px/1 system-ui;color:#111}
-    .vbars{display:grid;grid-auto-flow:column;grid-auto-columns:22px;gap:8px;height:96px;border-bottom:1px solid var(--rule);align-items:end}
+    .vbars{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:var(--bar-gap);height:100%;align-items:stretch}
     .vbar{display:flex;flex-direction:column-reverse;justify-content:flex-start;width:100%;height:100%;position:relative}
     .seg{width:100%}
-    .vlabel{position:absolute;bottom:-12px;left:50%;transform:translateX(-50%);font:600 10px/1 system-ui;color:#555;white-space:nowrap}
 
-    /* party fallbacks */
+    /* party fallbacks (for optional utility) */
     .p-Democratic{background:var(--party-dem)}
     .p-Republican{background:var(--party-rep)}
     .p-Federalist{background:var(--party-federalist)}
@@ -77,6 +81,8 @@
 <body>
   <div class="wrap">
     <h2>Presidential Power</h2>
+    <section id="legend" class="legend" aria-label="Party Key"></section>
+
     <div class="top">
       <!-- Left labels; rows match column grid to prevent misalignment -->
       <aside class="labels">
@@ -85,9 +91,9 @@
           <div class="cell"><b>President</b></div>
           <div class="cell"></div>
           <div class="cell"><b>elected</b></div>
-          <div class="cell"><b>electoral map</b><div class="hint">U.S. territories / in dispute / non‑voting state</div></div>
-          <div class="cell"><b>votes</b><div class="hint">electoral / popular</div></div>
-          <div class="cell"><b>Congressional power</b><div class="hint">4 yearly stacked bars • all parties</div></div>
+          <div class="cell"><b>electoral map</b></div>
+          <div class="cell"><b>votes</b></div>
+          <div class="cell"><b>Congressional power</b></div>
           <div class="cell"><b>notes</b></div>
         </div>
       </aside>
@@ -118,6 +124,10 @@
       const orderIdx = p => { const i = PARTY_ORDER.indexOf(p); return i === -1 ? 999 : i; };
       const sortSegments = segs => (segs||[]).slice().sort((a,b)=> orderIdx(a.party) - orderIdx(b.party));
       const round1 = n => Math.round(n*10)/10;
+
+      // Render legend from PARTY_ORDER (space for key)
+      const legend = document.getElementById('legend');
+      legend.innerHTML = PARTY_ORDER.map(p=>`<div class="chip"><span class="sw" style="background:${PARTY[p]||CSS('--party-other')}"></span><span>${p}</span></div>`).join('');
 
       // Data schema includes vertical stacks per year for House/Senate
       const DATA = [
@@ -188,7 +198,7 @@
       function renderCol(d){
         const bandColor = PARTY[d.band] || '#cfcfcf';
         const notes = (d.notes||[]).map(t=>`<li>${t}</li>`).join('');
-        const mini = renderMini(d, (d.year||0) + 1); // true years under bars
+        const mini = renderMini(d, (d.year||0) + 1); // true years under bars if desired
         return `<article class="col"><div class="col-grid">
           <div class="band" style="background:${bandColor}"></div>
           <div class="portrait">${d.portrait?`<img src="${d.portrait}" alt="${d.name} portrait">`:''}</div>
@@ -201,9 +211,10 @@
         </div></article>`;
       }
 
+      // Vertical stacked bars (4 per chamber) inside the grid row, aligned with labels
       function renderMini(d, startYear){
-        const senate = renderVBars(d.senateYears || [], startYear);
-        const house  = renderVBars(d.houseYears  || [], startYear);
+        const senate = renderVBars(d.senateYears || [] /*, startYear*/);
+        const house  = renderVBars(d.houseYears  || [] /*, startYear*/);
         return `<div class="mini-charts">
           <div>
             <div class="mini-title">Senate</div>
@@ -216,15 +227,14 @@
         </div>`;
       }
 
-      function renderVBars(years, startYear){
-        const bars = (years||[]).map((yearSegs, i)=>{
+      function renderVBars(years){
+        const bars = (years||[]).map((yearSegs)=>{
           const normalized = normalizeTo100(sortSegments(yearSegs||[]));
           const segs = normalized.map(s=>{
             const color = PARTY[s.party] || CSS('--party-other');
             return `<div class="seg" title="${s.party}: ${round1(s.pct)}%" style="height:${s.pct}%; background:${color}"></div>`;
           }).join('');
-          const labelYear = (startYear||0) + i;
-          return `<div class="vbar">${segs}<div class="vlabel">${labelYear}</div></div>`;
+          return `<div class="vbar">${segs}</div>`; // no bottom labels so bars can fill 100%
         }).join('');
         return `<div class="vbars">${bars}</div>`;
       }

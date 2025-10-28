@@ -1,220 +1,225 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Presidential & Congressional Power — Horizontal Timeline (PDF-style)</title>
-<style>
-  :root{
-    --bg:#ffffff; --ink:#222; --sub:#6b6f76; --rule:#e6e6e6; --muted:#f6f6f7;
-    --party-dem:#1f77b4; --party-rep:#d62728; --party-federalist:#7e57c2; --party-demrep:#2ca02c; --party-whig:#d79620; --party-other:#9aa0a6;
-    --col-w:240px; --gutter:22px; --portrait:82px; --band-h:10px; --lh:1.28;
-  }
-  *{box-sizing:border-box}
-  html,body{height:100%}
-  body{margin:0;background:var(--bg);color:var(--ink);font:14px/var(--lh) system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial}
-  img{max-width:100%;display:block}
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Presidential & Congressional Power — Horizontal PDF‑style</title>
+  <style>
+    :root{
+      --bg:#fff; --ink:#222; --sub:#6b6f76; --rule:#e6e6e6; --muted:#f6f6f7;
+      --party-dem:#1f77b4; --party-rep:#d62728; --party-federalist:#7e57c2; --party-demrep:#2ca02c; --party-whig:#d79620; --party-other:#9aa0a6;
+      --colw:240px;                 /* width of each year column */
+      --portrait:82px;
+      /* Row heights to lock label alignment (tweak to match your PDF) */
+      --row-party:14px;             /* party band */
+      --row-portrait:96px;          /* portrait+gap */
+      --row-name:40px;              /* name wraps 2 lines max */
+      --row-year:24px;              /* year */
+      --row-map:120px;              /* small map */
+      --row-votes:38px;             /* two kv rows */
+      --row-notes:auto;             /* variable height */
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.28 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial}
+    img{max-width:100%;display:block}
+    .wrap{padding:18px}
+    h2{margin:0 0 8px;font:700 20px/1 system-ui}
 
-  .wrap{padding:18px}
-  .section-title{font:700 20px/1 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;margin:0 0 8px}
-  .subnote{font-size:12px;color:var(--sub);margin:4px 0 12px}
+    /* ====== TOP: Presidential Power ====== */
+    .top{display:grid;grid-template-columns:220px 1fr;gap:20px;align-items:start}
 
-  /* Sticky label column + horizontal columns */
-  .hstack{display:grid;grid-template-columns:220px 1fr;gap:20px;align-items:start}
-  .labels{position:sticky;left:0;top:0;align-self:start}
-  .labels dl{margin:0}
-  .labels dt{font:700 13px/1.1 system-ui;margin:14px 0 6px}
-  .labels dd{margin:0 0 10px;color:var(--sub);font-size:12px}
+    /* LEFT LABELS — same row grid as columns for perfect alignment */
+    .labels{position:sticky;left:0;top:0;align-self:start;border-right:1px solid var(--rule);padding-right:12px}
+    .labels-grid{display:grid;grid-template-rows:var(--row-party) var(--row-portrait) var(--row-name) var(--row-year) var(--row-map) var(--row-votes) var(--row-notes);row-gap:8px}
+    .labels .cell{display:flex;align-items:flex-end}
+    .labels .cell b{font:700 13px/1 system-ui}
+    .labels .hint{color:var(--sub);font-size:12px;margin-top:4px}
 
-  .timeline{display:grid;grid-auto-flow:column;grid-auto-columns:var(--col-w);gap:18px;overflow:auto;padding-bottom:8px;border-left:1px solid var(--rule)}
-  .col{border-right:1px solid var(--rule);padding:0 12px}
-  .band{height:var(--band-h);border-radius:6px;margin:0 0 8px;background:#ddd}
-  .portrait{width:var(--portrait);height:var(--portrait);border-radius:8px;overflow:hidden;background:var(--muted);margin-bottom:8px}
+    /* RIGHT: horizontal columns */
+    .timeline{display:grid;grid-auto-flow:column;grid-auto-columns:var(--colw);gap:0;overflow:auto}
+    .col{border-right:1px solid var(--rule);padding:0 12px}
+    .col-grid{display:grid;grid-template-rows:var(--row-party) var(--row-portrait) var(--row-name) var(--row-year) var(--row-map) var(--row-votes) var(--row-notes);row-gap:8px}
 
-  .pres-name{font-weight:700;margin:0 0 6px}
-  .year{font-weight:700;color:#000;margin:2px 0 10px}
+    .band{height:10px;border-radius:6px}
+    .portrait{width:var(--portrait);height:var(--portrait);border-radius:8px;overflow:hidden;background:var(--muted)}
+    .name{font-weight:700}
+    .year{font-weight:700}
+    .map .box{aspect-ratio:4/3;border:1px solid var(--rule);border-radius:6px;background:#fafafa;display:grid;place-items:center;color:#aaa;font-size:12px}
+    .votes{display:grid;grid-template-columns:auto 1fr;gap:2px 8px;align-items:baseline}
+    .votes b{font-size:12px}
+    .votes .kv{font-size:12px}
+    .notes{margin:0 0 12px;padding-left:16px}
+    .notes li{margin:4px 0}
 
-  .map{margin:8px 0}
-  .mapbox{aspect-ratio:4/3; background:#fafafa; border:1px solid var(--rule); border-radius:6px; display:grid; place-items:center; color:#aaa; font-size:12px}
+    /* ====== BOTTOM: Congressional Power ====== */
+    .cong{margin-top:28px}
+    .cong .grid{display:grid;grid-template-columns:220px 1fr;gap:20px}
+    .bars{overflow:auto;border-left:1px solid var(--rule)}
+    .track{display:flex;height:44px}
+    .yearcol{width:var(--colw);border-right:1px solid var(--rule);position:relative}
+    .stack{display:flex; height:100%}
+    .seg{height:100%}
+    .pct{position:absolute;right:6px;top:50%;transform:translateY(-50%);font:600 12px/1 system-ui;color:#fff;text-shadow:0 1px 1px rgba(0,0,0,.25)}
 
-  .votes{display:grid;grid-template-columns:auto 1fr;gap:2px 8px;align-items:baseline;margin-top:6px}
-  .votes b{font-size:12px}
-  .votes .kv{font-size:12px;color:#000}
-
-  .notes{margin:10px 0 14px;padding-left:16px}
-  .notes li{margin:4px 0;color:#444}
-
-  /* Congressional Power (bottom) */
-  .congress{margin-top:28px}
-  .cong-title{font:700 20px/1 system-ui;margin:36px 0 8px}
-  .cong-notes{font-size:12px;color:var(--sub);margin:0 0 8px}
-  .grid-rows{display:grid;grid-template-columns:220px 1fr;gap:20px}
-  .bars{overflow:auto;border-left:1px solid var(--rule)}
-  .track{height:42px; display:flex}
-  .segment{height:100%}
-  .rowlbl{font:600 13px/42px system-ui;color:#111}
-  .pct{font:600 12px}
-
-  /* party swatches */
-  .p-Democratic{background:var(--party-dem)}
-  .p-Republican{background:var(--party-rep)}
-  .p-Federalist{background:var(--party-federalist)}
-  .p-Democratic-Republican{background:var(--party-demrep)}
-  .p-Whig{background:var(--party-whig)}
-  .p-Other{background:var(--party-other)}
-  .p-None{background:#c8ccd1}
-</style>
+    /* party fallback classes (not required, we style inline) */
+    .p-Democratic{background:var(--party-dem)}
+    .p-Republican{background:var(--party-rep)}
+    .p-Federalist{background:var(--party-federalist)}
+    .p-Democratic-Republican{background:var(--party-demrep)}
+    .p-Whig{background:var(--party-whig)}
+    .p-Other{background:var(--party-other)}
+  </style>
 </head>
 <body>
   <div class="wrap">
-    <h2 class="section-title">Presidential Power</h2>
-    <div class="hstack">
-      <!-- Sticky left labels (like the PDF) -->
-      <aside class="labels" aria-hidden="true">
-        <dl>
-          <dt>party affiliation</dt><dd>see Party Timeline</dd>
-          <dt>President</dt><dd>&nbsp;</dd>
-          <dt>elected</dt><dd>&nbsp;</dd>
-          <dt>electoral map</dt><dd>U.S. territories / in dispute / non-voting state</dd>
-          <dt>votes</dt><dd>electoral / popular</dd>
-          <dt>notes</dt><dd>&nbsp;</dd>
-        </dl>
+    <h2>Presidential Power</h2>
+    <div class="top">
+      <!-- Sticky labels column, locked to the same row heights as year columns -->
+      <aside class="labels">
+        <div class="labels-grid">
+          <div class="cell"><b>party affiliation</b></div>
+          <div class="cell"><b>President</b></div>
+          <div class="cell"></div>
+          <div class="cell"><b>elected</b></div>
+          <div class="cell"><b>electoral map</b><div class="hint">U.S. territories / in dispute / non‑voting state</div></div>
+          <div class="cell"><b>votes</b><div class="hint">electoral / popular</div></div>
+          <div class="cell"><b>notes</b></div>
+        </div>
       </aside>
 
       <!-- Horizontal year columns -->
       <section id="timeline" class="timeline" aria-label="Horizontal presidential timeline"></section>
     </div>
 
-    <!-- Congressional Power -->
-    <section class="congress">
-      <h2 class="cong-title">Congressional Power</h2>
-      <p class="cong-notes">* parties with less than 2% not shown • percentages in gray represent no majority</p>
-      <div class="grid-rows">
+    <section class="cong">
+      <h2>Congressional Power</h2>
+      <div class="grid">
         <div>
-          <div class="rowlbl">Senate majority</div>
-          <div class="rowlbl">House majority</div>
+          <div style="height:44px;display:flex;align-items:center;font-weight:600">Senate (stacked % by party)</div>
+          <div style="height:44px;display:flex;align-items:center;font-weight:600">House (stacked % by party)</div>
         </div>
         <div class="bars">
-          <div id="senateTrack" class="track"></div>
-          <div id="houseTrack" class="track" style="margin-top:4px"></div>
+          <div id="senate" class="track"></div>
+          <div id="house" class="track" style="margin-top:4px"></div>
         </div>
       </div>
     </section>
   </div>
 
-<script>
-  const PARTY_COLOR = {
-    Democratic: cssVar('--party-dem'),
-    Republican: cssVar('--party-rep'),
-    Federalist: cssVar('--party-federalist'),
-    'Democratic-Republican': cssVar('--party-demrep'),
-    Whig: cssVar('--party-whig'),
-    Other: cssVar('--party-other'),
-    None: '#c8ccd1'
-  };
-  function cssVar(name){ return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
+  <script>
+    // === Utilities ===
+    const CSS = (v)=>getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+    const PARTY = {
+      'Democratic': CSS('--party-dem'),
+      'Republican': CSS('--party-rep'),
+      'Federalist': CSS('--party-federalist'),
+      'Democratic-Republican': CSS('--party-demrep'),
+      'Whig': CSS('--party-whig'),
+      'Other': CSS('--party-other')
+    };
 
-  // SAMPLE rows (replace/extend with your full dataset)
-  const DATA = [
-    { id:'washington-1789', partyBand:'Other', portrait:'images/presidents/washington.jpg', name:'George Washington', year:1789,
-      map:'images/maps/1789.png', electoral:'69 / 69', popular:'100%', notes:[
-        'North Carolina ratified the US Constitution 1789',
-        'Rhode Island ratified the US Constitution 1790',
-        'Bill of Rights ratified 1791',
-        'Vermont admitted as the 14th state 1791'
-      ], house:{party:'Pro-Administration', pct:100}, senate:{party:'Pro-Administration', pct:100} },
+    // === Data schema ===
+    // Each year column now carries full chamber shares (array of {party,pct}) to build a stacked bar
+    const DATA = [
+      {
+        id:'washington-1789', name:'George Washington', year:1789, band:'Other',
+        portrait:'images/presidents/washington.jpg', map:'images/maps/1789.png',
+        electoral:'69 / 69', popular:'100%',
+        notes:[
+          'North Carolina ratified the US Constitution 1789',
+          'Rhode Island ratified the US Constitution 1790',
+          'Bill of Rights ratified 1791',
+          'Vermont admitted as the 14th state 1791'
+        ],
+        senateShares:[{party:'Pro-Administration', pct:100}],
+        houseShares:[{party:'Pro-Administration', pct:100}]
+      },
+      {
+        id:'washington-1792', name:'George Washington', year:1792, band:'Other',
+        portrait:'images/presidents/washington.jpg', map:'images/maps/1792.png',
+        electoral:'132 / 132', popular:'100%',
+        notes:['Kentucky admitted 1792','Neutral Proclamation 1793','US frigates authorized 1794','Whiskey Rebellion 1794'],
+        senateShares:[{party:'Pro-Administration', pct:100}],
+        houseShares:[{party:'Pro-Administration', pct:100}]
+      },
+      {
+        id:'adams-1796', name:'John Adams', year:1796, band:'Federalist',
+        portrait:'images/presidents/adams.jpg', map:'images/maps/1796.png',
+        electoral:'71 / 139', popular:'53.4%',
+        notes:["Pinckney's Treaty 1796",'XYZ Affair 1797','USMC established 1798','Alien & Sedition Acts 1798'],
+        senateShares:[{party:'Federalist', pct:69.2},{party:'Democratic-Republican', pct:30.8}],
+        houseShares:[{party:'Federalist', pct:56.6},{party:'Democratic-Republican', pct:43.4}]
+      },
+      {
+        id:'jefferson-1800', name:'Thomas Jefferson', year:1800, band:'Democratic-Republican',
+        portrait:'images/presidents/jefferson.jpg', map:'images/maps/1800.png',
+        electoral:'73 / 138', popular:'61.4%',
+        notes:['Election tie resolved by House','Ohio admitted 1803'],
+        senateShares:[{party:'Democratic-Republican', pct:53.1},{party:'Federalist', pct:46.9}],
+        houseShares:[{party:'Democratic-Republican', pct:64.2},{party:'Federalist', pct:35.8}]
+      },
+      {
+        id:'jefferson-1804', name:'Thomas Jefferson', year:1804, band:'Democratic-Republican',
+        portrait:'images/presidents/jefferson.jpg', map:'images/maps/1804.png',
+        electoral:'162 / 178', popular:'72.8%',
+        notes:['Lewis & Clark Expedition 1804','12th amendment enacted 1804','Louisiana Purchase 1803'],
+        senateShares:[{party:'Democratic-Republican', pct:73.5},{party:'Federalist', pct:26.5}],
+        houseShares:[{party:'Democratic-Republican', pct:80.3},{party:'Federalist', pct:19.7}]
+      }
+    ];
 
-    { id:'washington-1792', partyBand:'Other', portrait:'images/presidents/washington.jpg', name:'George Washington', year:1792,
-      map:'images/maps/1792.png', electoral:'132 / 132', popular:'100%', notes:[
-        'Kentucky admitted as the 15th state 1792', 'Neutral Proclamation signed 1793',
-        'Construction of the original six US frigates authorized 1794', 'Whiskey Rebellion 1794'
-      ], house:{party:'Pro-Administration', pct:100}, senate:{party:'Pro-Administration', pct:100} },
+    // === Render Presidential Power columns ===
+    const timeline = document.getElementById('timeline');
+    timeline.innerHTML = DATA.map(renderCol).join('');
 
-    { id:'adams-1796', partyBand:'Federalist', portrait:'images/presidents/adams.jpg', name:'John Adams', year:1796,
-      map:'images/maps/1796.png', electoral:'71 / 139', popular:'53.4%', notes:[
-        "Pinckney's Treaty signed 1796", 'XYZ Affair 1797', 'US Marine Corps established 1798', 'Alien and Sedition Acts 1798'
-      ], house:{party:'Federalist', pct:69.2}, senate:{party:'Federalist', pct:69.2} },
+    function renderCol(d){
+      const bandColor = PARTY[d.band] || PARTY['Other'] || '#ccc';
+      const notes = (d.notes||[]).map(t=>`<li>${t}</li>`).join('');
+      return `<article class="col"><div class="col-grid">
+        <div class="band" style="background:${bandColor}"></div>
+        <div class="portrait">${d.portrait?`<img src="${d.portrait}" alt="${d.name} portrait">`:''}</div>
+        <div class="name">${d.name}</div>
+        <div class="year">${d.year}</div>
+        <div class="map"><div class="box">${d.map?`<img src="${d.map}" alt="${d.year} electoral map" style="width:100%;height:100%;object-fit:contain">`:'electoral map'}</div></div>
+        <div class="votes"><b>electoral</b><div class="kv">${d.electoral}</div><b>popular</b><div class="kv">${d.popular}</div></div>
+        ${notes?`<ul class="notes">${notes}</ul>`:''}
+      </div></article>`;
+    }
 
-    { id:'jefferson-1800', partyBand:'Democratic-Republican', portrait:'images/presidents/jefferson.jpg', name:'Thomas Jefferson', year:1800,
-      map:'images/maps/1800.png', electoral:'73 / 138', popular:'61.4%', notes:[
-        'Election tie resolved by House; Jefferson elected President and Burr Vice President', 'Ohio admitted 1803'
-      ], house:{party:'Democratic-Republican', pct:53.1}, senate:{party:'Democratic-Republican', pct:53.1} },
+    // === Render Congressional Power stacked bars (all parties shown) ===
+    function renderChamber(trackId, key){
+      const track = document.getElementById(trackId);
+      track.innerHTML = '';
+      DATA.forEach(d => {
+        const col = document.createElement('div');
+        col.className = 'yearcol';
+        const stack = document.createElement('div');
+        stack.className = 'stack';
+        let total = 0;
+        (d[key]||[]).forEach(seg => total += seg.pct);
+        (d[key]||[]).forEach(seg => {
+          const w = total>0 ? (seg.pct/total)*100 : 0; // normalize if data doesn't sum to 100
+          const div = document.createElement('div');
+          div.className = 'seg';
+          div.style.width = w + '%';
+          div.style.background = PARTY[seg.party] || '#cfd4d9';
+          div.title = `${seg.party}: ${seg.pct}%`;
+          stack.appendChild(div);
+        });
+        const pct = document.createElement('div');
+        pct.className = 'pct';
+        // show top share value on the segment label (right side), like the PDF numbers
+        const maxSeg = (d[key]||[]).slice().sort((a,b)=>b.pct-a.pct)[0];
+        pct.textContent = maxSeg ? `${(Math.round(maxSeg.pct*10)/10)}%` : '';
+        col.appendChild(stack);
+        col.appendChild(pct);
+        track.appendChild(col);
+      });
+    }
 
-    { id:'jefferson-1804', partyBand:'Democratic-Republican', portrait:'images/presidents/jefferson.jpg', name:'Thomas Jefferson', year:1804,
-      map:'images/maps/1804.png', electoral:'162 / 178', popular:'72.8%', notes:[
-        'Lewis & Clark Expedition 1804', '12th amendment enacted 1804', 'Louisiana Purchase made 1803'
-      ], house:{party:'Democratic-Republican', pct:73.5}, senate:{party:'Democratic-Republican', pct:73.5} }
-  ];
-
-  // Render year columns
-  const timeline = document.getElementById('timeline');
-  timeline.innerHTML = DATA.map(renderColumn).join('');
-
-  function renderColumn(d){
-    const band = PARTY_COLOR[d.partyBand] || PARTY_COLOR.Other;
-    const notes = (d.notes||[]).map(t=>`<li>${t}</li>`).join('');
-    return `<article class="col" aria-label="${d.year} ${d.name}">
-      <div class="band" style="background:${band}"></div>
-      <div class="portrait">${d.portrait ? `<img src="${d.portrait}" alt="${d.name} portrait">` : ''}</div>
-      <div class="pres-name">${d.name}</div>
-      <div class="year">${d.year}</div>
-      <div class="map">
-        <div class="mapbox">${d.map ? `<img src="${d.map}" alt="${d.year} electoral map" style="width:100%;height:100%;object-fit:contain">` : 'electoral map'}</div>
-      </div>
-      <div class="votes">
-        <b>electoral</b><div class="kv">${d.electoral}</div>
-        <b>popular</b><div class="kv">${d.popular}</div>
-      </div>
-      ${notes ? `<ul class="notes">${notes}</ul>` : ''}
-    </article>`;
-  }
-
-  // Render congressional tracks
-  const senateTrack = document.getElementById('senateTrack');
-  const houseTrack  = document.getElementById('houseTrack');
-
-  function renderTrack(track, key){
-    track.innerHTML = '';
-    DATA.forEach(d => {
-      const seg = document.createElement('div');
-      seg.className = 'segment';
-      seg.style.width = getComputedStyle(document.documentElement).getPropertyValue('--col-w');
-      seg.style.borderRight = '1px solid var(--rule)';
-
-      const wrap = document.createElement('div');
-      wrap.style.display = 'grid';
-      const clamped = Math.max(0, Math.min(100, d[key].pct));
-      wrap.style.gridTemplateColumns = `${clamped}% 1fr`;
-      wrap.style.height = '100%';
-
-      const lead = document.createElement('div');
-      lead.className = 'p-' + (d[key].party.replace(/\\s+/g,'-') || 'None');
-      lead.style.background = PARTY_COLOR[d[key].party] || PARTY_COLOR.None;
-
-      const trail = document.createElement('div');
-      trail.style.background = '#dfe3e7';
-
-      wrap.appendChild(lead);
-      wrap.appendChild(trail);
-
-      const pct = document.createElement('div');
-      pct.className = 'pct';
-      pct.textContent = (Math.round(clamped*10)/10) + '%';
-      pct.style.position = 'relative';
-      pct.style.top = '-28px';
-      pct.style.textAlign = 'right';
-      pct.style.paddingRight = '6px';
-      pct.style.color = '#fff';
-      pct.style.textShadow = '0 1px 1px rgba(0,0,0,.25)';
-
-      seg.appendChild(wrap);
-      seg.appendChild(pct);
-      track.appendChild(seg);
-    });
-  }
-
-  renderTrack(senateTrack,'senate');
-  renderTrack(houseTrack,'house');
-</script>
+    renderChamber('senate','senateShares');
+    renderChamber('house','houseShares');
+  </script>
 </body>
 </html>

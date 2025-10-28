@@ -1,205 +1,220 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>American Presidential & Congressional Power — Timeline</title>
-  <style>
-    :root{
-      /* Tweak these to micro‑match your PDF */
-      --bg:#ffffff;            /* PDF white */
-      --ink:#111827;           /* near‑black */
-      --sub:#4b5563;           /* labels */
-      --rule:#e5e7eb;          /* hairline rules */
-      --card:#ffffff;
-      --blue:#2563eb; --red:#dc2626; --amber:#d97706; --slate:#334155; --emerald:#047857; --neutral:#6b7280;
-      --gutter:14px;           /* column gutter */
-      --vr:10px;               /* vertical rhythm */
-      --band-h:38px;           /* year band height */
-      --radius:10px;           /* small rounding like print */
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.35 system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial}
-    img{max-width:100%;display:block}
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Presidential & Congressional Power — Horizontal Timeline (PDF-style)</title>
+<style>
+  :root{
+    --bg:#ffffff; --ink:#222; --sub:#6b6f76; --rule:#e6e6e6; --muted:#f6f6f7;
+    --party-dem:#1f77b4; --party-rep:#d62728; --party-federalist:#7e57c2; --party-demrep:#2ca02c; --party-whig:#d79620; --party-other:#9aa0a6;
+    --col-w:240px; --gutter:22px; --portrait:82px; --band-h:10px; --lh:1.28;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{margin:0;background:var(--bg);color:var(--ink);font:14px/var(--lh) system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial}
+  img{max-width:100%;display:block}
 
-    /* Page frame, no sticky chrome; simple scroll like a PDF */
-    .page{max-width:980px;margin:0 auto;padding:16px 14px}
-    .title{font-weight:800;font-size:18px;margin:0 0 8px}
-    .subtitle{color:var(--sub);font-size:12px;margin:0 0 16px}
+  .wrap{padding:18px}
+  .section-title{font:700 20px/1 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;margin:0 0 8px}
+  .subnote{font-size:12px;color:var(--sub);margin:4px 0 12px}
 
-    /* Continuous timeline blocks */
-    .block{padding:12px 0;border-bottom:1px solid var(--rule)}
-    .band{display:flex;align-items:center;gap:10px;margin-bottom:10px}
-    .year{font-weight:800;font-size:22px;letter-spacing:.3px}
-    .ticks{flex:1;height:6px;background:repeating-linear-gradient(to right, var(--rule) 0 2px, transparent 2px 12px);border-radius:999px}
+  /* Sticky label column + horizontal columns */
+  .hstack{display:grid;grid-template-columns:220px 1fr;gap:20px;align-items:start}
+  .labels{position:sticky;left:0;top:0;align-self:start}
+  .labels dl{margin:0}
+  .labels dt{font:700 13px/1.1 system-ui;margin:14px 0 6px}
+  .labels dd{margin:0 0 10px;color:var(--sub);font-size:12px}
 
-    /* Compact stacked content (portrait → meta → map → stats → chart) */
-    .grid{display:grid;grid-template-columns:1fr;gap:var(--gutter)}
-    @media(min-width:800px){
-      .grid{grid-template-columns:160px 1fr 240px}
-    }
+  .timeline{display:grid;grid-auto-flow:column;grid-auto-columns:var(--col-w);gap:18px;overflow:auto;padding-bottom:8px;border-left:1px solid var(--rule)}
+  .col{border-right:1px solid var(--rule);padding:0 12px}
+  .band{height:var(--band-h);border-radius:6px;margin:0 0 8px;background:#ddd}
+  .portrait{width:var(--portrait);height:var(--portrait);border-radius:8px;overflow:hidden;background:var(--muted);margin-bottom:8px}
 
-    .portrait{width:120px;max-width:100%;height:120px;border-radius:var(--radius);overflow:hidden;background:#f3f4f6}
-    .meta h2{font-size:16px;line-height:1.15;margin:0 0 4px;font-weight:800}
-    .badge{display:inline-flex;gap:6px;align-items:center;border-radius:999px;padding:3px 8px;font-size:11px;color:#fff}
-    .dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.9)}
-    .kv{font-size:12px;color:var(--sub)}
+  .pres-name{font-weight:700;margin:0 0 6px}
+  .year{font-weight:700;color:#000;margin:2px 0 10px}
 
-    .map{border:1px solid var(--rule);border-radius:var(--radius);padding:6px}
-    .mapbox{aspect-ratio:16/9;background:#fafafa;border-radius:8px;display:grid;place-items:center;color:#9ca3af;font-size:12px;overflow:hidden}
+  .map{margin:8px 0}
+  .mapbox{aspect-ratio:4/3; background:#fafafa; border:1px solid var(--rule); border-radius:6px; display:grid; place-items:center; color:#aaa; font-size:12px}
 
-    .stats{border:1px solid var(--rule);border-radius:var(--radius);padding:8px;display:grid;grid-template-columns:1fr;gap:8px}
-    .kpi-label{font-size:11px;color:var(--sub)}
-    .kpi-value{font-weight:800;font-size:18px}
-    .kpi-sub{color:#9ca3af;font-weight:600}
+  .votes{display:grid;grid-template-columns:auto 1fr;gap:2px 8px;align-items:baseline;margin-top:6px}
+  .votes b{font-size:12px}
+  .votes .kv{font-size:12px;color:#000}
 
-    /* Chart (tight) */
-    .chart{margin-top:8px}
-    .chart-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:4px}
-    .chart-title{font-size:13px;font-weight:700}
-    .chart-sub{font-size:11px;color:var(--sub)}
-    .svgbar{width:100%;height:110px}
+  .notes{margin:10px 0 14px;padding-left:16px}
+  .notes li{margin:4px 0;color:#444}
 
-    /* Party swatches for legend (optional footer) */
-    .legend{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:14px 0 24px}
-    @media(min-width:800px){.legend{grid-template-columns:repeat(6,1fr)}}
-    .chip{display:flex;align-items:center;gap:6px;font-size:12px}
-    .sw{width:12px;height:12px;border-radius:3px}
+  /* Congressional Power (bottom) */
+  .congress{margin-top:28px}
+  .cong-title{font:700 20px/1 system-ui;margin:36px 0 8px}
+  .cong-notes{font-size:12px;color:var(--sub);margin:0 0 8px}
+  .grid-rows{display:grid;grid-template-columns:220px 1fr;gap:20px}
+  .bars{overflow:auto;border-left:1px solid var(--rule)}
+  .track{height:42px; display:flex}
+  .segment{height:100%}
+  .rowlbl{font:600 13px/42px system-ui;color:#111}
+  .pct{font:600 12px}
 
-    .p-Democratic{background:var(--blue)}
-    .p-Republican{background:var(--red)}
-    .p-Whig{background:var(--amber)}
-    .p-Federalist{background:var(--slate)}
-    .p-Democratic-Republican{background:var(--emerald)}
-    .p-Other{background:var(--neutral)}
-  </style>
+  /* party swatches */
+  .p-Democratic{background:var(--party-dem)}
+  .p-Republican{background:var(--party-rep)}
+  .p-Federalist{background:var(--party-federalist)}
+  .p-Democratic-Republican{background:var(--party-demrep)}
+  .p-Whig{background:var(--party-whig)}
+  .p-Other{background:var(--party-other)}
+  .p-None{background:#c8ccd1}
+</style>
 </head>
 <body>
-  <div class="page">
-    <h1 class="title">American Presidential & Congressional Power</h1>
-    <p class="subtitle">Continuous timeline — compact, stacked layout tuned for phone and print‑like scroll</p>
+  <div class="wrap">
+    <h2 class="section-title">Presidential Power</h2>
+    <div class="hstack">
+      <!-- Sticky left labels (like the PDF) -->
+      <aside class="labels" aria-hidden="true">
+        <dl>
+          <dt>party affiliation</dt><dd>see Party Timeline</dd>
+          <dt>President</dt><dd>&nbsp;</dd>
+          <dt>elected</dt><dd>&nbsp;</dd>
+          <dt>electoral map</dt><dd>U.S. territories / in dispute / non-voting state</dd>
+          <dt>votes</dt><dd>electoral / popular</dd>
+          <dt>notes</dt><dd>&nbsp;</dd>
+        </dl>
+      </aside>
 
-    <div id="timeline"></div>
-
-    <div class="legend" aria-label="Party legend">
-      <div class="chip"><span class="sw p-Democratic"></span><span>Democratic</span></div>
-      <div class="chip"><span class="sw p-Republican"></span><span>Republican</span></div>
-      <div class="chip"><span class="sw p-Whig"></span><span>Whig</span></div>
-      <div class="chip"><span class="sw p-Federalist"></span><span>Federalist</span></div>
-      <div class="chip"><span class="sw p-Democratic-Republican"></span><span>Democratic-Republican</span></div>
-      <div class="chip"><span class="sw p-Other"></span><span>Other</span></div>
+      <!-- Horizontal year columns -->
+      <section id="timeline" class="timeline" aria-label="Horizontal presidential timeline"></section>
     </div>
+
+    <!-- Congressional Power -->
+    <section class="congress">
+      <h2 class="cong-title">Congressional Power</h2>
+      <p class="cong-notes">* parties with less than 2% not shown • percentages in gray represent no majority</p>
+      <div class="grid-rows">
+        <div>
+          <div class="rowlbl">Senate majority</div>
+          <div class="rowlbl">House majority</div>
+        </div>
+        <div class="bars">
+          <div id="senateTrack" class="track"></div>
+          <div id="houseTrack" class="track" style="margin-top:4px"></div>
+        </div>
+      </div>
+    </section>
   </div>
 
-  <script>
-    // Party colors (for badges / bars)
-    const PARTY_COLORS = {
-      "Democratic": getComputedStyle(document.documentElement).getPropertyValue('--blue') || '#2563eb',
-      "Republican": getComputedStyle(document.documentElement).getPropertyValue('--red') || '#dc2626',
-      "Whig": getComputedStyle(document.documentElement).getPropertyValue('--amber') || '#d97706',
-      "Federalist": getComputedStyle(document.documentElement).getPropertyValue('--slate') || '#334155',
-      "Democratic-Republican": getComputedStyle(document.documentElement).getPropertyValue('--emerald') || '#047857',
-      "Other": getComputedStyle(document.documentElement).getPropertyValue('--neutral') || '#6b7280'
-    };
+<script>
+  const PARTY_COLOR = {
+    Democratic: cssVar('--party-dem'),
+    Republican: cssVar('--party-rep'),
+    Federalist: cssVar('--party-federalist'),
+    'Democratic-Republican': cssVar('--party-demrep'),
+    Whig: cssVar('--party-whig'),
+    Other: cssVar('--party-other'),
+    None: '#c8ccd1'
+  };
+  function cssVar(name){ return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
 
-    // Data (same schema, continuous order)
-    const DATA = [
-      { id:"george-washington-1789", yearElected:1789, name:"George Washington", party:"Other", portraitUrl:"images/presidents/washington.jpg", electoralVotesWon:69, electoralVotesTotal:69, popularVotePercent:100, electoralMapUrl:"images/maps/1789.png", congress:{house:{leadingParty:"Pro-Administration",leadingSharePct:100}, senate:{leadingParty:"Pro-Administration",leadingSharePct:100}} },
-      { id:"abraham-lincoln-1860", yearElected:1860, name:"Abraham Lincoln", party:"Republican", portraitUrl:"images/presidents/lincoln.jpg", electoralVotesWon:180, electoralVotesTotal:303, popularVotePercent:39.8, electoralMapUrl:"images/maps/1860.png", congress:{house:{leadingParty:"Republican",leadingSharePct:56}, senate:{leadingParty:"Republican",leadingSharePct:55}} },
-      { id:"franklin-d-roosevelt-1932", yearElected:1932, name:"Franklin D. Roosevelt", party:"Democratic", portraitUrl:"images/presidents/fdr.jpg", electoralVotesWon:472, electoralVotesTotal:531, popularVotePercent:57.4, electoralMapUrl:"images/maps/1932.png", congress:{house:{leadingParty:"Democratic",leadingSharePct:66}, senate:{leadingParty:"Democratic",leadingSharePct:62}} },
-      { id:"ronald-reagan-1980", yearElected:1980, name:"Ronald Reagan", party:"Republican", portraitUrl:"images/presidents/reagan.jpg", electoralVotesWon:489, electoralVotesTotal:538, popularVotePercent:50.7, electoralMapUrl:"images/maps/1980.png", congress:{house:{leadingParty:"Democratic",leadingSharePct:52}, senate:{leadingParty:"Republican",leadingSharePct:52}} },
-      { id:"bill-clinton-1992", yearElected:1992, name:"Bill Clinton", party:"Democratic", portraitUrl:"images/presidents/clinton.jpg", electoralVotesWon:370, electoralVotesTotal:538, popularVotePercent:43.0, electoralMapUrl:"images/maps/1992.png", congress:{house:{leadingParty:"Democratic",leadingSharePct:59}, senate:{leadingParty:"Democratic",leadingSharePct:57}} },
-      { id:"george-w-bush-2000", yearElected:2000, name:"George W. Bush", party:"Republican", portraitUrl:"images/presidents/gw-bush.jpg", electoralVotesWon:271, electoralVotesTotal:538, popularVotePercent:47.87, electoralMapUrl:"images/maps/2000.png", congress:{house:{leadingParty:"Republican",leadingSharePct:51}, senate:{leadingParty:"Split",leadingSharePct:50}} },
-      { id:"barack-obama-2008", yearElected:2008, name:"Barack Obama", party:"Democratic", portraitUrl:"images/presidents/obama.jpg", electoralVotesWon:365, electoralVotesTotal:538, popularVotePercent:52.92, electoralMapUrl:"images/maps/2008.png", congress:{house:{leadingParty:"Democratic",leadingSharePct:59}, senate:{leadingParty:"Democratic",leadingSharePct:59}} }
-    ];
+  // SAMPLE rows (replace/extend with your full dataset)
+  const DATA = [
+    { id:'washington-1789', partyBand:'Other', portrait:'images/presidents/washington.jpg', name:'George Washington', year:1789,
+      map:'images/maps/1789.png', electoral:'69 / 69', popular:'100%', notes:[
+        'North Carolina ratified the US Constitution 1789',
+        'Rhode Island ratified the US Constitution 1790',
+        'Bill of Rights ratified 1791',
+        'Vermont admitted as the 14th state 1791'
+      ], house:{party:'Pro-Administration', pct:100}, senate:{party:'Pro-Administration', pct:100} },
 
-    const pct = (n) => `${Math.round(n * 10) / 10}%`;
-    const partyColor = (p) => PARTY_COLORS[p] || PARTY_COLORS['Other'];
+    { id:'washington-1792', partyBand:'Other', portrait:'images/presidents/washington.jpg', name:'George Washington', year:1792,
+      map:'images/maps/1792.png', electoral:'132 / 132', popular:'100%', notes:[
+        'Kentucky admitted as the 15th state 1792', 'Neutral Proclamation signed 1793',
+        'Construction of the original six US frigates authorized 1794', 'Whiskey Rebellion 1794'
+      ], house:{party:'Pro-Administration', pct:100}, senate:{party:'Pro-Administration', pct:100} },
 
-    const el = (sel, ctx=document) => ctx.querySelector(sel);
-    const timeline = el('#timeline');
+    { id:'adams-1796', partyBand:'Federalist', portrait:'images/presidents/adams.jpg', name:'John Adams', year:1796,
+      map:'images/maps/1796.png', electoral:'71 / 139', popular:'53.4%', notes:[
+        "Pinckney's Treaty signed 1796", 'XYZ Affair 1797', 'US Marine Corps established 1798', 'Alien and Sedition Acts 1798'
+      ], house:{party:'Federalist', pct:69.2}, senate:{party:'Federalist', pct:69.2} },
 
-    function render(){
-      timeline.innerHTML = DATA.map(row).join('');
-      bindCharts();
-    }
+    { id:'jefferson-1800', partyBand:'Democratic-Republican', portrait:'images/presidents/jefferson.jpg', name:'Thomas Jefferson', year:1800,
+      map:'images/maps/1800.png', electoral:'73 / 138', popular:'61.4%', notes:[
+        'Election tie resolved by House; Jefferson elected President and Burr Vice President', 'Ohio admitted 1803'
+      ], house:{party:'Democratic-Republican', pct:53.1}, senate:{party:'Democratic-Republican', pct:53.1} },
 
-    function row(entry){
-      const evPct = (entry.electoralVotesWon/entry.electoralVotesTotal)*100;
-      const fill = partyColor(entry.party);
-      return `
-        <section class="block" aria-label="${entry.yearElected} ${entry.name}">
-          <div class="band">
-            <div class="year">${entry.yearElected}</div>
-            <div class="ticks" aria-hidden="true"></div>
-          </div>
+    { id:'jefferson-1804', partyBand:'Democratic-Republican', portrait:'images/presidents/jefferson.jpg', name:'Thomas Jefferson', year:1804,
+      map:'images/maps/1804.png', electoral:'162 / 178', popular:'72.8%', notes:[
+        'Lewis & Clark Expedition 1804', '12th amendment enacted 1804', 'Louisiana Purchase made 1803'
+      ], house:{party:'Democratic-Republican', pct:73.5}, senate:{party:'Democratic-Republican', pct:73.5} }
+  ];
 
-          <div class="grid">
-            <div>
-              <div class="portrait"><img src="${entry.portraitUrl}" alt="${entry.name} portrait"></div>
-            </div>
-            <div class="meta">
-              <h2>${entry.name}</h2>
-              <div class="badge" style="background:${fill}"><span class="dot"></span><span>${entry.party}</span></div>
-              <div class="kv" style="margin-top:6px"><strong>Elected:</strong> ${entry.yearElected}</div>
+  // Render year columns
+  const timeline = document.getElementById('timeline');
+  timeline.innerHTML = DATA.map(renderColumn).join('');
 
-              <div class="chart">
-                <div class="chart-head"><div class="chart-title">Congressional Power</div><div class="chart-sub">Leading party % in House & Senate</div></div>
-                <svg class="svgbar" role="img" aria-label="House and Senate leading party share" data-party="${entry.party}" data-house="${entry.congress.house.leadingSharePct}" data-senate="${entry.congress.senate.leadingSharePct}" data-houseLabel="${entry.congress.house.leadingParty}" data-senateLabel="${entry.congress.senate.leadingParty}"></svg>
-              </div>
-            </div>
-            <div>
-              <div class="map">
-                <div class="mapbox">${entry.electoralMapUrl ? `<img src="${entry.electoralMapUrl}" alt="${entry.yearElected} electoral map" style="width:100%;height:100%;object-fit:contain"/>` : 'electoral map'}</div>
-              </div>
-              <div class="stats" style="margin-top:var(--vr)">
-                <div>
-                  <div class="kpi-label">Electoral Vote</div>
-                  <div class="kpi-value">${entry.electoralVotesWon} <span class="kpi-sub">/ ${entry.electoralVotesTotal}</span></div>
-                  <div class="kv">≈ ${pct(evPct)}</div>
-                </div>
-                <div>
-                  <div class="kpi-label">Popular Vote</div>
-                  <div class="kpi-value">${pct(entry.popularVotePercent)}</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>`;
-    }
+  function renderColumn(d){
+    const band = PARTY_COLOR[d.partyBand] || PARTY_COLOR.Other;
+    const notes = (d.notes||[]).map(t=>`<li>${t}</li>`).join('');
+    return `<article class="col" aria-label="${d.year} ${d.name}">
+      <div class="band" style="background:${band}"></div>
+      <div class="portrait">${d.portrait ? `<img src="${d.portrait}" alt="${d.name} portrait">` : ''}</div>
+      <div class="pres-name">${d.name}</div>
+      <div class="year">${d.year}</div>
+      <div class="map">
+        <div class="mapbox">${d.map ? `<img src="${d.map}" alt="${d.year} electoral map" style="width:100%;height:100%;object-fit:contain">` : 'electoral map'}</div>
+      </div>
+      <div class="votes">
+        <b>electoral</b><div class="kv">${d.electoral}</div>
+        <b>popular</b><div class="kv">${d.popular}</div>
+      </div>
+      ${notes ? `<ul class="notes">${notes}</ul>` : ''}
+    </article>`;
+  }
 
-    function bindCharts(){
-      document.querySelectorAll('.svgbar').forEach(svg => {
-        const party = svg.getAttribute('data-party');
-        const house = +svg.getAttribute('data-house');
-        const senate = +svg.getAttribute('data-senate');
-        const houseLabel = svg.getAttribute('data-houseLabel');
-        const senateLabel = svg.getAttribute('data-senateLabel');
-        const fill = partyColor(party);
+  // Render congressional tracks
+  const senateTrack = document.getElementById('senateTrack');
+  const houseTrack  = document.getElementById('houseTrack');
 
-        while(svg.firstChild) svg.removeChild(svg.firstChild);
-        const W = svg.clientWidth || svg.parentElement.clientWidth; const H = svg.clientHeight || 110;
-        const pad = 20, gap = 18, barH = 22;
-        svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+  function renderTrack(track, key){
+    track.innerHTML = '';
+    DATA.forEach(d => {
+      const seg = document.createElement('div');
+      seg.className = 'segment';
+      seg.style.width = getComputedStyle(document.documentElement).getPropertyValue('--col-w');
+      seg.style.borderRight = '1px solid var(--rule)';
 
-        function addTitle(n,t){ const tt=document.createElementNS('http://www.w3.org/2000/svg','title'); tt.textContent=t; n.appendChild(tt) }
-        function row(y, label, pct, labelParty){
-          const v = Math.min(Math.max(pct,0),100);
-          const leadW = (W - pad*2) * v / 100;
-          const g = document.createElementNS('http://www.w3.org/2000/svg','g');
-          const tl = document.createElementNS('http://www.w3.org/2000/svg','text'); tl.setAttribute('x', pad); tl.setAttribute('y', y - 6); tl.setAttribute('font-size','10'); tl.setAttribute('fill','#374151'); tl.textContent = label; g.appendChild(tl);
-          const r1 = document.createElementNS('http://www.w3.org/2000/svg','rect'); r1.setAttribute('x', pad); r1.setAttribute('y', y); r1.setAttribute('width', leadW); r1.setAttribute('height', barH); r1.setAttribute('rx','6'); r1.setAttribute('fill', fill); addTitle(r1, `${labelParty}: ${v.toFixed(1)}%`); g.appendChild(r1);
-          const r2 = document.createElementNS('http://www.w3.org/2000/svg','rect'); r2.setAttribute('x', pad + leadW); r2.setAttribute('y', y); r2.setAttribute('width', (W - pad*2) - leadW); r2.setAttribute('height', barH); r2.setAttribute('rx','6'); r2.setAttribute('fill', '#e5e7eb'); addTitle(r2, `${(100-v).toFixed(1)}% other`); g.appendChild(r2);
-          const tx = document.createElementNS('http://www.w3.org/2000/svg','text'); tx.setAttribute('x', pad + Math.max(leadW - 4, 4)); tx.setAttribute('y', y + barH/2 + 3); tx.setAttribute('text-anchor','end'); tx.setAttribute('font-size','10'); tx.setAttribute('fill','#ffffff'); tx.setAttribute('font-weight','700'); tx.textContent = `${v.toFixed(1)}%`; g.appendChild(tx);
-          svg.appendChild(g);
-        }
-        row(32,'House', house, houseLabel);
-        row(32 + gap + barH,'Senate', senate, senateLabel);
-      });
-    }
+      const wrap = document.createElement('div');
+      wrap.style.display = 'grid';
+      const clamped = Math.max(0, Math.min(100, d[key].pct));
+      wrap.style.gridTemplateColumns = `${clamped}% 1fr`;
+      wrap.style.height = '100%';
 
-    render();
-  </script>
+      const lead = document.createElement('div');
+      lead.className = 'p-' + (d[key].party.replace(/\\s+/g,'-') || 'None');
+      lead.style.background = PARTY_COLOR[d[key].party] || PARTY_COLOR.None;
+
+      const trail = document.createElement('div');
+      trail.style.background = '#dfe3e7';
+
+      wrap.appendChild(lead);
+      wrap.appendChild(trail);
+
+      const pct = document.createElement('div');
+      pct.className = 'pct';
+      pct.textContent = (Math.round(clamped*10)/10) + '%';
+      pct.style.position = 'relative';
+      pct.style.top = '-28px';
+      pct.style.textAlign = 'right';
+      pct.style.paddingRight = '6px';
+      pct.style.color = '#fff';
+      pct.style.textShadow = '0 1px 1px rgba(0,0,0,.25)';
+
+      seg.appendChild(wrap);
+      seg.appendChild(pct);
+      track.appendChild(seg);
+    });
+  }
+
+  renderTrack(senateTrack,'senate');
+  renderTrack(houseTrack,'house');
+</script>
 </body>
 </html>

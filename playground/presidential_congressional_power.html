@@ -8,15 +8,18 @@
     :root{
       --bg:#fff; --ink:#222; --sub:#6b6f76; --rule:#e6e6e6; --muted:#f6f6f7;
       --party-dem:#1f77b4; --party-rep:#d62728; --party-federalist:#7e57c2; --party-demrep:#2ca02c; --party-whig:#d79620; --party-other:#9aa0a6;
+      --party-proadmin:#4c6a9b; --party-knownothing:#8d6e63; --party-national-rep:#9c27b0; --party-union:#5c6bc0; --party-progressive:#43a047;
+
       --colw:240px;                 /* width of each election column */
-      --portrait:82px;
-      /* Row heights – tighten/space to prevent overlap */
+      --portrait:92px;              /* slightly larger */
+      /* Row heights – shared by labels and columns to lock alignment */
       --row-party:12px;
-      --row-portrait:100px;  
-      --row-name:42px;      
+      --row-portrait:108px;  
+      --row-name:44px;      
       --row-year:26px;      
-      --row-map:140px;      
-      --row-votes:auto;     
+      --row-map:150px;      
+      --row-votes:44px;     
+      --row-congress:118px; /* vertical mini bars area */
       --row-notes:auto;     
     }
     *{box-sizing:border-box}
@@ -30,8 +33,8 @@
     .top{display:grid;grid-template-columns:220px 1fr;gap:20px;align-items:start}
 
     /* LEFT LABELS aligned to same row grid */
-    .labels{position:sticky;left:0;top:0;align-self:start;border-right:1px solid var(--rule);padding-right:12px}
-    .labels-grid{display:grid;grid-template-rows:var(--row-party) var(--row-portrait) var(--row-name) var(--row-year) var(--row-map) auto auto;row-gap:10px}
+    .labels{position:sticky;left:0;top:0;align-self:start;border-right:1px solid var(--rule);padding-right:12px;background:#fff;box-shadow:8px 0 8px -8px rgba(0,0,0,.08);z-index:5}
+    .labels-grid{display:grid;grid-template-rows:var(--row-party) var(--row-portrait) var(--row-name) var(--row-year) var(--row-map) var(--row-votes) var(--row-congress) var(--row-notes);row-gap:10px}
     .labels .cell{display:flex;align-items:flex-end}
     .labels .cell b{font:700 13px/1 system-ui}
     .labels .hint{color:var(--sub);font-size:12px;margin-top:4px}
@@ -39,32 +42,29 @@
     /* RIGHT: year columns */
     .timeline{display:grid;grid-auto-flow:column;grid-auto-columns:var(--colw);gap:0;overflow:auto}
     .col{border-right:1px solid var(--rule);padding:0 12px}
-    .col-grid{display:grid;grid-template-rows:var(--row-party) var(--row-portrait) var(--row-name) var(--row-year) var(--row-map) auto auto;row-gap:10px}
+    .col-grid{display:grid;grid-template-rows:var(--row-party) var(--row-portrait) var(--row-name) var(--row-year) var(--row-map) var(--row-votes) var(--row-congress) var(--row-notes);row-gap:10px}
 
     .band{height:12px;border-radius:6px}
     .portrait{width:var(--portrait);height:var(--portrait);border-radius:8px;overflow:hidden;background:var(--muted)}
-    .name{font-weight:700}
+    .name{font-weight:700;line-height:1.15;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
     .year{font-weight:700}
 
-    /* Map and votes: ensure separation so nothing overlays the map */
+    /* Map and votes rows are isolated to prevent overlap */
     .map .box{aspect-ratio:4/3;border:1px solid var(--rule);border-radius:6px;background:#fafafa;display:block;overflow:hidden}
     .map img{width:100%;height:100%;object-fit:contain}
-    .votes{display:grid;grid-template-columns:auto 1fr;gap:2px 8px;align-items:baseline;margin-top:6px}
+    .votes{display:grid;grid-template-columns:auto 1fr;gap:4px 8px;align-items:baseline}
     .votes b{font-size:12px}
     .votes .kv{font-size:12px}
     .notes{margin:0 0 12px;padding-left:16px}
     .notes li{margin:4px 0}
 
     /* ====== Vertical mini charts (per column, 4 bars per chamber) ====== */
-    .mini-charts{display:grid;grid-template-columns:1fr;gap:8px;margin-top:4px}
+    .mini-charts{display:grid;grid-template-columns:1fr;gap:8px}
     .mini-title{font:700 12px/1 system-ui;color:#111}
-    .vbars{display:grid;grid-auto-flow:column;grid-auto-columns:20px;gap:6px;height:90px;border-bottom:1px solid var(--rule);align-items:end}
+    .vbars{display:grid;grid-auto-flow:column;grid-auto-columns:22px;gap:8px;height:100px;border-bottom:1px solid var(--rule);align-items:end}
     .vbar{display:flex;flex-direction:column-reverse;justify-content:flex-start;width:100%;height:100%;position:relative}
     .seg{width:100%}
-    .vlabel{position:absolute;bottom:-16px;left:50%;transform:translateX(-50%);font:600 10px/1 system-ui;color:#555}
-
-    /* ====== (Old) Bottom tracks kept in case you still want them; hidden by default now ====== */
-    .cong{display:none}
+    .vlabel{position:absolute;bottom:-14px;left:50%;transform:translateX(-50%);font:600 10px/1 system-ui;color:#555;white-space:nowrap}
 
     /* party fallbacks */
     .p-Democratic{background:var(--party-dem)}
@@ -88,6 +88,7 @@
           <div class="cell"><b>elected</b></div>
           <div class="cell"><b>electoral map</b><div class="hint">U.S. territories / in dispute / non‑voting state</div></div>
           <div class="cell"><b>votes</b><div class="hint">electoral / popular</div></div>
+          <div class="cell"><b>Congressional power</b><div class="hint">4 yearly stacked bars • all parties</div></div>
           <div class="cell"><b>notes</b></div>
         </div>
       </aside>
@@ -95,9 +96,6 @@
       <!-- Horizontal year columns -->
       <section id="timeline" class="timeline" aria-label="Horizontal presidential timeline"></section>
     </div>
-
-    <!-- (Optional) legacy bottom tracks removed for clarity per request -->
-    <section class="cong" aria-hidden="true"></section>
   </div>
 
   <script>
@@ -108,14 +106,22 @@
       'Federalist': CSS('--party-federalist'),
       'Democratic-Republican': CSS('--party-demrep'),
       'Whig': CSS('--party-whig'),
+      'Pro-Administration': CSS('--party-proadmin'),
+      'Know-Nothing': CSS('--party-knownothing'),
+      'National Republican': CSS('--party-national-rep'),
+      'Union': CSS('--party-union'),
+      'Progressive': CSS('--party-progressive'),
       'Other': CSS('--party-other')
     };
 
-    // Data schema now includes per‑year vertical stacks: senateYears & houseYears are arrays of 4 years for the term
-    // Each year: [{party:'Democratic', pct:..}, {party:'Republican', pct:..}, ...]
+    const PARTY_ORDER = ['Democratic','Republican','Democratic-Republican','Federalist','Whig','National Republican','Know-Nothing','Union','Progressive','Pro-Administration','Other'];
+    const orderIdx = p => PARTY_ORDER.indexOf(p) === -1 ? 999 : PARTY_ORDER.indexOf(p);
+    const sortSegments = segs => segs.slice().sort((a,b)=> orderIdx(a.party) - orderIdx(b.party));
+
+    // Data schema includes vertical stacks per year for House/Senate
     const DATA = [
       {
-        id:'washington-1789', name:'George Washington', year:1789, band:'Other',
+        id:'washington-1789', name:'George Washington', year:1789, band:'Pro-Administration',
         portrait:'images/presidents/washington.jpg', map:'images/maps/1789.png',
         electoral:'69 / 69', popular:'100%',
         notes:[
@@ -182,6 +188,7 @@
     function renderCol(d){
       const bandColor = PARTY[d.band] || '#cfcfcf';
       const notes = (d.notes||[]).map(t=>`<li>${t}</li>`).join('');
+      const mini = renderMini(d, d.year+1); // use actual years beneath bars
       return `<article class="col"><div class="col-grid">
         <div class="band" style="background:${bandColor}"></div>
         <div class="portrait">${d.portrait?`<img src="${d.portrait}" alt="${d.name} portrait">`:''}</div>
@@ -189,41 +196,45 @@
         <div class="year">${d.year}</div>
         <div class="map"><div class="box">${d.map?`<img src="${d.map}" alt="${d.year} electoral map">`:'electoral map'}</div></div>
         <div class="votes"><b>electoral</b><div class="kv">${d.electoral}</div><b>popular</b><div class="kv">${d.popular}</div></div>
+        ${mini}
         ${notes?`<ul class="notes">${notes}</ul>`:''}
-      </div>
-      ${renderMini(d)}
-      </article>`;
+      </div></article>`;
     }
 
-    // New vertical stacked bars (4 per chamber) under each column
-    function renderMini(d){
-      const senate = renderVBars(d.senateYears || []);
-      const house  = renderVBars(d.houseYears  || []);
+    // Vertical stacked bars (4 per chamber) inside the grid row, aligned with labels
+    function renderMini(d, startYear){
+      const senate = renderVBars(d.senateYears || [], startYear);
+      const house  = renderVBars(d.houseYears  || [], startYear);
       return `<div class="mini-charts">
         <div>
-          <div class="mini-title">Senate majority</div>
+          <div class="mini-title">Senate</div>
           ${senate}
         </div>
         <div>
-          <div class="mini-title">House majority</div>
+          <div class="mini-title">House</div>
           ${house}
         </div>
       </div>`;
     }
 
-    function renderVBars(years){
+    function renderVBars(years, startYear){
       const bars = years.map((yearSegs, i)=>{
-        // Normalize to 100
-        const total = yearSegs.reduce((a,b)=>a+(b.pct||0),0) || 1;
-        const segs = yearSegs.map(s=>{
-          const h = (s.pct/total)*100;
-          const color = PARTY[s.party] || '#cfd4d9';
-          return `<div class="seg" title="${s.party}: ${s.pct}%" style="height:${h}%; background:${color}"></div>`;
+        const normalized = normalizeTo100(sortSegments(yearSegs));
+        const segs = normalized.map(s=>{
+          const color = PARTY[s.party] || CSS('--party-other');
+          return `<div class="seg" title="${s.party}: ${round1(s.pct)}%" style="height:${s.pct}%; background:${color}"></div>`;
         }).join('');
-        return `<div class="vbar">${segs}<div class="vlabel">${i+1}</div></div>`; // label 1..4 under each bar
+        const labelYear = (startYear||0) + i; // show true years under bars
+        return `<div class="vbar">${segs}<div class="vlabel">${labelYear}</div></div>`;
       }).join('');
       return `<div class="vbars">${bars}</div>`;
     }
+
+    function normalizeTo100(segs){
+      const sum = segs.reduce((a,b)=>a+(b.pct||0),0) || 1;
+      return segs.map(s=> ({party:s.party, pct:(s.pct/sum)*100}));
+    }
+    const round1 = n => Math.round(n*10)/10;
   </script>
 </body>
 </html>

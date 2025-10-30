@@ -1,9 +1,10 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Presidential & Congressional Power — Rebuilt v4</title>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Presidential &amp; Congressional Power — Rebuilt v4</title>
 <style>
 :root {
   --bg: #fff;
@@ -208,118 +209,165 @@ body {
 }
 
 /* === Mobile adjustments === */
-
+@media (max-width: 768px) {
   
   
 @media (max-width: 768px) {
   .power-page {
-    display: flex;
-    flex-direction: row;
-    align-items: stretch;
-    width: 100%;
+    display: grid;
+    flex-direction: column;
     height: auto;
-    overflow-x: auto;
-    overflow-y: hidden;
-    -webkit-overflow-scrolling: touch;
-    background: transparent;
+    overflow: visible;
+    position: relative;
   }
 
   .labels {
-    position: relative !important;
-    flex: 0 0 140px !important; /* slightly wider */
-    width: 140px !important;
+    position: relative;
+    flex: none;
+    width: 100%;
     height: auto;
-    top: auto !important;
-    z-index: 5;
-    background: transparent !important; /* ✅ remove solid white */
-    box-shadow: none !important;
-    backdrop-filter: blur(4px); /* ✅ subtle separation from timeline */
+    z-index: 1;
+    border-right: none;
+    box-shadow: none;
+      grid-column: 1 / 2;
+    grid-row: 1;  
+    transition: opacity 0.4s ease, transform 0.4s ease;
+  will-change: transform, opacity;
+  background: transparent !important; /* removes white box */
   }
 
   .timeline-wrapper {
-    flex: 1 1 auto;
-    width: auto;
-    min-width: calc(100% + 140px); /* ✅ ensures full horizontal scroll */
-    overflow-x: auto;
+    flex: 1;
+  
     overflow-y: hidden;
     height: auto;
-    position: relative;
+      grid-column: 2 / 3;
+    grid-row: 1;
+    overflow-x: auto;
+    width: 100%;
+   margin-left: 0; /* ensure timeline fills full width */
+  }
+
+  .timeline-spacer {
+    display: block;
+    width: var(--colw);
+    min-width: var(--colw);
     background: transparent;
-  }
-
-  .timeline {
-    display: inline-grid;
-    grid-auto-flow: column;
-    grid-auto-columns: var(--colw);
-    position: relative;
-  }
-
-  /* optional: subtle left fade overlay for readability */
-  .power-page::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 0;
-    height: 100%;
-    width: 40px;
-    background: linear-gradient(to right, rgba(255,255,255,0.95), transparent);
-    pointer-events: none;
-    z-index: 10;
   }
 }
 
 
 
+}
 
 
 
 
+/* === Overlay Sidebar System === */
+.labels-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 220px;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.98);
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+  overflow-y: auto;
+  z-index: 1000;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.labels-overlay .labels-content {
+  overflow-y: auto;
+  height: 100%;
+}
+
+.labels-toggle {
+  display: none;
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  z-index: 1100;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 0.4rem 0.6rem;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+/* === Mobile Behavior === */
+@media (max-width: 768px) {
+  .labels-overlay {
+    transform: translateX(-100%);
+    opacity: 0;
+    width: 70%;
+  }
+
+  .labels-overlay.active {
+    transform: translateX(0);
+    opacity: 1;
+  }
+
+  .labels-toggle {
+    display: block;
+  }
+}
+
+
+/* === Legend Spacer + Mobile Overlay Scroll Behavior === */
+.timeline-spacer {
+  width: var(--colw);
+  min-width: var(--colw);
+  background: transparent;
+  grid-column: 1;
+}
+
+@media (max-width: 768px) {
+  .timeline-spacer {
+    display: block;
+  }
+
+  .labels-overlay {
+    transform: translateX(-100%);
+    opacity: 0;
+    width: 70%;
+    transition: transform 0.4s ease, opacity 0.4s ease;
+  }
+
+  .labels-overlay.active {
+    transform: translateX(0);
+    opacity: 1;
+  }
+
+  .labels-toggle {
+    display: block;
+  }
+}
+
+
+/* === Static Legend that scrolls with content === */
+.labels {
+  flex: none;
+  width: var(--colw);
+  background: #fff;
+  border-right: 1px solid var(--rule);
+  padding: 12px;
+  z-index: 1;
+  position: relative;
+}
 </style>
 </head>
-
 <body>
 <main class="power-page">
-  <aside class="labels">
-    <div class="labels-grid">
-      <div class="cell"><b>Presidential Power</b></div>
-      <div class="cell"><b>Party affiliation</b></div>
-      <div class="cell"><b>President</b></div>
-      <div class="cell"><b>Name</b></div>
-      <div class="cell"><b>Elected</b></div>
-      <div class="cell"><b>Electoral map</b></div>
-      <div class="cell"><b>Votes</b></div>
-      <div class="cell"><b>Congressional Power</b></div>
-       <div class="cell"> <div class="party-key-left">
-          <div class="party-key-swatches">
-            <span class="sw"><i style="background:#6a8cc3"></i>Democratic / Jacksonian</span>
-            <span class="sw"><i style="background:#ff7f0e"></i>Anti‑Jackson / National Republican</span>
-            <span class="sw"><i style="background:#df6f5c"></i>Republican</span>
-            <span class="sw"><i style="background:#009444"></i>Federalist / Pro‑Admin</span>
-            <span class="sw"><i style="background:#92278f"></i>Democratic‑Republican / Anti‑Admin</span>
-            <span class="sw"><i style="background:#6f7b34"></i>Whig</span>
-            <span class="sw"><i style="background:#72cbd7"></i>Nullifier</span>
-            <span class="sw"><i style="background:#f2e436"></i>Anti‑Masonic</span>
-            <!--<span class="sw"><i style="background:#cc9dc8"></i>Populist</span>-->
-            <span class="sw"><i style="background:#a8d16e"></i>Progressive</span>
-            <span class="sw"><i style="background:#f4a261"></i>Dixiecrat</span>
-            <!-- <span class="sw"><i style="background:#e76f51"></i>American Independent</span> -->
-            <span class="sw"><i style="background:#666666"></i>Independent</span>
-          </div>
-        </div>
-      </div>
-      <div class="cell"><b>Notes</b></div>
-    </div>
-  </aside>
-
-  <section class="timeline-wrapper">
-    <div id="timeline" class="timeline">
-  <div class="timeline-spacer"></div> <!-- ✅ Mobile-only spacer -->
-  <!-- existing timeline columns follow -->
+<section class="timeline-wrapper">
+<div class="timeline" id="timeline">
+<div class="timeline-spacer"></div> <!-- ✅ Mobile-only spacer -->
+<!-- existing timeline columns follow -->
 </div>
-
-  </section>
+</section>
 </main>
-
 <script>
 (function(){
   const PARTY = {
@@ -347,7 +395,40 @@ body {
   fetch('presidential_data.json')
     .then(res => res.json())
     .then(DATA => {
-      timeline.innerHTML = DATA.map(renderCol).join('');
+      
+  const legendHTML = `
+    <aside class="labels">
+      <div class="labels-grid">
+        <div class="cell"><b>Presidential Power</b></div>
+        <div class="cell"><b>Party affiliation</b></div>
+        <div class="cell"><b>President</b></div>
+        <div class="cell"><b>Name</b></div>
+        <div class="cell"><b>Elected</b></div>
+        <div class="cell"><b>Electoral map</b></div>
+        <div class="cell"><b>Votes</b></div>
+        <div class="cell"><b>Congressional Power</b></div>
+        <div class="cell">
+          <div class="party-key-left">
+            <div class="party-key-swatches">
+              <span class="sw"><i style="background:#6a8cc3"></i>Democratic / Jacksonian</span>
+              <span class="sw"><i style="background:#ff7f0e"></i>Anti-Jackson / National Republican</span>
+              <span class="sw"><i style="background:#df6f5c"></i>Republican</span>
+              <span class="sw"><i style="background:#009444"></i>Federalist / Pro-Admin</span>
+              <span class="sw"><i style="background:#92278f"></i>Democratic-Republican / Anti-Admin</span>
+              <span class="sw"><i style="background:#6f7b34"></i>Whig</span>
+              <span class="sw"><i style="background:#72cbd7"></i>Nullifier</span>
+              <span class="sw"><i style="background:#f2e436"></i>Anti-Masonic</span>
+              <span class="sw"><i style="background:#a8d16e"></i>Progressive</span>
+              <span class="sw"><i style="background:#f4a261"></i>Dixiecrat</span>
+              <span class="sw"><i style="background:#666"></i>Independent</span>
+            </div>
+          </div>
+        </div>
+        <div class="cell"><b>Notes</b></div>
+      </div>
+    </aside>
+  `;
+  timeline.innerHTML = legendHTML + DATA.map(renderCol).join('');
     })
     .catch(err => console.error('Error loading data:', err));
 
@@ -397,7 +478,6 @@ body {
   }
 })();
 </script>
-
 <script>
 document.addEventListener("DOMContentLoaded", () => {
   const timeline = document.querySelector(".timeline");
@@ -443,8 +523,83 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 </script>
+<!-- === Overlay Sidebar System === -->
+<aside class="labels-overlay">
+<button class="labels-toggle">☰</button>
+<div class="labels-content">
+<aside class="labels">
+<div class="labels-grid">
+<div class="cell"><b>Presidential Power</b></div>
+<div class="cell"><b>Party affiliation</b></div>
+<div class="cell"><b>President</b></div>
+<div class="cell"><b>Name</b></div>
+<div class="cell"><b>Elected</b></div>
+<div class="cell"><b>Electoral map</b></div>
+<div class="cell"><b>Votes</b></div>
+<div class="cell"><b>Congressional Power</b></div>
+<div class="cell"> <div class="party-key-left">
+<div class="party-key-swatches">
+<span class="sw"><i style="background:#6a8cc3"></i>Democratic / Jacksonian</span>
+<span class="sw"><i style="background:#ff7f0e"></i>Anti‑Jackson / National Republican</span>
+<span class="sw"><i style="background:#df6f5c"></i>Republican</span>
+<span class="sw"><i style="background:#009444"></i>Federalist / Pro‑Admin</span>
+<span class="sw"><i style="background:#92278f"></i>Democratic‑Republican / Anti‑Admin</span>
+<span class="sw"><i style="background:#6f7b34"></i>Whig</span>
+<span class="sw"><i style="background:#72cbd7"></i>Nullifier</span>
+<span class="sw"><i style="background:#f2e436"></i>Anti‑Masonic</span>
+<!--<span class="sw"><i style="background:#cc9dc8"></i>Populist</span>-->
+<span class="sw"><i style="background:#a8d16e"></i>Progressive</span>
+<span class="sw"><i style="background:#f4a261"></i>Dixiecrat</span>
+<!-- <span class="sw"><i style="background:#e76f51"></i>American Independent</span> -->
+<span class="sw"><i style="background:#666666"></i>Independent</span>
+</div>
+</div>
+</div>
+<div class="cell"><b>Notes</b></div>
+</div>
+</aside>
+</div>
+</aside>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const toggle = document.querySelector(".labels-toggle");
+  const overlay = document.querySelector(".labels-overlay");
 
+  if (!toggle || !overlay) return;
 
+  toggle.addEventListener("click", (e) => {
+    e.stopPropagation();
+    overlay.classList.toggle("active");
+  });
 
+  document.addEventListener("click", (e) => {
+    if (window.innerWidth <= 768) {
+      if (!overlay.contains(e.target) && !toggle.contains(e.target)) {
+        overlay.classList.remove("active");
+      }
+    }
+  });
+});
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const overlay = document.querySelector(".labels-overlay");
+  const wrapper = document.querySelector(".timeline-wrapper");
+
+  if (window.innerWidth <= 768 && overlay) {
+    overlay.classList.add("active");
+
+    if (wrapper) {
+      let hasScrolled = false;
+      wrapper.addEventListener("scroll", () => {
+        if (!hasScrolled && wrapper.scrollLeft > 50) {
+          overlay.classList.remove("active");
+          hasScrolled = true;
+        }
+      }, { passive: true });
+    }
+  }
+});
+</script>
 </body>
 </html>

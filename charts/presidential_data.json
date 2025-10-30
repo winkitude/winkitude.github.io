@@ -806,7 +806,7 @@
     "band": "Democratic-Republican",
     "portrait": "images/presidents/James_Monroe.jpg",
     "map": "images/maps/1820_election.svg",
-    "electoral": "231/232",
+    "electoral": "231 / 232",
     "popular": "78.3%",
     "notes": [
       "Missouri Comporomise 1820",
@@ -906,7 +906,7 @@
     "band": "Democratic-Republican",
     "portrait": "images/presidents/John_Quincy_Adams.jpg",
     "map": "images/maps/1824_election.svg",
-    "electoral": "84/261",
+    "electoral": "84 / 261",
     "popular": "32.7%",
     "notes": [
       "No candidates recieved a majority of the electoral vote. Top three were chosen to be voted on by The House of Representatives which voted on John Quincy Adams. Adams got 13 / 25 (54%) votes in the House"
@@ -1370,7 +1370,7 @@
       "images/presidents/John_Tyler.jpg"
     ],
     "map": "images/maps/1840_election.svg",
-    "electoral": "234/294",
+    "electoral": "234 / 294",
     "popular": "52.9%",
     "notes": [
       "Harrison passes away 1841"
@@ -6660,7 +6660,7 @@
     "notes": [
       "Second Impeachment of Donald Trump 2021",
       "Withdrawal from Afghanistan 2021",
-      "Inflation Surge 2021-2022"
+      "Inflation Surge 2021-2022" 
     ],
     "senateYears": [
       [
@@ -6757,7 +6757,8 @@
     "electoral": "312 / 538",
     "popular": "49.8%",
     "notes": [
-      ""
+      "Ongoing Inflation Crisis 2024",
+      "Supreme Court Changes 2024"  
     ],
     "senateYears": [
       [

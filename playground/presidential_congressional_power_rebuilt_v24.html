@@ -209,42 +209,35 @@ body {
 
 /* === Mobile adjustments === */
 
-  
-  
-@media (max-width: 768px) {
+ @media (max-width: 768px) {
   .power-page {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: stretch;
-    width: 100%;
     height: auto;
-    overflow-x: auto;
-    overflow-y: hidden;
-    -webkit-overflow-scrolling: touch;
-    background: transparent;
+    overflow: visible;
+     background: transparent !important;
   }
 
   .labels {
     position: relative !important;
-    flex: 0 0 140px !important; /* slightly wider */
-    width: 140px !important;
-    height: auto;
     top: auto !important;
-    z-index: 5;
-    background: transparent !important; /* ✅ remove solid white */
-    box-shadow: none !important;
-    backdrop-filter: blur(4px); /* ✅ subtle separation from timeline */
+    flex: none !important;
+    width: 100% !important;
+    height: auto !important;
+    background: transparent !important;
+    z-index: 1;
+    border-right: none;
+    box-shadow: none;
   }
 
   .timeline-wrapper {
-    flex: 1 1 auto;
-    width: auto;
-    min-width: calc(100% + 140px); /* ✅ ensures full horizontal scroll */
-    overflow-x: auto;
-    overflow-y: hidden;
-    height: auto;
+    flex: 1 1 auto !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    width: 100% !important;
+    height: auto !important;
     position: relative;
-    background: transparent;
   }
 
   .timeline {
@@ -254,17 +247,11 @@ body {
     position: relative;
   }
 
-  /* optional: subtle left fade overlay for readability */
-  .power-page::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 0;
-    height: 100%;
-    width: 40px;
-    background: linear-gradient(to right, rgba(255,255,255,0.95), transparent);
-    pointer-events: none;
-    z-index: 10;
+  .timeline-spacer {
+    display: block;
+    width: var(--colw);
+    min-width: var(--colw);
+    background: transparent;
   }
 }
 
@@ -273,6 +260,41 @@ body {
 
 
 
+
+
+
+
+/* --- Desktop/Mobile Label Split --- */
+.mobile-labels {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .desktop-labels {
+    display: none !important;
+  }
+
+  .mobile-labels {
+    display: block;
+    position: relative;
+    width: 100%;
+    padding: 12px;
+    background: transparent;
+    z-index: 2;
+  }
+
+  .power-page {
+    display: block;
+    height: auto;
+    overflow: visible;
+  }
+
+  .timeline-wrapper {
+    overflow-x: auto;
+    width: 100%;
+    height: auto;
+  }
+}
 
 </style>
 </head>
@@ -310,6 +332,7 @@ body {
       <div class="cell"><b>Notes</b></div>
     </div>
   </aside>
+<div class="mobile-labels"></div>
 
   <section class="timeline-wrapper">
     <div id="timeline" class="timeline">
@@ -445,6 +468,21 @@ document.addEventListener("DOMContentLoaded", () => {
 </script>
 
 
+
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const labels = document.querySelector(".labels");
+  const mobileLabels = document.querySelector(".mobile-labels");
+
+  if (labels && mobileLabels && mobileLabels.childElementCount === 0) {
+    const clone = labels.cloneNode(true);
+    clone.classList.remove("labels");
+    clone.classList.add("mobile-clone");
+    mobileLabels.appendChild(clone);
+  }
+});
+</script>
 
 </body>
 </html>

@@ -273,82 +273,19 @@ margin-top:-10px; }
 .party-key-swatches .sw i{ width:12px; height:12px; border-radius:3px; display:inline-block; }
 
 
-/* === Mobile layout improvements === */
+/* === Adjust label column width on mobile === */
 @media (max-width: 768px) {
-  :root { 
-    --colw: 140px; 
-    --portrait: 64px;
-  }
-  .wrap { padding: 12px; }
-  .top { 
-    grid-template-columns: 1fr; 
-    gap: 12px; 
-  }
   .labels {
-    position: static !important;
-    top: auto; left: auto;
-    box-shadow: none;
-    border-right: 0;
-    padding-right: 0;
-    background: transparent;
+    width: 40% !important;
+    min-width: 100px !important;
+  }
+  .timeline {
+    margin-left: 0 !important;
+    width: 100% !important;
   }
   .labels-grid {
-    grid-template-rows:
-      16px
-      80px
-      24px
-      22px
-      120px
-      40px
-      200px
-      16px;
+    font-size: 11px;
   }
-
-  .timeline { 
-    padding-left: 0; 
-    overflow-x: auto; 
-    -webkit-overflow-scrolling: touch;
-    scroll-snap-type: x mandatory;
-  }
-  .col { 
-    scroll-snap-align: start; 
-    min-width: var(--colw);
-  }
-  .col-grid { 
-    padding: 0 8px; 
-    grid-template-rows:
-      16px
-      80px
-      24px
-      22px
-      120px
-      40px
-      220px
-      20px;
-  }
-
-  .portrait-row { gap: 8px; }
-  .portrait-box { border-radius: 6px; }
-
-  .name { font-size: 13px; margin-top: -2px; }
-  .year { font-size: 12px; margin-top: -4px; }
-
-  .map .box { border-radius: 6px; }
-  .votes { gap: 2px 6px; }
-  .votes b, .votes .kv { font-size: 11px; }
-
-  .congress-wrapper { gap: 10px; padding-top: 12px; }
-  .congress-wrapper > div:nth-child(2) { top: -8px; }
-  .vbars { height: 54px; }
-  .pcttag { font-size: 9px; }
-
-  .mini-title { font: 600 10px/1 system-ui; margin: 0 0 2px; }
-
-  .notes { font-size: 10px; }
-
-  .party-key-left { font-size: 10px; }
-  .party-key-swatches { gap: 2px; }
-  .party-key-swatches .sw i { width: 10px; height: 10px; border-radius: 2px; }
 }
 
 </style>
@@ -388,7 +325,7 @@ margin-top:-10px; }
       </div>
     </aside>
 
-    <section id="timeline" class="timeline" tabindex="0" aria-label="Presidential timeline"></section>
+    <section id="timeline" class="timeline"></section>
   </div>
 </div>
 

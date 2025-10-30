@@ -59,7 +59,7 @@ h2 {
     160px
     50px
     300px /* slightly reduced */
-    20px;
+    100px;
   align-items: start;
 }
 
@@ -264,93 +264,6 @@ margin-top:-10px; }
   }
 }
 
-
-/* ===== PARTY KEY (left column, under Notes) ===== */
-.party-key-left{ font: 400 11px/1.2 system-ui; color:#111; }
-.party-key-left > b{ display:block; font:700 12px/1 system-ui; margin:2px 0 6px 0; }
-.party-key-swatches{ display:grid; grid-template-columns: 1fr; gap:4px; max-width:210px; }
-.party-key-swatches .sw{ display:flex; align-items:center; gap:6px; white-space:normal; }
-.party-key-swatches .sw i{ width:12px; height:12px; border-radius:3px; display:inline-block; }
-
-
-/* === Mobile layout improvements === */
-@media (max-width: 768px) {
-  :root { 
-    --colw: 140px; 
-    --portrait: 64px;
-  }
-  .wrap { padding: 12px; }
-  .top { 
-    grid-template-columns: 1fr; 
-    gap: 12px; 
-  }
-  .labels {
-    position: static !important;
-    top: auto; left: auto;
-    box-shadow: none;
-    border-right: 0;
-    padding-right: 0;
-    background: transparent;
-  }
-  .labels-grid {
-    grid-template-rows:
-      16px
-      80px
-      24px
-      22px
-      120px
-      40px
-      200px
-      16px;
-  }
-
-  .timeline { 
-    padding-left: 0; 
-    overflow-x: auto; 
-    -webkit-overflow-scrolling: touch;
-    scroll-snap-type: x mandatory;
-  }
-  .col { 
-    scroll-snap-align: start; 
-    min-width: var(--colw);
-  }
-  .col-grid { 
-    padding: 0 8px; 
-    grid-template-rows:
-      16px
-      80px
-      24px
-      22px
-      120px
-      40px
-      220px
-      20px;
-  }
-
-  .portrait-row { gap: 8px; }
-  .portrait-box { border-radius: 6px; }
-
-  .name { font-size: 13px; margin-top: -2px; }
-  .year { font-size: 12px; margin-top: -4px; }
-
-  .map .box { border-radius: 6px; }
-  .votes { gap: 2px 6px; }
-  .votes b, .votes .kv { font-size: 11px; }
-
-  .congress-wrapper { gap: 10px; padding-top: 12px; }
-  .congress-wrapper > div:nth-child(2) { top: -8px; }
-  .vbars { height: 54px; }
-  .pcttag { font-size: 9px; }
-
-  .mini-title { font: 600 10px/1 system-ui; margin: 0 0 2px; }
-
-  .notes { font-size: 10px; }
-
-  .party-key-left { font-size: 10px; }
-  .party-key-swatches { gap: 2px; }
-  .party-key-swatches .sw i { width: 10px; height: 10px; border-radius: 2px; }
-}
-
 </style>
 </head>
 <body>
@@ -366,29 +279,11 @@ margin-top:-10px; }
         <div class="cell"><b>Electoral map</b></div>
         <div class="cell"><b>Votes</b></div>
         <div class="cell" style="padding-top:30px;"><b>Congressional Power</b></div>
-        <div class="cell" style="padding-bottom:-30px;"><b>Notes</b></div>
-<div class="cell party-key-left">
-  <div class="party-key-swatches">
-    <span class="sw"><i style="background:#6a8cc3"></i>Democratic / Jacksonian</span>
-    <span class="sw"><i style="background:#ff7f0e"></i>Anti‑Jackson / National Republican</span>
-    <span class="sw"><i style="background:#df6f5c"></i>Republican</span>
-    <span class="sw"><i style="background:#009444"></i>Federalist / Pro‑Administration</span>
-    <span class="sw"><i style="background:#92278f"></i>Democratic‑Republican / Anti‑Administration</span>
-    <span class="sw"><i style="background:#6f7b34"></i>Whig</span>
-    <span class="sw"><i style="background:#72cbd7"></i>Nullifier</span>
-    <span class="sw"><i style="background:#f2e436"></i>Anti‑Masonic</span>
-    <span class="sw"><i style="background:#cc9dc8"></i>Populist</span>
-    <span class="sw"><i style="background:#a8d16e"></i>Progressive</span>
-    <span class="sw"><i style="background:#f4a261"></i>Dixiecrat</span>
-    <span class="sw"><i style="background:#e76f51"></i>American Independent</span>
-    <span class="sw"><i style="background:#666666"></i>Independent</span>
-  </div>
-</div>
-
+        <div class="cell"><b>Notes</b></div>
       </div>
     </aside>
 
-    <section id="timeline" class="timeline" tabindex="0" aria-label="Presidential timeline"></section>
+    <section id="timeline" class="timeline"></section>
   </div>
 </div>
 

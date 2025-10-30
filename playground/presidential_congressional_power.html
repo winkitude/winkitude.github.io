@@ -371,6 +371,125 @@ margin-top:-10px; }
   }
 }
 
+
+/* === FINAL FIX v4: Restores scrollbar visibility, width, sticky/flowing labels === */
+
+/* Base setup */
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+.wrap {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* ===== DESKTOP ===== */
+@media (min-width: 769px) {
+  .top {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    height: 100%;
+  }
+
+  .labels {
+    position: sticky;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    background: white;
+    border-right: 1px solid var(--rule);
+    box-shadow: 8px 0 8px -8px rgba(0,0,0,0.08);
+  }
+
+  .timeline {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: var(--colw);
+    height: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Visible scrollbar */
+  .timeline::-webkit-scrollbar {
+    height: 12px;
+  }
+  .timeline::-webkit-scrollbar-track {
+    background: #f0f0f0;
+  }
+  .timeline::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 6px;
+  }
+  .timeline::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+
+  /* Ensure scrollbar shows at bottom of viewport */
+  body::after {
+    content: "";
+    display: block;
+    height: 12px;
+  }
+}
+
+/* ===== MOBILE ===== */
+@media (max-width: 768px) {
+  html, body {
+    overflow-x: auto;
+    overflow-y: hidden;
+    height: 100vh;
+  }
+
+  .wrap {
+    height: auto;
+  }
+
+  .top {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    width: max-content;
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+
+  .labels {
+    position: static !important;
+    box-shadow: none !important;
+    border: none !important;
+    background: none !important;
+  }
+
+  .timeline {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: var(--colw);
+    overflow-x: scroll !important;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .timeline::-webkit-scrollbar {
+    height: 10px;
+  }
+  .timeline::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 5px;
+  }
+  .timeline::-webkit-scrollbar-track {
+    background: #f0f0f0;
+  }
+  .timeline::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+}
+
 </style>
 </head>
 <body>

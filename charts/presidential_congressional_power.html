@@ -27,8 +27,10 @@ body {
 .power-page {
   display: flex;
   flex-direction: row;
-  height: 100vh;
-  overflow: hidden;
+  min-height: 100vh;
+  height: auto;
+  overflow-x: hidden;
+  overflow-y: visible;
 }
 
 /* === Sidebar (Labels) === */
@@ -47,7 +49,7 @@ body {
 
 .labels-grid {
   display: grid;
-  grid-template-rows: 10px 16px 75px 30px 28px 160px 50px 30px 190px 30px 100px;
+  grid-template-rows: 12px 24px 130px 0px 30px 200px 60px 20px 250px;
   gap: 6px;
 }
 
@@ -92,18 +94,20 @@ body {
   overflow-x: auto;
   overflow-y: hidden;
   -webkit-overflow-scrolling: touch;
+  height: 100vh;  /* ✅ force equal height with labels */
 }
 
 .timeline {
   display: grid;
   grid-auto-flow: column;
   grid-auto-columns: var(--colw);
-  height: 100%;
+  height: 100%; /* ✅ fill wrapper */
 }
+
 
 .col-grid {
   display: grid;
-  grid-template-rows: 10px 16px 108px 45px 28px 160px 50px 230px 50px 100px;
+  grid-template-rows: 12px 24px 130px 50px 30px 200px 60px 280px 50px;
   border-right: 1px solid var(--rule);
   padding: 0 12px;
 }
@@ -298,6 +302,8 @@ body {
     min-width: var(--colw);
     background: transparent;
   }
+
+  
 }
 
 
@@ -523,5 +529,15 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 </script>
+<!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8FK0VXYYGX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-8FK0VXYYGX');
+  </script>
+
+
 </body>
 </html>

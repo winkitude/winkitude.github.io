@@ -212,10 +212,20 @@ body {
     overflow: visible;
   }
 
+.power-page,
+.timeline-wrapper {
+  overflow: visible !important;
+}
+
   .labels {
-    position: relative;
-    height: auto; 
-  z-index: 0;
+     flex: none !important;  
+    width: 100% !important;
+      position: relative !important;
+  top: auto !important;
+  left: auto !important;
+    height: auto !important;
+    min-height: unset !important;
+  z-index: auto !important;
     width: 100%;
      box-shadow: none;      
     border-right: none;

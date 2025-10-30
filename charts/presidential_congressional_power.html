@@ -139,32 +139,41 @@ body {
 
 /* Chart bars */
 .vbars {
+  position: relative;
   display: grid;
   grid-auto-flow: column;
   grid-auto-columns: 1fr;
   gap: 2px;
-  height: 64px; /* 80% of 80px */
   align-items: stretch;
-  position: relative;
+  height: 64px;
 }
-.vbars::before {
+
+.vbar::before {
   content: "";
   position: absolute;
-  left: 0; right: 0; top: 50%;
+  top: 50%;
+  left: 0;
+  right: 0;
   height: 1px;
-  background: #ddd;
+  background: rgba(255, 255, 255, 0.9);
+  transform: translateY(-50%);
+  z-index: 5;
+  pointer-events: none;
 }
+
+
 .vbar {
   display: flex;
   flex-direction: column-reverse;
-  height: 100%;
   justify-content: flex-end;
   position: relative;
-  outline: 1px solid rgba(0,0,0,0.05);
+  z-index: 2;
 }
+
 .seg {
   width: 100%;
   min-height: 1px;
+  
   border-radius: 0;
 }
 .seg + .seg {

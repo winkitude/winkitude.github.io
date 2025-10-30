@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Presidential & Congressional Power — Aligned & Refined</title>
+<style>
+:root {
+  --bg: #fff;
+  --ink: #222;
+  --rule: #e6e6e6;
+  --muted: #f6f6f7;
+  --colw: 260px;
+  --portrait: 92px;
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: 14px/1.3 system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+}
+
+h2 {
+  margin: 0 0 8px;
+  font: 700 20px/1 system-ui;
+}
+
+.wrap { padding: 18px; }
+
+.top {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+/* ===== Left labels ===== */
+.labels {
+  position: sticky;
+  left: 0;
+  top: 0;
+  align-self: start;
+  z-index: 5;
+  border-right: 1px solid var(--rule);
+  padding-right: 12px;
+  background: #fff;
+  box-shadow: 8px 0 8px -8px rgba(0,0,0,0.08);
+}
+
+.labels-grid {
+  display: grid;
+  grid-template-rows:
+    16px
+    108px
+    30px
+    28px
+    160px
+    50px
+    300px /* slightly reduced */
+    20px;
+  align-items: start;
+}
+
+.labels .cell {
+  display: flex;
+  align-items: flex-start;
+  height: 100%;
+}
+.labels .cell:nth-child(7) b {
+  font: 700 18px/1 system-ui;
+  margin-top: 0; /* lift label upward */
+}
+
+/* ===== Timeline / data columns ===== */
+.timeline {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: var(--colw);
+  overflow-x: auto;
+  padding-left: 8px;
+}
+
+.col-grid {
+  display: grid;
+  grid-template-rows:
+    16px
+    108px
+    30px
+    28px
+    160px
+    50px
+    300px
+    200px;
+  border-right: 1px solid var(--rule);
+  padding: 0 12px;
+}
+
+/* ===== Presidential Power ===== */
+.band {
+  height: 12px;
+  border-radius: 6px;
+  margin: auto 0;
+}
+
+/* Container for up to 2 portraits */
+.portrait-row {
+  display: flex;
+  justify-content: flex-start; /* ← align boxes to the left */
+  align-items: center;
+  gap: 12px; /* spacing between portrait boxes */
+  width: 100%;
+  height: 100%;
+}
+
+/* Each portrait box remains same size as original single portrait */
+.portrait-box {
+  flex: 0 0 var(--portrait);
+  width: var(--portrait);
+  height: var(--portrait);
+  border-radius: 8px;
+  overflow: hidden;
+  background: #f0f0f0;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.portrait-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.portrait {
+  width: var(--portrait);
+  height: var(--portrait);
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--muted);  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+}
+
+.portrait img {
+  max-width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.name {
+  margin-top:-5px;
+  font-weight: 700;
+  line-height: 1.1;
+}
+.year { font-weight: 700;
+margin-top:-10px; }
+.map .box {
+  aspect-ratio: 5/3;
+  border: 0px solid var(--rule);
+  border-radius: 6px;
+
+  overflow: hidden;
+}
+.map img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.votes {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 4px 8px;
+  align-items: baseline;
+  margin: 0;
+  padding-top:0px;
+}
+.votes b,
+.votes .kv { font-size: 12px; }
+
+/* ===== Congressional Power (Senate + House, 4-year split) ===== */
+.congress-wrapper {
+  display: grid;
+  grid-template-rows: repeat(2, auto);
+  gap: 18px; /* closer together */
+  padding-top: 30px;
+}
+
+.congress-wrapper > div:nth-child(2) {
+  position: relative;
+  top: -20px;
+}
+
+.mini-title {
+  font: 600 11px/1 system-ui;
+  color: #111;
+  margin: 0 0 4px;
+}
+.vbars {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  gap: 0px;
+  height: 70px;
+  align-items: end;
+  position: relative;
+}
+.vbars::before {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; top: 50%;
+  height: 1px;
+  background: #ddd;
+  z-index: 2;               /* ensures it appears above bars */
+
+}
+.vbar {
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: flex-start;
+  height: 100%;
+  position: relative;
+}
+.seg { width: 100%; }
+
+/* 🧭 % label now placed below bars */
+.pcttag {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 2px;
+  font: 700 10px/1 system-ui;
+  white-space: nowrap;
+}
+
+/* ===== Notes ===== */
+.notes-section {
+  padding-top: 0px;
+}
+.notes {
+  list-style: disc;
+  padding-left: 18px;
+  font-size: 11px;
+  color: #555;
+  margin: 0;
+}
+.notes li { margin: 2px 0; }
+
+
+@media (max-width: 768px) {
+  .labels {
+    position: relative; /* disables sticky */
+    top: auto;
+    left: auto;
+    box-shadow: none;
+    border-right: none;
+  }
+}
+
+
+/* ===== PARTY KEY (left column, under Notes) ===== */
+.party-key-left{ font: 400 11px/1.2 system-ui; color:#111; }
+.party-key-left > b{ display:block; font:700 12px/1 system-ui; margin:2px 0 6px 0; }
+.party-key-swatches{ display:grid; grid-template-columns: 1fr; gap:4px; max-width:210px; }
+.party-key-swatches .sw{ display:flex; align-items:center; gap:6px; white-space:normal; }
+.party-key-swatches .sw i{ width:12px; height:12px; border-radius:3px; display:inline-block; }
+
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h2>Presidential Power</h2>
+  <div class="top">
+    <aside class="labels">
+      <div class="labels-grid">
+        <div class="cell"><b>Party affiliation</b></div>
+        <div class="cell"><b>President</b></div>
+        <div class="cell" style="margin-top:-5px;"><b>Name</b></div>
+        <div class="cell"><b>Elected</b></div>
+        <div class="cell"><b>Electoral map</b></div>
+        <div class="cell"><b>Votes</b></div>
+        <div class="cell" style="padding-top:30px;"><b>Congressional Power</b></div>
+        <div class="cell" style="padding-bottom:-30px;"><b>Notes</b></div>
+<div class="cell party-key-left">
+  <div class="party-key-swatches">
+    <span class="sw"><i style="background:#6a8cc3"></i>Democratic / Jacksonian</span>
+    <span class="sw"><i style="background:#ff7f0e"></i>Anti‑Jackson / National Republican</span>
+    <span class="sw"><i style="background:#df6f5c"></i>Republican</span>
+    <span class="sw"><i style="background:#009444"></i>Federalist / Pro‑Administration</span>
+    <span class="sw"><i style="background:#92278f"></i>Democratic‑Republican / Anti‑Administration</span>
+    <span class="sw"><i style="background:#6f7b34"></i>Whig</span>
+    <span class="sw"><i style="background:#72cbd7"></i>Nullifier</span>
+    <span class="sw"><i style="background:#f2e436"></i>Anti‑Masonic</span>
+    <span class="sw"><i style="background:#cc9dc8"></i>Populist</span>
+    <span class="sw"><i style="background:#a8d16e"></i>Progressive</span>
+    <span class="sw"><i style="background:#f4a261"></i>Dixiecrat</span>
+    <span class="sw"><i style="background:#e76f51"></i>American Independent</span>
+    <span class="sw"><i style="background:#666666"></i>Independent</span>
+  </div>
+</div>
+
+      </div>
+    </aside>
+
+    <section id="timeline" class="timeline"></section>
+  </div>
+</div>
+
+<script>
+(function(){
+  const PARTY = {
+    'Democratic': '#6a8cc3',
+    'Jacksonian':'#6a8cc3',
+    'Anti-Jackson': '#ff7f0e',
+    'Republican': '#df6f5c',
+    'Federalist': '#009444',
+    'Democratic-Republican': '#92278f',
+    'Whig': '#6f7b34',
+    'National Republican': '#ff7f0e',
+    'Pro-Administration': '#009444',
+    'Anti-Administration': '#92278f',
+    'Nullifier': '#72cbd7',
+    'Anti-Masonic': '#f2e436',
+    'Other': '#9aa0a6',
+    'Populist': '#cc9dc8',
+    'Progressive': '#a8d16e',
+    'Dixiecrat': '#f4a261',
+    'American Independent': '#e76f51'
+  };
+
+  const timeline = document.getElementById('timeline');
+
+  // 🔹 Load data dynamically from JSON
+  fetch('presidential_data.json')
+    .then(res => res.json())
+    .then(DATA => {
+      timeline.innerHTML = DATA.map(renderCol).join('');
+    })
+    .catch(err => console.error('Error loading data:', err));
+
+
+  function renderCol(d){
+    const color = PARTY[d.band] || '#ccc';
+    const notes = (d.notes||[]).map(t=>`<li>${t}</li>`).join('');
+    const congress = renderCongress(d);
+    return `<article class="col"><div class="col-grid">
+      <div class="band" style="background:${color}"></div>
+      <div class="portrait-row">
+  ${
+    Array.isArray(d.portrait)
+      ? d.portrait
+          .map(
+            (p, i) => `
+              <div class="portrait-box">
+                <img src="${p}" alt="${d.name.split('/')[i] || d.name}">
+              </div>
+            `
+          )
+          .join('')
+      : `
+          <div class="portrait-box">
+            <img src="${d.portrait}" alt="${d.name}">
+          </div>
+        `
+  }
+</div>
+      <div class="name">${d.name}</div>
+      <div class="year">${d.year}</div>
+      <div class="map"><div class="box"><img src="${d.map}" alt="${d.year} map"></div></div>
+      <div class="votes"><b>electoral</b><div class="kv">${d.electoral}</div><b>popular</b><div class="kv">${d.popular}</div></div>
+      ${congress}
+      <div class="notes-section">
+        <ul class="notes">${notes}</ul>
+      </div>
+    </div></article>`;
+  }
+
+  function renderCongress(d){
+    return `
+    <div class="congress-wrapper">
+      <div><div class="mini-title">Senate</div>${renderVBars(d.senateYears||[])}</div>
+      <div><div class="mini-title">House</div>${renderVBars(d.houseYears||[])}</div>
+    </div>`;
+  }
+
+  function renderVBars(years){
+    return `<div class="vbars">${years.map(y=>{
+      const maxSeg = y.reduce((a,b)=>b.pct > a.pct ? b : a);
+      const segs = y.map(s=>{
+        const color = PARTY[s.party] || '#999';
+        const label = s === maxSeg ? `<span class="pcttag" style="color:${color}">${s.pct}%</span>` : '';
+        return `<div class="seg" style="height:${s.pct}%; background:${color}" title="${s.party}: ${s.pct}%">${label}</div>`;
+      }).join('');
+      return `<div class="vbar">${segs}</div>`;
+    }).join('')}</div>`;
+  }
+})();
+</script>
+</body>
+</html>

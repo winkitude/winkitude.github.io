@@ -1,0 +1,6847 @@
+[
+  {
+    "id": "washington-1789",
+    "name": "George Washington",
+    "year": 1789,
+    "band": "Independent",
+    "portrait": "images/presidents/George_Washington.jpg",
+    "map": "images/maps/1789_election.svg",
+    "electoral": "69 / 69",
+    "popular": "100%",
+    "notes": [
+      "North Carolina ratified the US Constitution 1789",
+      "Rhode Island ratified the US Constitution 1790",
+      "Bill of Rights ratified 1791",
+      "Vermont admitted as the 14th state 1791"
+    ],
+    "senateYears": [
+      [
+        {
+          "party": "Pro-Administration",
+          "pct": 69.2
+        },
+        {
+          "party": "Anti-Administration",
+          "pct": 30.8
+        }
+      ],
+      [
+        {
+          "party": "Pro-Administration",
+          "pct": 69.2
+        },
+        {
+          "party": "Anti-Administration",
+          "pct": 30.8
+        }
+      ],
+      [
+        {
+          "party": "Pro-Administration",
+          "pct": 55.2
+        },
+        {
+          "party": "Anti-Administration",
+          "pct": 44.8
+        }
+      ],
+      [
+        {
+          "party": "Pro-Administration",
+          "pct": 55.2
+        },
+        {
+          "party": "Anti-Administration",
+          "pct": 44.8
+        }
+      ]
+    ],
+    "houseYears": [
+      [
+        {
+          "party": "Pro-Administration",
+          "pct": 56.9
+        },
+        {
+          "party": "Anti-Administration",
+          "pct": 43.1
+        }
+      ],
+      [
+        {
+          "party": "Pro-Administration",
+          "pct": 56.9
+        },
+        {
+          "party": "Anti-Administration",
+          "pct": 43.1
+        }
+      ],
+      [
+        {
+          "party": "Pro-Administration",
+          "pct": 56.5
+        },
+        {
+          "party": "Anti-Administration",
+          "pct": 43.5
+        }
+      ],
+      [
+        {
+          "party": "Pro-Administration",
+          "pct": 56.5
+        },
+        {
+          "party": "Anti-Administration",
+          "pct": 43.5
+        }
+      ]
+    ]
+  },
+  {
+    "id": "washington-1792",
+    "name": "George Washington",
+    "year": 1792,
+    "band": "Independent",
+    "portrait": "images/presidents/George_Washington.jpg",
+    "map": "images/maps/1792_election.svg",
+    "electoral": "132 / 132",
+    "popular": "100%",
+    "notes": [
+      "Kentucky admitted as the 15th state 1792",
+      "Neutral Proclamation signed 1793",
+      "Construction of the original six frigates of the United States Navy were authorized 1794",
+      "Whiskey Rebellion 1794",
+      "Jay Treaty signed 1794",
+      "11th amendment enacted (dealing with each state\u2019s sovereign immunity) 1795"
+    ],
+    "senateYears": [
+      [
+        {
+          "party": "Pro-Administration",
+          "pct": 55.2
+        },
+        {
+          "party": "Anti-Administration",
+          "pct": 44.8
+        }
+      ],
+      [
+        {
+          "party": "Pro-Administration",
+          "pct": 53.3
+        },
+        {
+          "party": "Anti-Administration",
+          "pct": 46.7
+        }
+      ],
+      [
+        {
+          "party": "Pro-Administration",
+          "pct": 53.3
+        },
+        {
+          "party": "Anti-Administration",
+          "pct": 46.7
+        }
+      ],
+      [
+        {
+          "party": "Federalist",
+          "pct": 65.6
+        },
+        {
+          "party": "Democratic-Republican",
+          "pct": 34.4
+        }
+      ]
+    ],
+    "houseYears": [
+      [
+        {
+          "party": "Pro-Administration",
+          "pct": 56.5
+        },
+        {
+          "party": "Anti-Administration",
+          "pct": 43.5
+        }
+      ],
+      [
+        {
+          "party": "Pro-Administration",
+          "pct": 48.6
+        },
+        {
+          "party": "Anti-Administration",
+          "pct": 51.4
+        }
+      ],
+      [
+        {
+          "party": "Pro-Administration",
+          "pct": 48.6
+        },
+        {
+          "party": "Anti-Administration",
+          "pct": 51.4
+        }
+      ],
+      [
+        {
+          "party": "Federalist",
+          "pct": 44.3
+        },
+        {
+          "party": "Democratic-Republican",
+          "pct": 55.7
+        }
+      ]
+    ]
+  },
+  {
+    "id": "adams-1796",
+    "name": "John Adams",
+    "year": 1796,
+    "band": "Federalist",
+    "portrait": "images/presidents/John_Adams.jpg",
+    "map": "images/maps/1796_election.svg",
+    "electoral": "71 / 139",
+    "popular": "53.3%",
+    "notes": [
+      "Pinckney\u2019s Treaty signed 1796",
+      "Tennessee admitted as the 16th state 1796",
+      "XYZ affair 1797",
+      "US Marine Corps established 1798",
+      "Alien and Sedition Acts 1798",
+      "George Washington died 1799"
+    ],
+    "senateYears": [
+      [
+        {
+          "party": "Federalist",
+          "pct": 65.6
+        },
+        {
+          "party": "Democratic-Republican",
+          "pct": 34.4
+        }
+      ],
+      [
+        {
+          "party": "Federalist",
+          "pct": 68.8
+        },
+        {
+          "party": "Democratic-Republican",
+          "pct": 31.2
+        }
+      ],
+      [
+        {
+          "party": "Federalist",
+          "pct": 68.8
+        },
+        {
+          "party": "Democratic-Republican",
+          "pct": 31.2
+        }
+      ],
+      [
+        {
+          "party": "Federalist",
+          "pct": 68.8
+        },
+        {
+          "party": "Democratic-Republican",
+          "pct": 31.2
+        }
+      ]
+    ],
+    "houseYears": [
+      [
+        {
+          "party": "Federalist",
+          "pct": 44.3
+        },
+        {
+          "party": "Democratic-Republican",
+          "pct": 55.7
+        }
+      ],
+      [
+        {
+          "party": "Federalist",
+          "pct": 53.8
+        },
+        {
+          "party": "Democratic-Republican",
+          "pct": 46.2
+        }
+      ],
+      [
+        {
+          "party": "Federalist",
+          "pct": 53.8
+        },
+        {
+          "party": "Democratic-Republican",
+          "pct": 46.2
+        }
+      ],
+      [
+        {
+          "party": "Federalist",
+          "pct": 56.6
+        },
+        {
+          "party": "Democratic-Republican",
+          "pct": 43.4
+        }
+      ]
+    ]
+  },
+  {
+    "id": "jefferson-1800",
+    "name": "Thomas Jefferson",
+    "year": 1800,
+    "band": "Democratic-Republican",
+    "portrait": "images/presidents/Thomas_Jefferson.jpg",
+    "map": "images/maps/1800_election.svg",
+    "electoral": "73 / 138",
+    "popular": "60.6%",
+    "notes": [
+      "An electoral tie between Thomas Jefferson and Aaron Burr was resolved when Jefferson was elected President and Burr Vice President by the House of Representatives 1801",
+      "Ohio admitted as 17th state 1802",
+      "Louisiana Purchase made 1803",
+      "Napoleonic Wars 1803-1815"
+    ],
+    "senateYears": [
+      [
+        {
+          "party": "Federalist",
+          "pct": 68.8
+        },
+        {
+          "party": "Democratic-Republican",
+          "pct": 31.2
+        }
+      ],
+      [
+        {
+          "party": "Federalist",
+          "pct": 46.9
+        },
+        {
+          "party": "Democratic-Republican",
+          "pct": 53.1
+        }
+      ],
+      [
+        {
+          "party": "Federalist",
+          "pct": 46.9
+        },
+        {
+          "party": "Democratic-Republican",
+          "pct": 53.1
+        }
+      ],
+      [
+        {
+          "party": "Federalist",
+          "pct": 26.5
+        },
+        {
+          "party": "Democratic-Republican",
+          "pct": 73.5
+        }
+      ]
+    ],
+    "houseYears": [
+      [
+        {
+          "party": "Federalist",
+          "pct": 56.6
+        },
+        {
+          "party": "Democratic-Republican",
+          "pct": 43.4
+        }
+      ],
+      [
+        {
+          "party": "Federalist",
+          "pct": 35.8
+        },
+        {
+          "party": "Democratic-Republican",
+          "pct": 64.2
+        }
+      ],
+      [
+        {
+          "party": "Federalist",
+          "pct": 35.8
+        },
+        {
+          "party": "Democratic-Republican",
+          "pct": 64.2
+        }
+      ],
+      [
+        {
+          "party": "Federalist",
+          "pct": 27.5
+        },
+        {
+          "party": "Democratic-Republican",
+          "pct": 72.5
+        }
+      ]
+    ]
+  },
+  {
+    "id": "jefferson-1804",
+    "name": "Thomas Jefferson",
+    "year": 1804,
+    "band": "Democratic-Republican",
+    "portrait": "images/presidents/Thomas_Jefferson.jpg",
+    "map": "images/maps/1804_election.svg",
+    "electoral": "162 / 176",
+    "popular": "73.2%",
+    "notes": [
+      "Lewis and Clark Expedition 1804",
+      "Aaron Burr killed Alexander Hamilton in a duel 1804",
+      "12th amendment enacted (procedure by which the President and V.P. are elected) 1804"
+    ],
+    "senateYears": [
+      [
+        {
+          "party": "Federalist",
+          "pct": 26.5
+        },
+        {
+          "party": "Democratic-Republican",
+          "pct": 73.5
+        }
+      ],
+      [
+        {
+          "party": "Federalist",
+          "pct": 20.6
+        },
+        {
+          "party": "Democratic-Republican",
+          "pct": 79.4
+        }
+      ],
+      [
+        {
+          "party": "Federalist",
+          "pct": 20.6
+        },
+        {
+          "party": "Democratic-Republican",
+          "pct": 79.4
+        }
+      ],
+      [
+        {
+          "party": "Federalist",
+          "pct": 17.6
+        },
+        {
+          "party": "Democratic-Republican",
+          "pct": 82.4
+        }
+      ]
+    ],
+    "houseYears": [
+      [
+        {
+          "party": "Federalist",
+          "pct": 27.5
+        },
+        {
+          "party": "Democratic-Republican",
+          "pct": 72.5
+        }
+      ],
+      [
+        {
+          "party": "Federalist",
+          "pct": 19.7
+        },
+        {
+          "party": "Democratic-Republican",
+          "pct": 80.3
+        }
+      ],
+      [
+        {
+          "party": "Federalist",
+          "pct": 19.7
+        },
+        {
+          "party": "Democratic-Republican",
+          "pct": 80.3
+        }
+      ],
+      [
+        {
+          "party": "Federalist",
+          "pct": 18.3
+        },
+        {
+          "party": "Democratic-Republican",
+          "pct": 81.7
+        }
+      ]
+    ]
+  },
+  {
+    "id": "madison-1808",
+    "name": "James Madison",
+    "year": 1808,
+    "band": "Democratic-Republican",
+    "portrait": "images/presidents/James_Madison.jpg",
+    "map": "images/maps/1808_election.svg",
+    "electoral": "122 / 176",
+    "popular": "65.0%",
+    "notes": [
+      "Importation of slaves into the U.S. banned 1808",
+      "Mexican War of Independence 1810-1821",
+      "Battle of Tippecanoe 1811"
+    ],
+    "senateYears": [
+      [
+        {
+          "party": "Federalist",
+          "pct": 17.6
+        },
+        {
+          "party": "Democratic-Republican",
+          "pct": 82.4
+        }
+      ],
+      [
+        {
+          "party": "Federalist",
+          "pct": 20.6
+        },
+        {
+          "party": "Democratic-Republican",
+          "pct": 79.4
+        }
+      ],
+      [
+        {
+          "party": "Federalist",
+          "pct": 20.6
+        },
+        {
+          "party": "Democratic-Republican",
+          "pct": 79.4
+        }
+      ],
+      [
+        {
+          "party": "Federalist",
+          "pct": 16.7
+        },
+        {
+          "party": "Democratic-Republican",
+          "pct": 83.3
+        }
+      ]
+    ],
+    "houseYears": [
+      [
+        {
+          "party": "Federalist",
+          "pct": 18.3
+        },
+        {
+          "party": "Democratic-Republican",
+          "pct": 81.7
+        }
+      ],
+      [
+        {
+          "party": "Federalist",
+          "pct": 35.2
+        },
+        {
+          "party": "Democratic-Republican",
+          "pct": 64.8
+        }
+      ],
+      [
+        {
+          "party": "Federalist",
+          "pct": 35.2
+        },
+        {
+          "party": "Democratic-Republican",
+          "pct": 64.8
+        }
+      ],
+      [
+        {
+          "party": "Federalist",
+          "pct": 25.2
+        },
+        {
+          "party": "Democratic-Republican",
+          "pct": 74.8
+        }
+      ]
+    ]
+  },
+  {
+    "id": "madison-1812",
+    "name": "James Madison",
+    "year": 1812,
+    "band": "Democratic-Republican",
+    "portrait": "images/presidents/James_Madison.jpg",
+    "map": "images/maps/1812_election.svg",
+    "electoral": "128 / 217",
+    "popular": "50.3%",
+    "notes": [
+      "War of 1812",
+      "Louisiana admitted as the 18th state 1812" 
+    ],
+    "senateYears": [
+      [
+        {
+          "party": "Federalist",
+          "pct": 9.1
+        },
+        {
+          "party": "Democratic-Republican",
+          "pct": 90.9
+        }
+      ],
+      [
+        {
+          "party": "Federalist",
+          "pct": 22.2
+        },
+        {
+          "party": "Democratic-Republican",
+          "pct": 77.8
+        }
+      ],
+      [
+        {
+          "party": "Federalist",
+          "pct": 22.2
+        },
+        {
+          "party": "Democratic-Republican",
+          "pct": 77.8
+        }
+      ],
+      [
+        {
+          "party": "Federalist",
+          "pct": 31.6
+        },
+        {
+          "party": "Democratic-Republican",
+          "pct": 68.4
+        }
+      ]
+    ],
+    "houseYears": [
+      [
+        {
+          "party": "Federalist",
+          "pct": 25.2
+        },
+        {
+          "party": "Democratic-Republican",
+          "pct": 74.8
+        }
+      ],
+      [
+        {
+          "party": "Federalist",
+          "pct": 37.4
+        },
+        {
+          "party": "Democratic-Republican",
+          "pct": 62.6
+        }
+      ],
+      [
+        {
+          "party": "Federalist",
+          "pct": 37.4
+        },
+        {
+          "party": "Democratic-Republican",
+          "pct": 62.6
+        }
+      ],
+      [
+        {
+          "party": "Federalist",
+          "pct": 35.0
+        },
+        {
+          "party": "Democratic-Republican",
+          "pct": 65.0
+        }
+      ]
+    ]
+  },
+  {
+    "id": "monroe-1816",
+    "name": "James Monroe",
+    "year": 1816,
+    "band": "Democratic-Republican",
+    "portrait": "images/presidents/James_Monroe.jpg",
+    "map": "images/maps/1816_election.svg",
+    "electoral": "183 / 217",
+    "popular": "68.7%",
+    "notes": [
+      "Indiana admitted as the 19th state 1816",
+      "Mississippi admitted as the 20th state 1817",
+      "Illinois admitted as the 21st state 1818",
+      "Alabama admitted as the 22nd state 1819"
+    ],
+    "senateYears": [
+      [
+        {
+          "party": "Federalist",
+          "pct": 31.6
+        },
+        {
+          "party": "Democratic-Republican",
+          "pct": 68.4
+        }
+      ],
+      [
+        {
+          "party": "Federalist",
+          "pct": 28.6
+        },
+        {
+          "party": "Democratic-Republican",
+          "pct": 71.4
+        }
+      ],
+      [
+        {
+          "party": "Federalist",
+          "pct": 28.6
+        },
+        {
+          "party": "Democratic-Republican",
+          "pct": 71.4
+        }
+      ],
+      [
+        {
+          "party": "Federalist",
+          "pct": 19.6
+        },
+        {
+          "party": "Democratic-Republican",
+          "pct": 80.4
+        }
+      ]
+    ],
+    "houseYears": [
+      [
+        {
+          "party": "Federalist",
+          "pct": 35.0
+        },
+        {
+          "party": "Democratic-Republican",
+          "pct": 65.0
+        }
+      ],
+      [
+        {
+          "party": "Federalist",
+          "pct": 21.1
+        },
+        {
+          "party": "Democratic-Republican",
+          "pct": 78.9
+        }
+      ],
+      [
+        {
+          "party": "Federalist",
+          "pct": 21.1
+        },
+        {
+          "party": "Democratic-Republican",
+          "pct": 78.9
+        }
+      ],
+      [
+        {
+          "party": "Federalist",
+          "pct": 14.0
+        },
+        {
+          "party": "Democratic-Republican",
+          "pct": 86.0
+        }
+      ]
+    ]
+  },
+  {
+    "id": "monroe-1820",
+    "name": "James Monroe",
+    "year": 1820,
+    "band": "Democratic-Republican",
+    "portrait": "images/presidents/James_Monroe.jpg",
+    "map": "images/maps/1820_election.svg",
+    "electoral": "231/232",
+    "popular": "78.3%",
+    "notes": [
+      "Missouri Comporomise 1820",
+      "Maine admitted as the 23rd state 1820",
+      "Missouri admitted as the 24th state 1821",
+      "Monroe Doctrine pronounced 1823"
+    ],
+    "senateYears": [
+      [
+        {
+          "party": "Federalist",
+          "pct": 19.6
+        },
+        {
+          "party": "Democratic-Republican",
+          "pct": 80.4
+        }
+      ],
+      [
+        {
+          "party": "Federalist",
+          "pct": 8.3
+        },
+        {
+          "party": "Democratic-Republican",
+          "pct": 91.7
+        }
+      ],
+      [
+        {
+          "party": "Federalist",
+          "pct": 8.3
+        },
+        {
+          "party": "Democratic-Republican",
+          "pct": 91.7
+        }
+      ],
+      [
+        {
+          "party": "Federalist",
+          "pct": 10.4
+        },
+        {
+          "party": "Democratic-Republican",
+          "pct": 89.6
+        }
+      ]
+    ],
+    "houseYears": [
+      [
+        {
+          "party": "Federalist",
+          "pct": 14.0
+        },
+        {
+          "party": "Democratic-Republican",
+          "pct": 86.0
+        }
+      ],
+      [
+        {
+          "party": "Federalist",
+          "pct": 17.1
+        },
+        {
+          "party": "Democratic-Republican",
+          "pct": 82.9
+        }
+      ],
+      [
+        {
+          "party": "Federalist",
+          "pct": 17.1
+        },
+        {
+          "party": "Democratic-Republican",
+          "pct": 82.9
+        }
+      ],
+      [
+        {
+          "party": "Federalist",
+          "pct": 11.3
+        },
+        {
+          "party": "Democratic-Republican",
+          "pct": 88.7
+        }
+      ]
+    ]
+  },
+  {
+    "id": "adams-1824",
+    "name": "John Quincy Adams",
+    "year": 1824,
+    "band": "Democratic-Republican",
+    "portrait": "images/presidents/John_Quincy_Adams.jpg",
+    "map": "images/maps/1824_election.svg",
+    "electoral": "84/261",
+    "popular": "32.7%",
+    "notes": [
+      "No candidates recieved a majority of the electoral vote. Top three were chosen to be voted on by The House of Representatives which voted on John Quincy Adams. Adams got 13 / 25 (54%) votes in the House"
+    ],
+    "senateYears": [
+      [
+        {
+          "party": "Federalist",
+          "pct": 10.4
+        },
+        {
+          "party": "Democratic-Republican",
+          "pct": 89.6
+        }
+      ],
+      [
+        {
+          "party": "Jacksonian",
+          "pct": 54.2
+        },
+        {
+          "party": "Anti-Jackson",
+          "pct": 45.8
+        }
+      ],
+      [
+        {
+          "party": "Jacksonian",
+          "pct": 54.2
+        },
+        {
+          "party": "Anti-Jackson",
+          "pct": 45.8
+        }
+      ],
+      [
+        {
+          "party": "Jacksonian",
+          "pct": 56.2
+        },
+        {
+          "party": "Anti-Jackson",
+          "pct": 43.8
+        }
+      ]
+    ],
+    "houseYears": [
+      [
+        {
+          "party": "Federalist",
+          "pct": 11.3
+        },
+        {
+          "party": "Democratic-Republican",
+          "pct": 88.7
+        }
+      ],
+      [
+        {
+          "party": "Jacksonian",
+          "pct": 48.8
+        },
+        {
+          "party": "Anti-Jackson",
+          "pct": 51.2
+        }
+      ],
+      [
+        {
+          "party": "Jacksonian",
+          "pct": 48.8
+        },
+        {
+          "party": "Anti-Jackson",
+          "pct": 51.2
+        }
+      ],
+      [
+        {
+          "party": "Jacksonian",
+          "pct": 53.1
+        },
+        {
+          "party": "Anti-Jackson",
+          "pct": 46.9
+        }
+      ]
+    ]
+  },
+  {
+    "id": "jackson-1828",
+    "name": "Andrew Jackson",
+    "year": 1828,
+    "band": "Democratic",
+    "portrait": "images/presidents/Andrew_Jackson.jpg",
+    "map": "images/maps/1828_election.svg",
+    "electoral": "178 / 261",
+    "popular": "55.3%",
+    "notes": [
+      "Indian Removal Act 1830"
+    ],
+    "senateYears": [
+      [
+        {
+          "party": "Jacksonian",
+          "pct": 56.2
+        },
+        {
+          "party": "Anti-Jackson",
+          "pct": 43.8
+        }
+      ],
+      [
+        {
+          "party": "Jacksonian",
+          "pct": 52.1
+        },
+        {
+          "party": "Anti-Jackson",
+          "pct": 47.9
+        }
+      ],
+      [
+        {
+          "party": "Jacksonian",
+          "pct": 52.1
+        },
+        {
+          "party": "Anti-Jackson",
+          "pct": 47.9
+        }
+      ],
+      [
+        {
+          "party": "Jacksonian",
+          "pct": 50.0
+        },
+         {
+          "party": "Nullifier",
+          "pct": 4.2
+        },
+        {
+          "party": "Anti-Jackson",
+          "pct": 45.8
+        }
+      ]
+    ],
+    "houseYears": [
+      [
+        {
+          "party": "Jacksonian",
+          "pct": 53.1
+        },
+        {
+          "party": "Anti-Jackson",
+          "pct": 46.9
+        }
+      ],
+      [
+        {
+          "party": "Jacksonian",
+          "pct": 63.8
+        },
+           {
+          "party": "Other",
+          "pct": 2.3
+        },
+        {
+          "party": "Anti-Jackson",
+          "pct": 33.8
+        }
+      ],
+      [
+        {
+          "party": "Jacksonian",
+          "pct": 63.8
+        },
+         {
+          "party": "Other",
+          "pct": 2.3
+        },
+        {
+          "party": "Anti-Jackson",
+          "pct": 33.8
+        }
+      ],
+      [
+    
+        {
+          "party": "Jacksonian",
+          "pct": 59.2
+        },
+        {
+          "party": "Other",
+          "pct": 9.9
+        },
+        {
+          "party": "Anti-Jackson",
+          "pct": 31.0
+        }
+      ]
+    ]
+  },
+  {
+    "id": "jackson-1832",
+    "name": "Andrew Jackson",
+    "year": 1832,
+    "band": "Democratic",
+    "portrait": "images/presidents/Andrew_Jackson.jpg",
+    "map": "images/maps/1832_election.svg",
+    "electoral": "219 / 288",
+    "popular": "54.2%",
+    "notes": [],
+    "senateYears": [
+      [
+        {
+          "party": "Jacksonian",
+          "pct": 50.0
+        },
+        {
+          "party": "Nullifier",
+          "pct": 4.2
+        },
+        {
+          "party": "Anti-Jackson",
+          "pct": 45.8
+        }
+      ],
+      [
+        {
+          "party": "Jacksonian",
+          "pct": 41.7
+        },
+        {
+          "party": "Nullifier",
+          "pct": 4.2
+        },
+        {
+          "party": "Anti-Jackson",
+          "pct": 54.2
+        }
+      ],
+      [
+        {
+          "party": "Jacksonian",
+          "pct": 41.7
+        },
+        {
+          "party": "Nullifier",
+          "pct": 4.2
+        },
+        {
+          "party": "Anti-Jackson",
+          "pct": 54.2
+        }
+      ],
+      [
+        {
+          "party": "Jacksonian",
+          "pct": 50.0
+        },
+        {
+          "party": "Nullifier",
+          "pct": 3.8
+        },
+        {
+          "party": "Anti-Jackson",
+          "pct": 46.2
+        }
+      ]
+    ],
+    "houseYears": [
+      [
+        {
+          "party": "Jacksonian",
+          "pct": 59.2
+        },
+         {
+          "party": "Other",
+          "pct": 9.9
+        },
+        {
+          "party": "Anti-Jackson",
+          "pct": 31.0
+        }
+      ],
+      [
+       
+        {
+          "party": "Jacksonian",
+          "pct": 59.6
+        },
+         {
+          "party": "Other",
+          "pct": 14.2
+        },
+        {
+          "party": "Anti-Jackson",
+          "pct": 26.2
+        }
+      ],
+      [
+        
+        {
+          "party": "Jacksonian",
+          "pct": 59.6
+        },
+        {
+          "party": "Other",
+          "pct": 14.2
+        },
+        {
+          "party": "Anti-Jackson",
+          "pct": 26.2
+        }
+      ],
+      [
+        {
+          "party": "Jacksonian",
+          "pct": 59.1
+        },
+        {
+          "party": "Other",
+          "pct": 9.9
+        },
+        {
+          "party": "Anti-Jackson",
+          "pct": 31.0
+        }
+      ]
+    ]
+  },
+  {
+    "id": "buren-1836",
+    "name": "Martin Van Buren",
+    "year": 1836,
+    "band": "Democratic",
+    "portrait": "images/presidents/Martin_Van_Buren.jpg",
+    "map": "images/maps/1836_election.svg",
+    "electoral": "170 / 294",
+    "popular": "50.8%",
+    "notes": [
+      "Arkansas admitted as the 25th state 1836",
+      "Michigan admitted as the 26th state 1837"
+    ],
+    "senateYears": [
+      [
+        {
+          "party": "Jacksonian",
+          "pct": 50.0
+        },
+        {
+          "party": "Nullifier",
+          "pct": 3.8
+        },
+        {
+          "party": "Anti-Jackson",
+          "pct": 46.2
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 67.3
+        },
+        {
+          "party": "Whig",
+          "pct": 32.7
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 67.3
+        },
+        {
+          "party": "Whig",
+          "pct": 32.7
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 57.7
+        },
+        {
+          "party": "Whig",
+          "pct": 42.3
+        }
+      ]
+    ],
+    "houseYears": [
+      [
+        
+        {
+          "party": "Jacksonian",
+          "pct": 59.1
+        },
+        {
+          "party": "Other",
+          "pct": 9.9
+        },
+        {
+          "party": "Anti-Jackson",
+          "pct": 31.0
+        }
+      ],
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 52.9
+        },
+        {
+          "party": "Other",
+          "pct": 5.8
+        },
+        {
+          "party": "Whig",
+          "pct": 41.3
+        }
+      ],
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 52.9
+        },
+        {
+          "party": "Other",
+          "pct": 5.8
+        },
+        {
+          "party": "Whig",
+          "pct": 41.3
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 51.7
+        },
+        {
+          "party": "Other",
+          "pct": 3.3
+        },
+        {
+          "party": "Whig",
+          "pct": 45.0
+        }
+      ]
+    ]
+  },
+  {
+    "id": "harrison-1840",
+    "name": "William Henry Harrison<br>John Tyler",
+    "year": 1840,
+    "band": "Whig",
+    "portrait": [
+      "images/presidents/William_Henry_Harrison.jpg",
+      "images/presidents/John_Tyler.jpg"
+    ],
+    "map": "images/maps/1840_election.svg",
+    "electoral": "234/294",
+    "popular": "52.9%",
+    "notes": [
+      "Harrison passes away 1841"
+    ],
+    "senateYears": [
+      [
+        {
+          "party": "Democratic",
+          "pct": 57.7
+        },
+        {
+          "party": "Whig",
+          "pct": 42.3
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 43.1
+        },
+        {
+          "party": "Whig",
+          "pct": 56.9
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 43.1
+        },
+        {
+          "party": "Whig",
+          "pct": 56.9
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 44.2
+        },
+        {
+          "party": "Whig",
+          "pct": 55.8
+        }
+      ]
+    ],
+    "houseYears": [
+      [
+        {
+          "party": "Democratic",
+          "pct": 51.7
+        },
+         {
+          "party": "Other",
+          "pct": 3.3
+        },
+        {
+          "party": "Whig",
+          "pct": 45.0
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 40.5
+        },
+        {
+          "party": "Other",
+          "pct": 0.8
+        },
+        {
+          "party": "Whig",
+          "pct": 58.7
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 40.5
+        },
+        {
+          "party": "Other",
+          "pct": 0.8
+        },
+        {
+          "party": "Whig",
+          "pct": 58.7
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 65.9
+        },
+        {
+          "party": "Other",
+          "pct": 1.8
+        },
+        {
+          "party": "Whig",
+          "pct": 32.3
+        }
+      ]
+    ]
+  },
+  {
+    "id": "polk-1844",
+    "name": "James K. Polk",
+    "year": 1844,
+    "band": "Democratic",
+    "portrait": "images/presidents/James_K_Polk.jpg",
+    "map": "images/maps/1844_election.svg",
+    "electoral": "170 / 275",
+    "popular": "49.5%",
+    "notes": [
+      "Florida admitted as the 27th state 1845",
+      "Texas admitted as the 28th state 1845",
+      "Iowa admitted as the 29th state 1846",
+      "Mexican War and Mexican Cession 1846-1848"
+    ],
+    "senateYears": [
+      [
+        {
+          "party": "Democratic",
+          "pct": 44.2
+        },
+        {
+          "party": "Whig",
+          "pct": 55.8
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 60.7
+        },
+        {
+          "party": "Whig",
+          "pct": 39.3
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 60.7
+        },
+        {
+          "party": "Whig",
+          "pct": 39.3
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 63.3
+        },
+        {
+          "party": "Other",
+          "pct": 1.7
+        },
+        {
+          "party": "Whig",
+          "pct": 35.0
+        }
+      ]
+    ],
+    "houseYears": [
+      [
+        {
+          "party": "Democratic",
+          "pct": 65.9
+        },
+        {
+          "party": "Other",
+          "pct": 1.8
+        },
+        {
+          "party": "Whig",
+          "pct": 32.3
+        }
+      ],
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 62.3
+        },
+        {
+          "party": "Other",
+          "pct": 3.1
+        },
+        {
+          "party": "Whig",
+          "pct": 34.6
+        }
+      ],
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 62.3
+        },
+        {
+          "party": "Other",
+          "pct": 3.1
+        },
+        {
+          "party": "Whig",
+          "pct": 34.6
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 47.8
+        },
+        {
+          "party": "Other",
+          "pct": 1.7
+        },
+        {
+          "party": "Whig",
+          "pct": 50.4
+        }
+      ]
+    ]
+  },
+  {
+    "id": "taylor-1848",
+    "name": "Zachary Taylor<br>Millard Fillmore",
+    "year": 1848,
+    "band": "Whig",
+    "portrait": [
+      "images/presidents/Zachary_Taylor.jpg",
+      "images/presidents/Millard_Fillmore.jpg"
+    ],
+    "map": "images/maps/1848_election.svg",
+    "electoral": "163 / 290",
+    "popular": "47.3%",
+    "notes": [
+      "Gold Rush 1848",
+      "Wisconsin admitted as the 30th state 1848",
+      "California admitted as the 31st state 1850",
+      "Compromise of 1850",
+      "Taylor passes away 1850"
+    ],
+    "senateYears": [
+      [
+       
+        {
+          "party": "Democratic",
+          "pct": 63.3
+        },
+         {
+          "party": "Other",
+          "pct": 1.7
+        },
+        {
+          "party": "Whig",
+          "pct": 35.0
+        }
+      ],
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 56.5
+        },
+        {
+          "party": "Other",
+          "pct": 3.2
+        },
+        {
+          "party": "Whig",
+          "pct": 40.3
+        }
+      ],
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 56.5
+        },
+        {
+          "party": "Other",
+          "pct": 3.2
+        },
+        {
+          "party": "Whig",
+          "pct": 40.3
+        }
+      ],
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 58.1
+        },
+        {
+          "party": "Other",
+          "pct": 4.8
+        },
+        {
+          "party": "Whig",
+          "pct": 37.1
+        }
+      ]
+    ],
+    "houseYears": [
+      [
+        {
+          "party": "Democratic",
+          "pct": 47.8
+        },
+        {
+          "party": "Other",
+          "pct": 1.7
+        },
+        {
+          "party": "Whig",
+          "pct": 50.4
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 48.7
+        },
+        {
+          "party": "Other",
+          "pct": 4.7
+        },
+        {
+          "party": "Whig",
+          "pct": 46.6
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 48.7
+        },
+        {
+          "party": "Other",
+          "pct": 4.7
+        },
+        {
+          "party": "Whig",
+          "pct": 46.6
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 54.5
+        },
+         {
+          "party": "Other",
+          "pct": 9.0
+        },
+        {
+          "party": "Whig",
+          "pct": 36.5
+        }
+      ]
+    ]
+  },
+  {
+    "id": "pierce-1852",
+    "name": "Franklin Pierce",
+    "year": 1852,
+    "band": "Democratic",
+    "portrait": "images/presidents/Franklin_Pierce.jpg",
+    "map": "images/maps/1852_election.svg",
+    "electoral": "254 / 296",
+    "popular": "50.8%",
+    "notes": [
+      "Kansas-Nebraska Act 1854"
+    ],
+    "senateYears": [
+      [
+        {
+          "party": "Democratic",
+          "pct": 58.1
+        },
+        {
+          "party": "Other",
+          "pct": 4.8
+        },
+        {
+          "party": "Whig",
+          "pct": 37.1
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 61.3
+        },
+        {
+          "party": "Other",
+          "pct": 3.2
+        },
+        {
+          "party": "Whig",
+          "pct": 35.5
+        }
+      ],
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 61.3
+        },
+        {
+          "party": "Other",
+          "pct": 3.2
+        },
+        {
+          "party": "Whig",
+          "pct": 35.5
+        }
+      ],
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 62.9
+        },
+        {
+          "party": "Other",
+          "pct": 1.6
+        },
+        {
+          "party": "Opposition",
+          "pct": 33.9
+        },
+        {
+          "party": "Republican",
+          "pct": 1.6
+        }
+      ]
+    ],
+    "houseYears": [
+      [
+        {
+          "party": "Democratic",
+          "pct": 54.5
+        },
+        {
+          "party": "Other",
+          "pct": 9.0
+        },
+        {
+          "party": "Whig",
+          "pct": 36.5
+        }
+      ],
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 67.1
+        },
+        {
+          "party": "Other",
+          "pct": 2.6
+        },
+        {
+          "party": "Whig",
+          "pct": 30.3
+        }
+      ],
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 67.1
+        },
+        {
+          "party": "Other",
+          "pct": 2.6
+        },
+        {
+          "party": "Whig",
+          "pct": 30.3
+        }
+      ],
+      [
+       
+        {
+          "party": "Democratic",
+          "pct": 35.5
+        },
+         {
+          "party": "Other",
+          "pct": 21.8
+        },
+        {
+          "party": "Opposition",
+          "pct": 42.7
+        }
+      ]
+    ]
+  },
+  {
+    "id": "buchanan-1856",
+    "name": "James Buchanan",
+    "year": 1856,
+    "band": "Democratic",
+    "portrait": "images/presidents/James_Buchanan.jpg",
+    "map": "images/maps/1856_election.svg",
+    "electoral": "174 / 296",
+    "popular": "45.3%",
+    "notes": [
+      "Minnesota admitted as the 32nd state 1858",
+      "Oregon admitted as the 33rd state 1859"
+    ],
+    "senateYears": [
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 62.9
+        },
+        {
+          "party": "Other",
+          "pct": 1.6
+        },
+        {
+          "party": "Opposition",
+          "pct": 33.9
+        },
+        {
+          "party": "Republican",
+          "pct": 1.6
+        }
+      ],
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 62.1
+        },
+        {
+          "party": "Other",
+          "pct": 7.6
+        },
+        {
+          "party": "Republican",
+          "pct": 30.3
+        }
+      ],
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 62.1
+        },
+        {
+          "party": "Other",
+          "pct": 7.6
+        },
+        {
+          "party": "Republican",
+          "pct": 30.3
+        }
+      ],
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 57.6
+        },
+        {
+          "party": "Other",
+          "pct": 3.0
+        },
+        {
+          "party": "Republican",
+          "pct": 39.4
+        }
+      ]
+    ],
+    "houseYears": [
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 35.5
+        },
+        {
+          "party": "Other",
+          "pct": 21.8
+        },
+        {
+          "party": "Opposition",
+          "pct": 42.7
+        }
+      ],
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 55.0
+        },
+        {
+          "party": "Other",
+          "pct": 5.5
+        },
+        {
+          "party": "Republican",
+          "pct": 39.5
+        }
+      ],
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 55.0
+        },
+        {
+          "party": "Other",
+          "pct": 5.5
+        },
+        {
+          "party": "Republican",
+          "pct": 39.5
+        }
+      ],
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 42.6
+        },
+        {
+          "party": "Other",
+          "pct": 9.7
+        },
+        {
+          "party": "Republican",
+          "pct": 47.7
+        }
+      ]
+    ]
+  },
+  {
+    "id": "lincoln-1860",
+    "name": "Abraham Lincoln",
+    "year": 1860,
+    "band": "Republican",
+    "portrait": "images/presidents/Abraham_Lincoln.jpg",
+    "map": "images/maps/1860_election.svg",
+    "electoral": "180 / 303",
+    "popular": "39.7%",
+    "notes": [
+      "Kansas admitted as the 34th state 1861",
+      "West Virginia admitted as the 35th state 1863",
+      "Civil War 1861-1865"
+    ],
+    "senateYears": [
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 57.6
+        },
+        {
+          "party": "Other",
+          "pct": 3.0
+        },
+        {
+          "party": "Republican",
+          "pct": 39.4
+        }
+      ],
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 30.6
+        },
+        {
+          "party": "Other",
+          "pct": 6.1
+        },
+        {
+          "party": "Republican",
+          "pct": 63.3
+        }
+      ],
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 30.6
+        },
+        {
+          "party": "Other",
+          "pct": 6.1
+        },
+        {
+          "party": "Republican",
+          "pct": 63.3
+        }
+      ],
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 19.2
+        },
+        {
+          "party": "Other",
+          "pct": 17.3
+        },
+        {
+          "party": "Republican",
+          "pct": 63.5
+        }
+      ]
+    ],
+    "houseYears": [
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 42.6
+        },
+        {
+          "party": "Other",
+          "pct": 9.7
+        },
+        {
+          "party": "Republican",
+          "pct": 47.7
+        }
+      ],
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 23.9
+        },
+        {
+          "party": "Other",
+          "pct": 15.9
+        },
+        {
+          "party": "Republican",
+          "pct": 60.2
+        }
+      ],
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 23.9
+        },
+        {
+          "party": "Other",
+          "pct": 15.9
+        },
+        {
+          "party": "Republican",
+          "pct": 60.2
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 43.7
+        },
+        {
+          "party": "Republican",
+          "pct": 56.3
+        }
+      ]
+    ]
+  },
+  {
+    "id": "lincoln-1864",
+    "name": "Abraham Lincoln<br>Andrew Johnson",
+    "year": 1864,
+    "band": "Republican",
+    "portrait": [
+      "images/presidents/Abraham_Lincoln.jpg",
+      "images/presidents/Andrew_Johnson.jpg"
+    ],
+    "map": "images/maps/1864_election.svg",
+    "electoral": "212 / 234",
+    "popular": "55.0%",
+    "notes": [
+      "Nevada admitted as the 36th state 1864",
+      "Lincoln assassinated 1865",
+      "13th amendment enacted (abolition of slavery) 1865",
+      "Nebraska admitted as the 37th state 1867"
+    ],
+    "senateYears": [
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 19.2
+        },
+        {
+          "party": "Other",
+          "pct": 17.3
+        },
+        {
+          "party": "Republican",
+          "pct": 63.5
+        }
+      ],
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 20.4
+        },
+        {
+          "party": "Other",
+          "pct": 7.4
+        },
+        {
+          "party": "Republican",
+          "pct": 72.2
+        }
+      ],
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 20.4
+        },
+        {
+          "party": "Other",
+          "pct": 7.4
+        },
+        {
+          "party": "Republican",
+          "pct": 72.2
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 13.6
+        },
+        {
+          "party": "Republican",
+          "pct": 86.4
+        }
+      ]
+    ],
+    "houseYears": [
+      [
+        {
+          "party": "Democratic",
+          "pct": 43.7
+        },
+        {
+          "party": "Republican",
+          "pct": 56.3
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 24.1
+        },
+        {
+          "party": "Republican",
+          "pct": 75.9
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 24.1
+        },
+        {
+          "party": "Republican",
+          "pct": 75.9
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 25.5
+        },
+        {
+          "party": "Republican",
+          "pct": 74.5
+        }
+      ]
+    ]
+  },
+  {
+    "id": "grant-1868",
+    "name": "Ulysses S. Grant",
+    "year": 1868,
+    "band": "Republican",
+    "portrait": "images/presidents/Ulysses_S_Grant.jpg",
+    "map": "images/maps/1868_election.svg",
+    "electoral": "214 / 294",
+    "popular": "52.7%",
+    "notes": [
+      "14th amendment enacted (citizenship, civil rights, apportionment of Representatives, participants in rebellion, validity of public debt, power of enforcement) 1868",
+      "15th amendment enacted (prohibition of denying a citizen the right to vote base on that citizen\u2019s race, color, or previous condition of servitude) 1870"
+    ],
+    "senateYears": [
+      [
+        {
+          "party": "Democratic",
+          "pct": 13.6
+        },
+        {
+          "party": "Republican",
+          "pct": 86.4
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 16.2
+        },
+        {
+          "party": "Republican",
+          "pct": 83.8
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 16.2
+        },
+        {
+          "party": "Republican",
+          "pct": 83.8
+        }
+      ],
+      [
+        {
+          "party": "Other",
+          "pct": 1.4
+        },
+        {
+          "party": "Democratic",
+          "pct": 23.0
+        },
+        {
+          "party": "Republican",
+          "pct": 75.7
+        }
+      ]
+    ],
+    "houseYears": [
+      [
+        {
+          "party": "Democratic",
+          "pct": 25.5
+        },
+        {
+          "party": "Republican",
+          "pct": 74.5
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 30.0
+        },
+        {
+          "party": "Republican",
+          "pct": 70.0
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 30.0
+        },
+        {
+          "party": "Republican",
+          "pct": 70.0
+        }
+      ],
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 42.8
+        },
+        {
+          "party": "Other",
+          "pct": 1.2
+        },
+        {
+          "party": "Republican",
+          "pct": 56.0
+        }
+      ]
+    ]
+  },
+  {
+    "id": "grant-1872",
+    "name": "Ulysses S. Grant",
+    "year": 1872,
+    "band": "Republican",
+    "portrait": "images/presidents/Ulysses_S_Grant.jpg",
+    "map": "images/maps/1872_election.svg",
+    "electoral": "286 / 352",
+    "popular": "55.6%",
+    "notes": [],
+    "senateYears": [
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 23.0
+        },
+        {
+          "party": "Other",
+          "pct": 1.4
+        },
+        {
+          "party": "Republican",
+          "pct": 75.7
+        }
+      ],
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 26.0
+        },
+        {
+          "party": "Other",
+          "pct": 9.6
+        },
+        {
+          "party": "Republican",
+          "pct": 64.4
+        }
+      ],
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 26.0
+        },
+        {
+          "party": "Other",
+          "pct": 9.6
+        },
+        {
+          "party": "Republican",
+          "pct": 64.4
+        }
+      ],
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 37.3
+        },
+        {
+          "party": "Other",
+          "pct": 1.3
+        },
+        {
+          "party": "Republican",
+          "pct": 61.3
+        }
+      ]
+    ],
+    "houseYears": [
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 42.8
+        },
+        {
+          "party": "Other",
+          "pct": 1.2
+        },
+        {
+          "party": "Republican",
+          "pct": 56.0
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 30.2
+        },
+        {
+          "party": "Republican",
+          "pct": 69.8
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 30.2
+        },
+        {
+          "party": "Republican",
+          "pct": 69.8
+        }
+      ],
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 62.2
+        },
+        {
+          "party": "Other",
+          "pct": 1.0
+        },
+        {
+          "party": "Republican",
+          "pct": 36.8
+        }
+      ]
+    ]
+  },
+  {
+    "id": "hayes-1876",
+    "name": "Rutherford B. Hayes",
+    "year": 1876,
+    "band": "Republican",
+    "portrait": "images/presidents/Rutherford_B_Hayes.jpg",
+    "map": "images/maps/1876_election.svg",
+    "electoral": "185 / 369",
+    "popular": "47.9%",
+    "notes": [
+      "Colorado admitted as the 38th state 1876",
+      "Compromise of 1877",
+      "End of Reconstruction 1877"
+    ],
+    "senateYears": [
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 37.3
+        },
+        {
+          "party": "Other",
+          "pct": 1.3
+        },
+        {
+          "party": "Republican",
+          "pct": 61.3
+        }
+      ],
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 46.1
+        },
+        {
+          "party": "Other",
+          "pct": 1.3
+        },
+        {
+          "party": "Republican",
+          "pct": 52.6
+        }
+      ],
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 46.1
+        },
+        {
+          "party": "Other",
+          "pct": 1.3
+        },
+        {
+          "party": "Republican",
+          "pct": 52.6
+        }
+      ],
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 55.3
+        },
+        {
+          "party": "Other",
+          "pct": 1.3
+        },
+        {
+          "party": "Republican",
+          "pct": 43.4
+        }
+      ]
+    ],
+    "houseYears": [
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 62.2
+        },
+        {
+          "party": "Other",
+          "pct": 1.0
+        },
+        {
+          "party": "Republican",
+          "pct": 36.8
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 53.2
+        },
+        {
+          "party": "Republican",
+          "pct": 46.8
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 53.2
+        },
+        {
+          "party": "Republican",
+          "pct": 46.8
+        }
+      ],
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 51.4
+        },
+        {
+          "party": "Other",
+          "pct": 4.8
+        },
+        {
+          "party": "Republican",
+          "pct": 43.8
+        }
+      ]
+    ]
+  },
+  {
+    "id": "garfield-1880",
+    "name": "James A. Garfield<br>Chester A. Arthur",
+    "year": 1880,
+    "band": "Republican",
+    "portrait": [
+      "images/presidents/James_A_Garfield.jpg",
+      "images/presidents/Chester_A_Arthur.jpg"
+    ],
+    "map": "images/maps/1880_election.svg",
+    "electoral": "214 / 369",
+    "popular": "48.3%",
+    "notes": [
+      "Garfield Assassinated 1876"
+    ],
+    "senateYears": [
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 55.3
+        },
+        {
+          "party": "Other",
+          "pct": 1.3
+        },
+        {
+          "party": "Republican",
+          "pct": 43.4
+        }
+      ],
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 48.7
+        },
+        {
+          "party": "Other",
+          "pct": 2.6
+        },
+        {
+          "party": "Republican",
+          "pct": 48.7
+        }
+      ],
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 48.7
+        },
+        {
+          "party": "Other",
+          "pct": 2.6
+        },
+        {
+          "party": "Republican",
+          "pct": 48.7
+        }
+      ],
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 47.4
+        },
+        {
+          "party": "Other",
+          "pct": 2.6
+        },
+        {
+          "party": "Republican",
+          "pct": 50.0
+        }
+      ]
+    ],
+    "houseYears": [
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 51.4
+        },
+        {
+          "party": "Other",
+          "pct": 4.8
+        },
+        {
+          "party": "Republican",
+          "pct": 43.8
+        }
+      ],
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 44.4
+        },
+        {
+          "party": "Other",
+          "pct": 3.8
+        },
+        {
+          "party": "Republican",
+          "pct": 51.9
+        }
+      ],
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 44.4
+        },
+        {
+          "party": "Other",
+          "pct": 3.8
+        },
+        {
+          "party": "Republican",
+          "pct": 51.9
+        }
+      ],
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 61.5
+        },
+        {
+          "party": "Other",
+          "pct": 1.8
+        },
+        {
+          "party": "Republican",
+          "pct": 36.6
+        }
+      ]
+    ]
+  },
+  {
+    "id": "cleveland-1884",
+    "name": "Grover Cleveland",
+    "year": 1884,
+    "band": "Democratic",
+    "portrait": "images/presidents/Grover_Cleveland.jpg",
+    "map": "images/maps/1884_election.svg",
+    "electoral": "219 / 401",
+    "popular": "48.8%",
+    "notes": [],
+    "senateYears": [
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 47.4
+        },
+        {
+          "party": "Other",
+          "pct": 2.6
+        },
+        {
+          "party": "Republican",
+          "pct": 50.0
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 44.7
+        },
+        {
+          "party": "Republican",
+          "pct": 55.3
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 44.7
+        },
+        {
+          "party": "Republican",
+          "pct": 55.3
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 48.7
+        },
+        {
+          "party": "Republican",
+          "pct": 51.3
+        }
+      ]
+    ],
+    "houseYears": [
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 61.5
+        },
+        {
+          "party": "Other",
+          "pct": 1.8
+        },
+        {
+          "party": "Republican",
+          "pct": 36.6
+        }
+      ],
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 56.2
+        },
+        {
+          "party": "Other",
+          "pct": 0.6
+        },
+        {
+          "party": "Republican",
+          "pct": 43.2
+        }
+      ],
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 56.2
+        },
+        {
+          "party": "Other",
+          "pct": 0.6
+        },
+        {
+          "party": "Republican",
+          "pct": 43.2
+        }
+      ],
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 52.3
+        },
+        {
+          "party": "Other",
+          "pct": 1.2
+        },
+        {
+          "party": "Republican",
+          "pct": 46.5
+        }
+      ]
+    ]
+  },
+  {
+    "id": "harrison-1888",
+    "name": "Benjamin Harrison",
+    "year": 1888,
+    "band": "Republican",
+    "portrait": "images/presidents/Benjamin_Harrison.jpg",
+    "map": "images/maps/1888_election.svg",
+    "electoral": "233 / 401",
+    "popular": "47.8%",
+    "notes": [
+      "North Dakota admitted as the 39th state 1889",
+      "South Dakota admitted as the 40th state 1889",
+      "Montana admitted as the 41st state 1889",
+      "Washington admitted as the 42nd state 1889",
+      "Idaho admitted as the 43rd state 1890",
+      "Wyoming admitted as the 44th state 1890"
+    ],
+    "senateYears": [
+      [
+        {
+          "party": "Democratic",
+          "pct": 48.7
+        },
+        {
+          "party": "Republican",
+          "pct": 51.3
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 42.0
+        },
+        {
+          "party": "Republican",
+          "pct": 58.0
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 42.0
+        },
+        {
+          "party": "Republican",
+          "pct": 58.0
+        }
+      ],
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 44.3
+        },
+        {
+          "party": "Other",
+          "pct": 2.3
+        },
+        {
+          "party": "Republican",
+          "pct": 53.4
+        }
+      ]
+    ],
+    "houseYears": [
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 52.3
+        },
+        {
+          "party": "Other",
+          "pct": 1.2
+        },
+        {
+          "party": "Republican",
+          "pct": 46.5
+        }
+      ],
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 47.3
+        },
+        {
+          "party": "Other",
+          "pct": 0.3
+        },
+        {
+          "party": "Republican",
+          "pct": 52.4
+        }
+      ],
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 47.3
+        },
+        {
+          "party": "Other",
+          "pct": 0.3
+        },
+        {
+          "party": "Republican",
+          "pct": 52.4
+        }
+      ],
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 69.4
+        },
+        {
+          "party": "Other",
+          "pct": 4.2
+        },
+        {
+          "party": "Republican",
+          "pct": 26.4
+        }
+      ]
+    ]
+  },
+  {
+    "id": "cleveland-1892",
+    "name": "Grover Cleveland",
+    "year": 1892,
+    "band": "Democratic",
+    "portrait": "images/presidents/Grover_Cleveland.jpg",
+    "map": "images/maps/1892_election.svg",
+    "electoral": "277 / 444",
+    "popular": "46.0%",
+    "notes": [],
+    "senateYears": [
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 44.3
+        },
+        {
+          "party": "Other",
+          "pct": 2.3
+        },
+        {
+          "party": "Republican",
+          "pct": 53.4
+        }
+      ],
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 50.0
+        },
+        {
+          "party": "Other",
+          "pct": 4.5
+        },
+        {
+          "party": "Republican",
+          "pct": 45.5
+        }
+      ],
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 50.0
+        },
+        {
+          "party": "Other",
+          "pct": 4.5
+        },
+        {
+          "party": "Republican",
+          "pct": 45.5
+        }
+      ],
+      [
+       
+        {
+          "party": "Democratic",
+          "pct": 44.4
+        },
+         {
+          "party": "Other",
+          "pct": 6.7
+        },
+        {
+          "party": "Republican",
+          "pct": 48.9
+        }
+      ]
+    ],
+    "houseYears": [
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 69.4
+        },
+        {
+          "party": "Other",
+          "pct": 4.2
+        },
+        {
+          "party": "Republican",
+          "pct": 26.4
+        }
+      ],
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 61.8
+        },
+        {
+          "party": "Other",
+          "pct": 2.8
+        },
+        {
+          "party": "Republican",
+          "pct": 35.4
+        }
+      ],
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 61.8
+        },
+        {
+          "party": "Other",
+          "pct": 2.8
+        },
+        {
+          "party": "Republican",
+          "pct": 35.4
+        }
+      ],
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 29.1
+        },
+        {
+          "party": "Other",
+          "pct": 2.0
+        },
+        {
+          "party": "Republican",
+          "pct": 68.9
+        }
+      ]
+    ]
+  },
+  {
+    "id": "mckinley-1896",
+    "name": "William McKinley",
+    "year": 1896,
+    "band": "Republican",
+    "portrait": "images/presidents/William_Mckinley.jpg",
+    "map": "images/maps/1896_election.svg",
+    "electoral": "271 / 447",
+    "popular": "51.0%",
+    "notes": [
+      "Utah admitted as the 45th state 1896",
+      "Spanish-American War 1898"
+    ],
+    "senateYears": [
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 44.4
+        },
+        {
+          "party": "Other",
+          "pct": 6.7
+        },
+        {
+          "party": "Republican",
+          "pct": 48.9
+        }
+      ],
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 37.8
+        },
+        {
+          "party": "Other",
+          "pct": 13.3
+        },
+        {
+          "party": "Republican",
+          "pct": 48.9
+        }
+      ],
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 37.8
+        },
+        {
+          "party": "Other",
+          "pct": 13.3
+        },
+        {
+          "party": "Republican",
+          "pct": 48.9
+        }
+      ],
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 29.2
+        },
+        {
+          "party": "Other",
+          "pct": 11.2
+        },
+        {
+          "party": "Republican",
+          "pct": 59.6
+        }
+      ]
+    ],
+    "houseYears": [
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 29.1
+        },
+        {
+          "party": "Other",
+          "pct": 2.0
+        },
+        {
+          "party": "Republican",
+          "pct": 68.9
+        }
+      ],
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 37.6
+        },
+        {
+          "party": "Other",
+          "pct": 4.5
+        },
+        {
+          "party": "Republican",
+          "pct": 57.9
+        }
+      ],
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 37.6
+        },
+        {
+          "party": "Other",
+          "pct": 4.5
+        },
+        {
+          "party": "Republican",
+          "pct": 57.9
+        }
+      ],
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 45.7
+        },
+        {
+          "party": "Other",
+          "pct": 2.5
+        },
+        {
+          "party": "Republican",
+          "pct": 51.8
+        }
+      ]
+    ]
+  },
+  {
+    "id": "mckinley-1900",
+    "name": "William McKinley<br>Theodore Roosevelt",
+    "year": 1900,
+    "band": "Republican",
+    "portrait": [
+      "images/presidents/William_Mckinley.jpg",
+      "images/presidents/Theodore_Roosevelt.jpg"
+    ],
+    "map": "images/maps/1900_election.svg",
+    "electoral": "292 / 447",
+    "popular": "51.6%",
+    "notes": [
+      "McKinley assassinated 1901"
+    ],
+    "senateYears": [
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 29.2
+        },
+        {
+          "party": "Other",
+          "pct": 11.2
+        },
+        {
+          "party": "Republican",
+          "pct": 59.6
+        }
+      ],
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 35.6
+        },
+        {
+          "party": "Other",
+          "pct": 2.2
+        },
+        {
+          "party": "Republican",
+          "pct": 62.2
+        }
+      ],
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 35.6
+        },
+        {
+          "party": "Other",
+          "pct": 2.2
+        },
+        {
+          "party": "Republican",
+          "pct": 62.2
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 36.7
+        },
+        {
+          "party": "Republican",
+          "pct": 63.3
+        }
+      ]
+    ],
+    "houseYears": [
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 45.7
+        },
+        {
+          "party": "Other",
+          "pct": 2.5
+        },
+        {
+          "party": "Republican",
+          "pct": 51.8
+        }
+      ],
+      [
+       
+        {
+          "party": "Democratic",
+          "pct": 43.0
+        },
+         {
+          "party": "Other",
+          "pct": 1.4
+        },
+        {
+          "party": "Republican",
+          "pct": 55.6
+        }
+      ],
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 43.0
+        },
+        {
+          "party": "Other",
+          "pct": 1.4
+        },
+        {
+          "party": "Republican",
+          "pct": 55.6
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 46.2
+        },
+        {
+          "party": "Republican",
+          "pct": 53.8
+        }
+      ]
+    ]
+  },
+  {
+    "id": "roosevelt-1904",
+    "name": "Theodore Roosevelt",
+    "year": 1904,
+    "band": "Republican",
+    "portrait": "images/presidents/Theodore_Roosevelt.jpg",
+    "map": "images/maps/1904_election.svg",
+    "electoral": "336 / 476",
+    "popular": "56.4%",
+    "notes": [
+      "Oklahoma admitted as the 46th state 1907"
+    ],
+    "senateYears": [
+      [
+        {
+          "party": "Democratic",
+          "pct": 36.7
+        },
+        {
+          "party": "Republican",
+          "pct": 63.3
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 35.6
+        },
+        {
+          "party": "Republican",
+          "pct": 64.4
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 35.6
+        },
+        {
+          "party": "Republican",
+          "pct": 64.4
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 33.7
+        },
+        {
+          "party": "Republican",
+          "pct": 66.3
+        }
+      ]
+    ],
+    "houseYears": [
+      [
+        {
+          "party": "Democratic",
+          "pct": 46.2
+        },
+        {
+          "party": "Republican",
+          "pct": 53.8
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 35.2
+        },
+        {
+          "party": "Republican",
+          "pct": 64.8
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 35.2
+        },
+        {
+          "party": "Republican",
+          "pct": 64.8
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 42.5
+        },
+        {
+          "party": "Republican",
+          "pct": 57.5
+        }
+      ]
+    ]
+  },
+  {
+    "id": "taft-1908",
+    "name": "William Howard Taft",
+    "year": 1908,
+    "band": "Republican",
+    "portrait": "images/presidents/William_Howard_Taft.jpg",
+    "map": "images/maps/1908_election.svg",
+    "electoral": "321 / 483",
+    "popular": "51.6%",
+    "notes": [],
+    "senateYears": [
+      [
+        {
+          "party": "Democratic",
+          "pct": 33.7
+        },
+        {
+          "party": "Republican",
+          "pct": 66.3
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 34.8
+        },
+        {
+          "party": "Republican",
+          "pct": 65.2
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 34.8
+        },
+        {
+          "party": "Republican",
+          "pct": 65.2
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 45.8
+        },
+        {
+          "party": "Republican",
+          "pct": 54.2
+        }
+      ]
+    ],
+    "houseYears": [
+      [
+        {
+          "party": "Democratic",
+          "pct": 42.5
+        },
+        {
+          "party": "Republican",
+          "pct": 57.5
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 44.0
+        },
+        {
+          "party": "Republican",
+          "pct": 56.0
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 44.0
+        },
+        {
+          "party": "Republican",
+          "pct": 56.0
+        }
+      ],
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 58.3
+        },
+        {
+          "party": "Other",
+          "pct": 0.3
+        },
+        {
+          "party": "Republican",
+          "pct": 41.4
+        }
+      ]
+    ]
+  },
+  {
+    "id": "wilson-1912",
+    "name": "Woodrow Wilson",
+    "year": 1912,
+    "band": "Democratic",
+    "portrait": "images/presidents/Woodrow_Wilson.jpg",
+    "map": "images/maps/1912_election.svg",
+    "electoral": "435 / 531",
+    "popular": "41.8%",
+    "notes": [
+      "New Mexico admitted as the 47th state 1912",
+      "Arizona admitted as the 48th state 1912",
+      "16th amendment enacted (allows Congress to levy an income tax) 1913",
+      "17th amendment enacted (Senators will be voted by the people of each state and not the state legislature) 1913",
+      "Federal Reserve Act 1913",
+      "Federal Trade Commission established 1914",
+      "World War I begins 1914"
+    ],
+    "senateYears": [
+      [
+        {
+          "party": "Democratic",
+          "pct": 45.8
+        },
+        {
+          "party": "Republican",
+          "pct": 54.2
+        }
+      ],
+      [
+       
+        {
+          "party": "Democratic",
+          "pct": 53.1
+        },
+         {
+          "party": "Other",
+          "pct": 1.0
+        },
+        {
+          "party": "Republican",
+          "pct": 45.8
+        }
+      ],
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 53.1
+        },
+        {
+          "party": "Other",
+          "pct": 1.0
+        },
+        {
+          "party": "Republican",
+          "pct": 45.8
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 58.3
+        },
+        {
+          "party": "Republican",
+          "pct": 41.7
+        }
+      ]
+    ],
+    "houseYears": [
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 58.3
+        },
+        {
+          "party": "Other",
+          "pct": 0.3
+        },
+        {
+          "party": "Republican",
+          "pct": 41.4
+        }
+      ],
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 66.7
+        },
+        {
+          "party": "Other",
+          "pct": 4.1
+        },
+        {
+          "party": "Republican",
+          "pct": 29.2
+        }
+      ],
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 66.7
+        },
+        {
+          "party": "Other",
+          "pct": 4.1
+        },
+        {
+          "party": "Republican",
+          "pct": 29.2
+        }
+      ],
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 53.5
+        },
+        {
+          "party": "Other",
+          "pct": 1.9
+        },
+        {
+          "party": "Republican",
+          "pct": 44.7
+        }
+      ]
+    ]
+  },
+  {
+    "id": "wilson-1916",
+    "name": "Woodrow Wilson",
+    "year": 1916,
+    "band": "Democratic",
+    "portrait": "images/presidents/Woodrow_Wilson.jpg",
+    "map": "images/maps/1916_election.svg",
+    "electoral": "277 / 531",
+    "popular": "49.2%",
+    "notes": [
+      "U.S. enters World War I 1917",
+      "18th amendment enacted (prohibition) 1919",
+      "World War I ends 1919"
+    ],
+    "senateYears": [
+      [
+        {
+          "party": "Democratic",
+          "pct": 58.3
+        },
+        {
+          "party": "Republican",
+          "pct": 41.7
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 56.2
+        },
+        {
+          "party": "Republican",
+          "pct": 43.8
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 56.2
+        },
+        {
+          "party": "Republican",
+          "pct": 43.8
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 49.0
+        },
+        {
+          "party": "Republican",
+          "pct": 51.0
+        }
+      ]
+    ],
+    "houseYears": [
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 53.5
+        },
+        {
+          "party": "Other",
+          "pct": 1.9
+        },
+        {
+          "party": "Republican",
+          "pct": 44.7
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 49.3
+        },
+        {
+          "party": "Republican",
+          "pct": 50.7
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 49.3
+        },
+        {
+          "party": "Republican",
+          "pct": 50.7
+        }
+      ],
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 43.9
+        },
+        {
+          "party": "Other",
+          "pct": 1.6
+        },
+        {
+          "party": "Republican",
+          "pct": 54.5
+        }
+      ]
+    ]
+  },
+  {
+    "id": "harding-1920",
+    "name": "Warren G. Harding<br>Calvin Coolidge",
+    "year": 1920,
+    "band": "Republican",
+    "portrait": [
+      "images/presidents/Warren_G_Harding.jpg",
+      "images/presidents/Calvin_Coolidge.jpg"
+    ],
+    "map": "images/maps/1920_election.svg",
+    "electoral": "404 / 531",
+    "popular": "60.4%",
+    "notes": [
+      "19th amendment enacted (women\u2019s sufferage) 1920",
+      "Harding passes away 1923"
+    ],
+    "senateYears": [
+      [
+        {
+          "party": "Democratic",
+          "pct": 49.0
+        },
+        {
+          "party": "Republican",
+          "pct": 51.0
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 38.5
+        },
+        {
+          "party": "Republican",
+          "pct": 61.5
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 38.5
+        },
+        {
+          "party": "Republican",
+          "pct": 61.5
+        }
+      ],
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 43.8
+        },
+        {
+          "party": "Other",
+          "pct": 1.0
+        },
+        {
+          "party": "Republican",
+          "pct": 55.2
+        }
+      ]
+    ],
+    "houseYears": [
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 43.9
+        },
+        {
+          "party": "Other",
+          "pct": 1.6
+        },
+        {
+          "party": "Republican",
+          "pct": 54.5
+        }
+      ],
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 30.5
+        },
+        {
+          "party": "Other",
+          "pct": 0.2
+        },
+        {
+          "party": "Republican",
+          "pct": 69.3
+        }
+      ],
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 30.5
+        },
+        {
+          "party": "Other",
+          "pct": 0.2
+        },
+        {
+          "party": "Republican",
+          "pct": 69.3
+        }
+      ],
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 47.6
+        },
+        {
+          "party": "Other",
+          "pct": 0.7
+        },
+        {
+          "party": "Republican",
+          "pct": 51.7
+        }
+      ]
+    ]
+  },
+  {
+    "id": "coolidge-1924",
+    "name": "Calvin Coolidge",
+    "year": 1924,
+    "band": "Republican",
+    "portrait": "images/presidents/Calvin_Coolidge.jpg",
+    "map": "images/maps/1924_election.svg",
+    "electoral": "382 / 531",
+    "popular": "54.0%",
+    "notes": [],
+    "senateYears": [
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 43.8
+        },
+        {
+          "party": "Other",
+          "pct": 1.0
+        },
+        {
+          "party": "Republican",
+          "pct": 55.2
+        }
+      ],
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 42.7
+        },
+        {
+          "party": "Other",
+          "pct": 1.0
+        },
+        {
+          "party": "Republican",
+          "pct": 56.2
+        }
+      ],
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 42.7
+        },
+        {
+          "party": "Other",
+          "pct": 1.0
+        },
+        {
+          "party": "Republican",
+          "pct": 56.2
+        }
+      ],
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 48.4
+        },
+        {
+          "party": "Other",
+          "pct": 1.1
+        },
+        {
+          "party": "Republican",
+          "pct": 50.5
+        }
+      ]
+    ],
+    "houseYears": [
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 47.6
+        },
+        {
+          "party": "Other",
+          "pct": 0.7
+        },
+        {
+          "party": "Republican",
+          "pct": 51.7
+        }
+      ],
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 42.1
+        },
+        {
+          "party": "Other",
+          "pct": 1.1
+        },
+        {
+          "party": "Republican",
+          "pct": 56.8
+        }
+      ],
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 42.1
+        },
+        {
+          "party": "Other",
+          "pct": 1.1
+        },
+        {
+          "party": "Republican",
+          "pct": 56.8
+        }
+      ],
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 44.8
+        },
+        {
+          "party": "Other",
+          "pct": 0.7
+        },
+        {
+          "party": "Republican",
+          "pct": 54.5
+        }
+      ]
+    ]
+  },
+  {
+    "id": "hoover-1928",
+    "name": "Herbert Hoover",
+    "year": 1928,
+    "band": "Republican",
+    "portrait": "images/presidents/Herbert_Hoover.jpg",
+    "map": "images/maps/1928_election.svg",
+    "electoral": "444 / 531",
+    "popular": "58.1%",
+    "notes": [
+      "Great Depression 1929"
+    ],
+    "senateYears": [
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 48.4
+        },
+        {
+          "party": "Other",
+          "pct": 1.1
+        },
+        {
+          "party": "Republican",
+          "pct": 50.5
+        }
+      ],
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 40.6
+        },
+        {
+          "party": "Other",
+          "pct": 1.0
+        },
+        {
+          "party": "Republican",
+          "pct": 58.3
+        }
+      ],
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 40.6
+        },
+        {
+          "party": "Other",
+          "pct": 1.0
+        },
+        {
+          "party": "Republican",
+          "pct": 58.3
+        }
+      ],
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 49.0
+        },
+        {
+          "party": "Other",
+          "pct": 1.0
+        },
+        {
+          "party": "Republican",
+          "pct": 50.0
+        }
+      ]
+    ],
+    "houseYears": [
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 44.8
+        },
+        {
+          "party": "Other",
+          "pct": 0.7
+        },
+        {
+          "party": "Republican",
+          "pct": 54.5
+        }
+      ],
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 37.8
+        },
+        {
+          "party": "Other",
+          "pct": 0.2
+        },
+        {
+          "party": "Republican",
+          "pct": 61.9
+        }
+      ],
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 37.8
+        },
+        {
+          "party": "Other",
+          "pct": 0.2
+        },
+        {
+          "party": "Republican",
+          "pct": 61.9
+        }
+      ],
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 49.9
+        },
+        {
+          "party": "Other",
+          "pct": 0.2
+        },
+        {
+          "party": "Republican",
+          "pct": 49.9
+        }
+      ]
+    ]
+  },
+  {
+    "id": "roosevelt-1932",
+    "name": "Franklin D. Roosevelt",
+    "year": 1932,
+    "band": "Democratic",
+    "portrait": "images/presidents/Franklin_D_Roosevelt.jpg",
+    "map": "images/maps/1932_election.svg",
+    "electoral": "472 / 531",
+    "popular": "57.4%",
+    "notes": [
+      "Hattie Caraway becomes the first woman elected to the United States Senate 1932",
+      "New Deal 1933",
+      "20th amenmend enacted (establishes the beginning and ending of the terms of the elected federal officials) 1933",
+      "21st amendment enacted (repealing the 8th amendment) 1933"
+    ],
+    "senateYears": [
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 49.0
+        },
+        {
+          "party": "Other",
+          "pct": 1.0
+        },
+        {
+          "party": "Republican",
+          "pct": 50.0
+        }
+      ],
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 61.5
+        },
+        {
+          "party": "Other",
+          "pct": 1.0
+        },
+        {
+          "party": "Republican",
+          "pct": 37.5
+        }
+      ],
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 61.5
+        },
+        {
+          "party": "Other",
+          "pct": 1.0
+        },
+        {
+          "party": "Republican",
+          "pct": 37.5
+        }
+      ],
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 71.9
+        },
+        {
+          "party": "Other",
+          "pct": 2.1
+        },
+        {
+          "party": "Republican",
+          "pct": 26.0
+        }
+      ]
+    ],
+    "houseYears": [
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 49.9
+        },
+        {
+          "party": "Other",
+          "pct": 0.2
+        },
+        {
+          "party": "Republican",
+          "pct": 49.9
+        }
+      ],
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 72.0
+        },
+        {
+          "party": "Other",
+          "pct": 1.1
+        },
+        {
+          "party": "Republican",
+          "pct": 26.9
+        }
+      ],
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 72.0
+        },
+        {
+          "party": "Other",
+          "pct": 1.1
+        },
+        {
+          "party": "Republican",
+          "pct": 26.9
+        }
+      ],
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 74.0
+        },
+        {
+          "party": "Other",
+          "pct": 2.3
+        },
+        {
+          "party": "Republican",
+          "pct": 23.7
+        }
+      ]
+    ]
+  },
+  {
+    "id": "roosevelt-1936",
+    "name": "Franklin D. Roosevelt",
+    "year": 1936,
+    "band": "Democratic",
+    "portrait": "images/presidents/Franklin_D_Roosevelt.jpg",
+    "map": "images/maps/1936_election.svg",
+    "electoral": "523 / 531",
+    "popular": "60.8%",
+    "notes": [
+      "World War II starts 1941"
+    ],
+    "senateYears": [
+      [  
+        {
+          "party": "Democratic",
+          "pct": 71.9
+        },
+        {
+          "party": "Other",
+          "pct": 2.1
+        },
+        {
+          "party": "Republican",
+          "pct": 26.0
+        }
+      ],
+      [ 
+        {
+          "party": "Democratic",
+          "pct": 79.2
+        },
+        {
+          "party": "Other",
+          "pct": 4.2
+        },
+        {
+          "party": "Republican",
+          "pct": 16.7
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 79.2
+        },
+        {
+          "party": "Other",
+          "pct": 4.2
+        },
+        {
+          "party": "Republican",
+          "pct": 16.7
+        }
+      ],
+      [ 
+        {
+          "party": "Democratic",
+          "pct": 71.9
+        },
+        {
+          "party": "Other",
+          "pct": 4.2
+        },
+        {
+          "party": "Republican",
+          "pct": 24.0
+        }
+      ]
+    ],
+    "houseYears": [
+      [ 
+        {
+          "party": "Democratic",
+          "pct": 74.0
+        },
+        {
+          "party": "Other",
+          "pct": 2.3
+        },
+        {
+          "party": "Republican",
+          "pct": 23.7
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 76.6
+        },
+        {
+          "party": "Other",
+          "pct": 3.0
+        },
+        {
+          "party": "Republican",
+          "pct": 20.5
+        }
+      ],
+      [ 
+        {
+          "party": "Democratic",
+          "pct": 76.6
+        },
+        {
+          "party": "Other",
+          "pct": 3.0
+        },
+        {
+          "party": "Republican",
+          "pct": 20.5
+        }
+      ],
+      [ 
+        {
+          "party": "Democratic",
+          "pct": 60.0
+        },
+        {
+          "party": "Other",
+          "pct": 1.1
+        },
+        {
+          "party": "Republican",
+          "pct": 38.9
+        }
+      ]
+    ]
+  },
+  {
+    "id": "roosevelt-1940",
+    "name": "Franklin D. Roosevelt",
+    "year": 1940,
+    "band": "Democratic",
+    "portrait": "images/presidents/Franklin_D_Roosevelt.jpg",
+    "map": "images/maps/1940_election.svg",
+    "electoral": "449 / 531",
+    "popular": "54.7%",
+    "notes": [
+      "Attack on Pearl Harbor 1941"
+    ],
+    "senateYears": [
+      [ 
+        {
+          "party": "Democratic",
+          "pct": 71.9
+        },
+        {
+          "party": "Other",
+          "pct": 4.2
+        },
+        {
+          "party": "Republican",
+          "pct": 24.0
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 68.8
+        },
+         {
+          "party": "Other",
+          "pct": 2.1
+        },
+        {
+          "party": "Republican",
+          "pct": 29.2
+        }
+      ],
+      [  
+        {
+          "party": "Democratic",
+          "pct": 68.8
+        },
+        {
+          "party": "Other",
+          "pct": 2.1
+        },
+        {
+          "party": "Republican",
+          "pct": 29.2
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 59.4
+        },
+        {
+          "party": "Other",
+          "pct": 1.0
+        },
+        {
+          "party": "Republican",
+          "pct": 39.6
+        }
+      ]
+    ],
+    "houseYears": [
+      [
+        {
+          "party": "Democratic",
+          "pct": 60.0
+        },
+        {
+          "party": "Other",
+          "pct": 1.1
+        },
+        {
+          "party": "Republican",
+          "pct": 38.9
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 61.6
+        },
+        {
+          "party": "Other",
+          "pct": 1.1
+        },
+        {
+          "party": "Republican",
+          "pct": 37.2
+        }
+      ],
+      [     
+        {
+          "party": "Democratic",
+          "pct": 61.6
+        },
+        {
+          "party": "Other",
+          "pct": 1.1
+        },
+        {
+          "party": "Republican",
+          "pct": 37.2
+        }
+      ],
+      [ 
+        {
+          "party": "Democratic",
+          "pct": 51.0
+        },
+        {
+          "party": "Other",
+          "pct": 0.9
+        },
+        {
+          "party": "Republican",
+          "pct": 48.0
+        }
+      ]
+    ]
+  },
+  {
+    "id": "roosevelt-1944",
+    "name": "Franklin D. Roosevelt<br>Harry S. Truman",
+    "year": 1944,
+    "band": "Democratic",
+    "portrait": [
+      "images/presidents/Franklin_D_Roosevelt.jpg",
+      "images/presidents/Harry_S_Truman.jpg"
+    ],
+    "map": "images/maps/1944_election.svg",
+    "electoral": "432 / 531",
+    "popular": "53.4%",
+    "notes": [
+      "Battle of Normandy 1944",
+      "FDR passes away 1945",
+      "Atomic bombing of Hiroshima and Nagasaki 1945",
+      "World War II ends 1945",
+      "United Nations established 1945",
+      "Truman Doctrine 1947"
+    ],
+    "senateYears": [
+      [ 
+        {
+          "party": "Democratic",
+          "pct": 59.4
+        },
+        {
+          "party": "Other",
+          "pct": 1.0
+        },
+        {
+          "party": "Republican",
+          "pct": 39.6
+        }
+      ],
+      [ 
+        {
+          "party": "Democratic",
+          "pct": 59.4
+        },
+         {
+          "party": "Other",
+          "pct": 1.0
+        },
+        {
+          "party": "Republican",
+          "pct": 39.6
+        }
+      ],
+      [ 
+        {
+          "party": "Democratic",
+          "pct": 59.4
+        },
+        {
+          "party": "Other",
+          "pct": 1.0
+        },
+        {
+          "party": "Republican",
+          "pct": 39.6
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 46.9
+        },
+        {
+          "party": "Republican",
+          "pct": 53.1
+        }
+      ]
+    ],
+    "houseYears": [
+      [  
+        {
+          "party": "Democratic",
+          "pct": 51.0
+        },
+        {
+          "party": "Other",
+          "pct": 0.9
+        },
+        {
+          "party": "Republican",
+          "pct": 48.0
+        }
+      ],
+      [ 
+        {
+          "party": "Democratic",
+          "pct": 55.9
+        },
+        {
+          "party": "Other",
+          "pct": 0.5
+        },
+        {
+          "party": "Republican",
+          "pct": 43.7
+        }
+      ],
+      [   
+        {
+          "party": "Democratic",
+          "pct": 55.9
+        },
+        {
+          "party": "Other",
+          "pct": 0.5
+        },
+        {
+          "party": "Republican",
+          "pct": 43.7
+        }
+      ],
+      [  
+        {
+          "party": "Democratic",
+          "pct": 43.2
+        },
+        {
+          "party": "Other",
+          "pct": 0.2
+        },
+        {
+          "party": "Republican",
+          "pct": 56.6
+        }
+      ]
+    ]
+  },
+  {
+    "id": "truman-1948",
+    "name": "Harry S. Truman",
+    "year": 1948,
+    "band": "Democratic",
+    "portrait": "images/presidents/Harry_S_Truman.jpg",
+    "map": "images/maps/1948_election.svg",
+    "electoral": "303 / 531",
+    "popular": "49.6%",
+    "notes": [
+      "Racial Segregation in the US Armed Forces ended 1948",
+      "C.I.A act 1949",
+      "NATO established 1949",
+      "Korean War 1950-1953",
+      "22nd Amendment enacted (limits the number of terms for the President) 1951"
+    ],
+    "senateYears": [
+      [
+        {
+          "party": "Democratic",
+          "pct": 46.9
+        },
+        {
+          "party": "Republican",
+          "pct": 53.1
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 56.2
+        },
+        {
+          "party": "Republican",
+          "pct": 43.8
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 56.2
+        },
+        {
+          "party": "Republican",
+          "pct": 43.8
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 51.0
+        },
+        {
+          "party": "Republican",
+          "pct": 49.0
+        }
+      ]
+    ],
+    "houseYears": [
+      [  
+        {
+          "party": "Democratic",
+          "pct": 43.2
+        },
+        {
+          "party": "Other",
+          "pct": 0.2
+        },
+        {
+          "party": "Republican",
+          "pct": 56.6
+        }
+      ],
+      [  
+        {
+          "party": "Democratic",
+          "pct": 60.2
+        },
+        {
+          "party": "Other",
+          "pct": 0.5
+        },
+        {
+          "party": "Republican",
+          "pct": 39.3
+        }
+      ],
+      [     
+        {
+          "party": "Democratic",
+          "pct": 60.2
+        },
+        {
+          "party": "Other",
+          "pct": 0.5
+        },
+        {
+          "party": "Republican",
+          "pct": 39.3
+        }
+      ],
+      [  
+        {
+          "party": "Democratic",
+          "pct": 54.0
+        },
+        {
+          "party": "Other",
+          "pct": 0.2
+        },
+        {
+          "party": "Republican",
+          "pct": 45.7
+        }
+      ]
+    ]
+  },
+  {
+    "id": "eisenhower-1952",
+    "name": "Dwight D. Eisenhower",
+    "year": 1952,
+    "band": "Republican",
+    "portrait": "images/presidents/Dwight_D_Eisenhower.jpg",
+    "map": "images/maps/1952_election.svg",
+    "electoral": "442 / 531",
+    "popular": "55.2%",
+    "notes": [
+      "Cuban Revolution 1953-1959",
+      "Brown v. Board of Education 1954",
+      "Montgomery Bus Boycott 1955-1956",
+      "Federal-Aid Highway Act of 1956"
+    ],
+    "senateYears": [
+      [
+        {
+          "party": "Democratic",
+          "pct": 51.0
+        },
+        {
+          "party": "Republican",
+          "pct": 49.0
+        }
+      ],
+      [  
+        {
+          "party": "Democratic",
+          "pct": 49.0
+        },
+        {
+          "party": "Other",
+          "pct": 1.0
+        },
+        {
+          "party": "Republican",
+          "pct": 50.0
+        }
+      ],
+      [   
+        {
+          "party": "Democratic",
+          "pct": 49.0
+        },
+        {
+          "party": "Other",
+          "pct": 1.0
+        },
+        {
+          "party": "Republican",
+          "pct": 50.0
+        }
+      ],
+      [   
+        {
+          "party": "Democratic",
+          "pct": 50.0
+        },
+        {
+          "party": "Other",
+          "pct": 1.0
+        },
+        {
+          "party": "Republican",
+          "pct": 49.0
+        }
+      ]
+    ],
+    "houseYears": [
+      [  
+        {
+          "party": "Democratic",
+          "pct": 54.0
+        },
+        {
+          "party": "Other",
+          "pct": 0.2
+        },
+        {
+          "party": "Republican",
+          "pct": 45.7
+        }
+      ],
+      [ 
+        {
+          "party": "Democratic",
+          "pct": 49.0
+        },
+        {
+          "party": "Other",
+          "pct": 0.2
+        },
+        {
+          "party": "Republican",
+          "pct": 50.8
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 49.0
+        },
+        {
+          "party": "Other",
+          "pct": 0.2
+        },
+        {
+          "party": "Republican",
+          "pct": 50.8
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 53.3
+        },
+        {
+          "party": "Republican",
+          "pct": 46.7
+        }
+      ]
+    ]
+  },
+  {
+    "id": "eisenhower-1956",
+    "name": "Dwight D. Eisenhower",
+    "year": 1956,
+    "band": "Republican",
+    "portrait": "images/presidents/Dwight_D_Eisenhower.jpg",
+    "map": "images/maps/1956_election.svg",
+    "electoral": "457 / 531",
+    "popular": "57.4%",
+    "notes": [
+      "Soviet satellite Sputnik launched 1957",
+      "Civil Rights Act of 1957",
+      "Little Rock Nine 1957",
+      "Alaska admitted as the 49th state 1959",
+      "Hawaii admitted as the 50th state 1959",
+      "Vietnam War 1959-1975",
+      "Civil Rights Act of 1960"
+    ],
+    "senateYears": [
+      [
+        
+        {
+          "party": "Democratic",
+          "pct": 50.0
+        },
+        {
+          "party": "Other",
+          "pct": 1.0
+        },
+        {
+          "party": "Republican",
+          "pct": 49.0
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 51.0
+        },
+        {
+          "party": "Republican",
+          "pct": 49.0
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 51.0
+        },
+        {
+          "party": "Republican",
+          "pct": 49.0
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 65.0
+        },
+        {
+          "party": "Republican",
+          "pct": 35.0
+        }
+      ]
+    ],
+    "houseYears": [
+      [
+        {
+          "party": "Democratic",
+          "pct": 53.3
+        },
+        {
+          "party": "Republican",
+          "pct": 46.7
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 53.8
+        },
+        {
+          "party": "Republican",
+          "pct": 46.2
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 53.8
+        },
+        {
+          "party": "Republican",
+          "pct": 46.2
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 65.0
+        },
+        {
+          "party": "Republican",
+          "pct": 35.0
+        }
+      ]
+    ]
+  },
+  {
+    "id": "kennedy-1960",
+    "name": "John F. Kennedy<br>Lyndon B. Johnson",
+    "year": 1960,
+    "band": "Democratic",
+    "portrait": [
+      "images/presidents/John_F_Kennedy.jpg",
+      "images/presidents/Lyndon_B_Johnson.jpg"
+    ],
+    "map": "images/maps/1960_election.svg",
+    "electoral": "303 / 537",
+    "popular": "49.7%",
+    "notes": [
+      "Bay of Pigs 1961",
+      "23rd amendment enacted (representation of Washington D.C. in the electoral college) 1961",
+      "Cuban Missile Crisis 1962",
+      "March on Washington 1963",
+      "16th Street Baptist Church bombing 1963",
+      "JFK assassinated 1963",
+      "24th amendment enacted (prohibition of restricting voting rights due to non-payment of poll taxes) 1964"
+    ],
+    "senateYears": [
+      [
+        {
+          "party": "Democratic",
+          "pct": 65.0
+        },
+        {
+          "party": "Republican",
+          "pct": 35.0
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 64.0
+        },
+        {
+          "party": "Republican",
+          "pct": 36.0
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 64.0
+        },
+        {
+          "party": "Republican",
+          "pct": 36.0
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 66.0
+        },
+        {
+          "party": "Republican",
+          "pct": 34.0
+        }
+      ]
+    ],
+    "houseYears": [
+      [
+        {
+          "party": "Democratic",
+          "pct": 65.0
+        },
+        {
+          "party": "Republican",
+          "pct": 35.0
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 60.0
+        },
+        {
+          "party": "Republican",
+          "pct": 40.0
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 60.0
+        },
+        {
+          "party": "Republican",
+          "pct": 40.0
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 59.4
+        },
+        {
+          "party": "Republican",
+          "pct": 40.6
+        }
+      ]
+    ]
+  },
+  {
+    "id": "johnson-1964",
+    "name": "Lyndon B. Johnson",
+    "year": 1964,
+    "band": "Democratic",
+    "portrait": "images/presidents/Lyndon_B_Johnson.jpg",
+    "map": "images/maps/1964_election.svg",
+    "electoral": "486 / 538",
+    "popular": "61.1%",
+    "notes": [
+      "25th amendment enacted (deals with succession to the Presidency) 1967",
+      "Voting Rights Act of 1965",
+      "Watts Riots 1965",
+      "Vietnam War escalation 1965"
+    ],
+    "senateYears": [
+      [
+        {
+          "party": "Democratic",
+          "pct": 66.0
+        },
+        {
+          "party": "Republican",
+          "pct": 34.0
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 68.0
+        },
+        {
+          "party": "Republican",
+          "pct": 32.0
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 68.0
+        },
+        {
+          "party": "Republican",
+          "pct": 32.0
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 64.0
+        },
+        {
+          "party": "Republican",
+          "pct": 36.0
+        }
+      ]
+    ],
+    "houseYears": [
+      [
+        {
+          "party": "Democratic",
+          "pct": 59.4
+        },
+        {
+          "party": "Republican",
+          "pct": 40.6
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 67.8
+        },
+        {
+          "party": "Republican",
+          "pct": 32.2
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 67.8
+        },
+        {
+          "party": "Republican",
+          "pct": 32.2
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 56.9
+        },
+        {
+          "party": "Republican",
+          "pct": 43.1
+        }
+      ]
+    ]
+  },
+  {
+    "id": "nixon-1968",
+    "name": "Richard Nixon",
+    "year": 1968,
+    "band": "Republican",
+    "portrait": "images/presidents/Richard_Nixon.jpg",
+    "map": "images/maps/1968_election.svg",
+    "electoral": "301 / 538",
+    "popular": "43.4%",
+    "notes": [
+      "Martin Luther King Jr. assassinated 1968",
+      "Robert F. Kennedy assassinated 1968",
+      "Riots at Democratic National Convention 1968",
+      "Vietnam War continues",
+      "Woodstock Festival 1969",
+      "Apollo 11 Moon Landing 1969",
+      "26th amendment enacted (voting age set at 18) 1971"
+    ],
+    "senateYears": [
+      [
+        {
+          "party": "Democratic",
+          "pct": 64.0
+        },
+        {
+          "party": "Republican",
+          "pct": 36.0
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 57.0
+        },
+        {
+          "party": "Republican",
+          "pct": 43.0
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 57.0
+        },
+        {
+          "party": "Republican",
+          "pct": 43.0
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 55.0
+        },
+        {
+          "party": "Republican",
+          "pct": 45.0
+        }
+      ]
+    ],
+    "houseYears": [
+      [
+        {
+          "party": "Democratic",
+          "pct": 56.9
+        },
+        {
+          "party": "Republican",
+          "pct": 43.1
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 55.9
+        },
+        {
+          "party": "Republican",
+          "pct": 44.1
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 55.9
+        },
+        {
+          "party": "Republican",
+          "pct": 44.1
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 58.6
+        },
+        {
+          "party": "Republican",
+          "pct": 41.4
+        }
+      ]
+    ]
+  },
+  {
+    "id": "nixon-1972",
+    "name": "Richard Nixon<br>Gerald Ford",
+    "year": 1972,
+    "band": "Republican",
+    "portrait": [
+      "images/presidents/Richard_Nixon.jpg",
+      "images/presidents/Gerald_Ford.jpg"
+    ],
+    "map": "images/maps/1972_election.svg",
+    "electoral": "520 / 538",
+    "popular": "60.7%",
+    "notes": [
+      "Watergate 1972",
+      "End of US involvement in Vietnam War 1973",
+      "Resignation of Nixon 1973"
+    ],
+    "senateYears": [
+      [
+        {
+          "party": "Democratic",
+          "pct": 55.0
+        },
+        {
+          "party": "Republican",
+          "pct": 45.0
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 57.0
+        },
+        {
+          "party": "Republican",
+          "pct": 43.0
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 57.0
+        },
+        {
+          "party": "Republican",
+          "pct": 43.0
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 62.0
+        },
+        {
+          "party": "Republican",
+          "pct": 38.0
+        }
+      ]
+    ],
+    "houseYears": [
+      [
+        {
+          "party": "Democratic",
+          "pct": 58.6
+        },
+        {
+          "party": "Republican",
+          "pct": 41.4
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 55.9
+        },
+        {
+          "party": "Republican",
+          "pct": 44.1
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 55.9
+        },
+        {
+          "party": "Republican",
+          "pct": 44.1
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 66.9
+        },
+        {
+          "party": "Republican",
+          "pct": 33.1
+        }
+      ]
+    ]
+  },
+  {
+    "id": "carter-1976",
+    "name": "Jimmy Carter",
+    "year": 1976,
+    "band": "Democratic",
+    "portrait": "images/presidents/Jimmy_Carter.jpg",
+    "map": "images/maps/1976_election.svg",
+    "electoral": "297 / 538",
+    "popular": "50.1%",
+    "notes": [
+      "Camp David Accords 1978",
+      "Energy Crisis 1979",
+      "Iran Hostage Crisis 1979"
+    ],
+    "senateYears": [
+      [
+        {
+          "party": "Democratic",
+          "pct": 62.0
+        },
+        {
+          "party": "Republican",
+          "pct": 38.0
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 62.0
+        },
+        {
+          "party": "Republican",
+          "pct": 38.0
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 62.0
+        },
+        {
+          "party": "Republican",
+          "pct": 38.0
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 59.0
+        },
+        {
+          "party": "Republican",
+          "pct": 41.0
+        }
+      ]
+    ],
+    "houseYears": [
+      [
+        {
+          "party": "Democratic",
+          "pct": 66.9
+        },
+        {
+          "party": "Republican",
+          "pct": 33.1
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 67.1
+        },
+        {
+          "party": "Republican",
+          "pct": 32.9
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 67.1
+        },
+        {
+          "party": "Republican",
+          "pct": 32.9
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 63.7
+        },
+        {
+          "party": "Republican",
+          "pct": 36.3
+        }
+      ]
+    ]
+  },
+  {
+    "id": "reagan-1980",
+    "name": "Ronald Reagan",
+    "year": 1980,
+    "band": "Republican",
+    "portrait": "images/presidents/Ronald_Reagan.jpg",
+    "map": "images/maps/1980_election.svg",
+    "electoral": "489 / 538",
+    "popular": "50.7%",
+    "notes": [
+      "Economic Recovery Tax Act 1981",
+      "Assassination attempt on Reagan 1981",
+      "Air Traffic Controllers Strike 1981",
+      "Strategic Defense Initiative announced 1983"
+    ],
+    "senateYears": [
+      [
+        {
+          "party": "Democratic",
+          "pct": 59.0
+        },
+        {
+          "party": "Republican",
+          "pct": 41.0
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 47.0
+        },
+        {
+          "party": "Republican",
+          "pct": 53.0
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 47.0
+        },
+        {
+          "party": "Republican",
+          "pct": 53.0
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 45.0
+        },
+        {
+          "party": "Republican",
+          "pct": 55.0
+        }
+      ]
+    ],
+    "houseYears": [
+      [
+        {
+          "party": "Democratic",
+          "pct": 63.7
+        },
+        {
+          "party": "Republican",
+          "pct": 36.3
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 55.6
+        },
+        {
+          "party": "Republican",
+          "pct": 44.4
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 55.6
+        },
+        {
+          "party": "Republican",
+          "pct": 44.4
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 61.8
+        },
+        {
+          "party": "Republican",
+          "pct": 38.2
+        }
+      ]
+    ]
+  },
+  {
+    "id": "reagan-1984",
+    "name": "Ronald Reagan",
+    "year": 1984,
+    "band": "Republican",
+    "portrait": "images/presidents/Ronald_Reagan.jpg",
+    "map": "images/maps/1984_election.svg",
+    "electoral": "525 / 538",
+    "popular": "58.8%",
+    "notes": [
+      "Iran Contra Scandal 1986",
+      "Tax Reform Act 1986",
+      "Stock Market Crash 1987",
+      "Intermediate-Range Nuclear Forces Treaty 1987"
+    ],
+    "senateYears": [
+      [
+        {
+          "party": "Democratic",
+          "pct": 45.0
+        },
+        {
+          "party": "Republican",
+          "pct": 55.0
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 47.0
+        },
+        {
+          "party": "Republican",
+          "pct": 53.0
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 47.0
+        },
+        {
+          "party": "Republican",
+          "pct": 53.0
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 55.0
+        },
+        {
+          "party": "Republican",
+          "pct": 45.0
+        }
+      ]
+    ],
+    "houseYears": [
+      [
+        {
+          "party": "Democratic",
+          "pct": 61.8
+        },
+        {
+          "party": "Republican",
+          "pct": 38.2
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 58.2
+        },
+        {
+          "party": "Republican",
+          "pct": 41.8
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 58.2
+        },
+        {
+          "party": "Republican",
+          "pct": 41.8
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 59.3
+        },
+        {
+          "party": "Republican",
+          "pct": 40.7
+        }
+      ]
+    ]
+  },
+  {
+    "id": "bush-1988",
+    "name": "George H. W. Bush",
+    "year": 1988,
+    "band": "Republican",
+    "portrait": "images/presidents/George_HW_Bush.jpg",
+    "map": "images/maps/1988_election.svg",
+    "electoral": "426 / 538",
+    "popular": "53.4%",
+    "notes": [
+      "Fall of the Berlin Wall 1989",
+      "Americans with Disabilities Act 1990",
+      "First Gulf War 1991",
+      "Dissolution of the Soviet Union 1991",
+      "Rodney King Riots 1992",
+      "NAFTA signed 1992"
+    ],
+    "senateYears": [
+      [
+        {
+          "party": "Democratic",
+          "pct": 55.0
+        },
+        {
+          "party": "Republican",
+          "pct": 45.0
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 55.0
+        },
+        {
+          "party": "Republican",
+          "pct": 45.0
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 55.0
+        },
+        {
+          "party": "Republican",
+          "pct": 45.0
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 56.0
+        },
+        {
+          "party": "Republican",
+          "pct": 44.0
+        }
+      ]
+    ],
+    "houseYears": [
+      [
+        {
+          "party": "Democratic",
+          "pct": 59.3
+        },
+        {
+          "party": "Republican",
+          "pct": 40.7
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 59.8
+        },
+        {
+          "party": "Republican",
+          "pct": 40.2
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 59.8
+        },
+        {
+          "party": "Republican",
+          "pct": 40.2
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 61.6
+        },
+        {
+          "party": "Republican",
+          "pct": 38.4
+        }
+      ]
+    ]
+  },
+  {
+    "id": "clinton-1992",
+    "name": "Bill Clinton",
+    "year": 1992,
+    "band": "Democratic",
+    "portrait": "images/presidents/Bill_Clinton.jpg",
+    "map": "images/maps/1992_election.svg",
+    "electoral": "370 / 538",
+    "popular": "43.0%",
+    "notes": [
+      "27th amendment enacted (increses and decreases in Congressional salaries can only take effect at the beginning of the next term of office for Representatives) 1992",
+      "Oklahoma City bombing 1995",
+      "Welfare Reform Act 1996"
+    ],
+    "senateYears": [
+      [
+        {
+          "party": "Democratic",
+          "pct": 56.0
+        },
+        {
+          "party": "Republican",
+          "pct": 44.0
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 56.0
+        },
+        {
+          "party": "Republican",
+          "pct": 44.0
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 56.0
+        },
+        {
+          "party": "Republican",
+          "pct": 44.0
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 46.0
+        },
+        {
+          "party": "Republican",
+          "pct": 54.0
+        }
+      ]
+    ],
+    "houseYears": [
+      [
+        {
+          "party": "Democratic",
+          "pct": 61.7
+        },
+        {
+          "party": "Republican",
+          "pct": 38.3
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 59.5
+        },
+        {
+          "party": "Republican",
+          "pct": 40.5
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 59.5
+        },
+        {
+          "party": "Republican",
+          "pct": 40.5
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 47.1
+        },
+        {
+          "party": "Republican",
+          "pct": 52.9
+        }
+      ]
+    ]
+  },
+  {
+    "id": "clinton-1996",
+    "name": "Bill Clinton",
+    "year": 1996,
+    "band": "Democratic",
+    "portrait": "images/presidents/Bill_Clinton.jpg",
+    "map": "images/maps/1996_election.svg",
+    "electoral": "379 / 538",
+    "popular": "49.2%",
+    "notes": [
+      "U.S. embassy bombings 1998",
+      "Impeachment of Bill Clinton 1998",
+      "Columbine High School massacre 1999",
+      "Y2K scare 1999",
+      "Dot-com bubble peak 2000"
+    ],
+    "senateYears": [
+      [
+        {
+          "party": "Democratic",
+          "pct": 46.0
+        },
+        {
+          "party": "Republican",
+          "pct": 54.0
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 45.0
+        },
+        {
+          "party": "Republican",
+          "pct": 55.0
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 45.0
+        },
+        {
+          "party": "Republican",
+          "pct": 55.0
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 46.0
+        },
+        {
+          "party": "Republican",
+          "pct": 54.0
+        }
+      ]
+    ],
+    "houseYears": [
+      [
+        {
+          "party": "Democratic",
+          "pct": 47.1
+        },
+        {
+          "party": "Republican",
+          "pct": 52.9
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 47.6
+        },
+        {
+          "party": "Republican",
+          "pct": 52.4
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 47.6
+        },
+        {
+          "party": "Republican",
+          "pct": 52.4
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 48.7
+        },
+        {
+          "party": "Republican",
+          "pct": 51.3
+        }
+      ]
+    ]
+  },
+  {
+    "id": "bush-2000",
+    "name": "George W. Bush",
+    "year": 2000,
+    "band": "Republican",
+    "portrait": "images/presidents/George_W_Bush.jpg",
+    "map": "images/maps/2000_election.svg",
+    "electoral": "271 / 538",
+    "popular": "47.9%",
+    "notes": [
+      "September 11, 2001 attacks",
+      "War in Afghanistan 2001-pressent",
+      "Patriot Act 2001",
+      "Enron scandal 2001",
+      "Iraq War 2003-pressent",
+      "SARS outbreak 2003"
+    ],
+    "senateYears": [
+      [
+        {
+          "party": "Democratic",
+          "pct": 46.0
+        },
+        {
+          "party": "Republican",
+          "pct": 54.0
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 50.0
+        },
+        {
+          "party": "Republican",
+          "pct": 50.0
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 50.0
+        },
+        {
+          "party": "Republican",
+          "pct": 50.0
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 49.0
+        },
+        {
+          "party": "Republican",
+          "pct": 51.0
+        }
+      ]
+    ],
+    "houseYears": [
+      [
+        {
+          "party": "Democratic",
+          "pct": 48.7
+        },
+        {
+          "party": "Republican",
+          "pct": 51.3
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 49.0
+        },
+        {
+          "party": "Republican",
+          "pct": 51.0
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 49.0
+        },
+        {
+          "party": "Republican",
+          "pct": 51.0
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 47.4
+        },
+        {
+          "party": "Republican",
+          "pct": 52.6
+        }
+      ]
+    ]
+  },
+  {
+    "id": "bush-2004",
+    "name": "George W. Bush",
+    "year": 2004,
+    "band": "Republican",
+    "portrait": "images/presidents/George_W_Bush.jpg",
+    "map": "images/maps/2004_election.svg",
+    "electoral": "286 / 538",
+    "popular": "50.7%",
+    "notes": [
+      "Hurricane Katrina 2005",
+      "Financial Crisis of 2007-2008",
+      "Great Recession"
+    ],
+    "senateYears": [
+      [
+        {
+          "party": "Democratic",
+          "pct": 49.0
+        },
+        {
+          "party": "Republican",
+          "pct": 51.0
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 45.0
+        },
+        {
+          "party": "Republican",
+          "pct": 55.0
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 45.0
+        },
+        {
+          "party": "Republican",
+          "pct": 55.0
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 51.0
+        },
+        {
+          "party": "Republican",
+          "pct": 49.0
+        }
+      ]
+    ],
+    "houseYears": [
+      [
+        {
+          "party": "Democratic",
+          "pct": 47.4
+        },
+        {
+          "party": "Republican",
+          "pct": 52.6
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 46.7
+        },
+        {
+          "party": "Republican",
+          "pct": 53.3
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 46.7
+        },
+        {
+          "party": "Republican",
+          "pct": 53.3
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 53.6
+        },
+        {
+          "party": "Republican",
+          "pct": 46.4
+        }
+      ]
+    ]
+  },
+  {
+    "id": "obama-2008",
+    "name": "Barack Obama",
+    "year": 2008,
+    "band": "Democratic",
+    "portrait": "images/presidents/Barack_Obama.jpg",
+    "map": "images/maps/2008_election.svg",
+    "electoral": "365 / 538",
+    "popular": "52.9%",
+    "notes": [
+      "First African American to be sworn in as President of the U.S.A. 2008",
+      "Affordable Care Act enacted 2010",
+      "Operation Neptune Spear - killing of Osama bin Laden 2011",
+      "Don't Ask, Don't Tell Repealed 2011"
+    ],
+    "senateYears": [
+      [
+        {
+          "party": "Democratic",
+          "pct": 51.0
+        },
+        {
+          "party": "Republican",
+          "pct": 49.0
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 59.0
+        },
+        {
+          "party": "Republican",
+          "pct": 41.0
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 59.0
+        },
+        {
+          "party": "Republican",
+          "pct": 41.0
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 53.0
+        },
+        {
+          "party": "Republican",
+          "pct": 47.0
+        }
+      ]
+    ],
+    "houseYears": [
+      [
+        {
+          "party": "Democratic",
+          "pct": 53.6
+        },
+        {
+          "party": "Republican",
+          "pct": 46.4
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 59.1
+        },
+        {
+          "party": "Republican",
+          "pct": 40.9
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 59.1
+        },
+        {
+          "party": "Republican",
+          "pct": 40.9
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 44.4
+        },
+        {
+          "party": "Republican",
+          "pct": 55.6
+        }
+      ]
+    ]
+  },
+  {
+    "id": "obama-2012",
+    "name": "Barack Obama",
+    "year": 2012,
+    "band": "Democratic",
+    "portrait": "images/presidents/Barack_Obama.jpg",
+    "map": "images/maps/2012_election.svg",
+    "electoral": "332 / 538",
+    "popular": "51.1%",
+    "notes": [
+      "Sandy Hook Elementary School shooting 2012",
+      "Iran Nuclear Deal 2015"
+    ],
+    "senateYears": [
+      [
+        {
+          "party": "Democratic",
+          "pct": 53.0
+        },
+        {
+          "party": "Republican",
+          "pct": 47.0
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 55.0
+        },
+        {
+          "party": "Republican",
+          "pct": 45.0
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 55.0
+        },
+        {
+          "party": "Republican",
+          "pct": 45.0
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 55.1
+        },
+        {
+          "party": "Republican",
+          "pct": 44.9
+        }
+      ]
+    ],
+    "houseYears": [
+      [
+        {
+          "party": "Democratic",
+          "pct": 44.4
+        },
+        {
+          "party": "Republican",
+          "pct": 55.6
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 46.2
+        },
+        {
+          "party": "Republican",
+          "pct": 53.8
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 46.2
+        },
+        {
+          "party": "Republican",
+          "pct": 53.8
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 43.2
+        },
+        {
+          "party": "Republican",
+          "pct": 56.8
+        }
+      ]
+    ]
+  },
+  {
+    "id": "trump-2016",
+    "name": "Donald Trump",
+    "year": 2016,
+    "band": "Republican",
+    "portrait": "images/presidents/Donald_Trump.jpg",
+    "map": "images/maps/2016_election.svg",
+    "electoral": "304 / 538",
+    "popular": "46.1%",
+    "notes": [
+      "First impeachment of Donald Trump 2019",
+      "Covid-19 Pandemic 2020",
+      "Black Lives Matter protests 2020"
+    ],
+    "senateYears": [
+      [
+        {
+          "party": "Democratic",
+          "pct": 55.1
+        },
+        {
+          "party": "Republican",
+          "pct": 44.9
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 49.0
+        },
+        {
+          "party": "Republican",
+          "pct": 51.0
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 49.0
+        },
+        {
+          "party": "Republican",
+          "pct": 51.0
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 47.0
+        },
+        {
+          "party": "Republican",
+          "pct": 53.0
+        }
+      ]
+    ],
+    "houseYears": [
+      [
+        {
+          "party": "Democratic",
+          "pct": 43.2
+        },
+        {
+          "party": "Republican",
+          "pct": 56.8
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 44.6
+        },
+        {
+          "party": "Republican",
+          "pct": 55.4
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 44.6
+        },
+        {
+          "party": "Republican",
+          "pct": 55.4
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 54.0
+        },
+        {
+          "party": "Republican",
+          "pct": 46.0
+        }
+      ]
+    ]
+  },
+  {
+    "id": "biden-2020",
+    "name": "Joe Biden",
+    "year": 2020,
+    "band": "Democratic",
+    "portrait": "images/presidents/Joe_Biden.jpg",
+    "map": "images/maps/2020_election.svg",
+    "electoral": "306 / 538",
+    "popular": "51.3%",
+    "notes": [
+      "Second Impeachment of Donald Trump 2021",
+      "Withdrawal from Afghanistan 2021",
+      "Inflation Surge 2021-2022"
+    ],
+    "senateYears": [
+      [
+        {
+          "party": "Democratic",
+          "pct": 47.0
+        },
+        {
+          "party": "Republican",
+          "pct": 53.0
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 50.0
+        },
+        {
+          "party": "Republican",
+          "pct": 50.0
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 50.0
+        },
+        {
+          "party": "Republican",
+          "pct": 50.0
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 51.0
+        },
+        {
+          "party": "Republican",
+          "pct": 49.0
+        }
+      ]
+    ],
+    "houseYears": [
+      [
+        {
+          "party": "Democratic",
+          "pct": 54.0
+        },
+        {
+          "party": "Republican",
+          "pct": 46.0
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 51.0
+        },
+        {
+          "party": "Republican",
+          "pct": 49.0
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 51.0
+        },
+        {
+          "party": "Republican",
+          "pct": 49.0
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 49.1
+        },
+        {
+          "party": "Republican",
+          "pct": 50.9
+        }
+      ]
+    ]
+  },
+  {
+    "id": "trump-2024",
+    "name": "Donald J. Trump",
+    "year": 2024,
+    "band": "Republican",
+    "portrait": "images/presidents/Donald_Trump2.jpg",
+    "map": "images/maps/2024_election.svg",
+    "electoral": "312 / 538",
+    "popular": "49.8%",
+    "notes": [
+      ""
+    ],
+    "senateYears": [
+      [
+        {
+          "party": "Democratic",
+          "pct": 51.0
+        },
+        {
+          "party": "Republican",
+          "pct": 49.0
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 47.0
+        },
+        {
+          "party": "Republican",
+          "pct": 53.0
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 47.0
+        },
+        {
+          "party": "Republican",
+          "pct": 53.0
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 47.0
+        },
+        {
+          "party": "Republican",
+          "pct": 53.0
+        }
+      ]
+    ],
+    "houseYears": [
+      [
+        {
+          "party": "Democratic",
+          "pct": 49.1
+        },
+        {
+          "party": "Republican",
+          "pct": 50.9
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 49.5
+        },
+        {
+          "party": "Republican",
+          "pct": 50.5
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 49.5
+        },
+        {
+          "party": "Republican",
+          "pct": 50.5
+        }
+      ],
+      [
+        {
+          "party": "Democratic",
+          "pct": 49.5
+        },
+        {
+          "party": "Republican",
+          "pct": 50.5
+        }
+      ]
+    ]
+  }
+]

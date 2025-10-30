@@ -273,19 +273,65 @@ margin-top:-10px; }
 .party-key-swatches .sw i{ width:12px; height:12px; border-radius:3px; display:inline-block; }
 
 
-/* === Adjust label column width on mobile === */
+/* === Mobile (<=768px): shrink labels to max 33%, cut whitespace, and unstick === */
 @media (max-width: 768px) {
-  .labels {
-    width: 40% !important;
-    min-width: 100px !important;
+  /* two-column grid: labels up to 33%, timeline gets the rest */
+  .top {
+    display: grid !important;
+    grid-template-columns: minmax(110px, 33%) 1fr !important;
+    gap: 10px !important;
   }
-  .timeline {
-    margin-left: 0 !important;
-    width: 100% !important;
+
+  /* labels column */
+  .labels {
+    position: static !important;
+    width: auto !important;
+    min-width: 0 !important;
+    padding: 6px 6px 6px 0 !important;
+    margin: 0 !important;
+    border-right: 0 !important;
+    box-shadow: none !important;
+    background: transparent !important;
   }
   .labels-grid {
-    font-size: 11px;
+    font-size: 11px !important;
+    line-height: 1.2 !important;
+    gap: 4px !important;
   }
+  .labels .cell { margin: 0 !important; padding: 0 !important; }
+
+  /* right side timeline area */
+  .timeline {
+    width: 100% !important;
+    margin: 0 !important;
+    padding-left: 0 !important;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .col { min-width: var(--colw, 140px); }
+  .col-grid { padding: 0 6px !important; }
+
+  /* tighten sections */
+  .portrait-row { gap: 6px !important; }
+  .portrait-box { border-radius: 6px !important; }
+  .name { font-size: 13px !important; }
+  .year { font-size: 12px !important; }
+
+  .map .box { border-radius: 6px !important; }
+  .votes { gap: 2px 6px !important; }
+  .votes b, .votes .kv { font-size: 11px !important; }
+
+  .congress-wrapper { gap: 8px !important; padding-top: 8px !important; }
+  .vbars { height: 54px !important; }
+  .pcttag { font-size: 9px !important; }
+
+  .mini-title { font: 600 10px/1 system-ui !important; margin: 0 0 2px !important; }
+  .notes { font-size: 10px !important; }
+  
+  /* party key compact */
+  .party-key-left { font-size: 10px !important; }
+  .party-key-swatches { gap: 2px !important; }
+  .party-key-swatches .sw i { width: 10px; height: 10px; border-radius: 2px; }
 }
 
 </style>

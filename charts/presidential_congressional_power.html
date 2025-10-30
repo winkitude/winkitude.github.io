@@ -47,7 +47,7 @@ body {
 
 .labels-grid {
   display: grid;
-  grid-template-rows: 10px 16px 75px 30px 28px 160px 50px 30px 190px 100px;
+  grid-template-rows: 10px 16px 75px 30px 28px 160px 50px 30px 190px 30px 100px;
   gap: 6px;
 }
 
@@ -103,7 +103,7 @@ body {
 
 .col-grid {
   display: grid;
-  grid-template-rows: 10px 16px 108px 45px 28px 160px 50px 230px 100px;
+  grid-template-rows: 10px 16px 108px 45px 28px 160px 50px 230px 50px 100px;
   border-right: 1px solid var(--rule);
   padding: 0 12px;
 }
@@ -208,8 +208,43 @@ body {
   display: none;
 }
 
+.notes-credit {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  font-size: 12px;
+  font-weight: 400;
+  color: #444;
+  line-height: 1.4;
+  white-space: normal;
+}
+
+.notes-credit .notes-label {
+  font-weight: 700;
+  margin-bottom: 2px;
+  color: #000;
+}
+
+.notes-credit .notes-text {
+  max-width: 200px; /* keeps wrapping inside its column */
+  white-space: normal;
+}
+
+.notes-credit .nowrap {
+  white-space: nowrap;
+}
+
+.notes-credit a {
+  color: #444;
+  text-decoration: none;
+}
+
+.notes-credit a:hover {
+  text-decoration: underline;
+}
+
 /* === Mobile adjustments === */
-@media (max-width: 768px) {
   
   
 @media (max-width: 768px) {
@@ -258,84 +293,7 @@ body {
 
 
 
-}
 
-
-
-
-/* === Overlay Sidebar System === */
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 220px;
-  height: 100%;
-  background: rgba(255, 255, 255, 0.98);
-  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
-  padding: 1rem;
-  overflow-y: auto;
-  z-index: 1000;
-  transition: transform 0.3s ease, opacity 0.3s ease;
-}
-
-  overflow-y: auto;
-  height: 100%;
-}
-
-  display: none;
-  position: fixed;
-  top: 10px;
-  left: 10px;
-  z-index: 1100;
-  background: #fff;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  padding: 0.4rem 0.6rem;
-  font-size: 1.2rem;
-  cursor: pointer;
-}
-
-/* === Mobile Behavior === */
-@media (max-width: 768px) {
-    transform: translateX(-100%);
-    opacity: 0;
-    width: 70%;
-  }
-
-    transform: translateX(0);
-    opacity: 1;
-  }
-
-    display: block;
-  }
-}
-
-
-/* === Legend Spacer + Mobile Overlay Scroll Behavior === */
-.timeline-spacer {
-  width: var(--colw);
-  min-width: var(--colw);
-  background: transparent;
-  grid-column: 1;
-}
-
-@media (max-width: 768px) {
-  .timeline-spacer {
-    display: block;
-  }
-
-    transform: translateX(-100%);
-    opacity: 0;
-    width: 70%;
-    transition: transform 0.4s ease, opacity 0.4s ease;
-  }
-
-    transform: translateX(0);
-    opacity: 1;
-  }
-
-    display: block;
-  }
-}
 
 
 /* === Static Legend that scrolls with content === */
@@ -405,12 +363,12 @@ body {
     <aside class="labels">
       <div class="labels-grid">
         <div class="cell"><b>Presidential Power</b></div>
-        <div class="cell"><b>Party affiliation</b></div>
-        <div class="cell"><b>President</b></div>
-        <div class="cell"><b>Name</b></div>
-        <div class="cell"><b>Elected</b></div>
-        <div class="cell"><b>Electoral map</b></div>
-        <div class="cell"><b>Votes</b></div>
+        <div class="cell" style="font-size:12px; font-weight:300;">Party affiliation</div>
+        <div class="cell" style="font-size:12px; font-weight:300;">President</div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell" style="font-size:12px; font-weight:300;">Electoral map</div>
+        <div class="cell" style="font-size:12px; font-weight:300;">Votes</div>
         <div class="cell"><b>Congressional Power</b></div>
         <div class="cell">
           <div class="party-key-left">
@@ -429,7 +387,13 @@ body {
             </div>
           </div>
         </div>
-        <div class="cell"><b>Notes</b></div>
+        <div class="cell notes-credit">
+  <div class="notes-label"><b>Notes</b></div>
+  <div class="notes-text" style="font-size:12px; font-weight:300;>
+    Project by <span class="nowrap">Ari Winkleman – <a href="https://winkitude.com" target="_blank">winkitude.com</a></span><br>
+    Data via Wikipedia
+  </div>
+</div>
       </div>
     </aside>
   `;

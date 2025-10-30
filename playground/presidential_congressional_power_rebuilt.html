@@ -46,7 +46,7 @@ body {
 
 .labels-grid {
   display: grid;
-  grid-template-rows: 160px 16px 108px 30px 28px 160px 50px 300px 100px;
+  grid-template-rows: 10px 16px 75px 30px 28px 160px 50px 10px 210px 100px;
   gap: 6px;
 }
 
@@ -61,14 +61,17 @@ body {
 .party-key-left {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 4px;
-  margin-top: 8px;
+  gap: 2px;
+  margin-top: 4px;
   font-size: 11px;
+  line-height: 1.1;
+  font-weight:400;
 }
 .party-key-swatches {
   display: flex;
   flex-wrap: wrap;
-  gap: 4px 8px;
+  gap: 2px 6px; /* tighter horizontal/vertical gap */
+  line-height: 1.1;
 }
 .party-key-swatches .sw {
   display: flex;
@@ -99,7 +102,7 @@ body {
 
 .col-grid {
   display: grid;
-  grid-template-rows: 160px 16px 108px 30px 28px 160px 50px 300px 100px;
+  grid-template-rows: 10px 16px 108px 30px 28px 160px 50px 250px 100px;
   border-right: 1px solid var(--rule);
   padding: 0 12px;
 }
@@ -131,7 +134,7 @@ body {
 
 .name { font-weight: 700; margin-top: -5px; }
 .year { font-weight: 700; margin-top: -10px; }
-.notes { font-size: 12px; line-height: 1.2; margin-top: 4px; color: #444; }
+.notes { font-size: 10px; line-height: 1.2; margin-top: 4px; color: #444; }
 
 /* Chart bars */
 .vbars {
@@ -173,6 +176,16 @@ body {
   transform: translateX(-50%);
   white-space: nowrap;
   font: 700 10px/1 system-ui;
+}
+
+.mini-title {
+  font: 600 11px/1 system-ui;
+  color: #111;
+  margin: 10px 0 4px; /* moved House section slightly down */
+}
+
+.congress-wrapper > div + div {
+  margin-top: 30px; /* push the House group down */
 }
 
 /* Scrollbar styling */
@@ -227,8 +240,8 @@ body {
       <div class="cell"><b>Elected</b></div>
       <div class="cell"><b>Electoral map</b></div>
       <div class="cell"><b>Votes</b></div>
-      <div class="cell"><b>Congressional Power</b>
-        <div class="party-key-left">
+      <div class="cell"><b>Congressional Power</b></div>
+       <div class="cell"> <div class="party-key-left">
           <div class="party-key-swatches">
             <span class="sw"><i style="background:#6a8cc3"></i>Democratic / Jacksonian</span>
             <span class="sw"><i style="background:#ff7f0e"></i>Anti‑Jackson / National Republican</span>
@@ -241,7 +254,7 @@ body {
             <span class="sw"><i style="background:#cc9dc8"></i>Populist</span>
             <span class="sw"><i style="background:#a8d16e"></i>Progressive</span>
             <span class="sw"><i style="background:#f4a261"></i>Dixiecrat</span>
-            <span class="sw"><i style="background:#e76f51"></i>American Independent</span>
+            <!-- <span class="sw"><i style="background:#e76f51"></i>American Independent</span> -->
             <span class="sw"><i style="background:#666666"></i>Independent</span>
           </div>
         </div>

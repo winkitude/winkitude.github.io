@@ -57,8 +57,9 @@ h2 {
     30px
     28px
     160px
-    50px
-    300px /* slightly reduced */
+    80px
+    50px /* slightly reduced */
+    230px
     20px;
   align-items: start;
 }
@@ -278,6 +279,98 @@ margin-top:-10px; }
   .labels { position: static !important; top: auto !important; }
 }
 
+
+/* === Responsive horizontal scroll fix for mobile and sticky labels on desktop === */
+@media (min-width: 769px) {
+  html, body {
+    height: 100%;
+    overflow: hidden; /* prevent vertical scroll */
+  }
+
+  .wrap {
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  .top {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    height: 100%;
+  }
+
+  .timeline {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: var(--colw);
+    height: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+  }
+
+  .timeline > * {
+    scroll-snap-align: start;
+  }
+
+  .labels {
+    position: sticky;
+    top: 0;
+    align-self: start;
+    background: white;
+    z-index: 10;
+    height: 100vh;
+  }
+}
+
+@media (max-width: 768px) {
+  html, body {
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+
+  .wrap {
+    height: 100vh;
+    padding: 12px;
+    overflow: hidden;
+  }
+
+  .top {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    height: 100%;
+    overflow-x: auto;
+  }
+
+  .labels {
+    position: sticky;
+    top: 0;
+    background: #fff;
+    z-index: 10;
+    border-right: 1px solid var(--rule);
+    padding-right: 10px;
+  }
+
+  .timeline {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: var(--colw);
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+  }
+
+  .timeline > * {
+    scroll-snap-align: start;
+  }
+
+  .party-key-left {
+    margin-top: 10px;
+    border-top: 1px solid var(--rule);
+    padding-top: 10px;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -292,9 +385,9 @@ margin-top:-10px; }
         <div class="cell"><b>Elected</b></div>
         <div class="cell"><b>Electoral map</b></div>
         <div class="cell"><b>Votes</b></div>
-        <div class="cell" style="padding-top:30px;"><b>Congressional Power</b></div>
-        <div class="cell" style="padding-bottom:-30px;"><b>Notes</b></div>
-<div class="cell party-key-left">
+        <div class="cell"><b>Congressional Power</b>
+        </div>
+        <div class="party-key-left">
   <div class="party-key-swatches">
     <span class="sw"><i style="background:#6a8cc3"></i>Democratic / Jacksonian</span>
     <span class="sw"><i style="background:#ff7f0e"></i>Anti‑Jackson / National Republican</span>
@@ -307,10 +400,15 @@ margin-top:-10px; }
     <span class="sw"><i style="background:#cc9dc8"></i>Populist</span>
     <span class="sw"><i style="background:#a8d16e"></i>Progressive</span>
     <span class="sw"><i style="background:#f4a261"></i>Dixiecrat</span>
-    <span class="sw"><i style="background:#e76f51"></i>American Independent</span>
+   <!-- <span class="sw"><i style="background:#e76f51"></i>American Independent</span> -->
     <span class="sw"><i style="background:#666666"></i>Independent</span>
   </div>
 </div>
+     
+
+
+
+        <div class="cell" style="padding-bottom:-30px;"><b>Notes</b></div>
 
       </div>
     </aside>

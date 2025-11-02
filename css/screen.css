@@ -40,6 +40,11 @@ a:hover { color: var(--accent); }
   position: static; width: auto; height: auto; padding: 8px 12px; background:#000; color:#fff;
 }
 
+a:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
 /* wrappers */
 .wrap {
   width: 100%;
@@ -146,6 +151,21 @@ a:hover { color: var(--accent); }
 img, svg, video { max-width: 100%; height: auto; display: block; }
 html, body { max-width: 100%; overflow-x: hidden; }
 
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  border: 0;
+}
+
+
+
+
 /* responsive */
 @media (max-width: 900px) {
   .tiles .grid {
@@ -195,6 +215,13 @@ html, body { max-width: 100%; overflow-x: hidden; }
   }
 }
 
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
 
 
 /* Keep each side to its content width */

@@ -909,7 +909,7 @@
     "electoral": "84 / 261",
     "popular": "32.7%",
     "notes": [
-      "No candidates received a majority of the electoral vote. Top three were chosen to be voted on by The House of Representatives which voted on John Quincy Adams. Adams got 13 / 25 (54%) votes in the House"
+      "No candidates recieved a majority of the electoral vote. Top three were chosen to be voted on by The House of Representatives which voted on John Quincy Adams. Adams got 13 / 25 (54%) votes in the House"
     ],
     "senateYears": [
       [
@@ -3158,7 +3158,7 @@
     "name": "William McKinley",
     "year": 1896,
     "band": "Republican",
-    "portrait": "images/presidents/William_Mckinley.jpg",
+    "portrait": "images/presidents/William_McKinley.jpg",
     "map": "images/maps/1896_election.svg",
     "electoral": "271 / 447",
     "popular": "51.0%",

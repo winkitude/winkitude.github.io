@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-  <title>Last.fm Top 50 (2008–2025) — Drag City Edition</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poltawski+Nowy:wght@400;700;900&display=swap" rel="stylesheet">
+  <title>Theduckmanz — Last.fm Top 50 (2008–2025)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poltawski+Nowy:wght@400;600;700;900&display=swap" rel="stylesheet">
   <style>
-    /* ===== Drag City–ish vibe with brand header ===== */
+    /* ===== Drag City–ish vibe with Ari header ===== */
     :root {
       --bg: #f6f3e7;         /* newsprint */
       --panel: #fffdf6;      /* off-white */
@@ -17,14 +17,17 @@
       --ink: #0b0b0b;        /* heavy black */
       --dark-pink: #c2187a;  /* in 2008 */
       --light-pink: #f2a9c3; /* entered after 2008 */
-      --light-gray: #d9d9d9; /* MUCH lighter for Rank > 50 lines */
+      --light-gray: #d9d9d9; /* very light for Rank > 50 */
       --card: #fffdfa;
       --stroke: #0b0b0b;
     }
-    html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text);
-      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+    html, body {
+      margin: 0; padding: 0;
+      background: var(--bg); color: var(--text);
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    }
 
-    /* Brand header (Ari Winkleman) */
+    /* Ari header */
     .aw-header {
       display: flex; align-items: center; justify-content: space-between;
       padding: 10px 16px; background: #fff; border-bottom: 3px solid var(--ink);
@@ -40,29 +43,41 @@
       font-family: "Poltawski Nowy", serif; font-weight: 700; color: var(--ink); text-decoration: none;
       border-bottom: 2px solid transparent; padding-bottom: 2px;
     }
-
-    h1 a {
-      font-family: "Poltawski Nowy", serif; font-weight: 700; color: var(--ink); text-decoration: underline;
-      border-bottom: 2px solid transparent; padding-bottom: 2px;
-    }
-
     .aw-nav a:hover { border-color: var(--ink); }
-  .brand a {
-    text-decoration:none; color:#101010; font-weight:600; letter-spacing:.2px;
-    font-family: 'Poltawski Nowy', serif; font-size:20px; line-height:1;
-  }
-  .brand a:hover { opacity:.8; }
 
-    header { padding: 14px 16px; background: var(--panel); position: sticky; top: 46px; z-index: 9; box-shadow: 0 2px 0 var(--ink); border-bottom: 3px solid var(--ink); }
-    header h1 { font-size: 18px; margin: 0; font-weight: 800; letter-spacing: .3px; text-transform: uppercase; font-family: "Poltawski Nowy", serif; }
+    /* Main title banner – NOT sticky */
+    header {
+      padding: 14px 16px;
+      background: var(--panel);
+      border-bottom: 3px solid var(--ink);
+      box-shadow: 0 2px 0 var(--ink);
+      position: static;   /* <-- important: not sticky */
+    }
+    header h1 {
+      font-size: 18px; margin: 0; font-weight: 800; letter-spacing: .3px;
+      text-transform: uppercase; font-family: "Poltawski Nowy", serif;
+    }
     main { padding: 16px; }
 
-    .chart-wrap { background: var(--panel2); border-radius: 6px; padding: 14px; border: 3px solid var(--ink); box-shadow: 6px 6px 0 var(--ink); }
-    .legend { display: flex; gap: 18px; align-items: center; flex-wrap: wrap; margin: 8px 2px 12px; font-size: 13px; color: var(--muted);
-      padding: 6px 10px; border: 2px solid var(--ink); display:inline-flex; background:#fff; transform: rotate(-0.6deg); }
-    .legend .swatch { width: 12px; height: 12px; border-radius: 2px; display: inline-block; margin-right: 6px; vertical-align: -2px; border:1.5px solid var(--ink); }
+    .chart-wrap {
+      background: var(--panel2); border-radius: 6px; padding: 14px;
+      border: 3px solid var(--ink); box-shadow: 6px 6px 0 var(--ink);
+    }
+    .legend {
+      display: inline-flex; gap: 18px; align-items: center; flex-wrap: wrap;
+      margin: 8px 2px 12px; font-size: 13px; color: var(--muted);
+      padding: 6px 10px; border: 2px solid var(--ink); background:#fff;
+      transform: rotate(-0.6deg);
+    }
+    .legend .swatch {
+      width: 12px; height: 12px; border-radius: 2px; display: inline-block;
+      margin-right: 6px; vertical-align: -2px; border:1.5px solid var(--ink);
+    }
 
-    svg { width: 100%; height: auto; display: block; background: #fff; border: 2px solid var(--ink); }
+    svg {
+      width: 100%; height: auto; display: block;
+      background: #fff; border: 2px solid var(--ink);
+    }
 
     .axis line, .axis path { stroke: var(--grid); }
     .axis text { fill: var(--muted); font-size: 11px; font-weight: 700; letter-spacing:.2px; }
@@ -77,7 +92,11 @@
     .series.highlight { stroke-width: 4.6px; opacity: 1; filter: drop-shadow(0 1px 0 var(--ink)); }
     .dot { pointer-events: none; r: 3.8px; }
 
-    .label { font-size: 11.5px; fill: var(--ink); paint-order: stroke; stroke: #ffffff; stroke-width: 4px; pointer-events: auto; font-weight: 800; }
+    .label {
+      font-size: 11.5px; fill: var(--ink);
+      paint-order: stroke; stroke: #ffffff; stroke-width: 4px;
+      pointer-events: auto; font-weight: 800;
+    }
     .year-chip { fill: var(--ink); font-weight: 900; font-size: 12px; }
 
     .status { font-size: 13px; color: var(--muted); margin-top: 8px; font-weight:700; }
@@ -86,25 +105,38 @@
     .y-axis .tick text, .y-axis .tick line, .y-axis path { display: none; }
 
     /* ===== Year lists ===== */
-    .yearlists { margin-top: 18px; display: grid; gap: 16px; grid-template-columns: repeat(12, 1fr); }
-    .col { grid-column: span 12; background: var(--card); border: 3px solid var(--ink); border-radius: 6px; padding: 12px; box-shadow: 6px 6px 0 var(--ink); }
+    .yearlists {
+      margin-top: 18px; display: grid; gap: 16px;
+      grid-template-columns: repeat(12, 1fr);
+    }
+    .col {
+      grid-column: span 12; background: var(--card);
+      border: 3px solid var(--ink); border-radius: 6px;
+      padding: 12px; box-shadow: 6px 6px 0 var(--ink);
+    }
     @media (min-width: 980px) { .col { grid-column: span 4; } }
 
-    .col-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
+    .col-head {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 10px; margin-bottom: 10px;
+    }
     .col-head h3 {
       margin: 0; font-size: 13px; font-weight: 900; text-transform: uppercase; letter-spacing:.5px;
-      background: var(--ink); color: #fff; padding: 6px 10px; border:2px solid var(--ink); transform: rotate(-1deg);
-      box-shadow: 3px 3px 0 var(--ink); font-family: "Poltawski Nowy", serif;
+      background: var(--ink); color: #fff; padding: 6px 10px; border:2px solid var(--ink);
+      transform: rotate(-1deg); box-shadow: 3px 3px 0 var(--ink);
+      font-family: "Poltawski Nowy", serif;
     }
     .col-head select {
-      background: #fff; color: var(--ink); border: 2px solid var(--ink); border-radius: 4px; padding: 6px 8px; font-size: 13px; font-weight: 700;
+      background: #fff; color: var(--ink); border: 2px solid var(--ink);
+      border-radius: 4px; padding: 6px 8px; font-size: 13px; font-weight: 700;
     }
 
     .list { display: grid; gap: 6px; }
 
     .row {
       display: grid; grid-template-columns: 40px 1fr auto; align-items: center; gap: 10px;
-      background: #fff; border: 2px solid var(--ink); border-radius: 4px; padding: 6px; min-height: 48px;
+      background: #fff; border: 2px solid var(--ink); border-radius: 4px;
+      padding: 6px; min-height: 48px;
       transition: background .12s ease, color .12s ease;
     }
     .row:hover { background: var(--ink); color: #fff; }
@@ -113,29 +145,68 @@
     /* Artists list (no images) */
     .row.no-thumb { grid-template-columns: 1fr auto; }
 
-    .thumb { width: 40px; height: 40px; border-radius: 3px; background: #e8e6dd; overflow: hidden; display: grid; place-items:center; font-size: 11px; color: var(--muted); border:1px solid var(--ink); }
-    .thumb img { width: 100%; height: 100%; object-fit: cover; display:block; } /* KEEP COLOR (no filter) */
+    .thumb {
+      width: 40px; height: 40px; border-radius: 3px; background: #e8e6dd;
+      overflow: hidden; display: grid; place-items:center;
+      font-size: 11px; color: var(--muted); border:1px solid var(--ink);
+    }
+    .thumb img {
+      width: 100%; height: 100%; object-fit: cover; display:block;
+    }
 
     .title { font-size: 13px; font-weight: 800; line-height: 1.1; letter-spacing:.2px; }
     .subtitle { color: var(--muted); font-size: 12px; font-weight:700; }
     .plays { font-variant-numeric: tabular-nums; font-size: 12px; color: var(--muted); padding-right: 6px; font-weight:800; }
     .plays::before { content: "▶ "; opacity:.6; }
 
-    .tooltip { position: fixed; pointer-events: auto; padding: 10px 12px; background: #fff; color: var(--ink); border: 3px solid var(--ink); border-radius: 6px; font-size: 12px; max-width: 420px; box-shadow: 6px 6px 0 var(--ink); z-index: 100000; display: none; }
-    .tooltip .t-head { font-weight: 900; margin: 0 0 4px; font-size: 13px; text-transform: uppercase; font-family: "Poltawski Nowy", serif; }
+    .tooltip {
+      position: fixed; pointer-events: auto;
+      padding: 10px 12px; background: #fff; color: var(--ink);
+      border: 3px solid var(--ink); border-radius: 6px;
+      font-size: 12px; max-width: 420px;
+      box-shadow: 6px 6px 0 var(--ink);
+      z-index: 100000; display: none;
+    }
+    .tooltip .t-head {
+      font-weight: 900; margin: 0 0 4px; font-size: 13px;
+      text-transform: uppercase; font-family: "Poltawski Nowy", serif;
+    }
     .tooltip .t-meta { color: var(--muted); margin-bottom: 8px; font-weight:700; }
     .tooltip .t-ranks { line-height: 1.35; font-weight:700; }
     .tooltip .t-video { margin-top: 10px; border-top: 2px dashed var(--ink); padding-top: 8px; }
-    .tooltip .t-video iframe { width: 100%; height: 260px; border: 0; display: block; border-radius: 4px; } /* KEEP COLOR: removed grayscale filter */
+    .tooltip .t-video iframe {
+      width: 100%; height: 260px; border: 0; display: block; border-radius: 4px;
+    }
+
+    .tooltip-close {
+      position: absolute; top: 6px; right: 8px;
+      border: none; background: transparent;
+      color: var(--muted); font-size: 16px; font-weight: 900;
+      cursor: pointer; padding: 0;
+    }
+    .tooltip-close:hover { color: var(--ink); }
   </style>
 </head>
 <body>
-  <!-- Brand header -->
+  <!-- Ari header -->
   <div class="aw-header">
-  <div class="brand"><a href="../index.html" title="Ari Winkleman">Ari Winkleman</a></div>
+    <div class="aw-brand">Ari Winkleman</div>
+    <nav class="aw-nav">
+      <a href="#" aria-label="Work">Work</a>
+      <a href="#" aria-label="Data">Data</a>
+      <a href="#" aria-label="About">About</a>
+      <a href="#" aria-label="Contact">Contact</a>
+    </nav>
   </div>
 
-  <header><h1><a href="https://www.last.fm/user/theduckmanz">theduckmanz's</a> Last.fm Top 50 — 2008 to 2025</h1></header>
+  <header>
+    <h1>
+      <a href="https://www.last.fm/user/theduckmanz" target="_blank" rel="noopener" style="color: inherit; text-decoration: none;">
+        Theduckmanz's Last.fm Top 50 — 2008 to 2025
+      </a>
+    </h1>
+  </header>
+
   <main>
     <div class="chart-wrap">
       <div class="legend">
@@ -171,245 +242,612 @@
       </div>
     </section>
   </main>
+
   <div class="tooltip" id="tooltip"></div>
 
   <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
   <script>
-  /* ========================= BUMP CHART (prior working logic) ========================= */
-  const START_YEAR = 2008;
-  const END_YEAR   = 2025;
-  const DARK_PINK  = getCss("--dark-pink");
-  const LIGHT_PINK = getCss("--light-pink");
-  const LIGHT_GRAY = getCss("--light-gray"); // lighter gray for Rank > 50
-  function getCss(v){ return getComputedStyle(document.documentElement).getPropertyValue(v).trim(); }
+    const START_YEAR = 2008;
+    const END_YEAR   = 2025;
+    const DARK_PINK  = getCss("--dark-pink");
+    const LIGHT_PINK = getCss("--light-pink");
+    const LIGHT_GRAY = getCss("--light-gray");
+    function getCss(v){ return getComputedStyle(document.documentElement).getPropertyValue(v).trim(); }
 
-  const LABEL_LEFT_OFFSET  = 24, LABEL_RIGHT_OFFSET = 24, GUTTER_LEFT = 160, GUTTER_RIGHT = 200;
-  const svg = d3.select("#chart"); const statusEl = document.getElementById("status"); const tooltip = document.getElementById("tooltip");
-  let pinned = null, currentTooltipArtist = null;
-  const margin = {top: 32, right: 260, bottom: 40, left: 180};
-  const width  = 1200 - margin.left - margin.right, height = 700  - margin.top  - margin.bottom;
-  const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
-  const x = d3.scalePoint().padding(0.5).range([0, width]); const y = d3.scaleLinear().domain([1, 50]).range([0, height]);
-  const xAxis = g.append("g").attr("class", "axis x-axis").attr("transform", `translate(0,${height})`);
-  const yAxis = g.append("g").attr("class", "axis y-axis"); const grid = g.append("g").attr("class", "grid");
-  const seriesLayer = g.append("g").attr("class", "series-layer"); const dotsLayer = g.append("g").attr("class", "dots-layer"); const labelsLayer = g.append("g").attr("class", "labels-layer");
+    const LABEL_LEFT_OFFSET  = 24;
+    const LABEL_RIGHT_OFFSET = 24;
+    const GUTTER_LEFT = 160;
+    const GUTTER_RIGHT = 200;
 
-  function escapeHtml(str){
-    const map = {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'};
-    return String(str).replace(/[&<>"']/g, m => map[m]);
-  }
-  function adjustLabelBounds() {
-    labelsLayer.selectAll("text.label.left").each(function(d){ try { const bbox = this.getBBox(); const leftEdge = d.x - bbox.width; const minLeft = -GUTTER_LEFT; if (leftEdge < minLeft) d3.select(this).attr("x", minLeft + bbox.width + 2);} catch(e){} });
-    labelsLayer.selectAll("text.label.right").each(function(d){ try { const bbox = this.getBBox(); const rightEdge = d.x + bbox.width; const maxRight = width + GUTTER_RIGHT; if (rightEdge > maxRight) d3.select(this).attr("x", maxRight - bbox.width - 2);} catch(e){} });
-  }
+    const svg = d3.select("#chart");
+    const statusEl = document.getElementById("status");
+    const tooltip = document.getElementById("tooltip");
+    let overTooltip = false;
+    let pinned = null;
+    let currentTooltipArtist = null;
 
-  function extractYouTubeId(input) {
-    if (!input) return null;
-    const s = String(input).trim();
-    if (/^[A-Za-z0-9_-]{11}$/.test(s)) return s;
-    try {
-      const u = new URL(s, window.location.href);
-      const host = u.hostname.replace(/^www\./, '');
-      if (host === 'youtube.com' || host.endsWith('.youtube.com')) {
-        if (u.pathname === '/watch') {
-          const v = u.searchParams.get('v');
-          if (v && /^[A-Za-z0-9_-]{11}$/.test(v)) return v;
-        }
-        if (u.pathname.startsWith('/embed/')) {
-          const id = u.pathname.split('/')[2];
-          if (id && /^[A-Za-z0-9_-]{11}$/.test(id)) return id;
-        }
-        if (u.pathname.startsWith('/shorts/')) {
-          const id = u.pathname.split('/')[2];
-          if (id && /^[A-Za-z0-9_-]{11}$/.test(id)) return id;
-        }
-      }
-      if (host === 'youtu.be') {
-        const id = u.pathname.slice(1);
-        if (id && /^[A-Za-z0-9_-]{11}$/.test(id)) return id;
-      }
-    } catch(e) {}
-    return null;
-  }
-
-  d3.csv("lastfm_top50.csv").then(raw => {
-    const originalColumns = raw.columns.slice(); const trim = s => String(s == null ? "" : s).trim(); const normMap = new Map(); originalColumns.forEach(c => normMap.set(trim(c).toLowerCase(), c));
-    const artistKey = (normMap.get("artist")) || originalColumns.find(c => trim(c).toLowerCase().includes("artist")) || originalColumns[0];
-    const yearKeyMap = new Map(); originalColumns.forEach(c => { const m = trim(c).match(/^(\d{4})$/); if (m) { const y = +m[1]; if (y >= START_YEAR && y <= END_YEAR) yearKeyMap.set(y, c);} });
-    const yearCols = Array.from(yearKeyMap.keys()).sort((a,b)=>a-b); if (!yearCols.length) { statusEl.textContent = "No year columns found (expected 2008–2025). Found headers: " + originalColumns.join(", "); return; }
-    const years = yearCols.map(String); x.domain(years);
-    const series = raw.map(row => { const name = row[artistKey]; const points = []; let firstNonZeroYear = null, lastNonZeroYear = null;
-      yearCols.forEach(y => { const key = yearKeyMap.get(y); const v = +row[key] || 0; if (v > 0) { const rank = 51 - v; points.push({ yearLabel: String(y), rank, value: v }); if (firstNonZeroYear === null) firstNonZeroYear = y; lastNonZeroYear = y; } else { points.push({ yearLabel: String(y), rank: null, value: 0 }); } });
-      const inStart = (+row[yearKeyMap.get(START_YEAR)] || 0) > 0; const finalZero = (+row[yearKeyMap.get(END_YEAR)] || 0) === 0;
-      const lowerKeys = Object.fromEntries(Object.keys(row).map(k => [k.toLowerCase().trim(), k]));
-      const videoRaw = (lowerKeys['videoid'] ? row[lowerKeys['videoid']] : undefined) || (lowerKeys['youtube'] ? row[lowerKeys['youtube']] : undefined) || (lowerKeys['video'] ? row[lowerKeys['video']] : undefined) || '';
-      const videoId = extractYouTubeId(videoRaw);
-      return { artist: name, points, inStart, firstNonZeroYear, lastNonZeroYear, finalZero, videoId };
-    }).filter(s => s.firstNonZeroYear !== null);
-    function topSet(year) { const arr = series.map(s => ({ artist: s.artist, value: s.points.find(p => +p.yearLabel===year)?.value || 0 })); arr.sort((a,b) => d3.descending(a.value, b.value)); return new Set(arr.slice(0, 50).filter(d => d.value > 0).map(d => d.artist)); }
-    const top2008 = topSet(START_YEAR); const top2025 = topSet(END_YEAR);
-    function colorFor(s) { return s.finalZero ? LIGHT_GRAY : (s.inStart ? DARK_PINK : LIGHT_PINK); }
-    xAxis.call(d3.axisBottom(x).tickSizeOuter(0).tickPadding(6)); yAxis.call(d3.axisLeft(y).tickValues([]));
-    grid.selectAll(".gridline").data(d3.range(5, 51, 5), d=>d).join(enter => enter.append("line").attr("class","gridline").attr("x1",0).attr("x2",width).attr("y1",d=>y(d)).attr("y2",d=>y(d)), update => update.attr("y1",d=>y(d)).attr("y2",d=>y(d)), exit => exit.remove());
-    labelsLayer.append("text").attr("class","year-chip").attr("x", x(String(START_YEAR))).attr("y",-10).attr("text-anchor","middle").text(String(START_YEAR));
-    labelsLayer.append("text").attr("class","year-chip").attr("x", x(String(END_YEAR))).attr("y",-10).attr("text-anchor","middle").text(String(END_YEAR));
-    const line = d3.line().defined(d => d.rank != null).x(d => x(d.yearLabel)).y(d => y(d.rank)).curve(d3.curveMonotoneX);
-    const S = seriesLayer.selectAll(".series").data(series, d => d.artist);
-    S.join(
-      enter => enter.append("path").attr("class","series").attr("d", d => line(d.points)).attr("stroke", d => colorFor(d))
-        .on("mousemove", (event, d) => { if (!pinned) showTooltip(event, d); })
-        .on("mouseleave", () => { if (!pinned) hideTooltip(); })
-        .on("mouseover", function(event, d){ if (!pinned) { seriesLayer.selectAll(".series").classed("hidden", true); d3.select(this).classed("hidden", false).classed("highlight", true); showTooltip(event, d);} })
-        .on("mouseout", function(){ if (!pinned) { seriesLayer.selectAll(".series").classed("hidden", false).classed("highlight", false);} })
-        .on("click", function(event, d){ event.stopPropagation(); if (pinned === d.artist) { pinned = null; hideTooltip(); seriesLayer.selectAll(".series").classed("hidden", false).classed("highlight", false);} else { pinned = d.artist; seriesLayer.selectAll(".series").classed("hidden", true).classed("highlight", false); d3.select(this).classed("hidden", false).classed("highlight", true); showTooltip(event, d);} }),
-      update => update.attr("d", d => line(d.points)).attr("stroke", d => colorFor(d)),
-      exit => exit.remove()
-    );
-    dotsLayer.selectAll("*").remove();
-    series.forEach(s => { dotsLayer.selectAll(null).data(s.points.filter(p => p.rank != null)).enter().append("circle").attr("class","dot").attr("cx", d => x(d.yearLabel)).attr("cy", d => y(d.rank)).attr("fill", colorFor(s)).attr("opacity", .95); });
-    const leftLabels = series.filter(s => top2008.has(s.artist)).map(s => { const p = s.points.find(p => p.yearLabel === String(START_YEAR)); return p && p.rank != null ? { artist: s.artist, x: x(String(START_YEAR)) - LABEL_LEFT_OFFSET, y: y(p.rank), anchor: "end", color: colorFor(s), ref: s } : null; }).filter(Boolean);
-    const rightLabels = series.filter(s => top2025.has(s.artist)).map(s => { const p = s.points.find(p => p.yearLabel === String(END_YEAR)); return p && p.rank != null ? { artist: s.artist, x: x(String(END_YEAR)) + LABEL_RIGHT_OFFSET, y: y(p.rank), anchor: "start", color: colorFor(s), ref: s } : null; }).filter(Boolean);
-    labelsLayer.selectAll(".label.left").data(leftLabels, d => d.artist).join(enter => enter.append("text").attr("class","label left").attr("x", d => d.x).attr("y", d => d.y).attr("text-anchor", d => d.anchor).attr("fill", d => d.color).text(d => d.artist)
-      .style("cursor","pointer")
-      .on("mouseover", (event, d) => { if (!pinned) { seriesLayer.selectAll(".series").classed("hidden", true); seriesLayer.selectAll(".series").filter(s => s.artist===d.artist).classed("hidden", false).classed("highlight", true); showTooltip(event, d.ref); } })
-      .on("click", (event, d) => { event.stopPropagation(); if (pinned === d.artist) { pinned = null; hideTooltip(); seriesLayer.selectAll(".series").classed("hidden", false).classed("highlight", false);} else { pinned = d.artist; seriesLayer.selectAll(".series").classed("hidden", true).classed("highlight", false); seriesLayer.selectAll(".series").filter(s => s && s.artist === d.artist).classed("hidden", false).classed("highlight", true); showTooltip(event, d.ref);} })
-    );
-    labelsLayer.selectAll(".label.right").data(rightLabels, d => d.artist).join(enter => enter.append("text").attr("class","label right").attr("x", d => d.x).attr("y", d => d.y).attr("text-anchor", d => d.anchor).attr("fill", d => d.color).text(d => d.artist)
-      .style("cursor","pointer")
-      .on("mouseover", (event, d) => { if (!pinned) { seriesLayer.selectAll(".series").classed("hidden", true); seriesLayer.selectAll(".series").filter(s => s.artist===d.artist).classed("hidden", false).classed("highlight", true); showTooltip(event, d.ref); } })
-      .on("click", (event, d) => { event.stopPropagation(); if (pinned === d.artist) { pinned = null; hideTooltip(); seriesLayer.selectAll(".series").classed("hidden", false).classed("highlight", false);} else { pinned = d.artist; seriesLayer.selectAll(".series").classed("hidden", true).classed("highlight", false); seriesLayer.selectAll(".series").filter(s => s && s.artist === d.artist).classed("hidden", false).classed("highlight", true); showTooltip(event, d.ref);} })
-    );
-    statusEl.textContent = `Rendered ${series.length} artists across ${years.length} years. Hover to preview, click to pin/unpin.`;
-    adjustLabelBounds();
-    function renderTooltipContent(s) {
-      const entry = s.firstNonZeroYear ?? "—"; const exit  = s.lastNonZeroYear ?? "—";
-      const items = s.points.filter(p => p.rank != null).map(p => `${p.yearLabel}: #${p.rank}`); const ranks = items.join("<br>");
-      const q = encodeURIComponent(`${s.artist} official music video`);
-      const src = s.videoId ? `https://www.youtube.com/embed/${s.videoId}?rel=0&modestbranding=1` : `https://www.youtube.com/embed?listType=search&list=${q}&rel=0&modestbranding=1`;
-      return `<div class="t-head">${escapeHtml(s.artist)}</div>
-              <div class="t-meta">First year in Top 50: <strong>${entry}</strong> • Last nonzero year: <strong>${exit}</strong></div>
-              <div class="t-ranks">${ranks}</div>
-              <div class="t-video">
-                <iframe src="${src}" title="YouTube for ${escapeHtml(s.artist)}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                <div style="margin-top:6px"><a href="https://www.youtube.com/results?search_query=${q}" target="_blank" rel="noopener noreferrer">Open on YouTube</a></div>
-              </div>`;
-    }
-    function showTooltip(event, s) { if (pinned && pinned !== s.artist) return; if (currentTooltipArtist !== s.artist || tooltip.dataset.artist !== s.artist) { tooltip.innerHTML = renderTooltipContent(s); tooltip.dataset.artist = s.artist; currentTooltipArtist = s.artist; } tooltip.style.display = "block"; positionTooltip(event); }
-    function hideTooltip(){ tooltip.style.display = "none"; tooltip.dataset.artist = ""; }
-    function positionTooltip(event){ const pad = 12; const { clientX:x, clientY:y } = event; const w = tooltip.offsetWidth, h = tooltip.offsetHeight; let left = x + pad, top = y + pad; if (left + w > window.innerWidth) left = x - w - pad; if (top + h > window.innerHeight) top = y - h - pad; if (left < 6) left = 6; if (top < 6) top = 6; tooltip.style.left = left + "px"; tooltip.style.top  = top  + "px"; }
-  }).catch(err => { console.error("Failed to load lastfm_top50.csv", err); statusEl.textContent = "Could not load lastfm_top50.csv — ensure it's next to this HTML and served over http(s)."; });
-
-  /* ========================= YEAR LISTS (Artists no images; Songs/Albums keep color) ========================= */
-  const UI = {
-    artists: { select: document.getElementById("year-artists"), list: document.getElementById("list-artists") },
-    songs:   { select: document.getElementById("year-songs"),   list: document.getElementById("list-songs") },
-    albums:  { select: document.getElementById("year-albums"),  list: document.getElementById("list-albums") }
-  };
-  function norm(s){ return String(s||'').toLowerCase().replace(/[^a-z0-9]+/g,'_'); }
-  function pickNorm(cols, targets){ const nc = new Map(cols.map(c => [norm(c), c])); for (const t of targets){ const f = nc.get(norm(t)); if (f) return f; } return null; }
-  function toPlays(x){ if (x==null) return 0; const n = +String(x).replace(/[, ]/g,''); return Number.isFinite(n)?n:0; }
-
-  // iTunes artwork for songs/albums only (keeps color), no fetch for artists
-  const artworkCache = new Map();
-  function bestArtSize(url){ return url ? url.replace(/\/[0-9]{2,4}x[0-9]{2,4}bb\./, "/256x256bb.") : url; }
-  async function fetchItunesArtwork(kind, title, artist){
-    let entity = "song"; if (kind === "album") entity = "album"; if (kind === "artist") return ""; // do not fetch for artists
-    const key = `${kind}|${title}|${artist}`.toLowerCase(); if (artworkCache.has(key)) return artworkCache.get(key);
-    const term = encodeURIComponent([title, artist].filter(Boolean).join(" "));
-    const url  = `https://itunes.apple.com/search?term=${term}&media=music&entity=${entity}&limit=5`;
-    try { const res = await fetch(url); const json = await res.json(); const results = Array.isArray(json.results) ? json.results : []; if (!results.length) { artworkCache.set(key, ""); return ""; }
-      const art = bestArtSize(results[0].artworkUrl100 || results[0].artworkUrl60 || ""); artworkCache.set(key, art || ""); return art || "";
-    } catch (e) { artworkCache.set(key, ""); return ""; }
-  }
-
-  d3.csv("Top_lastfm.csv").then(rows => {
-    const cols = rows.columns.slice();
-    const yearCol = pickNorm(cols, ["Year"]); if (!yearCol) throw new Error("Top_lastfm.csv must include a 'Year' column.");
-    const aNameCol  = pickNorm(cols, ["Top_Yearly_Artist", "Top_Overall_Artist"]);
-    const aPlaysCol = pickNorm(cols, ["Top_Yearly_Plays",  "Top_Overall_Plays"]);
-    const tTitleCol  = pickNorm(cols, ["Top_Track"]);
-    const tArtistCol = pickNorm(cols, ["Top_Track_Artist"]);
-    const tPlaysCol  = pickNorm(cols, ["Top_Track_Plays"]);
-    const tImgCol    = pickNorm(cols, ["Top_Track_Image", "Track_Image"]);
-    const alTitleCol  = pickNorm(cols, ["Top_Album"]);
-    const alArtistCol = pickNorm(cols, ["Top_Album_Artist"]);
-    const alPlaysCol  = pickNorm(cols, ["Top_Album_Plays"]);
-    const alImgCol    = pickNorm(cols, ["Top_Album_Image", "Album_Image"]);
-
-    const byYearArtists = new Map(), byYearSongs = new Map(), byYearAlbums = new Map();
-    rows.forEach(r => {
-      const year = +r[yearCol]; if (!Number.isFinite(year)) return;
-      if (aNameCol && aPlaysCol && r[aNameCol]) {
-        const arr = byYearArtists.get(year) || [];
-        arr.push({ kind:"artist", title: r[aNameCol], subtitle: "", plays: toPlays(r[aPlaysCol]) });
-        byYearArtists.set(year, arr);
-      }
-      if (tTitleCol && tArtistCol && tPlaysCol && r[tTitleCol]) {
-        const arr = byYearSongs.get(year) || [];
-        arr.push({ kind:"song", title: r[tTitleCol], subtitle: r[tArtistCol]||"", plays: toPlays(r[tPlaysCol]), img: tImgCol ? (r[tImgCol]||"").trim() : "" });
-        byYearSongs.set(year, arr);
-      }
-      if (alTitleCol && alArtistCol && alPlaysCol && r[alTitleCol]) {
-        const arr = byYearAlbums.get(year) || [];
-        arr.push({ kind:"album", title: r[alTitleCol], subtitle: r[alArtistCol]||"", plays: toPlays(r[alPlaysCol]), img: alImgCol ? (r[alImgCol]||"").trim() : "" });
-        byYearAlbums.set(year, arr);
+    tooltip.addEventListener("mouseenter", () => { overTooltip = true; });
+    tooltip.addEventListener("mouseleave", () => {
+      overTooltip = false;
+      if (!pinned) {
+        hideTooltip();
+        seriesLayer.selectAll(".series").classed("hidden", false).classed("highlight", false);
       }
     });
-    for (const m of [byYearArtists, byYearSongs, byYearAlbums]) for (const [y, arr] of m.entries()) arr.sort((a,b)=>(b.plays||0)-(a.plays||0));
-    const allYears = Array.from(new Set([...byYearArtists.keys(), ...byYearSongs.keys(), ...byYearAlbums.keys()])).sort((a,b)=>a-b);
-    const years = allYears.filter(y=>y>=START_YEAR && y<=END_YEAR).length ? allYears.filter(y=>y>=START_YEAR && y<=END_YEAR) : allYears;
 
-    function fillSelect(sel){ sel.innerHTML=""; years.forEach(y => { const o=document.createElement('option'); o.value=y; o.textContent=y; sel.appendChild(o); }); sel.value = years[years.length-1]; }
-    fillSelect(UI.artists.select); fillSelect(UI.songs.select); fillSelect(UI.albums.select);
+    const margin = {top: 32, right: 260, bottom: 40, left: 180};
+    const width  = 1200 - margin.left - margin.right;
+    const height = 700  - margin.top  - margin.bottom;
+    const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
+    const x = d3.scalePoint().padding(0.5).range([0, width]);
+    const y = d3.scaleLinear().domain([1, 50]).range([0, height]);
+    const xAxis = g.append("g").attr("class", "axis x-axis").attr("transform", `translate(0,${height})`);
+    const yAxis = g.append("g").attr("class", "axis y-axis");
+    const grid = g.append("g").attr("class", "grid");
+    const seriesLayer = g.append("g").attr("class", "series-layer");
+    const dotsLayer = g.append("g").attr("class", "dots-layer");
+    const labelsLayer = g.append("g").attr("class", "labels-layer");
 
-    async function renderList(container, list, limit=10, opts={ showThumb:true }){
-      container.innerHTML = "";
-      for (const it of (list||[]).slice(0,limit)){
-        const row = document.createElement('div'); row.className = 'row' + (opts.showThumb ? '' : ' no-thumb');
-        if (opts.showThumb){
-          const thumb = document.createElement('div'); thumb.className='thumb';
-          if (it.img){
-            const img=document.createElement('img'); img.src=it.img; img.alt=it.title||'art'; img.referrerPolicy='no-referrer'; img.onerror=()=>{thumb.textContent='No img';}; thumb.appendChild(img);
-          } else {
-            thumb.textContent='…';
-            const art = await fetchItunesArtwork(it.kind, it.title, it.subtitle);
-            thumb.textContent='';
-            if (art){ const img=document.createElement('img'); img.src=art; img.alt=it.title||'art'; img.referrerPolicy='no-referrer'; img.onerror=()=>{thumb.textContent='No img';}; thumb.appendChild(img); }
-            else { thumb.textContent='No img'; }
-          }
-          row.appendChild(thumb);
-        }
-        const text=document.createElement('div');
-        const t=document.createElement('div'); t.className='title'; t.textContent=it.title||'—';
-        const s=document.createElement('div'); s.className='subtitle'; s.textContent=it.subtitle||'';
-        text.appendChild(t); if (it.subtitle) text.appendChild(s);
-        const plays=document.createElement('div'); plays.className='plays'; plays.textContent=Number.isFinite(it.plays)?Intl.NumberFormat().format(it.plays):'—';
-        row.appendChild(text); row.appendChild(plays); container.appendChild(row);
-      }
+    function escapeHtml(str){
+      const map = {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'};
+      return String(str).replace(/[&<>"']/g, m => map[m]);
     }
 
-    function updateArtists(){ renderList(UI.artists.list, byYearArtists.get(+UI.artists.select.value), 10, { showThumb:false }); }
-    function updateSongs(){   renderList(UI.songs.list,   byYearSongs.get(+UI.songs.select.value),   10, { showThumb:true }); }
-    function updateAlbums(){  renderList(UI.albums.list,  byYearAlbums.get(+UI.albums.select.value), 10, { showThumb:true }); }
+    function adjustLabelBounds() {
+      labelsLayer.selectAll("text.label.left").each(function(d){
+        try {
+          const bbox = this.getBBox();
+          const leftEdge = d.x - bbox.width;
+          const minLeft = -GUTTER_LEFT;
+          if (leftEdge < minLeft) {
+            const newX = minLeft + bbox.width + 2;
+            d3.select(this).attr("x", newX);
+          }
+        } catch(e) {}
+      });
+      labelsLayer.selectAll("text.label.right").each(function(d){
+        try {
+          const bbox = this.getBBox();
+          const rightEdge = d.x + bbox.width;
+          const maxRight = width + GUTTER_RIGHT;
+          if (rightEdge > maxRight) {
+            const newX = maxRight - bbox.width - 2;
+            d3.select(this).attr("x", newX);
+          }
+        } catch(e) {}
+      });
+    }
 
-    updateArtists(); updateSongs(); updateAlbums();
-    UI.artists.select.addEventListener('change', updateArtists);
-    UI.songs.select.addEventListener('change',   updateSongs);
-    UI.albums.select.addEventListener('change',  updateAlbums);
-  }).catch(err => {
-    console.error("Failed to load Top_lastfm.csv", err);
-    document.getElementById("col-artists").querySelector(".list").innerHTML =
-      "<div class='row no-thumb'><div>Could not load Top_lastfm.csv</div><div></div></div>";
-  });
-  </script>
+    function extractYouTubeId(input) {
+      if (!input) return null;
+      const s = String(input).trim();
+      if (/^[A-Za-z0-9_-]{11}$/.test(s)) return s;
+      try {
+        const u = new URL(s, window.location.href);
+        const host = u.hostname.replace(/^www\./, '');
+        if (host === 'youtube.com' || host.endsWith('.youtube.com')) {
+          if (u.pathname === '/watch') {
+            const v = u.searchParams.get('v');
+            if (v && /^[A-Za-z0-9_-]{11}$/.test(v)) return v;
+          }
+          if (u.pathname.startsWith('/embed/')) {
+            const id = u.pathname.split('/')[2];
+            if (id && /^[A-Za-z0-9_-]{11}$/.test(id)) return id;
+          }
+          if (u.pathname.startsWith('/shorts/')) {
+            const id = u.pathname.split('/')[2];
+            if (id && /^[A-Za-z0-9_-]{11}$/.test(id)) return id;
+          }
+        }
+        if (host === 'youtu.be') {
+          const id = u.pathname.slice(1);
+          if (id && /^[A-Za-z0-9_-]{11}$/.test(id)) return id;
+        }
+      } catch(e) {}
+      return null;
+    }
 
-   <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8FK0VXYYGX"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){ dataLayer.push(arguments); }
-    gtag('js', new Date());
-    gtag('config', 'G-8FK0VXYYGX');
+    function renderTooltipContent(s) {
+      const entry = s.firstNonZeroYear ?? "—";
+      const exit  = s.lastNonZeroYear ?? "—";
+      const items = s.points.filter(p => p.rank != null).map(p => `${p.yearLabel}: #${p.rank}`);
+      const ranks = items.join("<br>");
+
+      const q = encodeURIComponent(`${s.artist} official music video`);
+      const src = s.videoId
+        ? `https://www.youtube.com/embed/${s.videoId}?rel=0&modestbranding=1`
+        : `https://www.youtube.com/embed?listType=search&list=${q}&rel=0&modestbranding=1`;
+
+      return `
+        <button class="tooltip-close" aria-label="Close popup">&times;</button>
+        <div class="t-head">${escapeHtml(s.artist)}</div>
+        <div class="t-meta">First year in Top 50: <strong>${entry}</strong> • Last nonzero year: <strong>${exit}</strong></div>
+        <div class="t-ranks">${ranks}</div>
+        <div class="t-video">
+          <iframe src="${src}" title="YouTube for ${escapeHtml(s.artist)}"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowfullscreen></iframe>
+          <div style="margin-top:6px">
+            <a href="https://www.youtube.com/results?search_query=${q}" target="_blank" rel="noopener noreferrer">
+              Open on YouTube
+            </a>
+          </div>
+        </div>
+      `;
+    }
+
+    function showTooltip(event, s) {
+      if (pinned && pinned !== s.artist) return;
+      if (currentTooltipArtist !== s.artist || tooltip.dataset.artist !== s.artist) {
+        tooltip.innerHTML = renderTooltipContent(s);
+        tooltip.dataset.artist = s.artist;
+        currentTooltipArtist = s.artist;
+
+        const closeBtn = tooltip.querySelector(".tooltip-close");
+        if (closeBtn) {
+          closeBtn.addEventListener("click", (ev) => {
+            ev.stopPropagation();
+            pinned = null;
+            hideTooltip();
+            seriesLayer.selectAll(".series").classed("hidden", false).classed("highlight", false);
+          });
+        }
+      }
+      tooltip.style.display = "block";
+      positionTooltip(event);
+    }
+
+    function hideTooltip(){
+      tooltip.style.display = "none";
+      tooltip.dataset.artist = "";
+    }
+
+    function positionTooltip(event){
+      const pad = 12;
+      const { clientX:x, clientY:y } = event;
+      const w = tooltip.offsetWidth, h = tooltip.offsetHeight;
+      let left = x + pad, top = y + pad;
+      if (left + w > window.innerWidth) left = x - w - pad;
+      if (top + h > window.innerHeight) top = y - h - pad;
+      if (left < 6) left = 6;
+      if (top < 6) top = 6;
+      tooltip.style.left = left + "px";
+      tooltip.style.top  = top  + "px";
+    }
+
+    d3.csv("lastfm_top50.csv").then(raw => {
+      try {
+        const originalColumns = raw.columns.slice();
+        const trim = s => String(s == null ? "" : s).trim();
+        const normMap = new Map();
+        originalColumns.forEach(c => normMap.set(trim(c).toLowerCase(), c));
+
+        const artistKey = (normMap.get("artist"))
+                       || originalColumns.find(c => trim(c).toLowerCase().includes("artist"))
+                       || originalColumns[0];
+
+        const yearKeyMap = new Map();
+        originalColumns.forEach(c => {
+          const m = trim(c).match(/^(\d{4})$/);
+          if (m) {
+            const y = +m[1];
+            if (y >= START_YEAR && y <= END_YEAR) yearKeyMap.set(y, c);
+          }
+        });
+        const yearCols = Array.from(yearKeyMap.keys()).sort((a,b)=>a-b);
+        if (!yearCols.length) {
+          statusEl.textContent = "No year columns found (expected 2008–2025). Found headers: " + originalColumns.join(", ");
+          return;
+        }
+        const years = yearCols.map(String);
+        x.domain(years);
+
+        const series = raw.map(row => {
+          const name = row[artistKey];
+          const points = [];
+          let firstNonZeroYear = null;
+          let lastNonZeroYear  = null;
+          yearCols.forEach(y => {
+            const key = yearKeyMap.get(y);
+            const v = +row[key] || 0;
+            if (v > 0) {
+              const rank = 51 - v;
+              points.push({ yearLabel: String(y), rank, value: v });
+              if (firstNonZeroYear === null) firstNonZeroYear = y;
+              lastNonZeroYear = y;
+            } else {
+              points.push({ yearLabel: String(y), rank: null, value: 0 });
+            }
+          });
+          const inStart = (+row[yearKeyMap.get(START_YEAR)] || 0) > 0;
+          const finalZero = (+row[yearKeyMap.get(END_YEAR)] || 0) === 0;
+
+          const lowerKeys = Object.fromEntries(Object.keys(row).map(k => [k.toLowerCase().trim(), k]));
+          const videoRaw = (lowerKeys['videoid'] ? row[lowerKeys['videoid']] : undefined)
+                        || (lowerKeys['youtube'] ? row[lowerKeys['youtube']] : undefined)
+                        || (lowerKeys['video'] ? row[lowerKeys['video']] : undefined)
+                        || '';
+          const videoId = extractYouTubeId(videoRaw);
+
+          return { artist: name, points, inStart, firstNonZeroYear, lastNonZeroYear, finalZero, videoId };
+        }).filter(s => s.firstNonZeroYear !== null);
+
+        function topSet(year) {
+          const arr = series.map(s => ({
+            artist: s.artist,
+            value: s.points.find(p => +p.yearLabel===year)?.value || 0
+          }));
+          arr.sort((a,b) => d3.descending(a.value, b.value));
+          return new Set(arr.slice(0, 50).filter(d => d.value > 0).map(d => d.artist));
+        }
+        const top2008 = topSet(START_YEAR);
+        const top2025 = topSet(END_YEAR);
+
+        function colorFor(s) { return s.finalZero ? LIGHT_GRAY : (s.inStart ? DARK_PINK : LIGHT_PINK); }
+
+        xAxis.call(d3.axisBottom(x).tickSizeOuter(0).tickPadding(6));
+        yAxis.call(d3.axisLeft(y).tickValues([]));
+
+        const ranksForGrid = d3.range(5, 51, 5);
+        grid.selectAll(".gridline").data(ranksForGrid, d=>d).join(
+          enter => enter.append("line")
+                        .attr("class","gridline")
+                        .attr("x1",0).attr("x2",width)
+                        .attr("y1",d=>y(d)).attr("y2",d=>y(d)),
+          update => update.attr("y1",d=>y(d)).attr("y2",d=>y(d)),
+          exit => exit.remove()
+        );
+
+        labelsLayer.append("text")
+          .attr("class","year-chip")
+          .attr("x", x(String(START_YEAR))).attr("y",-10)
+          .attr("text-anchor","middle").text(String(START_YEAR));
+        labelsLayer.append("text")
+          .attr("class","year-chip")
+          .attr("x", x(String(END_YEAR))).attr("y",-10)
+          .attr("text-anchor","middle").text(String(END_YEAR));
+
+        const line = d3.line()
+          .defined(d => d.rank != null)
+          .x(d => x(d.yearLabel))
+          .y(d => y(d.rank))
+          .curve(d3.curveMonotoneX);
+
+        const S = seriesLayer.selectAll(".series").data(series, d => d.artist);
+        S.join(
+          enter => enter.append("path")
+            .attr("class","series")
+            .attr("d", d => line(d.points))
+            .attr("stroke", d => colorFor(d))
+            // highlight on hover, NO tooltip
+            .on("mouseover", function(event, d){
+              if (!pinned) {
+                seriesLayer.selectAll(".series").classed("hidden", true).classed("highlight", false);
+                d3.select(this).classed("hidden", false).classed("highlight", true);
+              }
+            })
+            .on("mouseout", function(){
+              if (!pinned) {
+                seriesLayer.selectAll(".series").classed("hidden", false).classed("highlight", false);
+              }
+            })
+            // tooltip only on click
+            .on("click", function(event, d){
+              event.stopPropagation();
+              if (pinned === d.artist) {
+                pinned = null;
+                hideTooltip();
+                seriesLayer.selectAll(".series").classed("hidden", false).classed("highlight", false);
+              } else {
+                pinned = d.artist;
+                seriesLayer.selectAll(".series").classed("hidden", true).classed("highlight", false);
+                d3.select(this).classed("hidden", false).classed("highlight", true);
+                showTooltip(event, d);
+              }
+            }),
+          update => update
+            .attr("d", d => line(d.points))
+            .attr("stroke", d => colorFor(d)),
+          exit => exit.remove()
+        );
+
+        dotsLayer.selectAll("*").remove();
+        series.forEach(s => {
+          dotsLayer.selectAll(null)
+            .data(s.points.filter(p => p.rank != null))
+            .enter().append("circle")
+            .attr("class","dot")
+            .attr("cx", d => x(d.yearLabel))
+            .attr("cy", d => y(d.rank))
+            .attr("fill", colorFor(s))
+            .attr("opacity", .95);
+        });
+
+        const leftLabels = series.filter(s => top2008.has(s.artist)).map(s => {
+          const p = s.points.find(p => p.yearLabel === String(START_YEAR));
+          return p && p.rank != null ? {
+            artist: s.artist,
+            x: x(String(START_YEAR)) - LABEL_LEFT_OFFSET,
+            y: y(p.rank),
+            anchor: "end",
+            color: colorFor(s),
+            ref: s
+          } : null;
+        }).filter(Boolean);
+
+        const rightLabels = series.filter(s => top2025.has(s.artist)).map(s => {
+          const p = s.points.find(p => p.yearLabel === String(END_YEAR));
+          return p && p.rank != null ? {
+            artist: s.artist,
+            x: x(String(END_YEAR)) + LABEL_RIGHT_OFFSET,
+            y: y(p.rank),
+            anchor: "start",
+            color: colorFor(s),
+            ref: s
+          } : null;
+        }).filter(Boolean);
+
+        function attachLabelBehaviors(sel) {
+          sel.style("cursor","pointer")
+            .on("mouseover", (event, d) => {
+              if (!pinned) {
+                seriesLayer.selectAll(".series").classed("hidden", true).classed("highlight", false);
+                seriesLayer.selectAll(".series")
+                  .filter(s => s.artist === d.artist)
+                  .classed("hidden", false).classed("highlight", true);
+              }
+            })
+            .on("mouseout", () => {
+              if (!pinned) {
+                seriesLayer.selectAll(".series").classed("hidden", false).classed("highlight", false);
+              }
+            })
+            .on("click", (event, d) => {
+              event.stopPropagation();
+              if (pinned === d.artist) {
+                pinned = null;
+                hideTooltip();
+                seriesLayer.selectAll(".series").classed("hidden", false).classed("highlight", false);
+              } else {
+                pinned = d.artist;
+                seriesLayer.selectAll(".series").classed("hidden", true).classed("highlight", false);
+                seriesLayer.selectAll(".series")
+                  .filter(s => s && s.artist === d.artist)
+                  .classed("hidden", false).classed("highlight", true);
+                showTooltip(event, d.ref);
+              }
+            });
+        }
+
+        labelsLayer.selectAll(".label.left").data(leftLabels, d => d.artist).join(
+          enter => {
+            const t = enter.append("text")
+              .attr("class","label left")
+              .attr("x", d => d.x)
+              .attr("y", d => d.y)
+              .attr("text-anchor", d => d.anchor)
+              .attr("fill", d => d.color)
+              .text(d => d.artist);
+            attachLabelBehaviors(t);
+          }
+        );
+
+        labelsLayer.selectAll(".label.right").data(rightLabels, d => d.artist).join(
+          enter => {
+            const t = enter.append("text")
+              .attr("class","label right")
+              .attr("x", d => d.x)
+              .attr("y", d => d.y)
+              .attr("text-anchor", d => d.anchor)
+              .attr("fill", d => d.color)
+              .text(d => d.artist);
+            attachLabelBehaviors(t);
+          }
+        );
+
+        adjustLabelBounds();
+
+        svg
+          .on("mousemove", (event) => {
+            if (!pinned && tooltip.style.display === "block") {
+              positionTooltip(event);
+            }
+          })
+          .on("mouseleave", () => {
+            if (!pinned && !overTooltip) {
+              hideTooltip();
+              seriesLayer.selectAll(".series").classed("hidden", false).classed("highlight", false);
+            }
+          })
+          .on("click", () => {
+            if (!pinned) return;
+            if (overTooltip) return;
+            pinned = null;
+            hideTooltip();
+            seriesLayer.selectAll(".series").classed("hidden", false).classed("highlight", false);
+          });
+
+        statusEl.textContent =
+          `Rendered ${series.length} artists across ${years.length} years. Click a line or label to open the popup; click again or × to close.`;
+      } catch (err) {
+        console.error("Error while rendering chart", err);
+        statusEl.textContent = "Error while rendering chart: " + (err && err.message ? err.message : err);
+      }
+    }).catch(err => {
+      console.error("Failed to load lastfm_top50.csv", err);
+      statusEl.textContent = "Could not load lastfm_top50.csv — ensure it's next to this HTML and served over http(s).";
+    });
+
+    /* ===== YEAR LISTS (Top_lastfm.csv) ===== */
+    const UI = {
+      artists: { select: document.getElementById("year-artists"), list: document.getElementById("list-artists") },
+      songs:   { select: document.getElementById("year-songs"),   list: document.getElementById("list-songs") },
+      albums:  { select: document.getElementById("year-albums"),  list: document.getElementById("list-albums") }
+    };
+    function norm(s){ return String(s||'').toLowerCase().replace(/[^a-z0-9]+/g,'_'); }
+    function pickNorm(cols, targets){ const nc = new Map(cols.map(c => [norm(c), c])); for (const t of targets){ const f = nc.get(norm(t)); if (f) return f; } return null; }
+    function toPlays(x){ if (x==null) return 0; const n = +String(x).replace(/[, ]/g,''); return Number.isFinite(n)?n:0; }
+
+    const artworkCache = new Map();
+    function bestArtSize(url){ return url ? url.replace(/\/[0-9]{2,4}x[0-9]{2,4}bb\./, "/256x256bb.") : url; }
+    async function fetchItunesArtwork(kind, title, artist){
+      let entity = "song"; if (kind === "album") entity = "album"; if (kind === "artist") return "";
+      const key = `${kind}|${title}|${artist}`.toLowerCase(); if (artworkCache.has(key)) return artworkCache.get(key);
+      const term = encodeURIComponent([title, artist].filter(Boolean).join(" "));
+      const url  = `https://itunes.apple.com/search?term=${term}&media=music&entity=${entity}&limit=5`;
+      try {
+        const res = await fetch(url);
+        const json = await res.json();
+        const results = Array.isArray(json.results) ? json.results : [];
+        if (!results.length) { artworkCache.set(key, ""); return ""; }
+        const art = bestArtSize(results[0].artworkUrl100 || results[0].artworkUrl60 || "");
+        artworkCache.set(key, art || ""); return art || "";
+      } catch (e) { artworkCache.set(key, ""); return ""; }
+    }
+
+    d3.csv("Top_lastfm.csv").then(rows => {
+      const cols = rows.columns.slice();
+      const yearCol = pickNorm(cols, ["Year"]);
+      if (!yearCol) throw new Error("Top_lastfm.csv must include a 'Year' column.");
+
+      const aNameCol  = pickNorm(cols, ["Top_Yearly_Artist", "Top_Overall_Artist"]);
+      const aPlaysCol = pickNorm(cols, ["Top_Yearly_Plays",  "Top_Overall_Plays"]);
+
+      const tTitleCol  = pickNorm(cols, ["Top_Track"]);
+      const tArtistCol = pickNorm(cols, ["Top_Track_Artist"]);
+      const tPlaysCol  = pickNorm(cols, ["Top_Track_Plays"]);
+      const tImgCol    = pickNorm(cols, ["Top_Track_Image", "Track_Image"]);
+
+      const alTitleCol  = pickNorm(cols, ["Top_Album"]);
+      const alArtistCol = pickNorm(cols, ["Top_Album_Artist"]);
+      const alPlaysCol  = pickNorm(cols, ["Top_Album_Plays"]);
+      const alImgCol    = pickNorm(cols, ["Top_Album_Image", "Album_Image"]);
+
+      const byYearArtists = new Map(), byYearSongs = new Map(), byYearAlbums = new Map();
+      rows.forEach(r => {
+        const year = +r[yearCol]; if (!Number.isFinite(year)) return;
+        if (aNameCol && aPlaysCol && r[aNameCol]) {
+          const arr = byYearArtists.get(year) || [];
+          arr.push({ kind:"artist", title: r[aNameCol], subtitle: "", plays: toPlays(r[aPlaysCol]) });
+          byYearArtists.set(year, arr);
+        }
+        if (tTitleCol && tArtistCol && tPlaysCol && r[tTitleCol]) {
+          const arr = byYearSongs.get(year) || [];
+          arr.push({
+            kind:"song",
+            title: r[tTitleCol],
+            subtitle: r[tArtistCol]||"",
+            plays: toPlays(r[tPlaysCol]),
+            img: tImgCol ? (r[tImgCol]||"").trim() : ""
+          });
+          byYearSongs.set(year, arr);
+        }
+        if (alTitleCol && alArtistCol && alPlaysCol && r[alTitleCol]) {
+          const arr = byYearAlbums.get(year) || [];
+          arr.push({
+            kind:"album",
+            title: r[alTitleCol],
+            subtitle: r[alArtistCol]||"",
+            plays: toPlays(r[alPlaysCol]),
+            img: alImgCol ? (r[alImgCol]||"").trim() : ""
+          });
+          byYearAlbums.set(year, arr);
+        }
+      });
+
+      for (const m of [byYearArtists, byYearSongs, byYearAlbums]) {
+        for (const [y, arr] of m.entries()) {
+          arr.sort((a,b)=>(b.plays||0)-(a.plays||0));
+        }
+      }
+
+      const allYears = Array.from(new Set([
+        ...byYearArtists.keys(),
+        ...byYearSongs.keys(),
+        ...byYearAlbums.keys()
+      ])).sort((a,b)=>a-b);
+      const years = allYears.filter(y=>y>=START_YEAR && y<=END_YEAR).length
+        ? allYears.filter(y=>y>=START_YEAR && y<=END_YEAR)
+        : allYears;
+
+      function fillSelect(sel){
+        sel.innerHTML="";
+        years.forEach(y => {
+          const o=document.createElement('option');
+          o.value=y; o.textContent=y; sel.appendChild(o);
+        });
+        sel.value = years[years.length-1];
+      }
+      fillSelect(UI.artists.select);
+      fillSelect(UI.songs.select);
+      fillSelect(UI.albums.select);
+
+      async function renderList(container, list, limit=10, opts={ showThumb:true }){
+        container.innerHTML = "";
+        for (const it of (list||[]).slice(0,limit)){
+          const row = document.createElement('div');
+          row.className = 'row' + (opts.showThumb ? '' : ' no-thumb');
+
+          if (opts.showThumb){
+            const thumb = document.createElement('div'); thumb.className='thumb';
+            if (it.img){
+              const img=document.createElement('img');
+              img.src=it.img; img.alt=it.title||'art'; img.referrerPolicy='no-referrer';
+              img.onerror=()=>{thumb.textContent='No img';};
+              thumb.appendChild(img);
+            } else {
+              thumb.textContent='…';
+              const art = await fetchItunesArtwork(it.kind, it.title, it.subtitle);
+              thumb.textContent='';
+              if (art){
+                const img=document.createElement('img');
+                img.src=art; img.alt=it.title||'art'; img.referrerPolicy='no-referrer';
+                img.onerror=()=>{thumb.textContent='No img';};
+                thumb.appendChild(img);
+              } else {
+                thumb.textContent='No img';
+              }
+            }
+            row.appendChild(thumb);
+          }
+
+          const text=document.createElement('div');
+          const t=document.createElement('div'); t.className='title'; t.textContent=it.title||'—';
+          const s=document.createElement('div'); s.className='subtitle'; s.textContent=it.subtitle||'';
+          text.appendChild(t); if (it.subtitle) text.appendChild(s);
+
+          const plays=document.createElement('div');
+          plays.className='plays';
+          plays.textContent = Number.isFinite(it.plays) ? Intl.NumberFormat().format(it.plays) : '—';
+
+          row.appendChild(text);
+          row.appendChild(plays);
+          container.appendChild(row);
+        }
+      }
+
+      function updateArtists(){
+        renderList(UI.artists.list, byYearArtists.get(+UI.artists.select.value), 10, { showThumb:false });
+      }
+      function updateSongs(){
+        renderList(UI.songs.list, byYearSongs.get(+UI.songs.select.value), 10, { showThumb:true });
+      }
+      function updateAlbums(){
+        renderList(UI.albums.list, byYearAlbums.get(+UI.albums.select.value), 10, { showThumb:true });
+      }
+
+      updateArtists();
+      updateSongs();
+      updateAlbums();
+
+      UI.artists.select.addEventListener('change', updateArtists);
+      UI.songs.select.addEventListener('change',   updateSongs);
+      UI.albums.select.addEventListener('change',  updateAlbums);
+    }).catch(err => {
+      console.error("Failed to load Top_lastfm.csv", err);
+      document.getElementById("col-artists").querySelector(".list").innerHTML =
+        "<div class='row no-thumb'><div>Could not load Top_lastfm.csv</div><div></div></div>";
+    });
   </script>
 </body>
 </html>

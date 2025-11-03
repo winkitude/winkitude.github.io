@@ -185,19 +185,39 @@
       cursor: pointer; padding: 0;
     }
     .tooltip-close:hover { color: var(--ink); }
+
+    /* Remove borders / outlines from header icons */
+.contact-icons a,
+.contact-icons a svg {
+  border: none !important;
+  outline: none;
+  box-shadow: none;
+  background: transparent;
+}
+
   </style>
 </head>
 <body>
   <!-- Ari header -->
-  <div class="aw-header">
-    <div class="aw-brand">Ari Winkleman</div>
-    <nav class="aw-nav">
-      <a href="#" aria-label="Work">Work</a>
-      <a href="#" aria-label="Data">Data</a>
-      <a href="#" aria-label="About">About</a>
-      <a href="#" aria-label="Contact">Contact</a>
-    </nav>
-  </div>
+  <header class="site-header">
+    <div class="wrap" style="display:flex; justify-content:space-between; align-items:center;">
+      <div class="masthead">
+        <a href="../index.html" class="site-title" style="font-family: 'Poltawski Nowy', serif; font-size: clamp(24px,3vw,36px); text-decoration:none; color:#111;">Ari Winkleman</a>
+      </div>
+      <div class="contact-icons" style="display:flex; gap:14px; align-items:center; border:none;">
+        <a href="https://www.linkedin.com/in/ari-winkleman/" target="_blank" rel="noopener" aria-label="LinkedIn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#000000" viewBox="0 0 24 24">
+            <path d="M19 0h-14c-2.76 0-5 2.24-5 5v14c0 2.76 2.24 5 5 5h14c2.76 0 5-2.24 5-5v-14c0-2.76-2.24-5-5-5zm-11 19h-3v-10h3v10zm-1.5-11.27c-.97 0-1.75-.79-1.75-1.76 0-.97.78-1.76 1.75-1.76s1.75.79 1.75 1.76c0 .97-.78 1.76-1.75 1.76zm13.5 11.27h-3v-5.6c0-1.34-.03-3.07-1.87-3.07-1.87 0-2.16 1.46-2.16 2.97v5.7h-3v-10h2.88v1.36h.04c.4-.75 1.38-1.54 2.84-1.54 3.04 0 3.6 2 3.6 4.6v5.6z"/>
+          </svg>
+        </a>
+        <a href="mailto:ariswinkleman@gmail.com" aria-label="Email">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#000000" viewBox="0 0 24 24">
+            <path d="M12 13.065l-11.99-7.065h23.98l-11.99 7.065zm0 2.935l-12-7.065v11.065h24v-11.065l-12 7.065z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </header>
 
   <header>
     <h1>

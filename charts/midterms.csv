@@ -1,60 +1,60 @@
-Year,Sitting president,President's party,House seat changes,Senate seat changes,House seat change total,Seante seat change total,Total number of seats in the House,Total number of seats in Senate
-1790,George Washington,None,3,0,40,18,65,26
-1794,George Washington,None,-4,3,47,19,105,30
-1798,John Adams,Federalist,3,0,60,22,106,32
-1802,Thomas Jefferson,Democratic-Republican,35,5,103,22,107,34
-1806,Thomas Jefferson,Democratic-Republican,2,1,116,28,142,34
-1810,James Madison,Democratic-Republican,12,0,107,26,142,34
-1814,James Madison,Democratic-Republican,5,-3,119,22,182,36
-1818,James Monroe,Democratic-Republican,13,2,158,30,185,42
-1822,James Monroe,Democratic-Republican,34,0,189,44,187,48
-1826,John Quincy Adams,Democratic-Republican,-9,-2,100,19,213,48
-1830,Andrew Jackson,Democratic,-10,1,126,26,213,48
-1834,Andrew Jackson,Democratic,0,1,143,22,240,48
-1838,Martin Van Buren,Democratic,-3,-7,125,28,242,52
-1842,John Tyler,Whig,-69,-3,73,27,242,52
-1846,James K. Polk,Democratic,-30,2,112,35,228,58
-1850,Millard Fillmore,Whig,-22,-3,86,33,233,62
-1854,Franklin Pierce,Democratic,-75,-3,83,33,234,62
-1858,James Buchanan,Democratic,-35,-4,98,38,237,64
-1862,Abraham Lincoln,Republican,-23,1,85,32,178,50
-1866,Andrew Johnson,Democratic,9,0,47,10,191,52
-1870,Ulysses S Grant,Republican,-32,-5,139,58,243,74
-1874,Ulysses S Grant,Republican,-93,-10,106,42,293,74
-1878,Rutherford B Hayes,Republican,-4,-7,132,31,293,76
-1882,Chester A Arthur,Republican,-29,0,118,37,293,76
-1886,Grover Cleveland,Democratic,-16,2,167,36,325,76
-1890,Benjamin Harrison,Republican,-93,-4,86,43,330,84
-1894,Grover Cleveland,Democratic,-127,-4,93,40,356,88
-1898,William McKinley,Republican,-21,6,189,50,357,90
-1902,Theodore Roosevelt,Republican,9,0,210,55,357,90
-1906,Theodore Roosevelt,Republican,-27,2,224,60,386,90
-1910,William Howard Taft,Republican,-56,-9,163,50,391,92
-1914,Woodrow Wilson,Democratic,-61,3,230,53,435,96
-1918,Woodrow Wilson,Democratic,-22,-4,192,48,435,96
-1922,Warren G Harding,Republican,-77,-7,225,53,435,96
-1926,Calvin Coolidge,Republican,-9,-6,238,50,435,96
-1930,Herbert Hoover,Republican,-52,-6,218,50,435,96
-1934,Franklin D Roosevelt,Democratic,9,9,322,69,435,96
-1938,Franklin D Roosevelt,Democratic,-72,-7,262,68,435,96
-1942,Franklin D Roosevelt,Democratic,-45,-8,222,57,435,96
-1946,Harry S Truman,Democratic,-54,-10,188,46,435,96
-1950,Harry S Truman,Democratic,-28,-5,235,49,435,96
-1954,Dwight D Eisenhower,Republican,-18,-2,203,47,435,96
-1958,Dwight D Eisenhower,Republican,-48,-12,153,35,435,96
-1962,John F Kennedy,Democratic,-4,4,258,68,437,100
-1966,Lyndon B Johnson,Democratic,-47,-3,248,64,435,100
-1970,Richard Nixon,Republican,-12,2,180,45,435,100
-1974,Gerald Ford,Republican,-48,-4,144,38,435,100
-1978,Jimmy Carter,Democratic,-15,-2,277,59,435,100
-1982,Ronald Reagan,Republican,-26,0,166,54,435,100
-1986,Ronald Reagan,Republican,-5,-8,177,45,435,100
-1990,George HW Bush,Republican,-8,-1,167,44,435,100
-1994,Bill Clinton,Democratic,-54,-9,204,47,435,100
-1998,Bill Clinton,Democratic,4,0,211,45,435,100
-2002,George W Bush,Republican,8,2,229,51,435,100
-2006,George W Bush,Republican,-32,-6,199,49,435,100
-2010,Barack Obama,Democratic,-63,-6,193,53,435,100
-2014,Barack Obama,Democratic,-13,-9,188,46,435,100
-2018,Donald Trump,Republican,-41,2,200,53,435,100
-2022,Joe Biden,Democratic,-9,1,213,51,435,100
+Year,Sitting president,President's party,House seat changes,Senate seat changes,House seat change total,Seante seat change total,Total number of seats in the House,Total number of seats in Senate,House_control_change,Senate_control_change
+1790,George Washington,None,3,0,40,18,65,26,Maintained Majority,Maintained Majority
+1794,George Washington,None,-4,3,47,19,105,30,Remained Minority,Maintained Majority
+1798,John Adams,Federalist,3,0,60,22,106,32,Maintained Majority,Maintained Majority
+1802,Thomas Jefferson,Democratic-Republican,35,5,103,22,107,34,Maintained Majority,Maintained Majority
+1806,Thomas Jefferson,Democratic-Republican,2,1,116,28,142,34,Maintained Majority,Maintained Majority
+1810,James Madison,Democratic-Republican,12,0,107,26,142,34,Maintained Majority,Maintained Majority
+1814,James Madison,Democratic-Republican,5,-3,119,22,182,36,Maintained Majority,Maintained Majority
+1818,James Monroe,Democratic-Republican,13,2,158,30,185,42,Maintained Majority,Maintained Majority
+1822,James Monroe,Democratic-Republican,34,0,189,44,187,48,Maintained Majority,Maintained Majority
+1826,John Quincy Adams,Democratic-Republican,-9,-2,100,19,213,48,Lost Control,Remained Minority
+1830,Andrew Jackson,Democratic,-10,1,126,26,213,48,Maintained Majority,Maintained Majority
+1834,Andrew Jackson,Democratic,0,1,143,22,240,48,Maintained Majority,Remained Minority
+1838,Martin Van Buren,Democratic,-3,-7,125,28,242,52,Maintained Majority,Maintained Majority
+1842,John Tyler,Whig,-69,-3,73,27,242,52,Lost Control,Maintained Majority
+1846,James K. Polk,Democratic,-30,2,112,35,228,58,Lost Control,Maintained Majority
+1850,Millard Fillmore,Whig,-22,-3,86,33,233,62,Remained Minority,Maintained Majority
+1854,Franklin Pierce,Democratic,-75,-3,83,33,234,62,Lost Control,Maintained Majority
+1858,James Buchanan,Democratic,-35,-4,98,38,237,64,Lost Control,Maintained Majority
+1862,Abraham Lincoln,Republican,-23,1,85,32,178,50,Lost Control,Maintained Majority
+1866,Andrew Johnson,Democratic,9,0,47,10,191,52,Remained Minority,Remained Minority
+1870,Ulysses S Grant,Republican,-32,-5,139,58,243,74,Maintained Majority,Maintained Majority
+1874,Ulysses S Grant,Republican,-93,-10,106,42,293,74,Lost Control,Maintained Majority
+1878,Rutherford B Hayes,Republican,-4,-7,132,31,293,76,Remained Minority,Lost Control
+1882,Chester A Arthur,Republican,-29,0,118,37,293,76,Lost Control,Remained Minority
+1886,Grover Cleveland,Democratic,-16,2,167,36,325,76,Maintained Majority,Remained Minority
+1890,Benjamin Harrison,Republican,-93,-4,86,43,330,84,Lost Control,Maintained Majority
+1894,Grover Cleveland,Democratic,-127,-4,93,40,356,88,Lost Control,Lost Control
+1898,William McKinley,Republican,-21,6,189,50,357,90,Maintained Majority,Gained Control
+1902,Theodore Roosevelt,Republican,9,0,210,55,357,90,Maintained Majority,Maintained Majority
+1906,Theodore Roosevelt,Republican,-27,2,224,60,386,90,Maintained Majority,Maintained Majority
+1910,William Howard Taft,Republican,-56,-9,163,50,391,92,Lost Control,Maintained Majority
+1914,Woodrow Wilson,Democratic,-61,3,230,53,435,96,Maintained Majority,Maintained Majority
+1918,Woodrow Wilson,Democratic,-22,-4,192,48,435,96,Remained Minority,Maintained Majority
+1922,Warren G Harding,Republican,-77,-7,225,53,435,96,Maintained Majority,Maintained Majority
+1926,Calvin Coolidge,Republican,-9,-6,238,50,435,96,Maintained Majority,Maintained Majority
+1930,Herbert Hoover,Republican,-52,-6,218,50,435,96,Maintained Majority,Maintained Majority
+1934,Franklin D Roosevelt,Democratic,9,9,322,69,435,96,Maintained Majority,Maintained Majority
+1938,Franklin D Roosevelt,Democratic,-72,-7,262,68,435,96,Maintained Majority,Maintained Majority
+1942,Franklin D Roosevelt,Democratic,-45,-8,222,57,435,96,Maintained Majority,Maintained Majority
+1946,Harry S Truman,Democratic,-54,-10,188,46,435,96,Lost Control,Lost Control
+1950,Harry S Truman,Democratic,-28,-5,235,49,435,96,Maintained Majority,Maintained Majority
+1954,Dwight D Eisenhower,Republican,-18,-2,203,47,435,96,Lost Control,Lost Control
+1958,Dwight D Eisenhower,Republican,-48,-12,153,35,435,96,Remained Minority,Remained Minority
+1962,John F Kennedy,Democratic,-4,4,258,68,437,100,Maintained Majority,Maintained Majority
+1966,Lyndon B Johnson,Democratic,-47,-3,248,64,435,100,Maintained Majority,Maintained Majority
+1970,Richard Nixon,Republican,-12,2,180,45,435,100,Remained Minority,Remained Minority
+1974,Gerald Ford,Republican,-48,-4,144,38,435,100,Remained Minority,Remained Minority
+1978,Jimmy Carter,Democratic,-15,-2,277,59,435,100,Maintained Majority,Maintained Majority
+1982,Ronald Reagan,Republican,-26,0,166,54,435,100,Remained Minority,Maintained Majority
+1986,Ronald Reagan,Republican,-5,-8,177,45,435,100,Remained Minority,Lost Control
+1990,George HW Bush,Republican,-8,-1,167,44,435,100,Remained Minority,Remained Minority
+1994,Bill Clinton,Democratic,-54,-9,204,47,435,100,Lost Control,Lost Control
+1998,Bill Clinton,Democratic,4,0,211,45,435,100,Remained Minority,Remained Minority
+2002,George W Bush,Republican,8,2,229,51,435,100,Maintained Majority,Maintained Majority
+2006,George W Bush,Republican,-32,-6,199,49,435,100,Lost Control,Lost Control
+2010,Barack Obama,Democratic,-63,-6,193,53,435,100,Lost Control,Maintained Majority
+2014,Barack Obama,Democratic,-13,-9,188,46,435,100,Remained Minority,Lost Control
+2018,Donald Trump,Republican,-41,2,200,53,435,100,Lost Control,Maintained Majority
+2022,Joe Biden,Democratic,-9,1,213,51,435,100,Lost Control,Maintained Majority

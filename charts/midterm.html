@@ -65,6 +65,8 @@
     </div>
   </header>
 
+  <br><br>
+
   <main id="content" class="content-wrapper">
     <header class="text-center mb-6">
       <h1 class="text-3xl font-bold mb-2" style="font-family:'Poltawski Nowy', serif;">US Midterm Election Seat Changes</h1>
@@ -88,6 +90,34 @@
       </table>
     </div>
   </main>
+
+    <!-- Notes and Sources Section -->
+  <section class="content-wrapper text-gray-700 text-sm mt-12 mb-8 leading-relaxed">
+    <h2 class="text-lg font-semibold mb-3" style="font-family:'Poltawski Nowy', serif;">Notes</h2>
+    
+    <ul class="list-disc pl-6 mb-6">
+         * Though more Republicans were elected than Democrats to the House in 1916, third party Members of the 65th Congress (1917–1919) caucused with the Democrats to re-elect Speaker James Beauchamp “Champ” Clark. In 1918, Republicans achieved a clear majority and elected Frederick H. Gillett Speaker on the opening day of the 66th Congress (1919–1921). See, “The Start of the 66th Congress.”
+          via <a href="https://history.house.gov/Institution/Majority-Changes/Majority-Changes/">house.gov</a>
+    </ul>
+
+    <ul class="list-disc pl-6 mb-6">
+         ** Elections in the fall of 1930 had provided Republicans with a slim majority in the chamber.
+          But between Election Day 1930 and the opening of the new Congress 13 months later,
+          14 Representatives-elect died. In the subsequent special elections to fill those vacancies,
+          Democrats won enough seats to recapture the majority. On opening day, Democrats organized
+          the chamber with several Members from third parties. via <a href="https://history.house.gov/Institution/Majority-Changes/Majority-Changes/">house.gov</a>
+    </ul>
+
+    <h2 class="text-lg font-semibold mb-3" style="font-family:'Poltawski Nowy', serif;">Sources</h2>
+    <p class="text-gray-600">
+      Wikipedia,
+      <a href="https://history.house.gov/Institution/Majority-Changes/Majority-Changes/"
+         target="_blank" rel="noopener"
+         class="text-blue-700 underline hover:text-blue-900">
+        house.gov
+      </a>
+    </p>
+  </section>
 
   <footer class="site-footer text-center py-6 text-sm text-gray-600">
     <p>&copy; <span id="year"></span> Ari Winkleman. All Rights Reserved.</p>
@@ -121,27 +151,30 @@
       return isNaN(num) ? 0 : num;
     }
 
+    // Updated function for dark cell text contrast
     function heatColor(value, maxAbs) {
-      if (value === 0) return 'rgba(200,200,200,0.4)'; // neutral gray
+      if (value === 0) return { bg: 'rgba(200,200,200,0.4)', color: '#000' }; 
       const ratio = Math.abs(value) / maxAbs;
-      return value > 0 ? `rgba(0,128,0,${0.2 + ratio * 0.6})` : `rgba(220,0,0,${0.2 + ratio * 0.6})`;
+      const alpha = 0.2 + ratio * 0.6;
+      const textColor = alpha > 0.6 ? '#fff' : '#000';
+      const bgColor = value > 0
+        ? `rgba(0,128,0,${alpha})`
+        : `rgba(220,0,0,${alpha})`;
+      return { bg: bgColor, color: textColor };
     }
 
     function controlStatusDetailed(value, presidentParty) {
       if (!value) return { text: 'Unknown', class: 'badge badge-gray' };
       const val = value.toLowerCase();
-
       if (val.includes('gain')) return { text: 'Gained', class: 'badge badge-green' };
       if (val.includes('lost')) return { text: 'Lost', class: 'badge badge-red' };
       if (val.includes('maintain') || val.includes('divided') || val.includes('coalition'))
         return { text: 'Maintained', class: 'badge badge-gray' };
-
       return { text: value, class: 'badge badge-gray' };
     }
 
     function formatPresidentImageName(name) {
       const normalized = name.replace(/\./g, '').replace(/\s+/g, ' ').trim();
-
       const exceptions = {
         'George HW Bush': 'George_HW_Bush.jpg',
         'John Quincy Adams': 'John_Quincy_Adams.jpg',
@@ -149,9 +182,7 @@
         'William Howard Taft': 'William_Howard_Taft.jpg',
         'William McKinley': 'William_McKinley.jpg'
       };
-
       if (exceptions[normalized]) return exceptions[normalized];
-
       const parts = normalized.split(' ');
       if (parts.length === 2) return `${parts[0]}_${parts[1]}.jpg`;
       if (parts.length === 3) return `${parts[0]}_${parts[1].charAt(0)}_${parts[2]}.jpg`;
@@ -182,7 +213,8 @@
         tr.className = 'border-b hover:bg-gray-100 transition';
 
         const partyColor = PARTY[row["President's party"]] || '#9aa0a6';
-
+        const houseColor = heatColor(house, maxHouse);
+        const senateColor = heatColor(senate, maxSenate);
         const houseControl = controlStatusDetailed(row['House_control_change'], row["President's party"]);
         const senateControl = controlStatusDetailed(row['Senate_control_change'], row["President's party"]);
 
@@ -193,8 +225,12 @@
             <span>${row['Sitting president']}</span>
           </td>
           <td class="p-2" style="color:${partyColor}">${row["President's party"]}</td>
-          <td class="p-2 ${houseArrow}" style="background:${heatColor(house, maxHouse)}">${house > 0 ? '+' : house < 0 ? '' : ''}${house} (${housePct}%)</td>
-          <td class="p-2 ${senateArrow}" style="background:${heatColor(senate, maxSenate)}">${senate > 0 ? '+' : senate < 0 ? '' : ''}${senate} (${senatePct}%)</td>
+          <td class="p-2 ${houseArrow}" style="background:${houseColor.bg}; color:${houseColor.color}">
+            ${house > 0 ? '+' : house < 0 ? '' : ''}${house} (${housePct}%)
+          </td>
+          <td class="p-2 ${senateArrow}" style="background:${senateColor.bg}; color:${senateColor.color}">
+            ${senate > 0 ? '+' : senate < 0 ? '' : ''}${senate} (${senatePct}%)
+          </td>
           <td class="p-2 text-center"><span class="${houseControl.class}">${houseControl.text}</span></td>
           <td class="p-2 text-center"><span class="${senateControl.class}">${senateControl.text}</span></td>
         `;
@@ -212,43 +248,13 @@
     });
   </script>
 
-  <!-- Notes and Sources Section -->
-  <section class="content-wrapper text-gray-700 text-sm mt-12 mb-8 leading-relaxed">
-    <h2 class="text-lg font-semibold mb-3" style="font-family:'Poltawski Nowy', serif;">Notes</h2>
-    
-    <ul class="list-disc pl-6 mb-6">
-         * Though more Republicans were elected than Democrats to the House in 1916, third party Members of the 65th Congress (1917–1919) caucused with the Democrats to re-elect Speaker James Beauchamp “Champ” Clark. In 1918, Republicans achieved a clear majority and elected Frederick H. Gillett Speaker on the opening day of the 66th Congress (1919–1921). See, “The Start of the 66th Congress.”
-          via <a href="https://history.house.gov/Institution/Majority-Changes/Majority-Changes/">house.gov</a>
-    </ul>
-
-    <ul class="list-disc pl-6 mb-6">
-         ** Elections in the fall of 1930 had provided Republicans with a slim majority in the chamber.
-          But between Election Day 1930 and the opening of the new Congress 13 months later,
-          14 Representatives-elect died. In the subsequent special elections to fill those vacancies,
-          Democrats won enough seats to recapture the majority. On opening day, Democrats organized
-          the chamber with several Members from third parties. via <a href="https://history.house.gov/Institution/Majority-Changes/Majority-Changes/">house.gov</a>
-    </ul>
-
-    <h2 class="text-lg font-semibold mb-3" style="font-family:'Poltawski Nowy', serif;">Sources</h2>
-    <p class="text-gray-600">
-      Wikipedia,
-      <a href="https://history.house.gov/Institution/Majority-Changes/Majority-Changes/"
-         target="_blank" rel="noopener"
-         class="text-blue-700 underline hover:text-blue-900">
-        house.gov
-      </a>
-    </p>
-  </section>
-
-    <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-8FK0VXYYGX"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-8FK0VXYYGX');
-</script>
-
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8FK0VXYYGX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-8FK0VXYYGX');
+  </script>
 </body>
 </html>

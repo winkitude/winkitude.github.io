@@ -42,6 +42,40 @@
       background: #eeeeee;
       color: #424242;
     }
+
+@media (max-width: 640px) {
+  .content-wrapper { padding: 0 12px; }
+
+  /* Force the table to fit the screen */
+  .table-fit {
+    width: 100%;
+    min-width: 0 !important;   /* overrides the old 700px min-width */
+    table-layout: fixed;        /* prevents layout blowouts */
+  }
+
+  .table-fit th,
+  .table-fit td {
+    padding: 8px;               /* slightly tighter */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;    /* trims long values gracefully */
+  }
+
+  /* Let the president name wrap to two lines if needed */
+  .table-fit td:nth-child(2) span {
+    white-space: normal;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;      /* visually cap to ~2 lines */
+    -webkit-box-orient: vertical;
+  }
+
+  /* Smaller avatar on mobile */
+  .table-fit td:nth-child(2) img {
+    width: 24px;
+    height: 24px;
+  }
+}
+
   </style>
 </head>
 <body>
@@ -74,7 +108,7 @@
     </header>
 
     <div class="overflow-x-auto flex justify-center">
-      <table class="border-collapse shadow bg-white rounded-xl overflow-hidden" style="min-width:700px;">
+<table class="table-fit border-collapse shadow bg-white rounded-xl overflow-hidden">
         <thead class="bg-gray-200 text-gray-800">
           <tr>
             <th class="p-2 text-left">Year</th>

@@ -10,14 +10,14 @@ Year,Sitting president,President's party,House seat changes,Senate seat changes,
 1822,James Monroe,Democratic-Republican,34,0,189,44,187,48,Maintained Majority,Maintained Majority
 1826,John Quincy Adams,Democratic-Republican,-9,-2,100,19,213,48,Lost Control,Remained Minority
 1830,Andrew Jackson,Democratic,-10,1,126,26,213,48,Maintained Majority,Maintained Majority
-1834,Andrew Jackson,Democratic,0,1,143,22,240,48,Maintained Majority,Remained Minority
+1834,Andrew Jackson,Democratic,0,1,143,22,240,48,Maintained Majority,Lost Control
 1838,Martin Van Buren,Democratic,-3,-7,125,28,242,52,Maintained Majority,Maintained Majority
 1842,John Tyler,Whig,-69,-3,73,27,242,52,Lost Control,Maintained Majority
 1846,James K. Polk,Democratic,-30,2,112,35,228,58,Lost Control,Maintained Majority
 1850,Millard Fillmore,Whig,-22,-3,86,33,233,62,Remained Minority,Maintained Majority
 1854,Franklin Pierce,Democratic,-75,-3,83,33,234,62,Lost Control,Maintained Majority
 1858,James Buchanan,Democratic,-35,-4,98,38,237,64,Lost Control,Maintained Majority
-1862,Abraham Lincoln,Republican,-23,1,85,32,178,50,Lost Control,Maintained Majority
+1862,Abraham Lincoln,Republican,-23,1,85,32,178,50,Maintained Majority,Maintained Majority
 1866,Andrew Johnson,Democratic,9,0,47,10,191,52,Remained Minority,Remained Minority
 1870,Ulysses S Grant,Republican,-32,-5,139,58,243,74,Maintained Majority,Maintained Majority
 1874,Ulysses S Grant,Republican,-93,-10,106,42,293,74,Lost Control,Maintained Majority
@@ -26,15 +26,15 @@ Year,Sitting president,President's party,House seat changes,Senate seat changes,
 1886,Grover Cleveland,Democratic,-16,2,167,36,325,76,Maintained Majority,Remained Minority
 1890,Benjamin Harrison,Republican,-93,-4,86,43,330,84,Lost Control,Maintained Majority
 1894,Grover Cleveland,Democratic,-127,-4,93,40,356,88,Lost Control,Lost Control
-1898,William McKinley,Republican,-21,6,189,50,357,90,Maintained Majority,Gained Control
+1898,William McKinley,Republican,-21,6,189,50,357,90,Maintained Majority,Maintained Majority
 1902,Theodore Roosevelt,Republican,9,0,210,55,357,90,Maintained Majority,Maintained Majority
 1906,Theodore Roosevelt,Republican,-27,2,224,60,386,90,Maintained Majority,Maintained Majority
 1910,William Howard Taft,Republican,-56,-9,163,50,391,92,Lost Control,Maintained Majority
 1914,Woodrow Wilson,Democratic,-61,3,230,53,435,96,Maintained Majority,Maintained Majority
-1918,Woodrow Wilson,Democratic,-22,-4,192,48,435,96,Remained Minority,Maintained Majority
+1918*,Woodrow Wilson,Democratic,-22,-4,192,48,435,96,Lost Control,Gained Control
 1922,Warren G Harding,Republican,-77,-7,225,53,435,96,Maintained Majority,Maintained Majority
 1926,Calvin Coolidge,Republican,-9,-6,238,50,435,96,Maintained Majority,Maintained Majority
-1930,Herbert Hoover,Republican,-52,-6,218,50,435,96,Maintained Majority,Maintained Majority
+1930**,Herbert Hoover,Republican,-52,-6,218,50,435,96,Maintained Majority,Maintained Majority
 1934,Franklin D Roosevelt,Democratic,9,9,322,69,435,96,Maintained Majority,Maintained Majority
 1938,Franklin D Roosevelt,Democratic,-72,-7,262,68,435,96,Maintained Majority,Maintained Majority
 1942,Franklin D Roosevelt,Democratic,-45,-8,222,57,435,96,Maintained Majority,Maintained Majority

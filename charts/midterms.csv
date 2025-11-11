@@ -14,7 +14,7 @@ Year,Sitting president,President's party,House seat changes,Senate seat changes,
 1838,Martin Van Buren,Democratic,-3,-7,125,28,242,52,Maintained Majority,Maintained Majority
 1842,John Tyler,Whig,-69,-3,73,27,242,52,Lost Control,Maintained Majority
 1846,James K. Polk,Democratic,-30,2,112,35,228,58,Lost Control,Maintained Majority
-1850,Millard Fillmore,Whig,-22,-3,86,33,233,62,Remained Minority,Maintained Majority
+1850,Millard Fillmore,Whig,-22,-3,86,33,233,62,Remained Minority,Remained Minority
 1854,Franklin Pierce,Democratic,-75,-3,83,33,234,62,Lost Control,Maintained Majority
 1858,James Buchanan,Democratic,-35,-4,98,38,237,64,Lost Control,Maintained Majority
 1862,Abraham Lincoln,Republican,-23,1,85,32,178,50,Maintained Majority,Maintained Majority
@@ -22,7 +22,7 @@ Year,Sitting president,President's party,House seat changes,Senate seat changes,
 1870,Ulysses S Grant,Republican,-32,-5,139,58,243,74,Maintained Majority,Maintained Majority
 1874,Ulysses S Grant,Republican,-93,-10,106,42,293,74,Lost Control,Maintained Majority
 1878,Rutherford B Hayes,Republican,-4,-7,132,31,293,76,Remained Minority,Lost Control
-1882,Chester A Arthur,Republican,-29,0,118,37,293,76,Lost Control,Remained Minority
+1882,Chester A Arthur,Republican,-29,0,118,37,293,76,Lost Control,Maintained Majority
 1886,Grover Cleveland,Democratic,-16,2,167,36,325,76,Maintained Majority,Remained Minority
 1890,Benjamin Harrison,Republican,-93,-4,86,43,330,84,Lost Control,Maintained Majority
 1894,Grover Cleveland,Democratic,-127,-4,93,40,356,88,Lost Control,Lost Control
@@ -31,7 +31,7 @@ Year,Sitting president,President's party,House seat changes,Senate seat changes,
 1906,Theodore Roosevelt,Republican,-27,2,224,60,386,90,Maintained Majority,Maintained Majority
 1910,William Howard Taft,Republican,-56,-9,163,50,391,92,Lost Control,Maintained Majority
 1914,Woodrow Wilson,Democratic,-61,3,230,53,435,96,Maintained Majority,Maintained Majority
-1918*,Woodrow Wilson,Democratic,-22,-4,192,48,435,96,Lost Control,Maintained Majority
+1918*,Woodrow Wilson,Democratic,-22,-4,192,48,435,96,Lost Control,Lost Control
 1922,Warren G Harding,Republican,-77,-7,225,53,435,96,Maintained Majority,Maintained Majority
 1926,Calvin Coolidge,Republican,-9,-6,238,50,435,96,Maintained Majority,Maintained Majority
 1930**,Herbert Hoover,Republican,-52,-6,218,50,435,96,Maintained Majority,Maintained Majority

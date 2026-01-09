@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <title>Ari Winkleman - Interactive Storytelling</title>
+  <meta name="description" content="Ari Winkleman - Interactive Storytelling" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <link rel="shortcut icon" href="favicon.ico" />
+
+  <!-- FONTS -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poltawski+Nowy:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,700;0,800;1,400&display=swap" rel="stylesheet" />
+
+  <!-- Base styles -->
+  <link href="css/normalize.css" rel="stylesheet" />
+  <link href="css/screen.css?v=10" rel="stylesheet" />
+
+  <!-- Page-local styles -->
+  <style>
+    /* Alternating two-column rows with equal, uncropped images */
+    .gt-rows .row{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:24px;
+      align-items:center;
+      margin-bottom:48px;
+    }
+    .gt-rows .row .media{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .gt-rows .row .media img{
+      width:100%;
+      height:auto;
+      max-height:380px;         /* equal vertical sizing on desktop/tablet */
+      object-fit:contain;       /* show whole image, no crop */
+      background:#f5f5f5;       /* subtle letterbox if aspect ratios differ */
+      border-radius:6px;
+      display:block;
+    }
+    .gt-rows .copy .meta{
+      margin-top:.5rem;
+      font:700 12px/1 'Open Sans', Arial, sans-serif;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      color:#6b6b6b;
+    }
+    /* Alternate sides for even rows */
+    .gt-rows .row:nth-of-type(even) .media{ order:2; }
+    .gt-rows .row:nth-of-type(even) .copy { order:1; }
+
+    /* Archive button */
+    .cta-archive{ text-align:center; padding:10px 0 36px; }
+    .btn{
+      display:inline-block; padding:10px 16px; border:1px solid #111; border-radius:6px;
+      text-decoration:none; font-weight:700;
+    }
+    .btn:hover{ background:#111; color:#fff; }
+
+ 
+    /* Responsive stack */
+@media (max-width:700px){
+  .gt-rows .row{ 
+    grid-template-columns:1fr; 
+  }
+  .gt-rows .row .media{ 
+    order:-1;   /* force image on top */
+  }
+  .gt-rows .row .copy{ 
+    order:0; 
+  }
+  .gt-rows .row .media img{ 
+    max-height:none; 
+  }
+}
+
+/* Responsive stack */
+@media (max-width:900px){
+  .gt-rows .row{ 
+    grid-template-columns:1fr; 
+  }
+
+  /* Force media on top for ALL rows, including even ones */
+  .gt-rows .row .media{ order:-1 !important; }
+  .gt-rows .row .copy{  order:0  !important; }
+
+  /* Let images size naturally on phones */
+  .gt-rows .row .media img{ max-height:none; }
+}
+
+
+  </style>
+</head>
+
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="site-header">
+  <div class="wrap" style="display:flex; justify-content:space-between; align-items:center;">
+    <!-- Left side -->
+    <div class="masthead">
+      <a href="index.html">Ari Winkleman</a>
+    </div>
+
+    <!-- Right side: icons -->
+    <div class="contact-icons" style="display:flex; gap:16px; align-items:center;">
+      <!-- LinkedIn -->
+      <a href="https://www.linkedin.com/in/ari-winkleman/" target="_blank" rel="noopener" aria-label="LinkedIn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M19 0h-14c-2.76 0-5 2.24-5 5v14c0 2.76 2.24 5 
+                   5 5h14c2.76 0 5-2.24 5-5v-14c0-2.76-2.24-5-5-5zm-11 
+                   19h-3v-10h3v10zm-1.5-11.27c-.97 0-1.75-.79-1.75-1.76 
+                   0-.97.78-1.76 1.75-1.76s1.75.79 
+                   1.75 1.76c0 .97-.78 1.76-1.75 1.76zm13.5 
+                   11.27h-3v-5.6c0-1.34-.03-3.07-1.87-3.07-1.87 
+                   0-2.16 1.46-2.16 2.97v5.7h-3v-10h2.88v1.36h.04c.4-.75 
+                   1.38-1.54 2.84-1.54 3.04 0 3.6 2 3.6 
+                   4.6v5.6z"/>
+        </svg>
+      </a>
+
+      <!-- Email -->
+      <a href="mailto:ariswinkleman@gmail.com" aria-label="Email">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M12 13.065l-11.99-7.065h23.98l-11.99 7.065zm0 
+                   2.935l-12-7.065v11.065h24v-11.065l-12 
+                   7.065z"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+</header>
+
+
+<br><br>
+  <main id="main">
+    <!-- Intro -->
+    <section class="intro">
+      <div class="wrap">
+        <h2 class="prelede">Interactive Storytelling</h2>
+        <p class="lede">
+          Long-form interactive editorial and branded experiences designed to make complex ideas legible, engaging, and shareable. Built in close collaboration with editors, analysts, and partners, often using Ceros as the delivery platform.
+        </p>
+        <br><br>
+      </div>
+    </section>
+
+    <hr class="rule" />
+
+    <!-- Alternating rows: equal-sized media + copy -->
+    <section class="gt-rows">
+      <div class="wrap">
+
+        <!-- Row 1 -->
+        <div class="row">
+          <div class="media">
+            <a href="https://winkitude-ceros.s3.us-east-2.amazonaws.com/conspiracy-v2-1-3-2/index.html" target="_blank" rel="noopener">
+              <img src="images/ceros/conspiracy.png" alt="Conspiracy: The Disinformation Election">
+            </a>
+          </div>
+          <div class="copy">
+            <h3 class="hed">Conspiracy: The Disinformation Election</h3>
+            <p class="dek">
+              Will the wildfire of conspiracy theories impact the vote?
+<br><br>
+This project examined how conspiracy narratives spread, overlap, and reinforce one another during a high-stakes election cycle. The core challenge was visualizing an ecosystem that is fragmented, emotional, and constantly evolving without overwhelming the reader.
+<br><br>
+I focused on shaping the overall experience and visual logic of the piece. A large part of my work was art directing and helping define the information architecture behind the treemap, ensuring relationships felt intuitive and patterns emerged naturally as readers explored the story.
+            </p>
+          </div>
+        </div>
+
+        <!-- Row 2 -->
+        <div class="row">
+          <div class="media">
+            <a href="https://winkitude-ceros.s3.us-east-2.amazonaws.com/could-space-make-canada-more-vital-than-ever/index.html" target="_blank" rel="noopener">
+              <img src="images/ceros/mdaspace.png" alt="MDA Space branded content">
+            </a>
+          </div>
+          <div class="copy">
+            <h3 class="hed">MDA Space</h3>
+            <p class="dek">
+             Could Space Make Canada More Vital Than Ever?
+<br><br>
+A branded editorial experience developed with MDA Space to explore Canada’s strategic role in the future of space technology. The piece needed to balance national storytelling, technical credibility, and brand voice while still feeling readable and inviting.
+<br><br>
+I supported the project through art direction and design, working closely with editorial and brand stakeholders to align visual tone, pacing, and hierarchy. The goal was to let the narrative breathe while reinforcing MDA Space’s leadership without overt marketing.
+            </p>
+          </div>
+        </div>
+
+        <!-- Row 3 -->
+        <div class="row">
+          <div class="media">
+            <a href="https://winkitude-ceros.s3.us-east-2.amazonaws.com/mock-03-3-1-2-2/index.html" target="_blank" rel="noopener">
+              <img src="images/ceros/pfizer.png" alt="Pfizer branded content">
+            </a>
+          </div>
+          <div class="copy">
+            <h3 class="hed">Pfizer</h3>
+            <p class="dek">
+           Highlighting health innovation across Africa
+<br><br>
+This branded content piece showcased Pfizer’s work across Africa, focusing on health equity, access, and long-term impact. The challenge was telling a nuanced story across regions while maintaining cohesion and sensitivity.
+<br><br>
+I contributed across art direction, design, and development. I helped shape the overall flow, designed key layouts, and supported the build to ensure the experience felt polished and human.
+            </p>
+          </div>
+        </div>
+
+
+<!-- Row 4 -->
+        <div class="row">
+          <div class="media">
+            <a href="https://winkitude-ceros.s3.us-east-2.amazonaws.com/media-kit-test-1-2-1/index.html" target="_blank" rel="noopener">
+              <img src="images/ceros/gzero-mediakit.png" alt="GZERO Media's Media Kit">
+            </a>
+          </div>
+          <div class="copy">
+            <h3 class="hed">GZERO Media Media Kit</h3>
+            <p class="dek">
+An interactive media kit designed to clearly communicate GZERO Media’s reach, voice, and audience to partners and sponsors. The experience needed to be modular, easy to update, and visually confident without feeling sales-heavy.
+<br><br>
+I led design, development, and art direction. My focus was on clarity and usability. Structuring content so partners reminds value quickly while still allowing room for deeper exploration of offerings and impact.
+</p>
+          </div>
+        </div>
+
+
+        <!-- Row 5 -->
+        <div class="row">
+          <div class="media">
+            <a href="https://winkitude-ceros.s3.us-east-2.amazonaws.com/eg-impact/index.html" target="_blank" rel="noopener">
+              <img src="images/ceros/egimpact.png" alt="Eurasia Group's Impact initiative">
+            </a>
+          </div>
+          <div class="copy">
+            <h3 class="hed">EG Impact</h3>
+            <p class="dek">
+EG Impact was built to highlight Eurasia Group’s research, insights, and influence across policy and global affairs. The challenge was translating institutional depth into an accessible interactive format.
+<br><br>
+I helped art direct and shape the experience, working across design and development to ensure the content felt authoritative but approachable. Emphasis was placed on hierarchy, pacing, and visual restraint so the substance remained front and center.            </p>
+          </div>
+        </div>
+
+
+      </div>
+    </section>
+
+  
+
+  
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <a href="index.html" class="dek">Back to homepage &rarr;</a><br />
+      <small class="dek" style="color:#6b6b6b;">&copy; <span id="year"></span> Ari Winkleman</small>
+    </div>
+  </footer>
+
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8FK0VXYYGX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-8FK0VXYYGX');
+  </script>
+</body>
+</html>

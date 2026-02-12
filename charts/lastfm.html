@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-  <title>Theduckmanz — Last.fm Top 50 (2008–2025)</title>
+  <title>Theduckmanz — Last.fm Top 50 (2008–2026)</title>
   <link href="https://fonts.googleapis.com/css2?family=Poltawski+Nowy:wght@400;600;700;900&display=swap" rel="stylesheet">
   <style>
     /* ===== Drag City–ish vibe with Ari header ===== */
@@ -222,7 +222,7 @@
   <header>
     <h1>
       <a href="https://www.last.fm/user/theduckmanz" target="_blank" rel="noopener" style="color: inherit; text-decoration: none;">
-        Theduckmanz's Last.fm Top 50 — 2008 to 2025
+        Theduckmanz's Last.fm Top 50 — 2008 to 2026
       </a>
     </h1>
   </header>
@@ -271,7 +271,7 @@
   <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
   <script>
     const START_YEAR = 2008;
-    const END_YEAR   = 2025;
+    const END_YEAR   = 2026;
     const DARK_PINK  = getCss("--dark-pink");
     const LIGHT_PINK = getCss("--light-pink");
     const LIGHT_GRAY = getCss("--light-gray");
@@ -748,14 +748,16 @@
 
       const byYearArtists = new Map(), byYearSongs = new Map(), byYearAlbums = new Map();
       rows.forEach(r => {
-        const year = +r[yearCol]; if (!Number.isFinite(year)) return;
+        const yearRaw = String(r[yearCol] ?? "").trim();
+        const yearKey = /^overall$/i.test(yearRaw) ? "Overall" : String(+yearRaw);
+        if (yearKey !== "Overall" && !Number.isFinite(+yearKey)) return;
         if (aNameCol && aPlaysCol && r[aNameCol]) {
-          const arr = byYearArtists.get(year) || [];
+          const arr = byYearArtists.get(yearKey) || [];
           arr.push({ kind:"artist", title: r[aNameCol], subtitle: "", plays: toPlays(r[aPlaysCol]) });
-          byYearArtists.set(year, arr);
+          byYearArtists.set(yearKey, arr);
         }
         if (tTitleCol && tArtistCol && tPlaysCol && r[tTitleCol]) {
-          const arr = byYearSongs.get(year) || [];
+          const arr = byYearSongs.get(yearKey) || [];
           arr.push({
             kind:"song",
             title: r[tTitleCol],
@@ -763,10 +765,10 @@
             plays: toPlays(r[tPlaysCol]),
             img: tImgCol ? (r[tImgCol]||"").trim() : ""
           });
-          byYearSongs.set(year, arr);
+          byYearSongs.set(yearKey, arr);
         }
         if (alTitleCol && alArtistCol && alPlaysCol && r[alTitleCol]) {
-          const arr = byYearAlbums.get(year) || [];
+          const arr = byYearAlbums.get(yearKey) || [];
           arr.push({
             kind:"album",
             title: r[alTitleCol],
@@ -774,7 +776,7 @@
             plays: toPlays(r[alPlaysCol]),
             img: alImgCol ? (r[alImgCol]||"").trim() : ""
           });
-          byYearAlbums.set(year, arr);
+          byYearAlbums.set(yearKey, arr);
         }
       });
 
@@ -784,20 +786,27 @@
         }
       }
 
-      const allYears = Array.from(new Set([
+      const allKeys = Array.from(new Set([
         ...byYearArtists.keys(),
         ...byYearSongs.keys(),
         ...byYearAlbums.keys()
-      ])).sort((a,b)=>a-b);
-      const years = allYears.filter(y=>y>=START_YEAR && y<=END_YEAR).length
-        ? allYears.filter(y=>y>=START_YEAR && y<=END_YEAR)
-        : allYears;
+      ]));
+
+      const numericYears = allKeys
+        .filter(k => k !== "Overall" && Number.isFinite(+k))
+        .map(k => +k)
+        .sort((a,b) => a - b);
+
+      const inRange = numericYears.filter(y => y >= START_YEAR && y <= END_YEAR);
+      const years = (inRange.length ? inRange : numericYears).map(String);
+
+      if (allKeys.includes("Overall")) years.push("Overall");
 
       function fillSelect(sel){
         sel.innerHTML="";
         years.forEach(y => {
           const o=document.createElement('option');
-          o.value=y; o.textContent=y; sel.appendChild(o);
+          o.value=String(y); o.textContent=String(y); sel.appendChild(o);
         });
         sel.value = years[years.length-1];
       }
@@ -850,13 +859,13 @@
       }
 
       function updateArtists(){
-        renderList(UI.artists.list, byYearArtists.get(+UI.artists.select.value), 10, { showThumb:false });
+        renderList(UI.artists.list, byYearArtists.get(UI.artists.select.value), 10, { showThumb:false });
       }
       function updateSongs(){
-        renderList(UI.songs.list, byYearSongs.get(+UI.songs.select.value), 10, { showThumb:true });
+        renderList(UI.songs.list, byYearSongs.get(UI.songs.select.value), 10, { showThumb:true });
       }
       function updateAlbums(){
-        renderList(UI.albums.list, byYearAlbums.get(+UI.albums.select.value), 10, { showThumb:true });
+        renderList(UI.albums.list, byYearAlbums.get(UI.albums.select.value), 10, { showThumb:true });
       }
 
       updateArtists();

@@ -67,6 +67,107 @@
 </script>
 
 
+
+<style>
+.capabilities {
+  margin: 80px 0 80px 0;
+}
+
+/* Wider than the normal .wrap on desktop, but still centered */
+.capabilities-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 72px;
+  align-items: start;
+  justify-items: center;
+
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
+.capability {
+  text-align: center;
+  cursor: pointer;
+}
+
+.icon-wrap {
+  position: relative;
+  width: 220px;
+  height: 220px;
+  margin: 0 auto 18px auto;
+}
+
+.icon {
+  position: absolute;
+  width: 220px;
+  height: 220px;
+  top: 0;
+  left: 0;
+  transition: opacity 0.2s ease;
+}
+
+.icon.hover {
+  opacity: 0;
+}
+
+.capability:hover .icon.base {
+  opacity: 0;
+}
+
+.capability:hover .icon.hover {
+  opacity: 1;
+}
+
+.capability-label {
+  font-family: "Poltawski Nowy", serif;
+  font-size: 26px;
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+}
+
+/* Keep it tidy on smaller screens */
+@media (max-width: 900px) {
+  .capabilities-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px;
+    max-width: 900px;
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+
+  .icon-wrap, .icon {
+    width: 180px;
+    height: 180px;
+  }
+
+  .capability-label {
+    font-size: 22px;
+  }
+}
+
+@media (max-width: 520px) {
+  .capabilities-grid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  .icon-wrap, .icon {
+    width: 160px;
+    height: 160px;
+  }
+
+  .capability-label {
+    font-size: 20px;
+  }
+}
+</style>
+
 </head>
 
 <body>
@@ -195,6 +296,48 @@
         </div>
       </div>
     </section>
+
+    <hr class="rule" />
+
+
+<section class="capabilities">
+  <div class="capabilities-grid">
+
+      <div class="capability">
+        <div class="icon-wrap">
+          <img src="images/hp/Information_Design.svg" class="icon base" alt="Information Design">
+          <img src="images/hp/Information_Design2.svg" class="icon hover" alt="Information Design hover">
+        </div>
+        <div class="capability-label">Information Design</div>
+      </div>
+
+      <div class="capability">
+        <div class="icon-wrap">
+          <img src="images/hp/Brand_Systems.svg" class="icon base" alt="Brand Systems">
+          <img src="images/hp/Brand_Systems2.svg" class="icon hover" alt="Brand Systems hover">
+        </div>
+        <div class="capability-label">Brand Systems</div>
+      </div>
+
+      <div class="capability">
+        <div class="icon-wrap">
+          <img src="images/hp/Editorial_Design.svg" class="icon base" alt="Editorial Design">
+          <img src="images/hp/Editorial_Design2.svg" class="icon hover" alt="Editorial Design hover">
+        </div>
+        <div class="capability-label">Editorial Design</div>
+      </div>
+
+      <div class="capability">
+        <div class="icon-wrap">
+          <img src="images/hp/Executive_Communication.svg" class="icon base" alt="Executive Communication">
+          <img src="images/hp/Executive_Communication2.svg" class="icon hover" alt="Executive Communication hover">
+        </div>
+        <div class="capability-label">Executive Communication</div>
+      </div>
+
+    </div>
+</section>
+
 
     <hr class="rule" />
 

@@ -1,0 +1,482 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Simpsons Relationship Network — Interactive</title>
+  <style>
+    html, body { height: 100%; margin: 0; font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji"; }
+    #graph { width: 100%; height: 100%; }
+    .app { display: grid; grid-template-columns: 280px 1fr; grid-template-rows: auto 1fr; height: 100%; }
+    header { grid-column: 1 / -1; display: flex; align-items: center; gap: 12px; padding: 10px 14px; border-bottom: 1px solid #eee; position: sticky; top: 0; background: #fff; z-index: 2; }
+    .brand a { text-decoration: none; color: #111; font-weight: 600; letter-spacing: .2px;  font-family:'Abril Fatface', serif; }
+    .brand a:hover { opacity: .7; }
+    .divider { width: 1px; height: 18px; background: #eaeaea; margin: 0 6px; }
+    header .title { font-weight: 600; color: #222; }
+    aside { border-right: 1px solid #eee; padding: 14px; overflow: auto; }
+    main { position: relative; overflow: hidden; background: #fff; min-height: 0; }
+    .section { margin-bottom: 14px; }
+    .section h3 { margin: 0 0 8px; font-size: 14px; font-weight: 600; }
+    .legend { display: flex; flex-direction: column; gap: 6px; }
+    .legend-row { display: flex; align-items: center; gap: 8px; }
+    .chip { width: 14px; height: 14px; border-radius: 3px; flex: 0 0 14px; }
+    .small { font-size: 12px; color: #5a5a5a; }
+    .toolbar button { padding: 6px 10px; border: 1px solid #ddd; background: #fff; border-radius: 8px; cursor: pointer; }
+    .toolbar button + button { margin-left: 8px; }
+    .badge { position: absolute; bottom: 10px; left: 10px; background: rgba(255,255,255,0.92); border: 1px solid #eee; padding: 8px 10px; border-radius: 10px; font-size: 13px; box-shadow: 0 2px 10px rgba(0,0,0,0.06); }
+    input[type="range"] { width: 160px; }
+    .hint { color: #777; font-size: 12px; }
+
+    @media (max-width: 900px) {
+      .app { grid-template-columns: 1fr; grid-template-rows: auto auto 1fr; }
+      aside { grid-column: 1 / -1; border-right: none; border-bottom: 1px solid #eee; display: flex; gap: 12px; align-items: center; overflow-x: auto; overflow-y: hidden; white-space: nowrap; padding: 10px 12px; }
+      .section { margin: 0; }
+      .section + .section { margin-left: 12px; }
+      .legend { flex-direction: row; align-items: center; gap: 8px; }
+      .legend-row { flex: 0 0 auto; display: inline-flex; align-items: center; gap: 6px; padding: 6px 8px; border: 1px solid #eee; border-radius: 8px; background: #fff; }
+      input[type="range"] { width: 120px; }
+      main { grid-row: 3; }
+    }
+  </style>
+  <script src="https://unpkg.com/force-graph"></script>
+  <script src="https://unpkg.com/papaparse@5.4.1/papaparse.min.js"></script>
+</head>
+<body>
+  <div class="app">
+    <header>
+      <div class="brand"><a href="../index.html" rel="noopener" title="Ari Winkleman">Ari Winkleman</a></div>
+      <div class="divider" aria-hidden="true"></div>
+      <div class="title">Simpsons Relationship Network (Seasons 1-10)</div>
+      <div class="toolbar" style="margin-left:auto;">
+        <button id="fitBtn">Fit</button>
+        <button id="zinBtn">Zoom +</button>
+        <button id="zoutBtn">Zoom −</button>
+        <button id="svgBtn">Export SVG</button>
+      </div>
+    </header>
+
+    <aside>
+      <div class="section">
+        <h3>Display</h3>
+        <div class="row"><label class="small">Node size</label><input id="sizeRange" type="range" min="0.6" max="2" value="1" step="0.1" /></div>
+      </div>
+
+      <div class="section">
+        <h3>Relationship Types</h3>
+        <div id="legend" class="legend small"></div>
+      </div>
+
+      <div class="small hint">
+        Tap a bubble to highlight connections. Pinch/zoom or use buttons. Names show only on tap. Photos via <a href="https://frinkiac.com/" class="small">Frinkiac</a>. <br><br><a href="data/simpsons.csv" download="Simpsons_Relationships_Seasons1-10.csv" class="small">Download the data (CSV)</a>
+      </div>
+    </aside>
+
+    <main>
+      <div id="graph"></div>
+      <div id="badge" class="badge" style="display:none;"></div>
+    </main>
+  </div>
+
+<script>
+(() => {
+  const tab20 = [
+    "#1f77b4","#ff7f0e","#2ca02c","#d62728","#9467bd",
+    "#8c564b","#e377c2","#7f7f7f","#bcbd22","#17becf",
+    "#393b79","#637939","#8c6d31","#843c39","#7b4173",
+    "#6b6ecf","#b5cf6b","#e7ba52","#d6616b","#ce6dbd"
+  ];
+
+  const elGraph = document.getElementById('graph');
+  const badge = document.getElementById('badge');
+  const sizeRange = document.getElementById('sizeRange');
+  const legendEl = document.getElementById('legend');
+
+  const Graph = ForceGraph()(elGraph)
+    .nodeRelSize(4)
+    .backgroundColor('#ffffff')
+    .zoom(1)
+    .linkDirectionalParticles(0)
+    .linkCurvature(0.15);
+
+  const resize = () => {
+    const rect = elGraph.getBoundingClientRect();
+    Graph.width(rect.width).height(rect.height);
+  };
+  const resizeObserver = new ResizeObserver(resize);
+  resizeObserver.observe(elGraph);
+
+  let graph = { nodes: [], links: [] };
+  let filtered = { nodes: [], links: [] };
+  let counts = new Map();
+  let typeList = [];
+  let activeTypes = {};
+  let nodeScale = 1.0;
+  let highlightNode = null;
+  let highlightNodes = new Set();
+  let highlightLinks = new Set();
+
+  // Images
+  const imageMap = new Map(); // name -> url
+  const imageCache = new Map();
+
+  function preload(url) {
+    if (!url || imageCache.has(url)) return;
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.onload = () => { imageCache.set(url, img); Graph.refresh(); };
+    img.onerror = () => {};
+    img.src = url;
+  }
+
+  function buildGraph(rows) {
+    counts = new Map();
+    const nodesMap = new Map();
+    const links = [];
+    const typeSet = new Set();
+
+    rows.forEach(r => {
+      const p = (r.Person||'').trim();
+      const l = (r.Lover||'').trim();
+      const t = (r.Type||'').trim();
+      if (!p || !l) return;
+      counts.set(p, (counts.get(p)||0)+1);
+      counts.set(l, (counts.get(l)||0)+1);
+      if (!nodesMap.has(p)) nodesMap.set(p, { id: p, val: 1 });
+      if (!nodesMap.has(l)) nodesMap.set(l, { id: l, val: 1 });
+      links.push({ source: p, target: l, type: t });
+      if (t) typeSet.add(t);
+    });
+
+    nodesMap.forEach((n, id) => { n.val = counts.get(id)||1; });
+    graph = { nodes: Array.from(nodesMap.values()), links };
+    typeList = Array.from(typeSet.values());
+    activeTypes = {}; typeList.forEach(t => activeTypes[t] = true);
+    renderLegend();
+    applyFilters();
+  }
+
+  function renderLegend() {
+    legendEl.innerHTML = '';
+    typeList.forEach((t, i) => {
+      const row = document.createElement('div');
+      row.className = 'legend-row';
+      const chip = document.createElement('div'); chip.className = 'chip'; chip.style.background = tab20[i % tab20.length];
+      const box = document.createElement('input'); box.type = 'checkbox'; box.checked = !!activeTypes[t];
+      box.addEventListener('change', () => { activeTypes[t] = box.checked; applyFilters(); });
+      const text = document.createElement('div'); text.textContent = t; text.className = 'small';
+      row.appendChild(chip); row.appendChild(box); row.appendChild(text);
+      legendEl.appendChild(row);
+    });
+  }
+
+  function applyFilters() {
+    const pass = (l) => (l.type ? activeTypes[l.type] : true);
+    const links = graph.links.filter(pass);
+    const keep = new Set();
+    links.forEach(l => {
+      keep.add(typeof l.source==='object'? l.source.id:l.source);
+      keep.add(typeof l.target==='object'? l.target.id:l.target);
+    });
+    const nodes = graph.nodes.filter(n => keep.has(n.id));
+    filtered = { nodes, links };
+    highlightNode = null; highlightNodes.clear(); highlightLinks.clear();
+    Graph.graphData(filtered);
+    setDrawers();
+    setTimeout(() => Graph.zoomToFit(600, 50), 30);
+  }
+
+  function colorOfType(type) {
+    if (!type) return '#999';
+    const idx = typeList.indexOf(type);
+    return tab20[idx % tab20.length];
+  }
+
+  function nodeRadius(n) {
+    const base = 3 + Math.pow(n.val||1, 0.9) * 1.4;
+    return base * nodeScale;
+  }
+
+
+  function xmlEscape(s) {
+    return String(s)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&apos;');
+  }
+
+  function safeId(s) {
+    return String(s || '').toLowerCase().replace(/[^a-z0-9_-]+/g, '-').replace(/^-+/, '').replace(/-+$/, '') || 'node';
+  }
+
+  function exportSVG(opts = {}) {
+    const includeImages = !!opts.includeImages;
+    const data = filtered && filtered.nodes && filtered.links ? filtered : (Graph ? Graph.graphData() : { nodes: [], links: [] });
+    const nodes = data.nodes || [];
+    const links = data.links || [];
+
+    if (!nodes.length) {
+      alert('No nodes to export yet. Wait for the graph to load.');
+      return;
+    }
+
+    // Bounds in world coordinates
+    let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+    nodes.forEach(n => {
+      const r = nodeRadius(n) + 6;
+      if (typeof n.x !== 'number' || typeof n.y !== 'number') return;
+      minX = Math.min(minX, n.x - r);
+      minY = Math.min(minY, n.y - r);
+      maxX = Math.max(maxX, n.x + r);
+      maxY = Math.max(maxY, n.y + r);
+    });
+
+    if (!isFinite(minX) || !isFinite(minY)) {
+      alert('Graph positions are not ready yet. Try again in a second.');
+      return;
+    }
+
+    const w = Math.max(10, (maxX - minX));
+    const h = Math.max(10, (maxY - minY));
+
+    const toSvgX = (x) => (x - minX);
+    const toSvgY = (y) => (y - minY);
+
+    // SVG header
+    let svg = '';
+    svg += `<?xml version="1.0" encoding="UTF-8"?>\n`;
+    svg += `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="${w.toFixed(2)}" height="${h.toFixed(2)}" viewBox="0 0 ${w.toFixed(2)} ${h.toFixed(2)}">\n`;
+    svg += `<rect width="100%" height="100%" fill="#ffffff"/>\n`;
+
+    // Define clips for images
+    svg += `<defs>\n`;
+    nodes.forEach(n => {
+      const id = safeId(n.id);
+      const r = nodeRadius(n) - 1;
+      const cx = toSvgX(n.x);
+      const cy = toSvgY(n.y);
+      svg += `<clipPath id="clip-${id}"><circle cx="${cx.toFixed(2)}" cy="${cy.toFixed(2)}" r="${Math.max(0, r).toFixed(2)}"/></clipPath>\n`;
+    });
+    svg += `</defs>\n`;
+
+    // Links
+    svg += `<g id="links" fill="none" stroke-linecap="round">\n`;
+    links.forEach(l => {
+      const s = typeof l.source === 'object' ? l.source : nodes.find(n => n.id === l.source);
+      const t = typeof l.target === 'object' ? l.target : nodes.find(n => n.id === l.target);
+      if (!s || !t) return;
+      const x1 = toSvgX(s.x), y1 = toSvgY(s.y);
+      const x2 = toSvgX(t.x), y2 = toSvgY(t.y);
+      const c = colorOfType(l.type);
+      svg += `<line x1="${x1.toFixed(2)}" y1="${y1.toFixed(2)}" x2="${x2.toFixed(2)}" y2="${y2.toFixed(2)}" stroke="${c}" stroke-width="2.2" opacity="0.9"/>\n`;
+    });
+    svg += `</g>\n`;
+
+    // Nodes
+    svg += `<g id="nodes">\n`;
+    nodes.forEach(n => {
+      const r = nodeRadius(n);
+      const cx = toSvgX(n.x);
+      const cy = toSvgY(n.y);
+      const id = safeId(n.id);
+
+      // Outer circle
+      svg += `<circle cx="${cx.toFixed(2)}" cy="${cy.toFixed(2)}" r="${r.toFixed(2)}" fill="#ffffff" stroke="#333333" stroke-width="1"/>\n`;
+
+      // Optional portrait
+      if (includeImages) {
+        const url = imageMap && imageMap.get ? imageMap.get(n.id) : '';
+        if (url) {
+          const x = (cx - r).toFixed(2);
+          const y = (cy - r).toFixed(2);
+          const size = (r * 2).toFixed(2);
+          svg += `<image x="${x}" y="${y}" width="${size}" height="${size}" preserveAspectRatio="xMidYMid slice" xlink:href="${xmlEscape(url)}" clip-path="url(#clip-${id})"/>\n`;
+        }
+      }
+    });
+    svg += `</g>\n`;
+
+    svg += `</svg>\n`;
+
+    const blob = new Blob([svg], { type: 'image/svg+xml;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'simpsons_network.svg';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 800);
+  }
+
+  function setDrawers() {
+    Graph.nodeCanvasObject((node, ctx, scale) => {
+      const r = nodeRadius(node);
+      if (highlightNodes.size && !highlightNodes.has(node)) ctx.globalAlpha = 0.18; else ctx.globalAlpha = 1;
+      ctx.beginPath(); ctx.arc(node.x, node.y, r, 0, 2*Math.PI);
+      ctx.fillStyle = '#fff'; ctx.fill();
+      ctx.lineWidth = highlightNodes.has(node) ? 2.2 : 1;
+      ctx.strokeStyle = highlightNodes.has(node) ? '#111' : '#333';
+      ctx.stroke();
+      const url = imageMap.get(node.id);
+      const img = url ? imageCache.get(url) : null;
+      if (img) {
+        ctx.save();
+        ctx.beginPath(); ctx.arc(node.x, node.y, r - 1, 0, 2*Math.PI); ctx.clip();
+        const side = Math.min(img.naturalWidth, img.naturalHeight);
+        const sx = (img.naturalWidth - side)/2;
+        const sy = (img.naturalHeight - side)/2;
+        ctx.drawImage(img, sx, sy, side, side, node.x - r, node.y - r, r*2, r*2);
+        ctx.restore();
+      }
+      if (highlightNode && node.id === highlightNode.id) {
+        const fontSize = Math.max(8, 10/scale);
+        ctx.font = `${fontSize}px Inter, ui-sans-serif, system-ui`;
+        ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+        ctx.fillStyle = 'rgba(0,0,0,0.9)';
+        ctx.fillText(node.id, node.x, node.y + r + 2);
+      }
+      ctx.globalAlpha = 1;
+    })
+    .linkWidth(l => highlightLinks.size && !highlightLinks.has(l) ? 1 : 2.2)
+    .linkColor(l => {
+      const c = colorOfType(l.type);
+      return (highlightLinks.size && !highlightLinks.has(l)) ? c + '55' : c;
+    });
+  }
+
+  function onNodeClick(node) {
+    highlightNode = node;
+    highlightNodes = new Set([node]);
+    highlightLinks = new Set();
+    filtered.links.forEach(l => {
+      const s = typeof l.source==='object' ? l.source.id : l.source;
+      const t = typeof l.target==='object' ? l.target.id : l.target;
+      if (s === node.id || t === node.id) {
+        highlightLinks.add(l);
+        highlightNodes.add(typeof l.source==='object' ? l.source : filtered.nodes.find(n => n.id === s));
+        highlightNodes.add(typeof l.target==='object' ? l.target : filtered.nodes.find(n => n.id === t));
+      }
+    });
+    setDrawers();
+    Graph.centerAt(node.x, node.y, 600);
+    Graph.zoom(4, 800);
+    badge.style.display = 'block';
+    badge.innerHTML = `<div><b>${node.id}</b></div><div class="small">Connections: ${highlightLinks.size}</div>`;
+  }
+
+  function clearHighlight() {
+    highlightNode = null; highlightNodes.clear(); highlightLinks.clear();
+    setDrawers();
+    badge.style.display = 'none';
+  }
+
+  Graph.onNodeClick(onNodeClick);
+  Graph.onBackgroundClick(clearHighlight);
+
+  document.getElementById('fitBtn').onclick = () => Graph.zoomToFit(800, 50);
+  document.getElementById('zinBtn').onclick = () => Graph.zoom(Graph.zoom()*1.2, 400);
+  document.getElementById('zoutBtn').onclick = () => Graph.zoom(Graph.zoom()/1.2, 400);
+  document.getElementById('svgBtn').onclick = () => exportSVG({ includeImages: false });
+  sizeRange.addEventListener('input', e => { nodeScale = parseFloat(e.target.value || '1'); Graph.refresh(); });
+
+
+// --- Drop-in replacement for autoloadBundled() with portrait fallback ---
+
+// Helpers to match filenames to names: "C. Montgomery Burns" -> "c_montgomery_burns"
+function sanitizeName(s) {
+  return (s || "")
+    .toLowerCase()
+    .replace(/&/g, "and")
+    .replace(/[^\w\s-]+/g, "")
+    .trim()
+    .replace(/\s+/g, "_");
+}
+const PORTRAIT_EXTS = [".webp", ".png", ".jpg", ".jpeg"];
+function tryLoadImage(url) {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.onload = () => resolve(url);
+    img.onerror = () => resolve(null);
+    img.src = url;
+  });
+}
+async function guessPortraitURL(name) {
+  const stem = sanitizeName(name);
+  for (const ext of PORTRAIT_EXTS) {
+    const url = `portraits/${stem}${ext}`;
+    if (await tryLoadImage(url)) return url;
+  }
+  return "";
+}
+
+// REPLACE your old autoloadBundled() with this:
+async function autoloadBundled() {
+  // 1) Load CSV and build graph as usual
+  let rows = [];
+  try {
+    const csvText = await fetch('data/simpsons.csv').then(r => r.text());
+    Papa.parse(csvText, {
+      header: true,
+      skipEmptyLines: true,
+      complete: (res) => {
+        rows = (res.data || [])
+          .map(r => ({ Person: (r.Person||'').trim(), Lover: (r.Lover||'').trim(), Type: (r.Type||'').trim() }))
+          .filter(r => r.Person && r.Lover);
+        buildGraph(rows);
+      }
+    });
+  } catch (e) { /* ignore */ }
+
+  // 2) Try to load image_map.csv if present
+  const names = Array.from(new Set(rows.flatMap(r => [r.Person, r.Lover])));
+  const hasEntry = new Map(); // name -> boolean
+
+  try {
+    const imgMapText = await fetch('image_map.csv').then(r => r.ok ? r.text() : "");
+    if (imgMapText) {
+      Papa.parse(imgMapText, {
+        header: true,
+        skipEmptyLines: true,
+        complete: (res) => {
+          (res.data || []).forEach(r => {
+            const name = (r.name || r.Name || '').trim();
+            const url  = (r.url  || r.URL  || r.image || r.image_url || '').trim();
+            if (name && url) { imageMap.set(name, url); preload(url); hasEntry.set(name, true); }
+          });
+        }
+      });
+    }
+  } catch (e) { /* ignore */ }
+
+  // 3) Fallback: auto-guess portraits by filename for any names still missing
+  await Promise.all(names.map(async (name) => {
+    if (!hasEntry.get(name) && !imageMap.get(name)) {
+      const url = await guessPortraitURL(name);
+      if (url) { imageMap.set(name, url); preload(url); }
+    }
+  }));
+
+  // 4) Refresh the canvas so newly found portraits render
+  if (typeof Graph !== 'undefined') Graph.refresh();
+}
+// --- End drop-in replacement ---
+
+  setTimeout(() => { resize(); autoloadBundled(); }, 0);
+})();
+</script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8FK0VXYYGX"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-8FK0VXYYGX');
+</script>
+
+
+</body>
+</html>

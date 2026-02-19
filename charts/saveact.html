@@ -46,8 +46,8 @@
     .sub { font-size: 13px; color:#444; margin:0; }
 
     .stepCard {
-      max-width: 54ch;
-      background: rgba(255,255,255,.84);
+      max-width: 56ch;
+      background: rgba(255,255,255,.86);
       backdrop-filter: blur(6px);
       border: 1px solid rgba(0,0,0,.06);
       border-radius: 16px;
@@ -57,6 +57,7 @@
     .stepCard h3 { margin: 0 0 6px 0; font-size: 16px; }
     .stepCard p { margin: 0; color:#222; line-height: 1.45; font-size: 14px; }
     .legend { margin-top: 10px; font-size: 12px; color:#444; }
+    .accentLine { height: 3px; border-radius: 999px; margin-top: 10px; width: 130px; background: #111; opacity: .18; }
 
     .story { padding-right: 6px; }
     .step {
@@ -98,6 +99,7 @@
             <h3 id="cardTitle">Total population</h3>
             <p id="cardText">A base layer representing 341.1 million people. 1 icon equals 1,000,000 people.</p>
             <div class="legend" id="legend">Filled: 0 icons. Unfilled: 0 icons.</div>
+            <div class="accentLine" id="accentLine"></div>
           </div>
         </div>
       </div>
@@ -105,17 +107,17 @@
       <div class="story">
         <section class="step" data-step="population">
           <h3 class="stepTitle">Total population</h3>
-          <p class="stepText">A base layer representing 341.1 million people. 1 icon equals 1,000,000 people.</p>
+          <p class="stepText">341.1 million people. This is the full base layer.</p>
         </section>
 
         <section class="step" data-step="votingAge">
           <h3 class="stepTitle">Voting age population</h3>
-          <p class="stepText">Highlight those 18 and over. everything else fades.</p>
+          <p class="stepText">People 18 and over. everything else fades.</p>
         </section>
 
         <section class="step" data-step="votingEligible">
           <h3 class="stepTitle">Voting eligible population</h3>
-          <p class="stepText">From voting age. narrow to eligible voters.</p>
+          <p class="stepText">From voting age. narrow to those eligible to vote.</p>
         </section>
 
         <section class="step" data-step="registered">
@@ -125,12 +127,17 @@
 
         <section class="step" data-step="passport">
           <h3 class="stepTitle">Those with a passport</h3>
-          <p class="stepText">A documentation proxy. show how many can easily produce a passport.</p>
+          <p class="stepText">A documentation proxy. how many can easily produce a passport.</p>
         </section>
 
         <section class="step" data-step="nameChange">
-          <h3 class="stepTitle">Name change differs from birth certificate</h3>
+          <h3 class="stepTitle">Name differs from birth certificate</h3>
           <p class="stepText">A group likely to face extra friction if a birth certificate is required.</p>
+        </section>
+
+        <section class="step" data-step="voterFraud">
+          <h3 class="stepTitle">Documented voter fraud cases</h3>
+          <p class="stepText">At this scale, the number is effectively invisible. Even the Heritage Foundation’s database frames itself as a sampling of proven cases across many years, not evidence of widespread fraud.</p>
         </section>
       </div>
     </div>
@@ -139,19 +146,34 @@
   <script>
     const TOTAL_PEOPLE = 341_100_000;
 
-    // Switched to 1,000,000 per icon
+    // 1,000,000 per icon for bigger silhouettes and a cleaner circle
     const PEOPLE_PER_ICON = 1_000_000;
 
-    // Use rounding so the base layer matches the narrative expectation
-    const TOTAL_ICONS = Math.round(TOTAL_PEOPLE / PEOPLE_PER_ICON); // ~341
+    // Ceil so your base layer slightly over-covers the 341.1M and feels complete
+    const TOTAL_ICONS = Math.ceil(TOTAL_PEOPLE / PEOPLE_PER_ICON); // 342
 
+    // Data you provided
     const COUNTS = {
       population: 341_100_000,
       votingAge: 264_798_961,
       votingEligible: 244_666_890,
       registered: 173_854_000,
       passport: 165_258_210,
-      nameChange: 69_329_504
+      nameChange: 69_329_504,
+
+      // With 1M per icon this will render as 0 icons. That is the point.
+      voterFraud: 100
+    };
+
+    // Per-step colors for filled icons and subtle background tint
+    const STEP_STYLE = {
+      population:  { fill: "#111111", tint: "#f6f6f6" },
+      votingAge:   { fill: "#0B3D91", tint: "#f2f6ff" },
+      votingEligible:{ fill:"#116A5B", tint: "#f0fbf8" },
+      registered:  { fill: "#6A1B9A", tint: "#faf3ff" },
+      passport:    { fill: "#B45309", tint: "#fff7ed" },
+      nameChange:  { fill: "#B91C1C", tint: "#fff1f2" },
+      voterFraud:  { fill: "#0F766E", tint: "#f0fdfa" }
     };
 
     const COPY = {
@@ -161,11 +183,11 @@
       },
       votingAge: {
         title: "Voting age population",
-        text: "Highlight those 18 and over. everything else fades."
+        text: "People 18 and over. everything else fades."
       },
       votingEligible: {
         title: "Voting eligible population",
-        text: "From voting age. narrow to eligible voters."
+        text: "From voting age. narrow to those eligible to vote."
       },
       registered: {
         title: "Registered voters",
@@ -176,8 +198,12 @@
         text: "A documentation proxy. show how many can easily produce a passport."
       },
       nameChange: {
-        title: "Name change differs from birth certificate",
+        title: "Name differs from birth certificate",
         text: "A group likely to face extra friction if a birth certificate is required."
+      },
+      voterFraud: {
+        title: "Documented voter fraud cases",
+        text: "At this scale, it disappears. This step is here to show contrast, not to imply zero. It is tiny relative to the electorate."
       }
     };
 
@@ -238,6 +264,7 @@
     const legendEl = document.getElementById("legend");
     const cardTitleEl = document.getElementById("cardTitle");
     const cardTextEl = document.getElementById("cardText");
+    const accentLineEl = document.getElementById("accentLine");
 
     const canvas = document.getElementById("viz");
     const ctx = canvas.getContext("2d", { alpha: false });
@@ -248,8 +275,8 @@
       return Math.max(0, Math.min(TOTAL_ICONS, Math.round(peopleCount / PEOPLE_PER_ICON)));
     }
 
-    function clear() {
-      ctx.fillStyle = "#f6f6f6";
+    function clear(tintHex) {
+      ctx.fillStyle = tintHex || "#f6f6f6";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
     }
 
@@ -264,19 +291,19 @@
       const h = canvas.height;
 
       const pad = Math.floor(18 * dpr);
-      const padTop = Math.floor(86 * dpr);     // room for top meta
-      const padBottom = Math.floor(150 * dpr); // room for bottom card
+      const padTop = Math.floor(86 * dpr);
+      const padBottom = Math.floor(150 * dpr);
 
       const cx = Math.floor(w / 2);
       const cy = Math.floor((padTop + (h - padBottom)) / 2);
 
-      const maxR = Math.floor(Math.min(w - pad * 2, (h - padTop - padBottom)) * 0.47);
+      const maxR = Math.floor(Math.min(w - pad * 2, (h - padTop - padBottom)) * 0.48);
 
-      // Icon size heuristic for "big" silhouettes
-      // Increase these multipliers if you want even larger icons
-      iconSize = Math.floor((maxR * 2) / Math.sqrt(TOTAL_ICONS) * 0.95);
+      // Make icons big.
+      // If you want them even bigger, push 1.15 up to 1.30.
+      iconSize = Math.floor((maxR * 2) / Math.sqrt(TOTAL_ICONS) * 1.18);
 
-      const goldenAngle = Math.PI * (3 - Math.sqrt(5)); // ~2.399963
+      const goldenAngle = Math.PI * (3 - Math.sqrt(5));
       const N = TOTAL_ICONS;
 
       for (let i = 0; i < N; i++) {
@@ -293,19 +320,18 @@
       }
     }
 
-    function drawPerson(x, y, size, variantIndex, filled) {
+    function drawPerson(x, y, size, variantIndex, fillColor) {
       const icon = ICONS[variantIndex % ICONS.length];
 
-      ctx.fillStyle = filled ? "#111111" : "#c9c9c9";
+      ctx.fillStyle = fillColor;
 
-      // Make the icons feel bigger by anchoring scale to height and boosting slightly
-      const scale = (size / icon.height) * 1.12;
+      // Boost slightly so silhouettes feel present
+      const scale = (size / icon.height) * 1.18;
 
       ctx.save();
       ctx.translate(x, y);
       ctx.scale(scale, scale);
 
-      // Center horizontally, sit on a baseline
       ctx.translate(-icon.width / 2, -icon.height * 0.92);
 
       for (const p of icon.paths) ctx.fill(p);
@@ -313,27 +339,22 @@
       ctx.restore();
     }
 
-    function drawCrowd(filledIcons) {
-      clear();
+    function drawCrowd(stepKey, filledIcons) {
+      const style = STEP_STYLE[stepKey] || STEP_STYLE.population;
+      clear(style.tint);
 
-      // Optional subtle circle boundary feel by drawing a faint mask ring
-      // If you do not want it, delete this block.
-      // ctx.save();
-      // ctx.globalAlpha = 0.06;
-      // ctx.fillStyle = "#000";
-      // ctx.beginPath();
-      // ctx.arc(canvas.width/2, canvas.height/2, Math.min(canvas.width, canvas.height)*0.42, 0, Math.PI*2);
-      // ctx.fill();
-      // ctx.restore();
+      const filledColor = style.fill;
+      const unfilledColor = "rgba(0,0,0,0.14)";
 
       for (let i = 0; i < layout.length; i++) {
         const p = layout[i];
-        const filled = i < filledIcons;
-        drawPerson(p.x, p.y, iconSize, p.variant, filled);
+        const isFilled = i < filledIcons;
+        drawPerson(p.x, p.y, iconSize, p.variant, isFilled ? filledColor : unfilledColor);
       }
     }
 
     function updateUI(stepKey, filledIcons) {
+      const style = STEP_STYLE[stepKey] || STEP_STYLE.population;
       const unfilledIcons = TOTAL_ICONS - filledIcons;
 
       headlineEl.textContent = COPY[stepKey]?.title || "Population";
@@ -345,6 +366,9 @@
 
       legendEl.textContent =
         `Filled: ${filledIcons.toLocaleString()} icons. Unfilled: ${unfilledIcons.toLocaleString()} icons.`;
+
+      accentLineEl.style.background = style.fill;
+      accentLineEl.style.opacity = "0.35";
     }
 
     let currentStepKey = "population";
@@ -364,7 +388,7 @@
 
       if (immediate || start === end) {
         currentFilled = end;
-        drawCrowd(currentFilled);
+        drawCrowd(stepKey, currentFilled);
         updateUI(stepKey, currentFilled);
         return;
       }
@@ -381,7 +405,7 @@
         const v = start + (end - start) * ease(t);
         currentFilled = Math.round(v);
 
-        drawCrowd(currentFilled);
+        drawCrowd(stepKey, currentFilled);
         updateUI(stepKey, currentFilled);
 
         if (t < 1) anim = requestAnimationFrame(tick);
@@ -428,7 +452,7 @@
         resizeCanvas();
         setActiveStep(steps[0]);
       } catch (err) {
-        clear();
+        clear("#f6f6f6");
         ctx.fillStyle = "#111";
         ctx.font = `${Math.floor(14 * dpr)}px system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif`;
         ctx.fillText("Could not load icon SVGs. Run a local server and confirm paths.", Math.floor(18 * dpr), Math.floor(28 * dpr));

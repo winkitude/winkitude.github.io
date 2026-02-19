@@ -3,41 +3,76 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>SAVE Act. Scrollytelling Prototype</title>
+  <title>SAVE Act. Crowd Scrolly Prototype</title>
   <style>
-    :root { --bg: #ffffff; --fg: #111111; --muted: #bdbdbd; }
-    html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; }
-    .wrap { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 24px; max-width: 1100px; margin: 0 auto; padding: 24px; }
+    :root { --bg:#ffffff; --fg:#111; }
+    html, body { margin:0; padding:0; background:var(--bg); color:var(--fg); font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; }
+
+    .wrap { max-width: 1200px; margin: 0 auto; padding: 18px; }
+
+    .scrolly {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 22px;
+      align-items: start;
+    }
+
     .sticky {
-      position: sticky; top: 16px; align-self: start;
-      height: calc(100vh - 32px);
-      border-radius: 16px;
+      position: sticky;
+      top: 14px;
+      height: calc(100vh - 28px);
+      border-radius: 18px;
       background: #f6f6f6;
       overflow: hidden;
-      display: flex; flex-direction: column;
-      box-shadow: 0 6px 30px rgba(0,0,0,.06);
+      box-shadow: 0 8px 34px rgba(0,0,0,.08);
     }
-    .vizHeader { padding: 16px 16px 0 16px; }
-    .kicker { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: #555; }
-    .headline { font-size: 22px; margin: 6px 0 6px; }
-    .subhead { font-size: 13px; color: #444; margin: 0 0 10px; }
-    canvas { width: 100%; height: 100%; display: block; }
-    .vizBody { position: relative; flex: 1; padding: 12px 12px 16px 12px; }
-    .legend {
-      position: absolute; left: 16px; bottom: 14px;
-      font-size: 12px; color: #444;
-      background: rgba(255,255,255,.75);
-      padding: 8px 10px;
-      border-radius: 12px;
+
+    .viz {
+      position: absolute;
+      inset: 0;
+    }
+
+    canvas { width: 100%; height: 100%; display:block; }
+
+    .overlay {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 16px;
+    }
+
+    .topMeta {
+      pointer-events: none;
+      max-width: 72ch;
+    }
+
+    .kicker { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color:#555; }
+    .title { font-size: 22px; margin: 6px 0 6px; }
+    .sub { font-size: 13px; color:#444; margin:0; }
+
+    .stepCard {
+      pointer-events: none;
+      max-width: 48ch;
+      background: rgba(255,255,255,.82);
       backdrop-filter: blur(6px);
+      border: 1px solid rgba(0,0,0,.06);
+      border-radius: 16px;
+      padding: 14px 14px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.08);
     }
+    .stepCard h3 { margin: 0 0 6px 0; font-size: 16px; }
+    .stepCard p { margin: 0; color:#222; line-height: 1.45; font-size: 14px; }
+    .legend { margin-top: 10px; font-size: 12px; color:#444; }
 
     .story { padding-right: 6px; }
     .step {
       margin: 0 0 70vh 0;
       padding: 18px 16px;
       border-radius: 16px;
-      background: #ffffff;
+      background: #fff;
       box-shadow: 0 6px 30px rgba(0,0,0,.06);
       border: 1px solid rgba(0,0,0,.06);
     }
@@ -45,57 +80,68 @@
     .stepTitle { margin: 0 0 8px 0; font-size: 16px; }
     .stepText { margin: 0; color: #333; line-height: 1.45; }
 
-    @media (max-width: 900px) {
-      .wrap { grid-template-columns: 1fr; }
+    @media (max-width: 950px) {
+      .scrolly { grid-template-columns: 1fr; }
       .sticky { height: 62vh; }
       .step { margin-bottom: 55vh; }
+      .stepCard { max-width: 70ch; }
     }
   </style>
 </head>
 <body>
   <div class="wrap">
-    <div class="sticky">
-      <div class="vizHeader">
-        <div class="kicker">SAVE Act. scale prototype</div>
-        <div class="headline" id="headline">Total population</div>
-        <p class="subhead" id="subhead">Each icon represents 100,000 people. 3,411 icons represent 341,100,000 people.</p>
+    <div class="scrolly">
+      <div class="sticky">
+        <div class="viz">
+          <canvas id="viz"></canvas>
+        </div>
+
+        <div class="overlay">
+          <div class="topMeta">
+            <div class="kicker">SAVE Act. crowd scale</div>
+            <div class="title" id="headline">Total population</div>
+            <p class="sub" id="subhead">Each icon represents 100,000 people. 3,411 icons represent 341,100,000 people.</p>
+          </div>
+
+          <div class="stepCard" aria-live="polite">
+            <h3 id="cardTitle">Total population</h3>
+            <p id="cardText">A base layer representing 341.1 million people. 1 icon equals 100,000 people.</p>
+            <div class="legend" id="legend">Filled: 3,411 icons. Unfilled: 0 icons.</div>
+          </div>
+        </div>
       </div>
-      <div class="vizBody">
-        <canvas id="viz" aria-label="Population grid visualization"></canvas>
-        <div class="legend" id="legend">Filled: 3,411 icons. Unfilled: 0 icons.</div>
+
+      <div class="story">
+        <section class="step" data-step="population">
+          <h3 class="stepTitle">Total population</h3>
+          <p class="stepText">A base layer representing 341.1 million people. 1 icon equals 100,000 people.</p>
+        </section>
+
+        <section class="step" data-step="votingAge">
+          <h3 class="stepTitle">Voting age population</h3>
+          <p class="stepText">Highlight those 18 and over. everything else fades.</p>
+        </section>
+
+        <section class="step" data-step="votingEligible">
+          <h3 class="stepTitle">Voting eligible population</h3>
+          <p class="stepText">From voting age. narrow to eligible voters.</p>
+        </section>
+
+        <section class="step" data-step="registered">
+          <h3 class="stepTitle">Registered voters</h3>
+          <p class="stepText">From eligible. narrow to people who are registered.</p>
+        </section>
+
+        <section class="step" data-step="passport">
+          <h3 class="stepTitle">Those with a passport</h3>
+          <p class="stepText">A documentation proxy. show how many can easily produce a passport.</p>
+        </section>
+
+        <section class="step" data-step="nameChange">
+          <h3 class="stepTitle">Name change differs from birth certificate</h3>
+          <p class="stepText">A group likely to face extra friction if a birth certificate is required.</p>
+        </section>
       </div>
-    </div>
-
-    <div class="story" id="story">
-      <section class="step" data-step="population">
-        <h3 class="stepTitle">Total population</h3>
-        <p class="stepText">A base layer representing 341.1 million people. 1 icon equals 100,000 people.</p>
-      </section>
-
-      <section class="step" data-step="votingAge">
-        <h3 class="stepTitle">Voting age population</h3>
-        <p class="stepText">Highlight only those 18 and over. Everything else fades.</p>
-      </section>
-
-      <section class="step" data-step="votingEligible">
-        <h3 class="stepTitle">Voting eligible population</h3>
-        <p class="stepText">From voting age. narrow to those eligible to vote.</p>
-      </section>
-
-      <section class="step" data-step="registered">
-        <h3 class="stepTitle">Registered voters</h3>
-        <p class="stepText">From eligible. narrow to people who are registered.</p>
-      </section>
-
-      <section class="step" data-step="passport">
-        <h3 class="stepTitle">Those with a passport</h3>
-        <p class="stepText">A documentation proxy. show how many can easily produce a passport.</p>
-      </section>
-
-      <section class="step" data-step="nameChange">
-        <h3 class="stepTitle">Name change differs from birth certificate</h3>
-        <p class="stepText">A group likely to face extra friction if a birth certificate is required.</p>
-      </section>
     </div>
   </div>
 
@@ -104,94 +150,119 @@
     const PEOPLE_PER_ICON = 100_000;
     const TOTAL_ICONS = Math.ceil(TOTAL_PEOPLE / PEOPLE_PER_ICON); // 3,411
 
-   const COUNTS = {
-
-  population: 341_100_000,
-
-  votingAge: 264_798_961,
-
-  votingEligible: 244_666_890,
-
-  registered: 173_854_000,
-
-  passport: 165_258_210,
-
-  nameChange: 69_329_504,
-
-  voterFraud: 100 // placeholder until final sourced number
-};
-
-
-    const TITLES = {
-      population: "Total population",
-      votingAge: "Voting age population",
-      votingEligible: "Voting eligible population",
-      registered: "Registered voters",
-      passport: "Those with a passport",
-      nameChange: "Name change differs from birth certificate"
+    const COUNTS = {
+      population: 341_100_000,
+      votingAge: 264_798_961,
+      votingEligible: 244_666_890,
+      registered: 173_854_000,
+      passport: 165_258_210,
+      nameChange: 69_329_504
     };
 
-    const canvas = document.getElementById("viz");
-    const ctx = canvas.getContext("2d", { alpha: false });
+    const COPY = {
+      population: {
+        title: "Total population",
+        text: "A base layer representing 341.1 million people. 1 icon equals 100,000 people."
+      },
+      votingAge: {
+        title: "Voting age population",
+        text: "Highlight those 18 and over. everything else fades."
+      },
+      votingEligible: {
+        title: "Voting eligible population",
+        text: "From voting age. narrow to eligible voters."
+      },
+      registered: {
+        title: "Registered voters",
+        text: "From eligible. narrow to people who are registered."
+      },
+      passport: {
+        title: "Those with a passport",
+        text: "A documentation proxy. show how many can easily produce a passport."
+      },
+      nameChange: {
+        title: "Name change differs from birth certificate",
+        text: "A group likely to face extra friction if a birth certificate is required."
+      }
+    };
 
     const headlineEl = document.getElementById("headline");
     const subheadEl = document.getElementById("subhead");
     const legendEl = document.getElementById("legend");
+    const cardTitleEl = document.getElementById("cardTitle");
+    const cardTextEl = document.getElementById("cardText");
+
+    const canvas = document.getElementById("viz");
+    const ctx = canvas.getContext("2d", { alpha: false });
 
     let dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
-
-    function resizeCanvas() {
-      const rect = canvas.getBoundingClientRect();
-      canvas.width = Math.floor(rect.width * dpr);
-      canvas.height = Math.floor(rect.height * dpr);
-      draw(currentStepKey);
-    }
 
     function iconsForPeople(peopleCount) {
       return Math.max(0, Math.min(TOTAL_ICONS, Math.round(peopleCount / PEOPLE_PER_ICON)));
     }
 
-    // Grid layout. tuned to be dense above the fold.
-    function computeGrid() {
+    function resizeCanvas() {
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = Math.floor(rect.width * dpr);
+      canvas.height = Math.floor(rect.height * dpr);
+      buildLayout();
+      drawToTarget(currentStepKey, true);
+    }
+
+    // Crowd layout.
+    // We intentionally fill the width more than a square grid.
+    // Think of it like a dense “crowd wallpaper”.
+    let layout = [];
+    let cols = 0;
+    let rows = 0;
+    let cell = 0;
+    let iconSize = 0;
+
+    function buildLayout() {
+      layout = [];
+
       const w = canvas.width;
       const h = canvas.height;
 
-      const padding = Math.floor(18 * dpr);
-      const usableW = w - padding * 2;
-      const usableH = h - padding * 2;
+      const padX = Math.floor(18 * dpr);
+      const padY = Math.floor(64 * dpr); // leave room for top meta
+      const padB = Math.floor(120 * dpr); // leave room for bottom card
 
-      // A roughly square grid feels good for scrollytelling.
-      const cols = Math.ceil(Math.sqrt(TOTAL_ICONS));
-      const rows = Math.ceil(TOTAL_ICONS / cols);
+      const usableW = w - padX * 2;
+      const usableH = h - padY - padB;
 
-      // Icon size derived from available space.
+      // Wider than tall: more columns.
+      cols = Math.ceil(Math.sqrt(TOTAL_ICONS) * 1.4);
+      rows = Math.ceil(TOTAL_ICONS / cols);
+
       const cellW = usableW / cols;
       const cellH = usableH / rows;
-      const size = Math.floor(Math.min(cellW, cellH) * 0.75);
-      const gapX = cellW;
-      const gapY = cellH;
 
-      return { padding, cols, rows, size, gapX, gapY };
-    }
+      cell = Math.min(cellW, cellH);
+      iconSize = Math.floor(cell * 0.86);
 
-    // Simple “person” mark. a head and torso. fast to draw.
-    function drawPerson(x, y, size, filled) {
-      const r = Math.max(1, Math.floor(size * 0.18));
-      const headY = y - Math.floor(size * 0.22);
-      const bodyW = Math.floor(size * 0.62);
-      const bodyH = Math.floor(size * 0.55);
+      // Precompute positions and assign a variant to each person for variety.
+      // Deterministic randomness for stability across redraws.
+      let seed = 1337;
+      function rand() {
+        seed = (seed * 1664525 + 1013904223) % 4294967296;
+        return seed / 4294967296;
+      }
 
-      ctx.beginPath();
-      ctx.arc(x, headY, r, 0, Math.PI * 2);
+      for (let i = 0; i < TOTAL_ICONS; i++) {
+        const c = i % cols;
+        const r = Math.floor(i / cols);
 
-      const left = x - Math.floor(bodyW / 2);
-      const top = y - Math.floor(bodyH / 2);
-      const radius = Math.max(2, Math.floor(size * 0.14));
+        const x = padX + c * cellW + cellW * 0.5;
+        const y = padY + r * cellH + cellH * 0.68;
 
-      ctx.roundRect(left, top, bodyW, bodyH, radius);
+        const jitterX = (rand() - 0.5) * cellW * 0.18;
+        const jitterY = (rand() - 0.5) * cellH * 0.12;
 
-      ctx.fillStyle = filled ? "#111111" : "#c7c7c7";
-      ctx.fill();
+        const variant = Math.floor(rand() * 12);
+
+        layout.push({ x: Math.floor(x + jitterX), y: Math.floor(y + jitterY), variant });
+      }
     }
 
     function clear() {
@@ -199,39 +270,138 @@
       ctx.fillRect(0, 0, canvas.width, canvas.height);
     }
 
-    let currentStepKey = "population";
+    // 12 variants.
+    // Same basic language, small silhouette differences.
+    // Keeps it “people icons” without importing assets.
+    function drawPerson(x, y, s, variant, filled) {
+      const ink = filled ? "#111111" : "#c9c9c9";
+      ctx.fillStyle = ink;
 
-    function draw(stepKey) {
+      const headR = Math.max(2, Math.floor(s * (0.16 + (variant % 3) * 0.01)));
+      const headY = y - Math.floor(s * (0.26 + ((variant >> 2) % 3) * 0.01));
+
+      // Head
+      ctx.beginPath();
+      ctx.arc(x, headY, headR, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Torso geometry varies by variant
+      const torsoH = Math.floor(s * (0.56 + ((variant >> 1) % 3) * 0.02));
+      const torsoW = Math.floor(s * (0.58 + (variant % 4) * 0.03));
+      const top = y - Math.floor(torsoH * 0.45);
+
+      const radius = Math.max(2, Math.floor(s * 0.18));
+
+      // Some variants have “shoulders” or “dress” feel via bottom width
+      const flare = (variant % 5 === 0) ? 1.18 : (variant % 5 === 1) ? 1.08 : 1.0;
+      const bottomW = Math.floor(torsoW * flare);
+
+      const leftTop = x - Math.floor(torsoW / 2);
+      const leftBottom = x - Math.floor(bottomW / 2);
+      const rightTop = x + Math.floor(torsoW / 2);
+      const rightBottom = x + Math.floor(bottomW / 2);
+      const bottom = top + torsoH;
+
+      ctx.beginPath();
+
+      // Rounded top
+      ctx.moveTo(leftTop + radius, top);
+      ctx.lineTo(rightTop - radius, top);
+      ctx.quadraticCurveTo(rightTop, top, rightTop, top + radius);
+
+      // Sides to bottom
+      ctx.lineTo(rightBottom, bottom - radius);
+      ctx.quadraticCurveTo(rightBottom, bottom, rightBottom - radius, bottom);
+
+      ctx.lineTo(leftBottom + radius, bottom);
+      ctx.quadraticCurveTo(leftBottom, bottom, leftBottom, bottom - radius);
+
+      ctx.lineTo(leftTop, top + radius);
+      ctx.quadraticCurveTo(leftTop, top, leftTop + radius, top);
+
+      ctx.closePath();
+      ctx.fill();
+
+      // Optional “arms” for some variants, subtle and fast
+      if (variant % 4 === 0 || variant % 4 === 3) {
+        const armY = top + Math.floor(torsoH * 0.33);
+        const armL = Math.floor(s * 0.22);
+        const armT = Math.max(1, Math.floor(s * 0.07));
+
+        ctx.beginPath();
+        ctx.roundRect(leftTop - armL, armY, armL, armT, armT);
+        ctx.roundRect(rightTop, armY, armL, armT, armT);
+        ctx.fill();
+      }
+    }
+
+    // Smooth transition between steps
+    let currentStepKey = "population";
+    let currentFilled = TOTAL_ICONS;
+    let anim = null;
+
+    function drawCrowd(filledIcons) {
+      clear();
+
+      for (let i = 0; i < layout.length; i++) {
+        const p = layout[i];
+        const filled = i < filledIcons;
+        drawPerson(p.x, p.y, iconSize, p.variant, filled);
+      }
+    }
+
+    function updateUI(stepKey, filledIcons) {
+      const peopleCount = COUNTS[stepKey] ?? TOTAL_PEOPLE;
+      const unfilledIcons = TOTAL_ICONS - filledIcons;
+
+      headlineEl.textContent = COPY[stepKey]?.title || "Population";
+      cardTitleEl.textContent = COPY[stepKey]?.title || "Population";
+      cardTextEl.textContent = COPY[stepKey]?.text || "";
+
+      subheadEl.textContent =
+        `Each icon represents ${PEOPLE_PER_ICON.toLocaleString()} people. ${TOTAL_ICONS.toLocaleString()} icons represent ${TOTAL_PEOPLE.toLocaleString()} people.`;
+
+      legendEl.textContent =
+        `Filled: ${filledIcons.toLocaleString()} icons. Unfilled: ${unfilledIcons.toLocaleString()} icons.`;
+    }
+
+    function drawToTarget(stepKey, immediate = false) {
       currentStepKey = stepKey;
 
       const peopleCount = COUNTS[stepKey] ?? TOTAL_PEOPLE;
-      const filledIcons = iconsForPeople(peopleCount);
-      const unfilledIcons = TOTAL_ICONS - filledIcons;
+      const targetFilled = iconsForPeople(peopleCount);
 
-      headlineEl.textContent = TITLES[stepKey] || "Population";
-      subheadEl.textContent = `Each icon represents ${PEOPLE_PER_ICON.toLocaleString()} people. ${TOTAL_ICONS.toLocaleString()} icons represent ${TOTAL_PEOPLE.toLocaleString()} people.`;
-      legendEl.textContent = `Filled: ${filledIcons.toLocaleString()} icons. Unfilled: ${unfilledIcons.toLocaleString()} icons.`;
+      if (anim) cancelAnimationFrame(anim);
+      const start = currentFilled;
+      const end = targetFilled;
 
-      clear();
-
-      const { padding, cols, size, gapX, gapY } = computeGrid();
-
-      ctx.save();
-      ctx.translate(padding, padding);
-
-      // Draw filled first then unfilled. gives a nice “fade out” feel.
-      for (let i = 0; i < TOTAL_ICONS; i++) {
-        const col = i % cols;
-        const row = Math.floor(i / cols);
-
-        const cx = Math.floor(col * gapX + gapX * 0.5);
-        const cy = Math.floor(row * gapY + gapY * 0.62);
-
-        const filled = i < filledIcons;
-        drawPerson(cx, cy, size, filled);
+      if (immediate || start === end) {
+        currentFilled = end;
+        drawCrowd(currentFilled);
+        updateUI(stepKey, currentFilled);
+        return;
       }
 
-      ctx.restore();
+      const duration = 520;
+      const t0 = performance.now();
+
+      function ease(t) {
+        // easeInOutCubic
+        return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+      }
+
+      function tick(now) {
+        const t = Math.min(1, (now - t0) / duration);
+        const v = start + (end - start) * ease(t);
+        currentFilled = Math.round(v);
+
+        drawCrowd(currentFilled);
+        updateUI(stepKey, currentFilled);
+
+        if (t < 1) anim = requestAnimationFrame(tick);
+      }
+
+      anim = requestAnimationFrame(tick);
     }
 
     function setActiveStep(stepEl) {
@@ -239,7 +409,7 @@
       stepEl.classList.add("isActive");
 
       const key = stepEl.getAttribute("data-step");
-      draw(key);
+      drawToTarget(key, false);
     }
 
     const steps = Array.from(document.querySelectorAll(".step"));
@@ -248,20 +418,15 @@
       entries.forEach(entry => {
         if (entry.isIntersecting) setActiveStep(entry.target);
       });
-    }, {
-      root: null,
-      threshold: 0.55
-    });
+    }, { threshold: 0.55 });
 
     steps.forEach(step => observer.observe(step));
 
     window.addEventListener("resize", () => {
-      // Recompute DPR and redraw for crispness.
       dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
       resizeCanvas();
     });
 
-    // Initial draw once layout exists
     requestAnimationFrame(() => {
       resizeCanvas();
       setActiveStep(steps[0]);

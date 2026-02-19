@@ -1,0 +1,462 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SAVE Act. Out of 100 Scrolly Prototype</title>
+  <style>
+    :root { --bg:#ffffff; --fg:#111; }
+    html, body { margin:0; padding:0; background:var(--bg); color:var(--fg); font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; }
+
+    .wrap { max-width: 1200px; margin: 0 auto; padding: 18px; }
+
+    .scrolly {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 22px;
+      align-items: start;
+    }
+
+    .sticky {
+      position: sticky;
+      top: 14px;
+      height: calc(100vh - 28px);
+      border-radius: 18px;
+      background: #f6f6f6;
+      overflow: hidden;
+      box-shadow: 0 8px 34px rgba(0,0,0,.08);
+    }
+
+    .viz { position: absolute; inset: 0; }
+    canvas { width: 100%; height: 100%; display:block; }
+
+    .overlay {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 16px;
+      gap: 12px;
+    }
+
+    .topMeta { max-width: 80ch; }
+    .kicker { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color:#555; }
+    .title { font-size: 22px; margin: 6px 0 6px; }
+    .sub { font-size: 13px; color:#444; margin:0; }
+
+    .statCard {
+      pointer-events: none;
+      max-width: 54ch;
+      background: rgba(255,255,255,.84);
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(0,0,0,.06);
+      border-radius: 16px;
+      padding: 14px 14px 12px 14px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.08);
+    }
+
+    .statLabel { font-size: 13px; color:#333; margin: 0 0 6px; }
+    .statBig {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin: 0 0 8px;
+    }
+    .statValue { font-size: 26px; font-weight: 700; letter-spacing: -0.02em; }
+    .statPct { font-size: 14px; color:#333; }
+    .statLine { font-size: 12px; color:#444; margin: 2px 0 0; line-height: 1.35; }
+
+    .sourceLine { font-size: 12px; color:#444; margin-top: 8px; }
+    .sourceLine a { color:#444; text-decoration: underline; pointer-events: auto; }
+
+    .story { padding-right: 6px; }
+    .step {
+      margin: 0 0 70vh 0;
+      padding: 18px 16px;
+      border-radius: 16px;
+      background: #fff;
+      box-shadow: 0 6px 30px rgba(0,0,0,.06);
+      border: 1px solid rgba(0,0,0,.06);
+    }
+    .step.isActive { outline: 2px solid rgba(0,0,0,.12); }
+    .stepTitle { margin: 0 0 8px 0; font-size: 16px; }
+    .stepText { margin: 0; color: #333; line-height: 1.5; }
+
+    @media (max-width: 950px) {
+      .scrolly { grid-template-columns: 1fr; }
+      .sticky { height: 62vh; }
+      .step { margin-bottom: 55vh; }
+      .statCard { max-width: 80ch; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="scrolly">
+      <div class="sticky">
+        <div class="viz">
+          <canvas id="viz"></canvas>
+        </div>
+
+        <div class="overlay">
+          <div class="topMeta">
+            <div class="kicker">SAVE Act. scale as 100</div>
+            <div class="title" id="headline">Out of 341.1 million people, pictured as 100</div>
+            <p class="sub" id="subhead">Each icon represents about 3.411 million people. Filled icons show the share for the current step.</p>
+          </div>
+
+          <div class="statCard" aria-live="polite">
+            <p class="statLabel" id="statLabel">Total population</p>
+            <div class="statBig">
+              <div class="statValue" id="statValue">341,100,000</div>
+              <div class="statPct" id="statPct">100.0% of total</div>
+            </div>
+            <p class="statLine" id="statIcons">100 of 100 icons filled</p>
+            <p class="sourceLine" id="sourceLine">Source: <a href="#" id="sourceLink" target="_blank" rel="noopener">U.S. Census Bureau</a></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="story">
+        <section class="step" data-step="population">
+          <h3 class="stepTitle">Start with everyone</h3>
+          <p class="stepText">This sets the baseline. every later number is a share of the same 100-person crowd, so changes feel comparable instead of abstract.</p>
+        </section>
+
+        <section class="step" data-step="votingAge">
+          <h3 class="stepTitle">Who can even be in the electorate</h3>
+          <p class="stepText">Before eligibility, registration, or documents, there is a simple gate. age. this step shows how much of the country is outside the voting universe from the start.</p>
+        </section>
+
+        <section class="step" data-step="votingEligible">
+          <h3 class="stepTitle">Who is legally eligible to vote</h3>
+          <p class="stepText">Voting age is not voting eligible. this step narrows to the pool used in turnout analysis, removing people who cannot legally vote.</p>
+        </section>
+
+        <section class="step" data-step="registered">
+          <h3 class="stepTitle">Who is positioned to vote right now</h3>
+          <p class="stepText">Registration is the operational reality. it is the universe affected by registration rules, and it is the base most people assume when they talk about “voters.”</p>
+        </section>
+
+        <section class="step" data-step="passport">
+          <h3 class="stepTitle">Who already has an easy proof-of-citizenship document</h3>
+          <p class="stepText">The SAVE Act discussion often collapses into documents. this step shows how many people have one commonly accepted proof in hand, without extra cost, time, or bureaucracy.</p>
+        </section>
+
+        <section class="step" data-step="nameChange">
+          <h3 class="stepTitle">Who may face extra friction even if they are citizens</h3>
+          <p class="stepText">This is about mismatch. not intent. if proof depends on a birth certificate, a name change can create a paperwork trap where citizenship is real but hard to prove quickly.</p>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const TOTAL_PEOPLE = 341_100_000;
+
+    const TOTAL_ICONS = 100;
+    const PEOPLE_PER_ICON = TOTAL_PEOPLE / TOTAL_ICONS;
+
+    const DATA = {
+      population: {
+        label: "Total population (2024 est.)",
+        value: 341_100_000,
+        sourceName: "U.S. Census Bureau. population estimates and projections",
+        sourceUrl: "https://www.census.gov/library/stories/2024/12/population-estimates.html"
+      },
+      votingAge: {
+        label: "Voting age population (18+. 2024 est.)",
+        value: 264_798_961,
+        sourceName: "Election Lab at the University of Florida. via Wikipedia turnout table",
+        sourceUrl: "https://en.wikipedia.org/wiki/Voter_turnout_in_United_States_presidential_elections"
+      },
+      votingEligible: {
+        label: "Voting eligible population (VEP. 2024 est.)",
+        value: 244_666_890,
+        sourceName: "Election Lab at the University of Florida. via Wikipedia turnout table",
+        sourceUrl: "https://en.wikipedia.org/wiki/Voter_turnout_in_United_States_presidential_elections"
+      },
+      registered: {
+        label: "Registered voters (2024)",
+        value: 173_854_000,
+        sourceName: "U.S. Census Bureau. CPS Voting and Registration (Nov 2024 election tables)",
+        sourceUrl: "https://www.census.gov/newsroom/press-releases/2025/2024-presidential-election-voting-registration-tables.html"
+      },
+      passport: {
+        label: "People with a passport (2024 est.)",
+        value: 165_258_210,
+        sourceName: "Center for American Progress. SAVE Act analysis",
+        sourceUrl: "https://www.americanprogress.org/article/the-save-act-would-disenfranchise-millions-of-citizens/"
+      },
+      nameChange: {
+        label: "Name differs from birth certificate (2024 est.)",
+        value: 69_329_504,
+        sourceName: "Center for American Progress. SAVE Act analysis",
+        sourceUrl: "https://www.americanprogress.org/article/the-save-act-would-disenfranchise-millions-of-citizens/"
+      }
+    };
+
+    const ICON_FILES = [
+      "images/people/noun-man-7999220.svg",
+      "images/people/noun-man-7999223.svg",
+      "images/people/noun-man-7999224.svg",
+      "images/people/noun-man-7999230.svg",
+      "images/people/noun-man-7999231.svg",
+      "images/people/noun-men-7999219.svg",
+      "images/people/noun-woman-7385759.svg",
+      "images/people/noun-woman-7385773.svg",
+      "images/people/noun-woman-7385781.svg",
+      "images/people/noun-woman-7385791.svg",
+      "images/people/noun-women-7385758.svg",
+      "images/people/noun-women-7385776.svg"
+    ];
+
+    const ICONS = [];
+
+    async function loadIcons() {
+      for (const file of ICON_FILES) {
+        const res = await fetch(file);
+        if (!res.ok) throw new Error(`Failed to load ${file}. HTTP ${res.status}`);
+
+        const svgText = await res.text();
+        const parser = new DOMParser();
+        const svgDoc = parser.parseFromString(svgText, "image/svg+xml");
+
+        const svg = svgDoc.querySelector("svg");
+        if (!svg) throw new Error(`No <svg> root in ${file}`);
+
+        let viewBox = svg.getAttribute("viewBox");
+        if (!viewBox) {
+          const w = Number(svg.getAttribute("width")) || 0;
+          const h = Number(svg.getAttribute("height")) || 0;
+          if (!w || !h) throw new Error(`SVG has no viewBox or width/height in ${file}`);
+          viewBox = `0 0 ${w} ${h}`;
+        }
+
+        const vb = viewBox.split(/[\s,]+/).map(Number);
+        const vbW = vb[2];
+        const vbH = vb[3];
+
+        const paths = Array.from(svg.querySelectorAll("path"))
+          .map(p => p.getAttribute("d"))
+          .filter(Boolean)
+          .map(d => new Path2D(d));
+
+        if (!paths.length) throw new Error(`No <path> elements found in ${file}`);
+
+        ICONS.push({ paths, width: vbW, height: vbH });
+      }
+    }
+
+    const canvas = document.getElementById("viz");
+    const ctx = canvas.getContext("2d", { alpha: false });
+
+    const headlineEl = document.getElementById("headline");
+    const subheadEl = document.getElementById("subhead");
+    const statLabelEl = document.getElementById("statLabel");
+    const statValueEl = document.getElementById("statValue");
+    const statPctEl = document.getElementById("statPct");
+    const statIconsEl = document.getElementById("statIcons");
+    const sourceLinkEl = document.getElementById("sourceLink");
+
+    let dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+
+    function clear() {
+      ctx.fillStyle = "#f6f6f6";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
+
+    function clamp(n, a, b) { return Math.max(a, Math.min(b, n)); }
+
+    function filledIconsForValue(value) {
+      const pct = value / TOTAL_PEOPLE;
+      const filled = Math.round(pct * TOTAL_ICONS);
+      return clamp(filled, 0, TOTAL_ICONS);
+    }
+
+    function fmtInt(n) { return n.toLocaleString("en-US"); }
+    function fmtPct(p) { return (p * 100).toFixed(1) + "%"; }
+
+    let layout = [];
+    let iconSize = 0;
+
+    function buildLayout() {
+      layout = [];
+
+      const w = canvas.width;
+      const h = canvas.height;
+
+      const padX = Math.floor(18 * dpr);
+      const padTop = Math.floor(70 * dpr);
+      const padBottom = Math.floor(150 * dpr);
+
+      const usableW = w - padX * 2;
+      const usableH = h - padTop - padBottom;
+
+      const cols = 20;
+      const rows = 5;
+
+      const cellW = usableW / cols;
+      const cellH = usableH / rows;
+
+      const cell = Math.min(cellW, cellH);
+      iconSize = Math.floor(cell * 0.92);
+
+      let seed = 24681357;
+      function rand() {
+        seed = (seed * 1664525 + 1013904223) % 4294967296;
+        return seed / 4294967296;
+      }
+
+      for (let i = 0; i < TOTAL_ICONS; i++) {
+        const c = i % cols;
+        const r = Math.floor(i / cols);
+
+        const x = padX + c * cellW + cellW * 0.5;
+        const y = padTop + r * cellH + cellH * 0.80;
+
+        const jitterX = (rand() - 0.5) * cellW * 0.10;
+        const jitterY = (rand() - 0.5) * cellH * 0.08;
+
+        const variant = ICONS.length ? (i % ICONS.length) : 0;
+
+        layout.push({
+          x: Math.floor(x + jitterX),
+          y: Math.floor(y + jitterY),
+          variant
+        });
+      }
+    }
+
+    function drawPerson(x, y, size, variantIndex, filled) {
+      const icon = ICONS[variantIndex % ICONS.length];
+      ctx.fillStyle = filled ? "#111111" : "#cfcfcf";
+
+      const scale = (size / icon.height) * 1.02;
+
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.scale(scale, scale);
+      ctx.translate(-icon.width / 2, -icon.height * 0.92);
+
+      for (const p of icon.paths) ctx.fill(p);
+      ctx.restore();
+    }
+
+    function drawCrowd(filledIcons) {
+      clear();
+      for (let i = 0; i < layout.length; i++) {
+        const p = layout[i];
+        drawPerson(p.x, p.y, iconSize, p.variant, i < filledIcons);
+      }
+    }
+
+    function updateOverlay(stepKey, filledIcons) {
+      const d = DATA[stepKey];
+
+      const pct = d.value / TOTAL_PEOPLE;
+      const perIcon = PEOPLE_PER_ICON;
+
+      headlineEl.textContent = "Out of 341.1 million people, pictured as 100";
+      subheadEl.textContent = `Each icon represents about ${Math.round(perIcon).toLocaleString("en-US")} people. Filled icons show the share for the current step.`;
+
+      statLabelEl.textContent = d.label;
+      statValueEl.textContent = fmtInt(d.value);
+      statPctEl.textContent = `${fmtPct(pct)} of total`;
+      statIconsEl.textContent = `${filledIcons} of 100 icons filled`;
+
+      sourceLinkEl.textContent = d.sourceName;
+      sourceLinkEl.href = d.sourceUrl;
+    }
+
+    let currentStepKey = "population";
+    let currentFilled = 100;
+    let anim = null;
+
+    function drawToStep(stepKey, immediate = false) {
+      currentStepKey = stepKey;
+
+      const d = DATA[stepKey];
+      const targetFilled = filledIconsForValue(d.value);
+
+      if (anim) cancelAnimationFrame(anim);
+
+      const start = currentFilled;
+      const end = targetFilled;
+
+      if (immediate || start === end) {
+        currentFilled = end;
+        drawCrowd(currentFilled);
+        updateOverlay(stepKey, currentFilled);
+        return;
+      }
+
+      const duration = 520;
+      const t0 = performance.now();
+
+      function ease(t) {
+        return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+      }
+
+      function tick(now) {
+        const t = Math.min(1, (now - t0) / duration);
+        const v = start + (end - start) * ease(t);
+        currentFilled = Math.round(v);
+
+        drawCrowd(currentFilled);
+        updateOverlay(stepKey, currentFilled);
+
+        if (t < 1) anim = requestAnimationFrame(tick);
+      }
+
+      anim = requestAnimationFrame(tick);
+    }
+
+    function resizeCanvas() {
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = Math.floor(rect.width * dpr);
+      canvas.height = Math.floor(rect.height * dpr);
+      buildLayout();
+      drawToStep(currentStepKey, true);
+    }
+
+    function setActiveStep(stepEl) {
+      document.querySelectorAll(".step").forEach(el => el.classList.remove("isActive"));
+      stepEl.classList.add("isActive");
+      drawToStep(stepEl.getAttribute("data-step"), false);
+    }
+
+    const steps = Array.from(document.querySelectorAll(".step"));
+    const observer = new IntersectionObserver((entries) => {
+      for (const entry of entries) {
+        if (entry.isIntersecting) setActiveStep(entry.target);
+      }
+    }, { threshold: 0.55 });
+
+    steps.forEach(step => observer.observe(step));
+
+    window.addEventListener("resize", () => {
+      dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+      resizeCanvas();
+    });
+
+    (async function init() {
+      try {
+        await loadIcons();
+        dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+        resizeCanvas();
+        setActiveStep(steps[0]);
+      } catch (err) {
+        clear();
+        ctx.fillStyle = "#111";
+        ctx.font = `${Math.floor(14 * dpr)}px system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif`;
+        ctx.fillText("Could not load icon SVGs. Run a local server and confirm paths.", Math.floor(18 * dpr), Math.floor(28 * dpr));
+        console.error(err);
+      }
+    })();
+  </script>
+</body>
+</html>

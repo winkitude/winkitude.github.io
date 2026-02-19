@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>SAVE Act. Crowd Scrolly Prototype</title>
+  <title>SAVE Act. Circle Crowd Scrolly</title>
   <style>
     :root { --bg:#ffffff; --fg:#111; }
     html, body { margin:0; padding:0; background:var(--bg); color:var(--fg); font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; }
@@ -12,7 +12,7 @@
 
     .scrolly {
       display: grid;
-      grid-template-columns: 1.15fr 0.85fr;
+      grid-template-columns: 1.2fr 0.8fr;
       gap: 22px;
       align-items: start;
     }
@@ -46,8 +46,8 @@
     .sub { font-size: 13px; color:#444; margin:0; }
 
     .stepCard {
-      max-width: 50ch;
-      background: rgba(255,255,255,.82);
+      max-width: 54ch;
+      background: rgba(255,255,255,.84);
       backdrop-filter: blur(6px);
       border: 1px solid rgba(0,0,0,.06);
       border-radius: 16px;
@@ -75,7 +75,7 @@
       .scrolly { grid-template-columns: 1fr; }
       .sticky { height: 62vh; }
       .step { margin-bottom: 55vh; }
-      .stepCard { max-width: 70ch; }
+      .stepCard { max-width: 72ch; }
     }
   </style>
 </head>
@@ -89,15 +89,15 @@
 
         <div class="overlay">
           <div class="topMeta">
-            <div class="kicker">SAVE Act. crowd scale</div>
+            <div class="kicker">SAVE Act. circle scale</div>
             <div class="title" id="headline">Total population</div>
-            <p class="sub" id="subhead">Each icon represents 100,000 people. 3,411 icons represent 341,100,000 people.</p>
+            <p class="sub" id="subhead">Each icon represents 1,000,000 people.</p>
           </div>
 
           <div class="stepCard" aria-live="polite">
             <h3 id="cardTitle">Total population</h3>
-            <p id="cardText">A base layer representing 341.1 million people. 1 icon equals 100,000 people.</p>
-            <div class="legend" id="legend">Filled: 3,411 icons. Unfilled: 0 icons.</div>
+            <p id="cardText">A base layer representing 341.1 million people. 1 icon equals 1,000,000 people.</p>
+            <div class="legend" id="legend">Filled: 0 icons. Unfilled: 0 icons.</div>
           </div>
         </div>
       </div>
@@ -105,7 +105,7 @@
       <div class="story">
         <section class="step" data-step="population">
           <h3 class="stepTitle">Total population</h3>
-          <p class="stepText">A base layer representing 341.1 million people. 1 icon equals 100,000 people.</p>
+          <p class="stepText">A base layer representing 341.1 million people. 1 icon equals 1,000,000 people.</p>
         </section>
 
         <section class="step" data-step="votingAge">
@@ -138,8 +138,12 @@
 
   <script>
     const TOTAL_PEOPLE = 341_100_000;
-    const PEOPLE_PER_ICON = 100_000;
-    const TOTAL_ICONS = Math.ceil(TOTAL_PEOPLE / PEOPLE_PER_ICON); // 3,411
+
+    // Switched to 1,000,000 per icon
+    const PEOPLE_PER_ICON = 1_000_000;
+
+    // Use rounding so the base layer matches the narrative expectation
+    const TOTAL_ICONS = Math.round(TOTAL_PEOPLE / PEOPLE_PER_ICON); // ~341
 
     const COUNTS = {
       population: 341_100_000,
@@ -153,7 +157,7 @@
     const COPY = {
       population: {
         title: "Total population",
-        text: "A base layer representing 341.1 million people. 1 icon equals 100,000 people."
+        text: "A base layer representing 341.1 million people. 1 icon equals 1,000,000 people."
       },
       votingAge: {
         title: "Voting age population",
@@ -249,78 +253,59 @@
       ctx.fillRect(0, 0, canvas.width, canvas.height);
     }
 
+    // Circle layout using golden angle spiral
     let layout = [];
-    let cols = 0;
-    let cellW = 0;
-    let cellH = 0;
     let iconSize = 0;
-    let padX = 0;
-    let padY = 0;
 
-    function buildLayout() {
+    function buildCircleLayout() {
       layout = [];
 
       const w = canvas.width;
       const h = canvas.height;
 
-      padX = Math.floor(18 * dpr);
-      const padTop = Math.floor(74 * dpr);
-      const padBottom = Math.floor(132 * dpr);
+      const pad = Math.floor(18 * dpr);
+      const padTop = Math.floor(86 * dpr);     // room for top meta
+      const padBottom = Math.floor(150 * dpr); // room for bottom card
 
-      padY = padTop;
+      const cx = Math.floor(w / 2);
+      const cy = Math.floor((padTop + (h - padBottom)) / 2);
 
-      const usableW = w - padX * 2;
-      const usableH = h - padTop - padBottom;
+      const maxR = Math.floor(Math.min(w - pad * 2, (h - padTop - padBottom)) * 0.47);
 
-      const base = Math.sqrt(TOTAL_ICONS);
+      // Icon size heuristic for "big" silhouettes
+      // Increase these multipliers if you want even larger icons
+      iconSize = Math.floor((maxR * 2) / Math.sqrt(TOTAL_ICONS) * 0.95);
 
-      cols = Math.max(10, Math.ceil(base * 1.55));
-      const rows = Math.ceil(TOTAL_ICONS / cols);
+      const goldenAngle = Math.PI * (3 - Math.sqrt(5)); // ~2.399963
+      const N = TOTAL_ICONS;
 
-      cellW = usableW / cols;
-      cellH = usableH / rows;
+      for (let i = 0; i < N; i++) {
+        const t = (i + 0.5) / N;
+        const r = Math.sqrt(t) * maxR;
+        const a = i * goldenAngle;
 
-      const cell = Math.min(cellW, cellH);
-      iconSize = Math.floor(cell * 0.92);
-
-      let seed = 1337;
-      function rand() {
-        seed = (seed * 1664525 + 1013904223) % 4294967296;
-        return seed / 4294967296;
-      }
-
-      for (let i = 0; i < TOTAL_ICONS; i++) {
-        const c = i % cols;
-        const r = Math.floor(i / cols);
-
-        const x = padX + c * cellW + cellW * 0.5;
-        const y = padTop + r * cellH + cellH * 0.76;
-
-        const jitterX = (rand() - 0.5) * cellW * 0.12;
-        const jitterY = (rand() - 0.5) * cellH * 0.10;
+        const x = Math.floor(cx + r * Math.cos(a));
+        const y = Math.floor(cy + r * Math.sin(a));
 
         const variant = ICONS.length ? (i % ICONS.length) : 0;
 
-        layout.push({
-          x: Math.floor(x + jitterX),
-          y: Math.floor(y + jitterY),
-          variant
-        });
+        layout.push({ x, y, variant });
       }
     }
 
     function drawPerson(x, y, size, variantIndex, filled) {
       const icon = ICONS[variantIndex % ICONS.length];
 
-      const ink = filled ? "#111111" : "#c9c9c9";
-      ctx.fillStyle = ink;
+      ctx.fillStyle = filled ? "#111111" : "#c9c9c9";
 
-      const scale = (size / icon.height) * 0.98;
+      // Make the icons feel bigger by anchoring scale to height and boosting slightly
+      const scale = (size / icon.height) * 1.12;
 
       ctx.save();
       ctx.translate(x, y);
       ctx.scale(scale, scale);
 
+      // Center horizontally, sit on a baseline
       ctx.translate(-icon.width / 2, -icon.height * 0.92);
 
       for (const p of icon.paths) ctx.fill(p);
@@ -330,6 +315,16 @@
 
     function drawCrowd(filledIcons) {
       clear();
+
+      // Optional subtle circle boundary feel by drawing a faint mask ring
+      // If you do not want it, delete this block.
+      // ctx.save();
+      // ctx.globalAlpha = 0.06;
+      // ctx.fillStyle = "#000";
+      // ctx.beginPath();
+      // ctx.arc(canvas.width/2, canvas.height/2, Math.min(canvas.width, canvas.height)*0.42, 0, Math.PI*2);
+      // ctx.fill();
+      // ctx.restore();
 
       for (let i = 0; i < layout.length; i++) {
         const p = layout[i];
@@ -346,14 +341,14 @@
       cardTextEl.textContent = COPY[stepKey]?.text || "";
 
       subheadEl.textContent =
-        `Each icon represents ${PEOPLE_PER_ICON.toLocaleString()} people. ${TOTAL_ICONS.toLocaleString()} icons represent ${TOTAL_PEOPLE.toLocaleString()} people.`;
+        `Each icon represents ${PEOPLE_PER_ICON.toLocaleString()} people. ${TOTAL_ICONS.toLocaleString()} icons represent about ${(TOTAL_ICONS * PEOPLE_PER_ICON).toLocaleString()} people.`;
 
       legendEl.textContent =
         `Filled: ${filledIcons.toLocaleString()} icons. Unfilled: ${unfilledIcons.toLocaleString()} icons.`;
     }
 
     let currentStepKey = "population";
-    let currentFilled = TOTAL_ICONS;
+    let currentFilled = iconsForPeople(COUNTS.population);
     let anim = null;
 
     function drawToTarget(stepKey, immediate = false) {
@@ -374,7 +369,7 @@
         return;
       }
 
-      const duration = 520;
+      const duration = 560;
       const t0 = performance.now();
 
       function ease(t) {
@@ -399,7 +394,7 @@
       const rect = canvas.getBoundingClientRect();
       canvas.width = Math.floor(rect.width * dpr);
       canvas.height = Math.floor(rect.height * dpr);
-      buildLayout();
+      buildCircleLayout();
       drawToTarget(currentStepKey, true);
     }
 

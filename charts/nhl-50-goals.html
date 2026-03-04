@@ -1,0 +1,349 @@
+<!doctype html>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>NHL 50-goal scorers. Goals by age</title>
+
+<style>
+  :root {
+    --bg: #0b0f17;
+    --fg: #e7edf7;
+    --muted: rgba(231, 237, 247, 0.55);
+    --grid: rgba(231, 237, 247, 0.12);
+    --stroke: rgba(231, 237, 247, 0.18);
+    --panel: rgba(255, 255, 255, 0.06);
+  }
+
+  html, body { height: 100%; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--fg);
+    font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+  }
+
+  .wrap { max-width: 1200px; margin: 0 auto; padding: 18px 18px 32px; }
+
+  .top {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    align-items: end;
+    justify-content: space-between;
+    margin-bottom: 12px;
+  }
+
+  .title { font-size: 18px; font-weight: 650; letter-spacing: 0.2px; }
+  .sub { font-size: 13px; color: var(--muted); margin-top: 4px; }
+
+  .controls {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+  .control {
+    background: var(--panel);
+    border: 1px solid var(--stroke);
+    border-radius: 10px;
+    padding: 10px 12px;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+
+  label { font-size: 12px; color: var(--muted); }
+  input[type="text"] {
+    background: transparent;
+    border: 0;
+    outline: none;
+    color: var(--fg);
+    width: 220px;
+    font-size: 13px;
+  }
+  input[type="range"] { width: 170px; }
+
+  button {
+    background: transparent;
+    border: 1px solid var(--stroke);
+    color: var(--fg);
+    border-radius: 10px;
+    padding: 9px 12px;
+    font-size: 13px;
+    cursor: pointer;
+  }
+  button:hover { border-color: rgba(231, 237, 247, 0.35); }
+
+  .chart {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--stroke);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  svg { display: block; width: 100%; height: auto; }
+
+  .axis text { fill: var(--muted); font-size: 11px; }
+  .axis path, .axis line { stroke: var(--grid); }
+  .grid line { stroke: var(--grid); }
+  .grid path { display: none; }
+
+  .layer {
+    fill-opacity: 0.62;
+    stroke: rgba(255,255,255,0.08);
+    stroke-width: 0.6;
+    cursor: pointer;
+  }
+
+  .layer.dim { fill-opacity: 0.12; stroke-opacity: 0.06; }
+  .layer.locked { fill-opacity: 0.88; stroke-opacity: 0.22; }
+
+  .tooltip {
+    position: fixed;
+    pointer-events: none;
+    background: rgba(10, 14, 22, 0.94);
+    border: 1px solid rgba(255,255,255,0.14);
+    color: var(--fg);
+    padding: 10px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    line-height: 1.35;
+    max-width: 260px;
+    transform: translate(12px, 12px);
+    display: none;
+  }
+  .tipName { font-weight: 650; margin-bottom: 2px; }
+  .tipSmall { color: var(--muted); }
+</style>
+
+<div class="wrap">
+  <div class="top">
+    <div>
+      <div class="title">NHL 50-goal scorers. Goals by age</div>
+      <div class="sub">Stacked career silhouettes. Hover to highlight. Click to lock. Click again to unlock.</div>
+    </div>
+
+    <div class="controls">
+      <div class="control">
+        <label for="search">Filter</label>
+        <input id="search" type="text" placeholder="Type a name…" />
+      </div>
+
+      <div class="control">
+        <label for="topN">Players</label>
+        <input id="topN" type="range" min="10" max="101" step="1" value="60" />
+        <span id="topNLabel" style="font-size:12px;color:var(--muted);min-width:34px;text-align:right;">60</span>
+      </div>
+
+      <button id="reset">Reset</button>
+    </div>
+  </div>
+
+  <div class="chart">
+    <svg id="svg" viewBox="0 0 1200 640" preserveAspectRatio="xMidYMid meet"></svg>
+  </div>
+</div>
+
+<div class="tooltip" id="tooltip"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script>
+(async function () {
+  const svg = d3.select("#svg");
+  const tooltip = d3.select("#tooltip");
+
+  const W = 1200, H = 640;
+  const margin = { top: 30, right: 24, bottom: 42, left: 56 };
+  const innerW = W - margin.left - margin.right;
+  const innerH = H - margin.top - margin.bottom;
+
+  const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
+
+  const ages = d3.range(18, 46).map(String);
+
+  const parseRow = (d) => {
+    const row = {
+      name: d["Name"],
+      total: +d["Total Goals"] || 0
+    };
+
+    ages.forEach(a => {
+      const v = d[a];
+      row[a] = (v === undefined || v === null || v === "") ? null : +v;
+    });
+
+    return row;
+  };
+
+  const raw = await d3.csv("nhl_50.csv", parseRow);
+
+  raw.sort((a,b) => d3.descending(a.total, b.total));
+
+  let lockedName = null;
+  let filterText = "";
+  let topN = 60;
+
+  const x = d3.scaleLinear()
+    .domain([18, 45])
+    .range([0, innerW]);
+
+  const y = d3.scaleLinear()
+    .range([innerH, 0]);
+
+  const xAxis = d3.axisBottom(x)
+    .ticks(14)
+    .tickFormat(d3.format("d"));
+
+  const yAxis = d3.axisLeft(y).ticks(6);
+
+  const grid = d3.axisLeft(y).ticks(6).tickSize(-innerW).tickFormat("");
+
+  const area = d3.area()
+    .x((d, i) => x(18 + i))
+    .y0(d => y(d[0]))
+    .y1(d => y(d[1]))
+    .defined((d, i) => {
+      const key = ages[i];
+      const v = d.data[key];
+      return v !== null && !Number.isNaN(v);
+    });
+
+  const color = d3.scaleSequential(d3.interpolateTurbo).domain([raw.length, 0]);
+
+  g.append("g").attr("class", "grid");
+  g.append("g").attr("class", "axis axis-y");
+  g.append("g").attr("class", "axis axis-x").attr("transform", `translate(0,${innerH})`);
+
+  const layersG = g.append("g").attr("class", "layers");
+
+  function getViewData() {
+    let data = raw;
+
+    if (filterText.trim().length) {
+      const q = filterText.trim().toLowerCase();
+      data = data.filter(d => d.name.toLowerCase().includes(q));
+    }
+
+    data = data.slice(0, topN);
+
+    return data;
+  }
+
+  function render() {
+    const data = getViewData();
+
+    const stack = d3.stack()
+      .keys(ages)
+      .value((d, key) => (d[key] === null || Number.isNaN(d[key])) ? 0 : d[key]);
+
+    const series = stack(data);
+
+    const yMax = d3.max(series, s => d3.max(s, d => d[1])) || 0;
+    y.domain([0, yMax]).nice();
+
+    g.select(".grid").call(grid);
+    g.select(".axis-y").call(yAxis);
+    g.select(".axis-x").call(xAxis);
+
+    const layerSel = layersG.selectAll("path.layer")
+      .data(series, d => d.key);
+
+    layerSel.exit().remove();
+
+    const enter = layerSel.enter().append("path")
+      .attr("class", "layer")
+      .attr("fill", (d, i) => color(i))
+      .on("mousemove", (event, s) => {
+        const [mx] = d3.pointer(event, svg.node());
+        const age = Math.max(18, Math.min(45, Math.round(x.invert(mx - margin.left))));
+        const idx = age - 18;
+
+        const best = s.find(d => d.data) ? s[idx] : null;
+
+        const player = s[idx]?.data;
+        if (!player) return;
+
+        const v = player[String(age)];
+        const shown = (v === null || Number.isNaN(v)) ? "blank" : String(v);
+
+        tooltip
+          .style("display", "block")
+          .style("left", (event.clientX) + "px")
+          .style("top", (event.clientY) + "px")
+          .html(`
+            <div class="tipName">${player.name}</div>
+            <div class="tipSmall">Age ${age}. Goals ${shown}</div>
+            <div class="tipSmall">Career goals ${player.total}</div>
+          `);
+
+        if (lockedName === null) {
+          layersG.selectAll("path.layer")
+            .classed("dim", d => d[idx]?.data?.name !== player.name);
+        }
+      })
+      .on("mouseleave", () => {
+        tooltip.style("display", "none");
+        if (lockedName === null) {
+          layersG.selectAll("path.layer").classed("dim", false);
+        }
+      })
+      .on("click", (event, s) => {
+        const [mx] = d3.pointer(event, svg.node());
+        const age = Math.max(18, Math.min(45, Math.round(x.invert(mx - margin.left))));
+        const idx = age - 18;
+        const player = s[idx]?.data;
+        if (!player) return;
+
+        if (lockedName === player.name) {
+          lockedName = null;
+          layersG.selectAll("path.layer").classed("dim", false).classed("locked", false);
+          return;
+        }
+
+        lockedName = player.name;
+        layersG.selectAll("path.layer")
+          .classed("locked", d => d[idx]?.data?.name === lockedName)
+          .classed("dim", d => d[idx]?.data?.name !== lockedName);
+      });
+
+    const merged = enter.merge(layerSel);
+
+    merged
+      .attr("d", area)
+      .attr("fill", (d, i) => color(i));
+
+    if (lockedName !== null) {
+      const anyIdx = 0;
+      layersG.selectAll("path.layer")
+        .classed("dim", d => d[anyIdx]?.data?.name !== lockedName)
+        .classed("locked", d => d[anyIdx]?.data?.name === lockedName);
+    }
+  }
+
+  d3.select("#search").on("input", (e) => {
+    filterText = e.target.value || "";
+    lockedName = null;
+    render();
+  });
+
+  d3.select("#topN").on("input", (e) => {
+    topN = +e.target.value;
+    d3.select("#topNLabel").text(String(topN));
+    lockedName = null;
+    render();
+  });
+
+  d3.select("#reset").on("click", () => {
+    filterText = "";
+    topN = 60;
+    lockedName = null;
+    d3.select("#search").property("value", "");
+    d3.select("#topN").property("value", topN);
+    d3.select("#topNLabel").text(String(topN));
+    render();
+  });
+
+  render();
+})();
+</script>

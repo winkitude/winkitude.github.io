@@ -34,7 +34,10 @@
     padding:0 18px;
   }
 
- 
+  .site-header{
+    background:#fff;
+    border-bottom:1px solid var(--hair);
+  }
   .site-header .wrap{
     display:flex;
     justify-content:space-between;
@@ -164,10 +167,9 @@
     stroke:rgba(17,24,39,.14);
     stroke-width:0.6;
     cursor:pointer;
+    touch-action:none; /* allows finger-drag without page scrolling stealing it */
   }
-  .row:hover .ridge{
-    stroke-width:1.1;
-  }
+  .row:hover .ridge{ stroke-width:1.1; }
 
   .dot50{
     fill:#000;
@@ -207,42 +209,37 @@
 </head>
 
 <body>
- <header class="site-header">
-  <div class="wrap" style="display:flex; justify-content:space-between; align-items:center;">
-    <!-- Left side -->
-    <div class="masthead">
-      <a href="../index.html">Ari Winkleman</a>
-    </div>
+  <header class="site-header">
+    <div class="wrap" style="display:flex; justify-content:space-between; align-items:center;">
+      <div class="masthead">
+        <a href="../index.html">Ari Winkleman</a>
+      </div>
 
-    <!-- Right side: icons -->
-    <div class="contact-icons" style="display:flex; gap:16px; align-items:center;">
-      <!-- LinkedIn -->
-      <a href="https://www.linkedin.com/in/ari-winkleman/" target="_blank" rel="noopener" aria-label="LinkedIn">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M19 0h-14c-2.76 0-5 2.24-5 5v14c0 2.76 2.24 5 
-                   5 5h14c2.76 0 5-2.24 5-5v-14c0-2.76-2.24-5-5-5zm-11 
-                   19h-3v-10h3v10zm-1.5-11.27c-.97 0-1.75-.79-1.75-1.76 
-                   0-.97.78-1.76 1.75-1.76s1.75.79 
-                   1.75 1.76c0 .97-.78 1.76-1.75 1.76zm13.5 
-                   11.27h-3v-5.6c0-1.34-.03-3.07-1.87-3.07-1.87 
-                   0-2.16 1.46-2.16 2.97v5.7h-3v-10h2.88v1.36h.04c.4-.75 
-                   1.38-1.54 2.84-1.54 3.04 0 3.6 2 3.6 
-                   4.6v5.6z"/>
-        </svg>
-      </a>
+      <div class="contact-icons" style="display:flex; gap:16px; align-items:center;">
+        <a href="https://www.linkedin.com/in/ari-winkleman/" target="_blank" rel="noopener" aria-label="LinkedIn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M19 0h-14c-2.76 0-5 2.24-5 5v14c0 2.76 2.24 5
+                     5 5h14c2.76 0 5-2.24 5-5v-14c0-2.76-2.24-5-5-5zm-11
+                     19h-3v-10h3v10zm-1.5-11.27c-.97 0-1.75-.79-1.75-1.76
+                     0-.97.78-1.76 1.75-1.76s1.75.79
+                     1.75 1.76c0 .97-.78 1.76-1.75 1.76zm13.5
+                     11.27h-3v-5.6c0-1.34-.03-3.07-1.87-3.07-1.87
+                     0-2.16 1.46-2.16 2.97v5.7h-3v-10h2.88v1.36h.04c.4-.75
+                     1.38-1.54 2.84-1.54 3.04 0 3.6 2 3.6
+                     4.6v5.6z"/>
+          </svg>
+        </a>
 
-      <!-- Email -->
-      <a href="mailto:ariswinkleman@gmail.com" aria-label="Email">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M12 13.065l-11.99-7.065h23.98l-11.99 7.065zm0 
-                   2.935l-12-7.065v11.065h24v-11.065l-12 
-                   7.065z"/>
-        </svg>
-      </a>
+        <a href="mailto:ariswinkleman@gmail.com" aria-label="Email">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 13.065l-11.99-7.065h23.98l-11.99 7.065zm0
+                     2.935l-12-7.065v11.065h24v-11.065l-12
+                     7.065z"/>
+          </svg>
+        </a>
+      </div>
     </div>
-  </div>
-</header>
-<br><br>
+  </header>
 
   <main>
     <div class="wrap">
@@ -377,6 +374,7 @@
     const gridAges = [20, 25, 30, 35, 40, 45];
 
     let selectedName = null;
+    let activePointerId = null;
 
     function bringRowToFront(node){
       node.parentNode.appendChild(node);
@@ -455,16 +453,16 @@
       return Math.max(18, Math.min(45, age));
     }
 
-    function showTooltip(event, d){
-      const [mx] = d3.pointer(event, svg.node());
+    function showTooltipAtClientPoint(clientX, clientY, svgEventTarget, d){
+      const [mx] = d3.pointer({clientX, clientY}, svg.node());
       const age = nearestAgeFromMouse(mx);
       const v = d[String(age)];
       const shown = (v === null || Number.isNaN(v)) ? "blank" : String(v);
 
       tooltip
         .style("display", "block")
-        .style("left", (event.clientX) + "px")
-        .style("top", (event.clientY) + "px")
+        .style("left", clientX + "px")
+        .style("top", clientY + "px")
         .html(`
           <div class="tipName">${d.name}</div>
           <div class="tipSmall">Age ${age}. Goals ${shown}</div>
@@ -518,31 +516,15 @@
           selectedName = (selectedName === d.name) ? null : d.name;
           if (selectedName) bringRowToFront(event.currentTarget.parentNode);
           applyHighlight(rows, selectedName);
+          tooltip.style("display","none");
         });
 
-      rows.append("path")
+      const ridge = rows.append("path")
         .attr("class","ridge")
         .attr("fill","url(#goalGrad)")
         .attr("d", d => {
           const pts = d3.range(18, 46).map(age => ({ age, v: d[String(age)] }));
           return area(pts);
-        })
-        .on("mousemove", function(event, d){
-          if (selectedName && d.name !== selectedName) return;
-          bringRowToFront(this.parentNode);
-          showTooltip(event, d);
-          applyHighlight(rows, selectedName ? selectedName : d.name);
-        })
-        .on("mouseleave", function(){
-          tooltip.style("display", "none");
-          applyHighlight(rows, selectedName);
-        })
-        .on("click", function(event, d){
-          event.stopPropagation();
-          selectedName = (selectedName === d.name) ? null : d.name;
-          if (selectedName) bringRowToFront(this.parentNode);
-          tooltip.style("display", "none");
-          applyHighlight(rows, selectedName);
         });
 
       rows.each(function(d){
@@ -555,14 +537,62 @@
           .enter()
           .append("circle")
             .attr("class","dot50")
-            .attr("r", 3.6)
+            .attr("r", 3.8)
             .attr("cx", p => x(p.age))
             .attr("cy", p => -y(p.v));
       });
 
+      function focusRow(el, d, clientX, clientY){
+        if (selectedName && d.name !== selectedName) return;
+        bringRowToFront(el.parentNode);
+        showTooltipAtClientPoint(clientX, clientY, el, d);
+        applyHighlight(rows, selectedName ? selectedName : d.name);
+      }
+
+      ridge
+        .on("pointerdown", function(event, d){
+          if (selectedName && d.name !== selectedName) return;
+
+          activePointerId = event.pointerId;
+          try { this.setPointerCapture(activePointerId); } catch(e) {}
+
+          focusRow(this, d, event.clientX, event.clientY);
+          event.preventDefault();
+          event.stopPropagation();
+        })
+        .on("pointermove", function(event, d){
+          if (activePointerId !== null && event.pointerId !== activePointerId) return;
+          focusRow(this, d, event.clientX, event.clientY);
+          event.preventDefault();
+        })
+        .on("pointerup", function(event, d){
+          if (activePointerId !== null && event.pointerId !== activePointerId) return;
+
+          // tap to lock or unlock on mobile, click also works on desktop
+          selectedName = (selectedName === d.name) ? null : d.name;
+          if (selectedName) bringRowToFront(this.parentNode);
+
+          activePointerId = null;
+          tooltip.style("display","none");
+          applyHighlight(rows, selectedName);
+
+          event.preventDefault();
+          event.stopPropagation();
+        })
+        .on("pointercancel", function(){
+          activePointerId = null;
+          tooltip.style("display","none");
+          applyHighlight(rows, selectedName);
+        })
+        .on("pointerleave", function(){
+          if (activePointerId !== null) return; // keep tooltip while dragging
+          tooltip.style("display","none");
+          applyHighlight(rows, selectedName);
+        });
+
       svg.on("click", () => {
         selectedName = null;
-        tooltip.style("display", "none");
+        tooltip.style("display","none");
         applyHighlight(rows, null);
       });
 
@@ -572,7 +602,7 @@
     const filterSelect = document.getElementById("filterSelect");
     filterSelect.addEventListener("change", () => {
       selectedName = null;
-      tooltip.style("display", "none");
+      tooltip.style("display","none");
       render(filterSelect.value);
     });
 

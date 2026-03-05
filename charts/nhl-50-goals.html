@@ -26,8 +26,6 @@
     background:var(--bg);
     color:var(--fg);
     font-family:"Poppins", ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
-    -webkit-user-select:none;
-    user-select:none;
   }
 
   .wrap{
@@ -150,7 +148,6 @@
     font-family:"Poppins", ui-sans-serif;
   }
   .axis path,.axis line{ stroke:rgba(17,24,39,.10); }
-
   .vgrid{ stroke:rgba(17,24,39,.10); stroke-width:1; shape-rendering:crispEdges; }
 
   .name{
@@ -158,12 +155,11 @@
     font-size:12px;
     fill:rgba(17,24,39,.92);
     cursor:pointer;
+    user-select:none;
     font-weight:400;
   }
   .name.active{ font-weight:800; }
-  .name.highlighted{
-    fill:var(--accent);
-  }
+  .name.highlighted{ fill:var(--accent); }
 
   .ridge{
     fill-opacity:0.26;
@@ -175,8 +171,8 @@
     stroke:var(--accent);
     stroke-opacity:.55;
   }
+  .row:hover .ridge{ stroke-width:1.1; }
 
-  /* 50+ dots */
   .dot50{
     fill:#000;
     stroke:#fff;
@@ -185,37 +181,6 @@
     pointer-events:none;
   }
   .dot50.show{ opacity:1; }
-
-  /* Mobile scrubber visuals */
-  .scrubLine{
-    stroke:rgba(17,24,39,.60);
-    stroke-width:1;
-    shape-rendering:crispEdges;
-    opacity:0;
-  }
-
-  /* scrub dot when value >= 50 */
-  .scrubDot50{
-    fill:#000;
-    stroke:#fff;
-    stroke-width:1.1;
-    opacity:0;
-  }
-
-  /* scrub dot when value < 50 */
-  .scrubDotUnder{
-    fill:#fff;
-    stroke:#000;
-    stroke-width:1.1;
-    opacity:0;
-  }
-
-  .scrubHit{
-    fill:transparent;
-    opacity:0;
-    touch-action:none;
-    cursor:crosshair;
-  }
 
   .footnote{
     text-align:center;
@@ -236,7 +201,7 @@
     line-height:1.35;
     transform:translate(12px,12px);
     display:none;
-    max-width:300px;
+    max-width:280px;
     box-shadow:0 10px 30px rgba(0,0,0,.10);
     font-family:"Poppins", ui-sans-serif;
   }
@@ -328,8 +293,6 @@
     const svg = d3.select("#svg");
     const tooltip = d3.select("#tooltip");
 
-    const isCoarse = window.matchMedia && window.matchMedia("(pointer: coarse)").matches;
-
     const ages = d3.range(18, 46).map(String);
 
     const isActiveCell = (v) => {
@@ -413,7 +376,6 @@
     const gridAges = [20, 25, 30, 35, 40, 45];
 
     let selectedName = null;
-    let activePointerId = null;
 
     function bringRowToFront(node){
       node.parentNode.appendChild(node);
@@ -490,34 +452,25 @@
       });
     }
 
-    function nearestAgeFromX(px){
-      const age = Math.round(x.invert(px));
+    function nearestAgeFromMouse(mx){
+      const age = Math.round(x.invert(mx));
       return Math.max(18, Math.min(45, age));
     }
 
-    function showTooltip(clientX, clientY, d, age){
+    function showTooltip(event, d){
+      const [mx] = d3.pointer(event, svg.node());
+      const age = nearestAgeFromMouse(mx);
       const v = d[String(age)];
       const shown = (v === null || Number.isNaN(v)) ? "blank" : String(v);
 
       tooltip
         .style("display", "block")
-        .style("left", clientX + "px")
-        .style("top", clientY + "px")
+        .style("left", (event.clientX) + "px")
+        .style("top", (event.clientY) + "px")
         .html(`
           <div class="tipName">${d.name}</div>
           <div class="tipSmall">Age ${age}. Goals ${shown}</div>
           <div class="tipSmall">Career goals ${d.total}. 50+ seasons ${d.count50}</div>
-        `);
-    }
-
-    function showMobileHint(clientX, clientY){
-      tooltip
-        .style("display", "block")
-        .style("left", clientX + "px")
-        .style("top", clientY + "px")
-        .html(`
-          <div class="tipName">Tip</div>
-          <div class="tipSmall">Tap a player name to lock. Then drag left or right across the chart to scrub ages.</div>
         `);
     }
 
@@ -528,6 +481,7 @@
       const H = topPad + ridgesH + bottomPad;
 
       svg.attr("viewBox", `0 0 ${W} ${H}`);
+
       g.selectAll("*").remove();
 
       g.append("g")
@@ -566,16 +520,33 @@
           event.stopPropagation();
           selectedName = (selectedName === d.name) ? null : d.name;
           if (selectedName) bringRowToFront(event.currentTarget.parentNode);
-          tooltip.style("display","none");
+          tooltip.style("display", "none");
           applyHighlight(rows, selectedName);
         });
 
-      const ridge = rows.append("path")
+      rows.append("path")
         .attr("class","ridge")
         .attr("fill","url(#goalGrad)")
         .attr("d", d => {
           const pts = d3.range(18, 46).map(age => ({ age, v: d[String(age)] }));
           return area(pts);
+        })
+        .on("mousemove", function(event, d){
+          if (selectedName && d.name !== selectedName) return;
+          bringRowToFront(this.parentNode);
+          showTooltip(event, d);
+          applyHighlight(rows, selectedName ? selectedName : d.name);
+        })
+        .on("mouseleave", function(){
+          tooltip.style("display", "none");
+          applyHighlight(rows, selectedName);
+        })
+        .on("click", function(event, d){
+          event.stopPropagation();
+          selectedName = (selectedName === d.name) ? null : d.name;
+          if (selectedName) bringRowToFront(this.parentNode);
+          tooltip.style("display", "none");
+          applyHighlight(rows, selectedName);
         });
 
       rows.each(function(d){
@@ -593,137 +564,9 @@
             .attr("cy", p => -y(p.v));
       });
 
-      if (!isCoarse){
-        ridge
-          .on("mousemove", function(event, d){
-            if (selectedName && d.name !== selectedName) return;
-            bringRowToFront(this.parentNode);
-
-            const [mx] = d3.pointer(event, svg.node());
-            const age = nearestAgeFromX(mx);
-            showTooltip(event.clientX, event.clientY, d, age);
-            applyHighlight(rows, selectedName ? selectedName : d.name);
-          })
-          .on("mouseleave", function(){
-            tooltip.style("display","none");
-            applyHighlight(rows, selectedName);
-          })
-          .on("click", function(event, d){
-            event.stopPropagation();
-            selectedName = (selectedName === d.name) ? null : d.name;
-            if (selectedName) bringRowToFront(this.parentNode);
-            tooltip.style("display","none");
-            applyHighlight(rows, selectedName);
-          });
-      }
-
-      const scrubLayer = g.append("g");
-
-      const scrubLine = scrubLayer.append("line")
-        .attr("class","scrubLine")
-        .attr("x1", leftNamesW).attr("x2", leftNamesW)
-        .attr("y1", topPad).attr("y2", topPad + ridgesH);
-
-      const scrubDot50 = scrubLayer.append("circle")
-        .attr("class","scrubDot50")
-        .attr("r", 4.4);
-
-      const scrubDotUnder = scrubLayer.append("circle")
-        .attr("class","scrubDotUnder")
-        .attr("r", 4.4);
-
-      const hit = scrubLayer.append("rect")
-        .attr("class","scrubHit")
-        .attr("x", leftNamesW)
-        .attr("y", topPad)
-        .attr("width", innerW)
-        .attr("height", ridgesH);
-
-      function findSelectedRowInfo(){
-        if (!selectedName) return null;
-        const idx = data.findIndex(d => d.name === selectedName);
-        if (idx < 0) return null;
-        return { player: data[idx], index: idx };
-      }
-
-      function updateScrub(clientX, clientY, mx){
-        const info = findSelectedRowInfo();
-
-        if (!info){
-          scrubLine.style("opacity", 0);
-          scrubDot50.style("opacity", 0);
-          scrubDotUnder.style("opacity", 0);
-          showMobileHint(clientX, clientY);
-          return;
-        }
-
-        const age = nearestAgeFromX(mx);
-        const px = x(age);
-
-        scrubLine
-          .attr("x1", px).attr("x2", px)
-          .style("opacity", 1);
-
-        const baselineY = topPad + peakHeight + info.index * rowSpacing;
-        const v = info.player[String(age)];
-
-        scrubDot50.style("opacity", 0);
-        scrubDotUnder.style("opacity", 0);
-
-        if (v === null || Number.isNaN(v)){
-          // no dot
-        } else if (v >= 50){
-          scrubDot50
-            .attr("cx", px)
-            .attr("cy", baselineY - y(v))
-            .style("opacity", 1);
-        } else {
-          scrubDotUnder
-            .attr("cx", px)
-            .attr("cy", baselineY - y(v))
-            .style("opacity", 1);
-        }
-
-        showTooltip(clientX, clientY, info.player, age);
-        applyHighlight(rows, selectedName);
-      }
-
-      hit
-        .on("pointerdown", function(event){
-          activePointerId = event.pointerId;
-          try { this.setPointerCapture(activePointerId); } catch(e) {}
-          const [mx] = d3.pointer(event, svg.node());
-          updateScrub(event.clientX, event.clientY, mx);
-          event.preventDefault();
-          event.stopPropagation();
-        })
-        .on("pointermove", function(event){
-          if (activePointerId !== null && event.pointerId !== activePointerId) return;
-          const [mx] = d3.pointer(event, svg.node());
-          updateScrub(event.clientX, event.clientY, mx);
-          event.preventDefault();
-        })
-        .on("pointerup", function(event){
-          if (activePointerId !== null && event.pointerId !== activePointerId) return;
-          activePointerId = null;
-          event.preventDefault();
-          event.stopPropagation();
-        })
-        .on("pointercancel", function(){
-          activePointerId = null;
-          scrubLine.style("opacity", 0);
-          scrubDot50.style("opacity", 0);
-          scrubDotUnder.style("opacity", 0);
-          tooltip.style("display","none");
-          applyHighlight(rows, selectedName);
-        });
-
       svg.on("click", () => {
         selectedName = null;
-        scrubLine.style("opacity", 0);
-        scrubDot50.style("opacity", 0);
-        scrubDotUnder.style("opacity", 0);
-        tooltip.style("display","none");
+        tooltip.style("display", "none");
         applyHighlight(rows, null);
       });
 
@@ -733,7 +576,7 @@
     const filterSelect = document.getElementById("filterSelect");
     filterSelect.addEventListener("change", () => {
       selectedName = null;
-      tooltip.style("display","none");
+      tooltip.style("display", "none");
       render(filterSelect.value);
     });
 

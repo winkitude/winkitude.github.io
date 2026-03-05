@@ -70,9 +70,10 @@
     overflow:auto;
     -webkit-overflow-scrolling:touch;
     border-top:1px solid rgba(17,24,39,.06);
+    padding-bottom:6px;
   }
 
-  svg{ display:block; width:1200px; height:auto; background:#fff; }
+  svg{ display:block; width:100%; height:auto; background:#fff; min-width:1120px; }
 
   .axis text{
     fill:rgba(17,24,39,.55);
@@ -96,6 +97,8 @@
     stroke-width:1;
   }
   .cell.empty{ fill:#fff; }
+  .cell.zero{ fill:#fff; }
+
   .cell:hover{
     stroke:rgba(17,24,39,.45);
     stroke-width:1;
@@ -171,7 +174,7 @@
 
       <div class="legendRow">
         <div class="legend" aria-label="Legend">
-          <span>Goals per season</span>
+          <span>Goals per season (0 shown as blank)</span>
           <span class="legendBar" aria-hidden="true"></span>
           <span>Low</span>
           <span>High</span>
@@ -254,9 +257,10 @@
     const maxGoals = d3.max(data, d => d3.max(ages, a => d[a] ?? 0)) || 0;
 
     const color = d3.scaleLinear()
-      .domain([0, maxGoals])
+      .domain([1, Math.max(1, maxGoals)])
       .range(["#e9f7ec", "#0b7a2c"])
-      .interpolate(d3.interpolateRgb);
+      .interpolate(d3.interpolateRgb)
+      .clamp(true);
 
     const g = svg.append("g");
 
@@ -309,12 +313,12 @@
       .data(d => ages.map(a => ({ player:d, age:+a, v:d[a] })))
       .enter()
       .append("rect")
-        .attr("class", d => (d.v === null ? "cell empty" : "cell"))
+        .attr("class", d => (d.v === null ? "cell empty" : (d.v === 0 ? "cell zero" : "cell")))
         .attr("x", d => x(d.age) - cellW/2)
         .attr("y", 0)
         .attr("width", cellW)
         .attr("height", cellH)
-        .attr("fill", d => d.v === null ? "#ffffff" : color(d.v))
+        .attr("fill", d => (d.v === null || d.v === 0) ? "#ffffff" : color(d.v))
         .on("mousemove", function(event, d){
           tooltip
             .style("display","block")

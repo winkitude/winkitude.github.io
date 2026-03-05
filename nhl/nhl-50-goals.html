@@ -275,33 +275,6 @@
   margin-bottom:20px;
 }
 
-.calloutStats{
-  display:flex;
-  justify-content:center;
-  gap:120px;
-  margin:90px auto 80px;
-  max-width:900px;
-  text-align:center;
-}
-
-.statNumber{
-  font-family:"adobe-caslon-pro", serif;
-  font-size:110px;
-  line-height:1;
-}
-
-.statText{
-  font-family:"Poppins", sans-serif;
-  font-size:16px;
-  margin-top:10px;
-  color:rgba(17,24,39,.75);
-  max-width:260px;
-}
-
-.statName{
-  display:block;
-  font-weight:600;
-}
 
 /* Heatmap labels smaller than ridgeline labels */
 .heatmapSection .cellLabel{
@@ -317,6 +290,53 @@
   color:rgba(17,24,39,.58);
   margin:12px auto 0;
   max-width:900px;
+}
+
+
+/* --- Callout stats between charts --- */
+.calloutStats{
+  display:flex;
+  justify-content:center;
+  gap:120px;
+  margin:70px auto 70px;
+  max-width:900px;
+  text-align:center;
+  padding:0 18px;
+  flex-wrap:wrap;
+}
+
+.stat{ flex:0 1 320px; }
+
+.statNumber{
+  font-family:"adobe-caslon-pro", serif;
+  font-size:110px;
+  line-height:1;
+  max-width:100%;
+}
+
+.statText{
+  font-family:"Poppins", sans-serif;
+  font-size:16px;
+  margin-top:10px;
+  color:rgba(17,24,39,.75);
+  max-width:320px;
+  margin-left:auto;
+  margin-right:auto;
+}
+
+.statName{
+  display:block;
+  font-weight:600;
+}
+
+@media (max-width:700px){
+  .calloutStats{
+    gap:34px;
+    margin:50px auto 55px;
+  }
+  .stat{ flex:1 1 100%; }
+  .statNumber{ font-size:72px; }
+  .statText{ font-size:14px; max-width:420px; }
 }
 
 </style>
@@ -407,23 +427,16 @@
 
 <div class="ageNote">Ages shown are approximate and reflect the player’s age at roughly the start of each season. A few may be slightly off.</div>
 
-<section class="calloutStats">
-
+<section class="calloutStats" aria-label="Key takeaways">
   <div class="stat">
-    <div class="statNumber">17.94</div>
-    <div class="statText">
-      50-goal seasons needed to catch up to Ovechkin's career goal total
-    </div>
+    <div class="statNumber" data-target="17.94" data-decimals="2">0</div>
+    <div class="statText">50-goal seasons needed to catch up to Ovechkin's career goal total</div>
   </div>
 
   <div class="stat">
-    <div class="statNumber">160</div>
-    <div class="statText">
-      Lowest career goal total by a player with a 50-goal season
-      <span class="statName">(Jacques Richard)</span>
-    </div>
+    <div class="statNumber" data-target="160" data-decimals="0">0</div>
+    <div class="statText">Lowest career goal total by a player with a 50-goal season <span class="statName">(Jacques Richard)</span></div>
   </div>
-
 </section>
 
 
@@ -437,7 +450,6 @@
 </div>
 
 <div class="footnote">
- 
   Source: 
   <a href="https://en.wikipedia.org/wiki/List_of_NHL_players_with_50-goal_seasons" target="_blank">
     List of NHL players with 50-goal seasons – Wikipedia
@@ -859,6 +871,52 @@ heatSvg.append("g")
 
 })()
 
+</script>
+
+
+<script>
+(function(){
+  const els = Array.from(document.querySelectorAll(".statNumber[data-target]"));
+  if(!els.length) return;
+
+  const prefersReduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  function formatNumber(val, decimals){
+    return val.toLocaleString(undefined, {minimumFractionDigits:decimals, maximumFractionDigits:decimals});
+  }
+
+  function animate(el){
+    if(el.dataset.done === "1") return;
+    el.dataset.done = "1";
+
+    const target = parseFloat(el.getAttribute("data-target"));
+    const decimals = parseInt(el.getAttribute("data-decimals") || "0", 10);
+    const duration = prefersReduced ? 0 : 900;
+
+    if(!isFinite(target)){ el.textContent = el.getAttribute("data-target"); return; }
+    if(duration === 0){ el.textContent = formatNumber(target, decimals); return; }
+
+    const start = performance.now();
+    const from = 0;
+
+    function tick(now){
+      const t = Math.min(1, (now - start) / duration);
+      const e = 1 - Math.pow(1 - t, 3);
+      const v = from + (target - from) * e;
+      el.textContent = formatNumber(v, decimals);
+      if(t < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
+
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(ent=>{
+      if(ent.isIntersecting) animate(ent.target);
+    });
+  }, {threshold:0.5});
+
+  els.forEach(el=>io.observe(el));
+})();
 </script>
 
 </body>

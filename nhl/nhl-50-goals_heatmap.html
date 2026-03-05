@@ -37,7 +37,7 @@
     font-family:"adobe-caslon-pro", serif;
     font-size:20px; line-height:1; font-weight:600; letter-spacing:.1px;
   }
-  .contact-icons{ display:flex; gap:16px; align-items:center; }
+  .contact-icons{ display:flex; gap:12px; align-items:center; }
   .contact-icons a{ color:rgba(17,24,39,.78); text-decoration:none; }
   .contact-icons a:hover{ color:rgba(17,24,39,.95); }
 
@@ -73,7 +73,7 @@
     padding-bottom:6px;
   }
 
-  svg{ display:block; width:100%; height:auto; background:#fff; min-width:1120px; }
+  svg{ display:block; width:100%; height:auto; background:#fff; min-width:1200px; }
 
   .axis text{
     fill:rgba(17,24,39,.55);
@@ -86,7 +86,7 @@
   .hgrid{ stroke:rgba(17,24,39,.06); stroke-width:1; shape-rendering:crispEdges; }
 
   .name{
-    font-size:12px; fill:rgba(17,24,39,.92);
+    font-size:11px; fill:rgba(17,24,39,.92);
     text-anchor:end;
   }
   .name.active{ font-weight:800; }
@@ -151,13 +151,13 @@
 
       <div class="contact-icons">
         <a href="https://www.linkedin.com/in/ari-winkleman/" target="_blank" rel="noopener" aria-label="LinkedIn">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
             <path d="M19 0h-14c-2.76 0-5 2.24-5 5v14c0 2.76 2.24 5 5 5h14c2.76 0 5-2.24 5-5v-14c0-2.76-2.24-5-5-5zm-11 19h-3v-10h3v10zm-1.5-11.27c-.97 0-1.75-.79-1.75-1.76 0-.97.78-1.76 1.75-1.76s1.75.79 1.75 1.76c0 .97-.78 1.76-1.75 1.76zm13.5 11.27h-3v-5.6c0-1.34-.03-3.07-1.87-3.07-1.87 0-2.16 1.46-2.16 2.97v5.7h-3v-10h2.88v1.36h.04c.4-.75 1.38-1.54 2.84-1.54 3.04 0 3.6 2 3.6 4.6v5.6z"/>
           </svg>
         </a>
 
         <a href="mailto:ariswinkleman@gmail.com" aria-label="Email">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
             <path d="M12 13.065l-11.99-7.065h23.98l-11.99 7.065zm0 2.935l-12-7.065v11.065h24v-11.065l-12 7.065z"/>
           </svg>
         </a>
@@ -237,7 +237,7 @@
       .sort((a,b) => d3.descending(a.total, b.total) || d3.descending(a.peak, b.peak));
 
     const W = 1200;
-    const leftNamesW = 230;
+    const leftNamesW = 290;
     const rightPad = 22;
     const topPad = 26;
     const bottomPad = 56;
@@ -308,9 +308,13 @@
       .attr("y", cellH - 3)
       .text(d => d.name);
 
-    rows.append("g")
+        const cellData = d => ages.map(a => ({ player:d, age:+a, v:d[a] }));
+
+    const cellGroup = rows.append("g");
+
+    const rects = cellGroup
       .selectAll("rect.cell")
-      .data(d => ages.map(a => ({ player:d, age:+a, v:d[a] })))
+      .data(cellData)
       .enter()
       .append("rect")
         .attr("class", d => (d.v === null ? "cell empty" : (d.v === 0 ? "cell zero" : "cell")))
@@ -332,6 +336,20 @@
         })
         .on("mouseleave", function(){
           tooltip.style("display","none");
+        });
+
+    // Centered value labels on each cell. Do not label 0 or blank.
+    cellGroup
+      .selectAll("text.cellLabel")
+      .data(cellData)
+      .enter()
+      .append("text")
+        .attr("class", "cellLabel")
+        .attr("x", d => x(d.age))
+        .attr("y", cellH/2 + 4)
+        .attr("text-anchor", "middle")
+        .attr("fill", d => (d.v !== null && d.v >= 50) ? "#ffffff" : "rgba(17,24,39,.78)")
+        .text(d => (d.v === null || d.v === 0) ? "" : d.v);
         });
 
   })();

@@ -150,6 +150,33 @@
   .axis path,.axis line{ stroke:rgba(17,24,39,.10); }
   .vgrid{ stroke:rgba(17,24,39,.10); stroke-width:1; shape-rendering:crispEdges; }
 
+
+.data-notes{
+  max-width:760px;
+  margin:40px auto 10px;
+  font-size:13px;
+  line-height:1.6;
+  color:rgba(17,24,39,.65);
+}
+
+.data-notes h3{
+  font-size:13px;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  margin-bottom:8px;
+  font-weight:700;
+}
+
+.data-notes a{
+  color:rgba(17,24,39,.75);
+  border-bottom:1px solid rgba(17,24,39,.25);
+  text-decoration:none;
+}
+
+.data-notes a:hover{
+  border-bottom:1px solid rgba(17,24,39,.65);
+}
+
   .name{
     font-family:"Poppins", ui-sans-serif;
     font-size:12px;
@@ -189,6 +216,16 @@
     margin-top:12px;
   }
 
+.footnote a{
+  color:rgba(17,24,39,.65);
+  text-decoration:none;
+  border-bottom:1px solid rgba(17,24,39,.25);
+}
+
+.footnote a:hover{
+  color:#111827;
+  border-bottom:1px solid #111827;
+}
   .tooltip{
     position:fixed;
     pointer-events:none;
@@ -253,11 +290,17 @@
 
       <section class="copyGrid" aria-label="Intro copy">
         <div class="copy">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor.
-        </div>
+The 50-goal club is an exclusive one. By my count, 101 players in NHL history have reached the mark, combining for 211 total 50-goal seasons. The first came in 1944-45 when Maurice “Rocket” Richard scored 50 goals in just 50 games, an even more exclusive club that now includes five players, with an extended family of three more who completed the feat in fewer than 50 personal games played. The achievement became so iconic that the NHL later named its annual goal-scoring award after him.
+
         <div class="copy">
-          Praesent dapibus, neque id cursus faucibus, tortor neque egestas augue, eu vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus.
-        </div>
+<p>
+Every one of these seasons was elite. Some may look like a fluke. A few names might make you scratch your head. Some players had the best passer in the league feeding them the puck. Others made a living parking in front of the net and tipping shots. And some just waited at the top of the <a href="https://www.instagram.com/reels/DVZBApHkQ-c/" target="_blank">faceoff circle</a> for the puck to find them. 
+However they did it, they accomplished something most NHL players could only dream about.
+</p>
+
+<p>
+To match Alexander Ovechkin’s career goal total, a player would need the equivalent of roughly eighteen straight 50-goal seasons. And by the time he retires, that number may be closer to nineteen or twenty. Not long ago we thought Wayne Gretzky’s total was untouchable.
+</p>        </div>
       </section>
 
       <div class="controlsRow">
@@ -278,10 +321,35 @@
       <div class="chart">
         <svg id="svg" viewBox="0 0 1200 760" preserveAspectRatio="xMidYMid meet"></svg>
       </div>
+<section class="data-notes">
 
+<h3>Data & Methodology</h3>
+
+<p>
+Season goal totals were compiled from publicly available NHL records and the Wikipedia dataset of players with 50-goal seasons. The dataset includes every player who recorded at least one 50-goal NHL season. Only NHL regular-season statistics are included.
+</p>
+
+<p>
+Each ridgeline represents a player’s career scoring totals by season. The horizontal axis reflects the player's age at the start of the season (approximate). Peaks represent total goals scored that season. Black markers indicate seasons in which a player scored 50 or more goals.
+</p>
+
+<p>
+Some early-career ages may be off by a year due to birthdate cutoffs and mid-season birthdays. The goal totals themselves reflect official NHL statistics.
+</p>
+
+<p>
+<a href="nhl_50.csv" download>Download the dataset (CSV)</a>
+</p>
+
+</section>
       <div class="footnote">
-        Ages shown are approximate and reflect the player’s age at roughly the start of each season. A few may be slightly off.
-      </div>
+  Ages shown are approximate and reflect the player’s age at roughly the start of each season. A few may be slightly off.
+  <br><br>
+  Source: 
+  <a href="https://en.wikipedia.org/wiki/List_of_NHL_players_with_50-goal_seasons" target="_blank">
+    List of NHL players with 50-goal seasons – Wikipedia
+  </a>
+</div>
     </div>
   </main>
 

@@ -104,6 +104,15 @@
     stroke-width:1;
   }
 
+  .cellLabel{
+    font-size:9px;
+    font-weight:700;
+    pointer-events:none;
+    user-select:none;
+    dominant-baseline:middle;
+    fill:rgba(17,24,39,.78);
+  }
+
   .tooltip{
     position:fixed;
     pointer-events:none;
@@ -312,7 +321,7 @@
 
     const cellGroup = rows.append("g");
 
-    const rects = cellGroup
+    cellGroup
       .selectAll("rect.cell")
       .data(cellData)
       .enter()
@@ -338,7 +347,7 @@
           tooltip.style("display","none");
         });
 
-    // Centered value labels on each cell. Do not label 0 or blank.
+    // Centered value labels. Do not label 0 or blank. 50+ turns white.
     cellGroup
       .selectAll("text.cellLabel")
       .data(cellData)
@@ -346,11 +355,10 @@
       .append("text")
         .attr("class", "cellLabel")
         .attr("x", d => x(d.age))
-        .attr("y", cellH/2 + 4)
+        .attr("y", cellH/2)
         .attr("text-anchor", "middle")
         .attr("fill", d => (d.v !== null && d.v >= 50) ? "#ffffff" : "rgba(17,24,39,.78)")
         .text(d => (d.v === null || d.v === 0) ? "" : d.v);
-        });
 
   })();
   </script>

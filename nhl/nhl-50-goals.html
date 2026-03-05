@@ -96,7 +96,7 @@
     margin:0 auto 18px;
     max-width:980px;
     text-align:left;
-  }
+  } 
   .copy{
     font-size:14px;
     line-height:1.6;
@@ -152,16 +152,19 @@
 
 .copy{
   max-width:900px;
-  margin:40px auto 60px auto;
+  margin:40px auto 60px ;
   column-count:2;
-  column-gap:48px;
+  column-gap:44px;
   font-family:"Poppins", sans-serif;
   font-size:15px;
   line-height:1.7;
+  column-fill:balance;
+  text-align:justify;
+  text-wrap:pretty;
 }
 
 .copy p{
-  margin:0 0 1.2em 0;
+  margin:0 0 .6em 0;
 }
 
 @media (max-width:800px){
@@ -346,7 +349,15 @@ To match Alexander Ovechkin’s career goal total, a player would need the equiv
       <div class="chart">
         <svg id="svg" viewBox="0 0 1200 760" preserveAspectRatio="xMidYMid meet"></svg>
       </div>
-<section class="data-notes">
+ <div class="footnote">
+  Ages shown are approximate and reflect the player’s age at roughly the start of each season. A few may be slightly off.
+  <br><br>
+  Source: 
+  <a href="https://en.wikipedia.org/wiki/List_of_NHL_players_with_50-goal_seasons" target="_blank">
+    List of NHL players with 50-goal seasons – Wikipedia
+  </a>
+</div>
+      <section class="data-notes">
 
 <h3>Data & Methodology</h3>
 
@@ -367,14 +378,7 @@ Some early-career ages may be off by a year due to birthdate cutoffs and mid-sea
 </p>
 
 </section>
-      <div class="footnote">
-  Ages shown are approximate and reflect the player’s age at roughly the start of each season. A few may be slightly off.
-  <br><br>
-  Source: 
-  <a href="https://en.wikipedia.org/wiki/List_of_NHL_players_with_50-goal_seasons" target="_blank">
-    List of NHL players with 50-goal seasons – Wikipedia
-  </a>
-</div>
+     
     </div>
   </main>
 

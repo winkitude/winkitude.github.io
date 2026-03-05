@@ -118,11 +118,17 @@
 
 
 @media (max-width:800px){
+
   .copyGrid{
-    grid-template-columns:1fr;
-    text-align:left;
-    text-wrap:pretty;
+    display:block;   /* removes grid layout */
+    max-width:680px;
+    margin:40px auto 60px;
   }
+
+  .copyCol{
+    margin-bottom:.7em;   /* same rhythm as paragraph spacing */
+  }
+
 }
 
   .controlsRow{
@@ -329,7 +335,7 @@ Every one of these seasons was elite. Some may look like a fluke. A few names mi
 </p>
 
 <p>
-The chart below shows how each member of the 50-goal club built their career season by season. To match Alexander Ovechkin’s career goal total, a player would need the equivalent of roughly eighteen straight 50-goal seasons. By the time he retires, that number may be closer to nineteen or twenty. Not long ago we thought Wayne Gretzky’s goal record was untouchable.
+The chart below shows how each member of the 50-goal club built their career season by season. 
 </p>
 
 </div>

@@ -117,12 +117,20 @@
 
 
 
+
 @media (max-width:800px){
+
   .copyGrid{
-    grid-template-columns:1fr;
-    text-align:left;
-    text-wrap:pretty;
+    display:block;   /* removes grid layout */
+    max-width:680px;
+     text-align:left;
+    margin:40px auto 60px;
   }
+
+  .copyCol{
+    margin-bottom:.7em;   /* same rhythm as paragraph spacing */
+  }
+
 }
 
   .controlsRow{
@@ -260,65 +268,6 @@
   }
   .tipName{ font-weight:800; margin-bottom:2px; }
   .tipSmall{ color:rgba(17,24,39,.58); }
-
-/* --- Heatmap section --- */
-.heatmapSection{
-  margin-top:80px;
-  padding-top:50px;
-  border-top:1px solid rgba(17,24,39,.08);
-}
-
-.sectionTitle{
-  text-align:center;
-  font-family:"adobe-caslon-pro", serif;
-  font-size:28px;
-  margin-bottom:20px;
-}
-
-.calloutStats{
-  display:flex;
-  justify-content:center;
-  gap:120px;
-  margin:90px auto 80px;
-  max-width:900px;
-  text-align:center;
-}
-
-.statNumber{
-  font-family:"adobe-caslon-pro", serif;
-  font-size:110px;
-  line-height:1;
-}
-
-.statText{
-  font-family:"Poppins", sans-serif;
-  font-size:16px;
-  margin-top:10px;
-  color:rgba(17,24,39,.75);
-  max-width:260px;
-}
-
-.statName{
-  display:block;
-  font-weight:600;
-}
-
-/* Heatmap labels smaller than ridgeline labels */
-.heatmapSection .cellLabel{
-  font-size:7px;
-  font-weight:600;
-  letter-spacing:-0.2px;
-}
-
-
-.ageNote{
-  text-align:center;
-  font-size:12px;
-  color:rgba(17,24,39,.58);
-  margin:12px auto 0;
-  max-width:900px;
-}
-
 </style>
 </head>
 
@@ -359,30 +308,41 @@
     <div class="wrap">
       <section class="hero">
         <h1 class="title">The NHL's 50 Goal Club</h1>
-        <div class="subtitle">Elite scorers and elite seasons through 2024-2025</div>
+        <div class="subtitle">Elite scorers and elite seasons through <br>2024-2025</div>
         <div class="heroSpacer"></div>
       </section>
 
 <section class="copyGrid" aria-label="Intro copy">
-  <div class="copyCol">
-    <p>
-      The 50-goal club is one of hockey’s most exclusive groups. By my count, 101 players in NHL history have reached the mark, combining for 211 total 50-goal seasons. The first came in 1944-45 when Maurice “Rocket” Richard scored 50 goals in just 50 games. The feat became so iconic that the NHL eventually named its annual goal-scoring trophy after him.
-    </p>
 
-    <p>
-      That original achievement created an even more exclusive club. Only five players have ever scored 50 goals in 50 games or fewer, with an extended family of three more who completed the milestone in fewer than 50 personal games played.
-    </p>
-  </div>
+<div class="copyCol">
 
-  <div class="copyCol">
-    <p>
-      Every one of these seasons was elite. Some may look like a fluke. A few names might make you scratch your head. Some players had the best passer in the league feeding them the puck. Others made a living parked in front of the net tipping shots. And some just waited at the top of the <a href="https://www.instagram.com/reels/DVZBApHkQ-c/" target="_blank">faceoff circle</a> for the puck to find them. However they did it, they accomplished something most NHL players could only dream about.
-    </p>
+<p>
+The 50-goal club is one of hockey’s most exclusive groups, reserved for players who manage to score 50 or more goals in a single NHL season. Reaching this milestone requires a combination of elite skill, consistency, and durability across an 82-game schedule.
+</p>
 
-    <p>
-      The chart below shows how each member of the 50-goal club built their career season by season.
-    </p>
-  </div>
+<p>
+By my count, 101 players in NHL history have reached the mark, combining for 210 total 50-goal seasons. The first came in 1944-45 when Maurice “Rocket” Richard scored 50 goals in just 50 games. The feat became so iconic that the NHL eventually named its annual goal-scoring trophy after him.
+</p>
+
+</div>
+
+<div class="copyCol">
+
+<p>
+Richard’s milestone created an even more exclusive club. Only five players have scored 50 goals in 50 games or fewer, with an extended family of three more who reached the mark in fewer than 50 personal games played.
+</p>
+
+<p>
+Every one of these seasons was elite. Some may look like a fluke. A few names might make you scratch your head. Some players had the best passer in the league feeding them the puck. Others made a living parked in front of the net tipping shots. And some just waited at the top of the <a href="https://www.instagram.com/reels/DVZBApHkQ-c/" target="_blank">faceoff circle</a> for the puck to find them. However they did it, they accomplished something most NHL players could only dream about.
+</p>
+
+<p>
+The chart below shows how each member of the 50-goal club built their career season by season. 
+</p>
+
+</div>
+
+
 </section>
 
       <div class="controlsRow">
@@ -403,40 +363,7 @@
       <div class="chart">
         <svg id="svg" viewBox="0 0 1200 760" preserveAspectRatio="xMidYMid meet"></svg>
       </div>
- 
-
-<div class="ageNote">Ages shown are approximate and reflect the player’s age at roughly the start of each season. A few may be slightly off.</div>
-
-<section class="calloutStats">
-
-  <div class="stat">
-    <div class="statNumber">17.94</div>
-    <div class="statText">
-      50-goal seasons needed to catch up to Ovechkin's career goal total
-    </div>
-  </div>
-
-  <div class="stat">
-    <div class="statNumber">160</div>
-    <div class="statText">
-      Lowest career goal total by a player with a 50-goal season
-      <span class="statName">(Jacques Richard)</span>
-    </div>
-  </div>
-
-</section>
-
-
-<div class="heatmapSection">
-  <h2 class="sectionTitle">Goal totals by age</h2>
-  <div class="chart">
-    <svg id="heatmap"></svg>
-  </div>
-
-<div class="ageNote">Ages shown are approximate and reflect the player’s age at roughly the start of each season. A few may be slightly off.</div>
-</div>
-
-<div class="footnote">
+ <div class="footnote">
   Ages shown are approximate and reflect the player’s age at roughly the start of each season. A few may be slightly off.
   <br><br>
   Source: 
@@ -768,99 +695,15 @@ Some early-career ages may be off by a year due to birthdate cutoffs and mid-sea
   })();
   </script>
 
-<script>
 
-(async function(){
-
-const heatSvg = d3.select("#heatmap")
-
-const raw = await d3.csv("nhl_50.csv")
-
-const ages = d3.range(18,46)
-
-const data = raw.map(d=>{
-  const row = {
-    name:d.Name,
-    total:+d["Total Goals"]||0,
-    active:String(d.Active||"").trim().toLowerCase()==="y"
-  }
-  ages.forEach(a=>{
-    const v = +d[a]
-    row[a] = isNaN(v) ? null : v
-  })
-  return row
-})
-
-data.sort((a,b)=>b.total-a.total)
-
-const heatWidth = 1200
-const nameWidth = 260
-const cellHeight = 18
-const heatHeight = data.length * cellHeight + 110
-
-heatSvg.attr("viewBox",`0 0 ${heatWidth} ${heatHeight}`)
-
-const x = d3.scaleBand()
-  .domain(ages)
-  .range([nameWidth,heatWidth])
-  .padding(0)
-
-const maxGoals = d3.max(data,d=>d3.max(ages,a=>d[a]||0))
-
-const color = d3.scaleLinear()
-  .domain([1,maxGoals])
-  .range(["#e9f7ec","#0b7a2c"])
-
-const row = heatSvg
-  .selectAll(".heatRow")
-  .data(data)
-  .enter()
-  .append("g")
-  .attr("transform",(d,i)=>`translate(0,${i*cellHeight})`)
-
-row.append("text")
-  .attr("x",nameWidth-10)
-  .attr("y",12)
-  .attr("text-anchor","end")
-  .attr("class", d => d.active ? "name active" : "name")
-  .text(d=>d.name)
-
-row.selectAll("rect")
-  .data(d=>ages.map(a=>({age:a,value:d[a]})))
-  .enter()
-  .append("rect")
-  .attr("x",d=>x(d.age))
-  .attr("width",x.bandwidth())
-  .attr("height",cellHeight)
-  .attr("fill",d=>{
-    if(!d.value || d.value===0) return "#ffffff"
-    return color(d.value)
-  })
-
-row.selectAll(".heatLabel")
-  .data(d=>ages.map(a=>({age:a,value:d[a]})))
-  .enter()
-  .append("text")
-  .attr("class","cellLabel")
-  .attr("x",d=>x(d.age)+x.bandwidth()/2)
-  .attr("y",12)
-  .attr("text-anchor","middle")
-  .attr("fill",d=>d.value>=50 ? "#ffffff" : "#111")
-  .text(d=>d.value>0 ? d.value : "")
-
-// x-axis ages (bottom)
-const xAxis = d3.axisBottom(d3.scaleLinear().domain([18,45]).range([nameWidth,heatWidth]))
-  .ticks(14)
-  .tickFormat(d3.format("d"))
-
-heatSvg.append("g")
-  .attr("class","axis")
-  .attr("transform",`translate(0,${data.length*cellHeight + 24})`)
-  .call(xAxis)
-
-})()
-
-</script>
+ <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8FK0VXYYGX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-8FK0VXYYGX');
+  </script>
 
 </body>
 </html>

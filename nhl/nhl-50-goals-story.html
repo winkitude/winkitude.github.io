@@ -1,0 +1,923 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>The NHL's 50 Goal Club</title>
+
+<link rel="stylesheet" href="https://use.typekit.net/hty3kgh.css">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg:#ffffff;
+    --fg:#111827;
+    --muted:rgba(17,24,39,.58);
+    --hair:rgba(17,24,39,.08);
+    --accent:#d21f2b; /* highlight red */
+  }
+
+  html,body{height:100%}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--fg);
+    font-family:"Poppins", ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+  }
+
+  .wrap{
+    max-width:1200px;
+    margin:0 auto;
+    padding:0 18px;
+  }
+
+  .site-header{
+  
+  }
+  .site-header .wrap{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:14px 18px;
+  }
+  .masthead a{
+    text-decoration:none;
+    color:var(--fg);
+    font-family:"adobe-caslon-pro", serif;
+    font-size:20px;
+    line-height:1;
+    font-weight:600;
+    letter-spacing:.1px;
+  }
+  .contact-icons{
+    display:flex;
+    gap:16px;
+    align-items:center;
+  }
+  .contact-icons a{
+    color:rgba(17,24,39,.78);
+    text-decoration:none;
+  }
+  .contact-icons a:hover{
+    color:rgba(17,24,39,.95);
+  }
+
+  main{ padding:34px 0 44px; }
+
+  .hero{
+    text-align:center;
+    margin:12px auto 26px;
+  }
+  .title{
+    font-family:"adobe-caslon-pro", serif;
+    font-size:58px;
+    line-height:1.02;
+    font-weight:600;
+    letter-spacing:-0.6px;
+    margin:0;
+  }
+  .subtitle{
+    font-weight:800;
+    font-size:15px;
+    letter-spacing:.2px;
+    margin:10px 0 0;
+    color:rgba(17,24,39,.80);
+  }
+  .heroSpacer{ height:18px; }
+
+.copyGrid{
+  max-width:900px;
+  margin:40px auto 60px auto;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:48px;
+  font-family:"Poppins", sans-serif;
+  font-size:14.5px;
+  line-height:1.65;
+  text-align:justify;
+  text-wrap:pretty;
+}
+
+.copyGrid p{
+  margin:0 0 .8em 0;
+}
+
+.copyGrid a{
+  color:var(--accent);
+  text-decoration:none;
+  border-bottom:1px solid rgba(210,31,43,.35);
+}
+
+.copyGrid a:hover{
+  border-bottom:1px solid rgba(210,31,43,.8);
+}
+
+
+
+@media (max-width:800px){
+  .copyGrid{
+    grid-template-columns:1fr;
+    text-align:left;
+    text-wrap:pretty;
+  }
+}
+
+  .controlsRow{
+    display:flex;
+    justify-content:center;
+    margin:18px 0 10px;
+  }
+  .controls{
+    display:flex;
+    gap:10px;
+    align-items:center;
+    flex-wrap:wrap;
+    padding:10px 12px;
+    border:1px solid rgba(17,24,39,.10);
+    border-radius:12px;
+    background:rgba(255,255,255,.92);
+  }
+  .controls label{
+    font-size:12px;
+    color:rgba(17,24,39,.60);
+  }
+  select{
+    font-family:"Poppins", ui-sans-serif;
+    font-size:13px;
+    padding:8px 10px;
+    border-radius:10px;
+    border:1px solid rgba(17,24,39,.14);
+    background:#fff;
+    color:rgba(17,24,39,.90);
+    outline:none;
+  }
+  select:focus{ border-color:rgba(17,24,39,.28); }
+
+  .chart{ margin-top:10px; background:#fff; }
+  svg{ display:block; width:100%; height:auto; }
+
+  .axis text{
+    fill:rgba(17,24,39,.55);
+    font-size:11px;
+    font-family:"Poppins", ui-sans-serif;
+  }
+  .axis path,.axis line{ stroke:rgba(17,24,39,.10); }
+  .vgrid{ stroke:rgba(17,24,39,.10); stroke-width:1; shape-rendering:crispEdges; }
+
+.data-notes{
+  max-width:760px;
+  margin:40px auto 10px;
+  font-size:13px;
+  line-height:1.6;
+  color:rgba(17,24,39,.65);
+}
+
+.data-notes h3{
+  font-size:13px;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  margin-bottom:8px;
+  font-weight:700;
+}
+
+.data-notes a{
+  color:rgba(17,24,39,.75);
+  border-bottom:1px solid rgba(17,24,39,.25);
+  text-decoration:none;
+}
+
+.data-notes a:hover{
+  border-bottom:1px solid rgba(17,24,39,.65);
+}
+
+  .name{
+    font-family:"Poppins", ui-sans-serif;
+    font-size:12px;
+    fill:rgba(17,24,39,.92);
+    cursor:pointer;
+    user-select:none;
+    font-weight:400;
+  }
+  .name.active{ font-weight:800; }
+  .name.highlighted{ fill:var(--accent); }
+
+  .ridge{
+    fill-opacity:0.26;
+    stroke:rgba(17,24,39,.14);
+    stroke-width:0.6;
+    cursor:pointer;
+  }
+  .ridge.highlighted{
+    stroke:var(--accent);
+    stroke-opacity:.55;
+  }
+  .row:hover .ridge{ stroke-width:1.1; }
+
+  .dot50{
+    fill:#000;
+    stroke:#fff;
+    stroke-width:0.9;
+    opacity:0.10;
+    pointer-events:none;
+  }
+  .dot50.show{ opacity:1; }
+
+  .footnote{
+    text-align:center;
+    font-size:12px;
+    color:rgba(17,24,39,.55);
+    margin-top:12px;
+  }
+
+.footnote a{
+  color:rgba(17,24,39,.65);
+  text-decoration:none;
+  border-bottom:1px solid rgba(17,24,39,.25);
+}
+
+.footnote a:hover{
+  color:#111827;
+  border-bottom:1px solid #111827;
+}
+  .tooltip{
+    position:fixed;
+    pointer-events:none;
+    background:rgba(255,255,255,.96);
+    border:1px solid rgba(17,24,39,.18);
+    color:rgba(17,24,39,.95);
+    padding:10px 12px;
+    border-radius:12px;
+    font-size:12px;
+    line-height:1.35;
+    transform:translate(12px,12px);
+    display:none;
+    max-width:280px;
+    box-shadow:0 10px 30px rgba(0,0,0,.10);
+    font-family:"Poppins", ui-sans-serif;
+  }
+  .tipName{ font-weight:800; margin-bottom:2px; }
+  .tipSmall{ color:rgba(17,24,39,.58); }
+
+/* --- Heatmap section --- */
+.heatmapSection{
+  margin-top:80px;
+  padding-top:50px;
+  border-top:1px solid rgba(17,24,39,.08);
+}
+
+.sectionTitle{
+  text-align:center;
+  font-family:"adobe-caslon-pro", serif;
+  font-size:28px;
+  margin-bottom:20px;
+}
+
+
+/* Heatmap labels smaller than ridgeline labels */
+.heatmapSection .cellLabel{
+  font-size:7px;
+  font-weight:600;
+  letter-spacing:-0.2px;
+}
+
+
+.ageNote{
+  text-align:center;
+  font-size:12px;
+  color:rgba(17,24,39,.58);
+  margin:12px auto 0;
+  max-width:900px;
+}
+
+
+/* --- Callout stats between charts --- */
+.calloutStats{
+  display:flex;
+  justify-content:center;
+  gap:120px;
+  margin:70px auto 70px;
+  max-width:900px;
+  text-align:center;
+  padding:0 18px;
+  flex-wrap:wrap;
+}
+
+.stat{ flex:0 1 320px; }
+
+.statNumber{
+  font-family:"adobe-caslon-pro", serif;
+  font-size:110px;
+  line-height:1;
+  max-width:100%;
+}
+
+.statText{
+  font-family:"Poppins", sans-serif;
+  font-size:16px;
+  margin-top:10px;
+  color:rgba(17,24,39,.75);
+  max-width:320px;
+  margin-left:auto;
+  margin-right:auto;
+}
+
+.statName{
+  display:block;
+  font-weight:600;
+}
+
+@media (max-width:700px){
+  .calloutStats{
+    gap:34px;
+    margin:50px auto 55px;
+  }
+  .stat{ flex:1 1 100%; }
+  .statNumber{ font-size:72px; }
+  .statText{ font-size:14px; max-width:420px; }
+}
+
+</style>
+</head>
+
+<body>
+  <header class="site-header">
+    <div class="wrap" style="display:flex; justify-content:space-between; align-items:center;">
+      <div class="masthead">
+        <a href="../index.html">Ari Winkleman</a>
+      </div>
+
+      <div class="contact-icons" style="display:flex; gap:16px; align-items:center;">
+        <a href="https://www.linkedin.com/in/ari-winkleman/" target="_blank" rel="noopener" aria-label="LinkedIn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M19 0h-14c-2.76 0-5 2.24-5 5v14c0 2.76 2.24 5
+                     5 5h14c2.76 0 5-2.24 5-5v-14c0-2.76-2.24-5-5-5zm-11
+                     19h-3v-10h3v10zm-1.5-11.27c-.97 0-1.75-.79-1.75-1.76
+                     0-.97.78-1.76 1.75-1.76s1.75.79
+                     1.75 1.76c0 .97-.78 1.76-1.75 1.76zm13.5
+                     11.27h-3v-5.6c0-1.34-.03-3.07-1.87-3.07-1.87
+                     0-2.16 1.46-2.16 2.97v5.7h-3v-10h2.88v1.36h.04c.4-.75
+                     1.38-1.54 2.84-1.54 3.04 0 3.6 2 3.6
+                     4.6v5.6z"/>
+          </svg>
+        </a>
+
+        <a href="mailto:ariswinkleman@gmail.com" aria-label="Email">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 13.065l-11.99-7.065h23.98l-11.99 7.065zm0
+                     2.935l-12-7.065v11.065h24v-11.065l-12
+                     7.065z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="wrap">
+      <section class="hero">
+        <h1 class="title">The NHL's 50 Goal Club</h1>
+        <div class="subtitle">Elite scorers and elite seasons through 2024-2025</div>
+        <div class="heroSpacer"></div>
+      </section>
+
+<section class="copyGrid" aria-label="Intro copy">
+  <div class="copyCol">
+    <p>
+      The 50-goal club is one of hockey’s most exclusive groups. By my count, 101 players in NHL history have reached the mark, combining for 211 total 50-goal seasons. The first came in 1944-45 when Maurice “Rocket” Richard scored 50 goals in just 50 games. The feat became so iconic that the NHL eventually named its annual goal-scoring trophy after him.
+    </p>
+
+    <p>
+      That original achievement created an even more exclusive club. Only five players have ever scored 50 goals in 50 games or fewer, with an extended family of three more who completed the milestone in fewer than 50 personal games played.
+    </p>
+  </div>
+
+  <div class="copyCol">
+    <p>
+      Every one of these seasons was elite. Some may look like a fluke. A few names might make you scratch your head. Some players had the best passer in the league feeding them the puck. Others made a living parked in front of the net tipping shots. And some just waited at the top of the <a href="https://www.instagram.com/reels/DVZBApHkQ-c/" target="_blank">faceoff circle</a> for the puck to find them. However they did it, they accomplished something most NHL players could only dream about.
+    </p>
+
+    <p>
+      The chart below shows how each member of the 50-goal club built their career season by season.
+    </p>
+  </div>
+</section>
+
+      <div class="controlsRow">
+        <div class="controls" aria-label="Filters">
+          <label for="filterSelect">View</label>
+          <select id="filterSelect">
+            <option value="mostGoals">Most career goals</option>
+            <option value="leastGoals">Least career goals</option>
+            <option value="activeOnly">Active players</option>
+            <option value="peakSeason">Highest single-season peak</option>
+            <option value="most50Seasons">Most 50+ goal seasons</option>
+            <option value="one50Season">One 50+ goal season</option>
+            <option value="early50" selected>Earliest first 50+ season</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="chart">
+        <svg id="svg" viewBox="0 0 1200 760" preserveAspectRatio="xMidYMid meet"></svg>
+      </div>
+ 
+
+<div class="ageNote">Ages shown are approximate and reflect the player’s age at roughly the start of each season. A few may be slightly off.</div>
+
+<section class="calloutStats" aria-label="Key takeaways">
+  <div class="stat">
+    <div class="statNumber" data-target="17.94" data-decimals="2">0</div>
+    <div class="statText">50-goal seasons needed to catch up to Ovechkin's career goal total</div>
+  </div>
+
+  <div class="stat">
+    <div class="statNumber" data-target="160" data-decimals="0">0</div>
+    <div class="statText">Lowest career goal total by a player with a 50-goal season <span class="statName">(Jacques Richard)</span></div>
+  </div>
+</section>
+
+
+<div class="heatmapSection">
+  <h2 class="sectionTitle">Heatmap sorted by total goals scored</h2>
+  <div class="chart">
+    <svg id="heatmap"></svg>
+  </div>
+
+<div class="ageNote">Ages shown are approximate and reflect the player’s age at roughly the start of each season. A few may be slightly off.</div>
+</div>
+
+<div class="footnote">
+  Source: 
+  <a href="https://en.wikipedia.org/wiki/List_of_NHL_players_with_50-goal_seasons" target="_blank">
+    List of NHL players with 50-goal seasons – Wikipedia
+  </a>
+</div>
+      <section class="data-notes">
+
+<h3>Data & Methodology</h3>
+
+<p>
+Season goal totals were compiled from publicly available NHL records and the Wikipedia dataset of players with 50-goal seasons. The dataset includes every player who recorded at least one 50-goal NHL season. Only NHL regular-season statistics are included.
+</p>
+
+<p>
+Each ridgeline represents a player’s career scoring totals by season. The horizontal axis reflects the player's age at the start of the season (approximate). Peaks represent total goals scored that season. Black markers indicate seasons in which a player scored 50 or more goals.
+</p>
+
+<p>
+Some early-career ages may be off by a year due to birthdate cutoffs and mid-season birthdays. The goal totals themselves reflect official NHL statistics.
+</p>
+
+<p>
+<a href="nhl_50.csv" download>Download the dataset (CSV)</a>
+</p>
+
+</section>
+     
+    </div>
+  </main>
+
+  <div class="tooltip" id="tooltip"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+  <script>
+  (async function () {
+    const svg = d3.select("#svg");
+    const tooltip = d3.select("#tooltip");
+
+    const ages = d3.range(18, 46).map(String);
+
+    const isActiveCell = (v) => {
+      const s = String(v ?? "").trim().toLowerCase();
+      return s === "y" || s === "yes" || s === "true" || s === "1";
+    };
+
+    const parseRow = (d) => {
+      const row = {
+        name: d["Name"],
+        total: +d["Total Goals"] || 0,
+        active: isActiveCell(d["Active"])
+      };
+
+      let peak = 0;
+      let count50 = 0;
+      let first50 = null;
+
+      ages.forEach(a => {
+        const v = d[a];
+        const val = (v === undefined || v === null || v === "") ? null : +v;
+        row[a] = (Number.isFinite(val) ? val : null);
+
+        if (row[a] !== null) {
+          if (row[a] > peak) peak = row[a];
+          if (row[a] >= 50) {
+            count50 += 1;
+            if (first50 === null) first50 = +a;
+          }
+        }
+      });
+
+      row.peak = peak;
+      row.count50 = count50;
+      row.first50 = first50;
+
+      return row;
+    };
+
+    const all = await d3.csv("nhl_50.csv", parseRow);
+
+    const W = 1200;
+    const leftNamesW = 230;
+    const rightPad = 22;
+    const topPad = 24;
+    const bottomPad = 56;
+
+    const peakHeight = 170;
+    const rowSpacing = 22;
+
+    const innerW = W - leftNamesW - rightPad;
+
+    const x = d3.scaleLinear()
+      .domain([18, 45])
+      .range([leftNamesW, leftNamesW + innerW]);
+
+    const maxGoals = d3.max(all, d => d.peak) || 0;
+
+    const y = d3.scaleLinear()
+      .domain([0, maxGoals])
+      .range([0, peakHeight]);
+
+    const area = d3.area()
+      .defined(d => d.v !== null && !Number.isNaN(d.v))
+      .x(d => x(d.age))
+      .y0(0)
+      .y1(d => -y(d.v))
+      .curve(d3.curveMonotoneX);
+
+    const defs = svg.append("defs");
+    const grad = defs.append("linearGradient")
+      .attr("id","goalGrad")
+      .attr("x1","0%").attr("x2","0%")
+      .attr("y1","100%").attr("y2","0%");
+
+    grad.append("stop").attr("offset","0%").attr("stop-color","#ffe56a");
+    grad.append("stop").attr("offset","55%").attr("stop-color","#ff9a2b");
+    grad.append("stop").attr("offset","100%").attr("stop-color","#d21f2b");
+
+    const g = svg.append("g");
+    const gridAges = [20, 25, 30, 35, 40, 45];
+
+    let selectedName = null;
+
+    function bringRowToFront(node){
+      node.parentNode.appendChild(node);
+    }
+
+    function computeViewData(mode){
+      let data = all.slice();
+
+      if (mode === "activeOnly") {
+        data = data.filter(d => d.active);
+        data.sort((a,b) => d3.descending(a.total, b.total));
+        return data;
+      }
+
+      if (mode === "leastGoals") {
+        data.sort((a,b) => d3.ascending(a.total, b.total));
+        return data;
+      }
+
+      if (mode === "peakSeason") {
+        data.sort((a,b) => d3.descending(a.peak, b.peak) || d3.descending(a.total, b.total));
+        return data;
+      }
+
+      if (mode === "most50Seasons") {
+        data.sort((a,b) => d3.descending(a.count50, b.count50) || d3.descending(a.total, b.total));
+        return data;
+      }
+
+      if (mode === "one50Season") {
+        data = data.filter(d => d.count50 === 1);
+        data.sort((a,b) => d3.descending(a.total, b.total));
+        return data;
+      }
+
+      if (mode === "early50") {
+        data = data.filter(d => d.first50 !== null);
+        data.sort((a,b) => d3.ascending(a.first50, b.first50) || d3.descending(a.total, b.total));
+        return data;
+      }
+
+      data.sort((a,b) => d3.descending(a.total, b.total));
+      return data;
+    }
+
+    function applyHighlight(rowsSel, focusNameOrNull){
+      const focus = focusNameOrNull;
+
+      rowsSel.selectAll("text.name")
+        .classed("highlighted", d => focus && d.name === focus);
+
+      rowsSel.selectAll("path.ridge")
+        .classed("highlighted", d => focus && d.name === focus);
+
+      if (!focus){
+        rowsSel.selectAll("path.ridge")
+          .style("fill-opacity", 0.26)
+          .style("stroke-opacity", 1);
+
+        rowsSel.each(function(d){
+          d3.select(this).selectAll("circle.dot50")
+            .classed("show", false);
+        });
+        return;
+      }
+
+      rowsSel.selectAll("path.ridge")
+        .style("fill-opacity", d => (d.name === focus ? 0.84 : 0.05))
+        .style("stroke-opacity", d => (d.name === focus ? 0.55 : 0.05));
+
+      rowsSel.each(function(d){
+        d3.select(this).selectAll("circle.dot50")
+          .classed("show", d.name === focus);
+      });
+    }
+
+    function nearestAgeFromMouse(mx){
+      const age = Math.round(x.invert(mx));
+      return Math.max(18, Math.min(45, age));
+    }
+
+    function showTooltip(event, d){
+      const [mx] = d3.pointer(event, svg.node());
+      const age = nearestAgeFromMouse(mx);
+      const v = d[String(age)];
+      const shown = (v === null || Number.isNaN(v)) ? "blank" : String(v);
+
+      tooltip
+        .style("display", "block")
+        .style("left", (event.clientX) + "px")
+        .style("top", (event.clientY) + "px")
+        .html(`
+          <div class="tipName">${d.name}</div>
+          <div class="tipSmall">Age ${age}. Goals ${shown}</div>
+          <div class="tipSmall">Career goals ${d.total}. 50+ seasons ${d.count50}</div>
+        `);
+    }
+
+    function render(mode){
+      const data = computeViewData(mode);
+
+      const ridgesH = peakHeight + (Math.max(0, data.length - 1)) * rowSpacing;
+      const H = topPad + ridgesH + bottomPad;
+
+      svg.attr("viewBox", `0 0 ${W} ${H}`);
+
+      g.selectAll("*").remove();
+
+      g.append("g")
+        .selectAll("line.vgrid")
+        .data(gridAges)
+        .enter()
+        .append("line")
+          .attr("class","vgrid")
+          .attr("x1", d => x(d))
+          .attr("x2", d => x(d))
+          .attr("y1", topPad)
+          .attr("y2", topPad + ridgesH);
+
+      const xAxis = d3.axisBottom(x).ticks(14).tickFormat(d3.format("d"));
+      g.append("g")
+        .attr("class","axis")
+        .attr("transform", `translate(0,${topPad + ridgesH + 18})`)
+        .call(xAxis);
+
+      const rows = g.append("g")
+        .attr("transform", `translate(0,${topPad})`)
+        .selectAll("g.row")
+        .data(data, d => d.name)
+        .enter()
+        .append("g")
+          .attr("class","row")
+          .attr("transform",(d,i)=>`translate(0,${peakHeight + i*rowSpacing})`);
+
+      rows.append("text")
+        .attr("class", d => d.active ? "name active" : "name")
+        .attr("x", leftNamesW - 10)
+        .attr("y", -4)
+        .attr("text-anchor","end")
+        .text(d => d.name)
+        .on("click", (event, d) => {
+          event.stopPropagation();
+          selectedName = (selectedName === d.name) ? null : d.name;
+          if (selectedName) bringRowToFront(event.currentTarget.parentNode);
+          tooltip.style("display", "none");
+          applyHighlight(rows, selectedName);
+        });
+
+      rows.append("path")
+        .attr("class","ridge")
+        .attr("fill","url(#goalGrad)")
+        .attr("d", d => {
+          const pts = d3.range(18, 46).map(age => ({ age, v: d[String(age)] }));
+          return area(pts);
+        })
+        .on("mousemove", function(event, d){
+          if (selectedName && d.name !== selectedName) return;
+          bringRowToFront(this.parentNode);
+          showTooltip(event, d);
+          applyHighlight(rows, selectedName ? selectedName : d.name);
+        })
+        .on("mouseleave", function(){
+          tooltip.style("display", "none");
+          applyHighlight(rows, selectedName);
+        })
+        .on("click", function(event, d){
+          event.stopPropagation();
+          selectedName = (selectedName === d.name) ? null : d.name;
+          if (selectedName) bringRowToFront(this.parentNode);
+          tooltip.style("display", "none");
+          applyHighlight(rows, selectedName);
+        });
+
+      rows.each(function(d){
+        const row = d3.select(this);
+        const pts = d3.range(18, 46).map(age => ({ age, v: d[String(age)] }));
+        const dots = pts.filter(p => p.v !== null && p.v >= 50);
+
+        row.selectAll("circle.dot50")
+          .data(dots)
+          .enter()
+          .append("circle")
+            .attr("class","dot50")
+            .attr("r", 3.6)
+            .attr("cx", p => x(p.age))
+            .attr("cy", p => -y(p.v));
+      });
+
+      svg.on("click", () => {
+        selectedName = null;
+        tooltip.style("display", "none");
+        applyHighlight(rows, null);
+      });
+
+      applyHighlight(rows, selectedName);
+    }
+
+    const filterSelect = document.getElementById("filterSelect");
+    filterSelect.addEventListener("change", () => {
+      selectedName = null;
+      tooltip.style("display", "none");
+      render(filterSelect.value);
+    });
+
+    render(filterSelect.value);
+  })();
+  </script>
+
+<script>
+
+(async function(){
+
+const heatSvg = d3.select("#heatmap")
+
+const raw = await d3.csv("nhl_50.csv")
+
+const ages = d3.range(18,46)
+
+const data = raw.map(d=>{
+  const row = {
+    name:d.Name,
+    total:+d["Total Goals"]||0,
+    active:String(d.Active||"").trim().toLowerCase()==="y"
+  }
+  ages.forEach(a=>{
+    const v = +d[a]
+    row[a] = isNaN(v) ? null : v
+  })
+  return row
+})
+
+data.sort((a,b)=>b.total-a.total)
+
+const heatWidth = 1200
+const nameWidth = 260
+const cellHeight = 18
+const heatHeight = data.length * cellHeight + 110
+
+heatSvg.attr("viewBox",`0 0 ${heatWidth} ${heatHeight}`)
+
+const x = d3.scaleBand()
+  .domain(ages)
+  .range([nameWidth,heatWidth])
+  .padding(0)
+
+const maxGoals = d3.max(data,d=>d3.max(ages,a=>d[a]||0))
+
+const color = d3.scaleLinear()
+  .domain([1,maxGoals])
+  .range(["#e9f7ec","#0b7a2c"])
+
+const row = heatSvg
+  .selectAll(".heatRow")
+  .data(data)
+  .enter()
+  .append("g")
+  .attr("transform",(d,i)=>`translate(0,${i*cellHeight})`)
+
+row.append("text")
+  .attr("x",nameWidth-10)
+  .attr("y",12)
+  .attr("text-anchor","end")
+  .attr("class", d => d.active ? "name active" : "name")
+  .text(d=>d.name)
+
+row.selectAll("rect")
+  .data(d=>ages.map(a=>({age:a,value:d[a]})))
+  .enter()
+  .append("rect")
+  .attr("x",d=>x(d.age))
+  .attr("width",x.bandwidth())
+  .attr("height",cellHeight)
+  .attr("fill",d=>{
+    if(!d.value || d.value===0) return "#ffffff"
+    return color(d.value)
+  })
+
+row.selectAll(".heatLabel")
+  .data(d=>ages.map(a=>({age:a,value:d[a]})))
+  .enter()
+  .append("text")
+  .attr("class","cellLabel")
+  .attr("x",d=>x(d.age)+x.bandwidth()/2)
+  .attr("y",12)
+  .attr("text-anchor","middle")
+  .attr("fill",d=>d.value>=50 ? "#ffffff" : "#111")
+  .text(d=>d.value>0 ? d.value : "")
+
+// x-axis ages (bottom)
+const xAxis = d3.axisBottom(d3.scaleLinear().domain([18,45]).range([nameWidth,heatWidth]))
+  .ticks(14)
+  .tickFormat(d3.format("d"))
+
+heatSvg.append("g")
+  .attr("class","axis")
+  .attr("transform",`translate(0,${data.length*cellHeight + 24})`)
+  .call(xAxis)
+
+})()
+
+</script>
+
+
+<script>
+(function(){
+  const els = Array.from(document.querySelectorAll(".statNumber[data-target]"));
+  if(!els.length) return;
+
+  const prefersReduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  function formatNumber(val, decimals){
+    return val.toLocaleString(undefined, {minimumFractionDigits:decimals, maximumFractionDigits:decimals});
+  }
+
+  function animate(el){
+    if(el.dataset.done === "1") return;
+    el.dataset.done = "1";
+
+    const target = parseFloat(el.getAttribute("data-target"));
+    const decimals = parseInt(el.getAttribute("data-decimals") || "0", 10);
+    const duration = prefersReduced ? 0 : 900;
+
+    if(!isFinite(target)){ el.textContent = el.getAttribute("data-target"); return; }
+    if(duration === 0){ el.textContent = formatNumber(target, decimals); return; }
+
+    const start = performance.now();
+    const from = 0;
+
+    function tick(now){
+      const t = Math.min(1, (now - start) / duration);
+      const e = 1 - Math.pow(1 - t, 3);
+      const v = from + (target - from) * e;
+      el.textContent = formatNumber(v, decimals);
+      if(t < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
+
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(ent=>{
+      if(ent.isIntersecting) animate(ent.target);
+    });
+  }, {threshold:0.5});
+
+  els.forEach(el=>io.observe(el));
+})();
+</script>
+
+</body>
+</html>

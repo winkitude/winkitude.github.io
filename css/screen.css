@@ -24,7 +24,7 @@ body {
   margin: 0;
   color: var(--ink);
   background: var(--bg);
-  font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+  font-family: 'Poppins', Arial, Helvetica, sans-serif;
   line-height: 1.45;
 }
 
@@ -58,7 +58,7 @@ a:focus {
 .site-header { padding-top: 22px; }
 .masthead { text-align: center; margin: 0 0 6px; }
 .masthead a {
-  font-family: "Poltawski Nowy", serif;
+  font-family: "adobe-caslon-pro", serif;
   font-size: clamp(28px, 3.2vw, 40px);
   letter-spacing: .2px;
   text-decoration: none;
@@ -66,7 +66,7 @@ a:focus {
 .issuebar{
   display:flex; gap:12px; justify-content:center; align-items:center; flex-wrap:wrap;
   color:var(--muted);
-  font:700 12px/1 'Open Sans', Arial, sans-serif;
+  font:700 12px/1 'Poppins', Arial, sans-serif;
   letter-spacing:.08em; text-transform:uppercase; padding-bottom:.9em;
 }
 .issuebar .dot{ width:.45em; height:.45em; background:var(--muted); border-radius:50%; display:inline-block; }
@@ -83,9 +83,9 @@ a:focus {
 
 /* intro */
 .intro { padding: 10px 0 6px; text-align: center; }
-.prelede { font-family:"Poltawski Nowy", serif; font-size: 35px; margin: 0 0 6px; }
+.prelede { font-family:"adobe-caslon-pro", serif; font-size: 35px; margin: 0 0 6px; }
 .lede {
-  font: 400 clamp(16px, 1.45vw, 19px)/1.6 'Open Sans', Arial, sans-serif;
+  font: 400 clamp(16px, 1.45vw, 19px)/1.5 'Poppins', Arial, sans-serif;
   max-width: 75ch; margin: 0 auto 6px;
 }
 
@@ -120,15 +120,15 @@ a:focus {
   position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display:block;
 }
 .overline {
-  font:700 12px/1 'Open Sans', Arial, sans-serif; color:var(--muted);
+  font:700 12px/1 'Poppins', Arial, sans-serif; color:var(--muted);
   letter-spacing:.08em; text-transform:uppercase; padding-top:1em;
 }
-.hed { font-family:"Poltawski Nowy", serif; font-size: 1.5rem; line-height: 1.1; margin: 6px 0 6px; }
-.dek { font: 400 16px/1.45 'Open Sans', Arial, sans-serif; color: #2a2a2a; }
+.hed { font-family:"adobe-caslon-pro", serif; font-size: 1.5rem; line-height: 1.1; margin: 6px 0 6px; }
+.dek { font: 400 16px/1.45 'Poppins', Arial, sans-serif; color: #2a2a2a; }
 
 /* posts */
 .section-hed {
-  font-family:"Poltawski Nowy", serif; font-size:1.8em; margin: 0 0 16px;
+  font-family:"adobe-caslon-pro", serif; font-size:1.8em; margin: 0 0 16px;
 }
 .grid--posts {
   display: grid;

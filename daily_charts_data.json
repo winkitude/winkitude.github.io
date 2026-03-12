@@ -83,6 +83,16 @@
     "keywords": ["gif", "animation", "Donald Trump", "Joe Biden", "politics", "USA"],
      "accessibility_title": "One common charting error to avoid",
     "accessibility_description": "A graphic reminding people the presidents are elected one year and are sworn in the next year"
+  },
+
+   {
+    "image": "2026-03-12-save-act.png",
+     "date": "2026-03-12",
+         "article_url": "../charts/saveact100.html",
+    "keywords": ["interactive", "SAVE act", "Voting", "USA", "politics", "election", "identification"],
+     "accessibility_title": "Who will be affected by the SAVE Act",
+    "accessibility_description": "An interactive graphic showing what percentage of the population will be affected by the SAVE Act"
   }
+
 
 ]

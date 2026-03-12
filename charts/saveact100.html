@@ -57,7 +57,21 @@
       box-shadow: 0 10px 30px rgba(0,0,0,.08);
     }
 
-    .statLabel { font-size: 13px; color:#333; margin: 0 0 6px; }
+    .statColor {
+      width: 14px;
+      height: 14px;
+      border-radius: 999px;
+      flex: 0 0 14px;
+      background: #111111;
+      box-shadow: inset 0 0 0 1px rgba(0,0,0,.08);
+    }
+    .statHeader {
+      display:flex;
+      align-items:center;
+      gap:10px;
+      margin: 0 0 6px;
+    }
+    .statLabel { font-size: 13px; color:#333; margin: 0; }
     .statBig {
       display: flex;
       align-items: baseline;
@@ -79,8 +93,19 @@
       background: #fff;
       box-shadow: 0 6px 30px rgba(0,0,0,.06);
       border: 1px solid rgba(0,0,0,.06);
+      border-left: 8px solid var(--step-color, rgba(0,0,0,.12));
+      cursor: pointer;
+      transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
     }
-    .step.isActive { outline: 2px solid rgba(0,0,0,.12); }
+    .step:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 35px rgba(0,0,0,.08);
+    }
+    .step.isActive {
+      outline: 2px solid color-mix(in srgb, var(--step-color, #111) 22%, white);
+      box-shadow: 0 10px 34px color-mix(in srgb, var(--step-color, #111) 10%, transparent);
+      transform: translateX(2px);
+    }
     .stepTitle { margin: 0 0 8px 0; font-size: 16px; }
     .stepText { margin: 0; color: #333; line-height: 1.55; }
 
@@ -107,13 +132,15 @@
             <p class="sub" id="subhead">Each icon represents about 3.41 million people. Filled icons show the share for the current step.</p>
           </div>
 
-          <div class="statCard" aria-live="polite">
-            <p class="statLabel" id="statLabel">Total population (2024 est.)</p>
+          <div class="statCard" id="statCard" aria-live="polite">
+            <div class="statHeader">
+              <div class="statColor" id="statColor"></div>
+              <p class="statLabel" id="statLabel">Total population (2024 est.)</p>
+            </div>
             <div class="statBig">
               <div class="statValue" id="statValue">341,100,000</div>
               <div class="statPct" id="statPct">100.0% of total</div>
             </div>
-            <p class="statLine" id="statIcons">100 of 100 icons filled</p>
             <p class="statLine" id="statDenom">Denominator: total U.S. population</p>
             <p class="sourceLine" id="sourceLine">Source: <a href="#" id="sourceLink" target="_blank" rel="noopener">U.S. Census Bureau</a></p>
           </div>
@@ -121,39 +148,39 @@
       </div>
 
       <div class="story">
-        <section class="step" data-step="population">
+        <section class="step" role="button" tabindex="0" data-step="population" style="--step-color: #111111;">
           <h3 class="stepTitle">Start with everyone</h3>
-          <p class="stepText">This is the baseline. Everything else is shown as a share of the same 100 people, so each change is comparable.</p>
+          <p class="stepText">This is the total U.S. population, distilled into 100 people.</p>
         </section>
 
-        <section class="step" data-step="votingAge">
+        <section class="step" role="button" tabindex="0" data-step="votingAge" style="--step-color: #2563EB;">
           <h3 class="stepTitle">Voting age</h3>
-          <p class="stepText">Age is the first gate. It shows how much of the country is outside the voting universe before eligibility, registration, or documents.</p>
+          <p class="stepText">These are the people age 18 and older, old enough to vote.</p>
         </section>
 
-        <section class="step" data-step="votingEligible">
+        <section class="step" role="button" tabindex="0" data-step="votingEligible" style="--step-color: #7C3AED;">
           <h3 class="stepTitle">Voting eligible</h3>
-          <p class="stepText">Voting age is not the same as voting eligible. This step narrows to the pool used in turnout analysis.</p>
+          <p class="stepText">This narrows the picture to the voting eligible population, excluding people who are under 18, noncitizens, and others who are not legally eligible to vote.</p>
         </section>
 
-        <section class="step" data-step="registered">
+        <section class="step" role="button" tabindex="0" data-step="registered" style="--step-color: #059669;">
           <h3 class="stepTitle">Registered voters</h3>
-          <p class="stepText">Registration is the operational reality. It is the group directly affected by registration rules and barriers.</p>
+          <p class="stepText">These are registered voters out of the total population. This is the group already in the system and the one most directly affected by registration rules.</p>
         </section>
 
-        <section class="step" data-step="passport">
+        <section class="step" role="button" tabindex="0" data-step="passport" style="--step-color: #EA580C;">
           <h3 class="stepTitle">People with a passport</h3>
-          <p class="stepText">This is not “out of eligible voters.” It is a share of the total population, including people who are not eligible to vote. That is intentional. It shows how common one commonly accepted citizenship document is in the country overall.</p>
+          <p class="stepText">This is shown out of the total population, not out of eligible voters. It includes children and others who cannot vote. The point is to show how common a passport is as a document across the country overall.</p>
         </section>
 
-        <section class="step" data-step="nameChange">
+        <section class="step" role="button" tabindex="0" data-step="nameChange" style="--step-color: #DB2777;">
           <h3 class="stepTitle">Name mismatch vs birth certificate</h3>
-          <p class="stepText">This is also out of total population, not out of eligible voters. It is about paperwork friction, not about eligibility or intent.</p>
+          <p class="stepText">This is also shown out of the total population. It is mostly about married women whose current name does not match their birth certificate, but other voters, including some trans voters, can run into similar documentation issues.</p>
         </section>
 
-        <section class="step" data-step="fraud">
+        <section class="step" role="button" tabindex="0" data-step="fraud" style="--step-color: #475569;">
           <h3 class="stepTitle">Voter fraud</h3>
-          <p class="stepText">If your story needs a fraud frame, keep it honest. Credible research finds illegal voting is extremely rare and nowhere near the scale required to affect national outcomes. In an “out of 100” view it rounds to essentially zero.</p>
+          <p class="stepText">The often-cited figure of 10 cases refers only to in-person voter impersonation in one News21 review from 2000 to 2012. Proven fraud cases across all categories are higher than that, but still tiny relative to the scale of U.S. elections and nowhere close to the population shown in this story.</p>
         </section>
       </div>
     </div>
@@ -213,24 +240,23 @@
       // not a measured voter fraud rate. See Texas v. Pennsylvania filing language about an “error rate of 0.0008%”.
       // For fraud frequency, this step uses credible sources that emphasize rarity.
       fraud: {
-        label: "Voter fraud (illustrative)",
-        // Using "out of total population" view, fraud frequency rounds to ~0 icons.
-        // We keep a tiny value just so the overlay can show a percentage without breaking.
-        value: Math.round(TOTAL_PEOPLE * 0.00000003), // 0.000003% of total, roughly aligned with News21 scale per vote cast.
-        denomLabel: "Note: fraud is measured per votes cast. This view is illustrative, not a direct denominator match",
-        sourceName: "Brennan Center. Debunking the Voter Fraud Myth. plus News21 database scale",
-        sourceUrl: "https://www.brennancenter.org/our-work/research-reports/debunking-voter-fraud-myth"
+        label: "Proven voter fraud cases",
+        // This view is illustrative. Even counts in the low thousands are effectively 0 when compared with the full U.S. population.
+        value: 1500,
+        denomLabel: "Note: this is shown against total population for scale. Proven cases are higher than 10, but still statistically tiny",
+        sourceName: "News21, Brennan Center, and Heritage Election Fraud Map",
+        sourceUrl: "https://electionfraud.heritage.org/"
       }
     };
 
     const STEP_COLORS = {
       population: "#111111",
-      votingAge: "#1f4ed8",
-      votingEligible: "#6a2fe5",
-      registered: "#0f7b6c",
-      passport: "#b24a00",
-      nameChange: "#c2185b",
-      fraud: "#3d3d3d"
+      votingAge: "#2563EB",
+      votingEligible: "#7C3AED",
+      registered: "#059669",
+      passport: "#EA580C",
+      nameChange: "#DB2777",
+      fraud: "#475569"
     };
 
     const ICON_FILES = [
@@ -290,10 +316,11 @@
 
     const headlineEl = document.getElementById("headline");
     const subheadEl = document.getElementById("subhead");
+    const statCardEl = document.getElementById("statCard");
+    const statColorEl = document.getElementById("statColor");
     const statLabelEl = document.getElementById("statLabel");
     const statValueEl = document.getElementById("statValue");
     const statPctEl = document.getElementById("statPct");
-    const statIconsEl = document.getElementById("statIcons");
     const statDenomEl = document.getElementById("statDenom");
     const sourceLinkEl = document.getElementById("sourceLink");
 
@@ -375,10 +402,15 @@
 
           const variant = ICONS.length ? (idx % ICONS.length) : 0;
 
+          let fillAngle = aa + Math.PI / 2;
+          if (fillAngle < 0) fillAngle += Math.PI * 2;
+          if (fillAngle >= Math.PI * 2) fillAngle -= Math.PI * 2;
+
           layout.push({
             x: Math.floor(x),
             y: Math.floor(y),
-            variant
+            variant,
+            fillAngle
           });
 
           idx++;
@@ -390,10 +422,14 @@
       while (layout.length < TOTAL_ICONS) {
         const i = layout.length;
         const a = (i / TOTAL_ICONS) * Math.PI * 2;
+        let fillAngle = a + Math.PI / 2;
+        if (fillAngle < 0) fillAngle += Math.PI * 2;
+        if (fillAngle >= Math.PI * 2) fillAngle -= Math.PI * 2;
         layout.push({
           x: Math.floor(cx + Math.cos(a) * R),
           y: Math.floor(cy + Math.sin(a) * R),
-          variant: ICONS.length ? (i % ICONS.length) : 0
+          variant: ICONS.length ? (i % ICONS.length) : 0,
+          fillAngle
         });
       }
     }
@@ -414,11 +450,21 @@
       ctx.restore();
     }
 
+    function buildFillOrder() {
+      return layout
+        .map((p, i) => ({ i, angle: p.fillAngle }))
+        .sort((a, b) => a.angle - b.angle)
+        .map(d => d.i);
+    }
+
     function drawCrowd(filledIcons, fillColor) {
       clear();
+      const fillOrder = buildFillOrder();
+      const filledSet = new Set(fillOrder.slice(0, filledIcons));
+
       for (let i = 0; i < layout.length; i++) {
         const p = layout[i];
-        drawPerson(p.x, p.y, iconSize, p.variant, i < filledIcons, fillColor);
+        drawPerson(p.x, p.y, iconSize, p.variant, filledSet.has(i), fillColor);
       }
     }
 
@@ -429,11 +475,17 @@
       headlineEl.textContent = "Out of 341.1 million people, pictured as 100";
       subheadEl.textContent = `Each icon represents about ${Math.round(PEOPLE_PER_ICON).toLocaleString("en-US")} people. Filled icons show the share for the current step.`;
 
+      const fillColor = STEP_COLORS[stepKey] || "#111111";
+
       statLabelEl.textContent = d.label;
       statValueEl.textContent = fmtInt(d.value);
       statPctEl.textContent = `${fmtPct(pct)} of total`;
-      statIconsEl.textContent = `${filledIcons} of 100 icons filled`;
       statDenomEl.textContent = d.denomLabel;
+
+      statColorEl.style.background = fillColor;
+      statCardEl.style.borderTop = `6px solid ${fillColor}`;
+      statPctEl.style.color = fillColor;
+      sourceLinkEl.style.color = fillColor;
 
       sourceLinkEl.textContent = d.sourceName;
       sourceLinkEl.href = d.sourceUrl;
@@ -491,13 +543,38 @@
       drawToStep(currentStepKey, true);
     }
 
+    function applyStepColors() {
+      document.querySelectorAll(".step").forEach(el => {
+        const key = el.getAttribute("data-step");
+        const color = STEP_COLORS[key] || "#111111";
+        el.style.setProperty("--step-color", color);
+      });
+    }
+
     function setActiveStep(stepEl) {
       document.querySelectorAll(".step").forEach(el => el.classList.remove("isActive"));
       stepEl.classList.add("isActive");
-      drawToStep(stepEl.getAttribute("data-step"), false);
+      const key = stepEl.getAttribute("data-step");
+      stepEl.style.setProperty("--step-color", STEP_COLORS[key] || "#111111");
+      drawToStep(key, false);
     }
 
     const steps = Array.from(document.querySelectorAll(".step"));
+
+    steps.forEach(step => {
+      step.addEventListener("click", () => {
+        setActiveStep(step);
+        step.scrollIntoView({ behavior: "smooth", block: "center" });
+      });
+
+      step.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          setActiveStep(step);
+          step.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+      });
+    });
     const observer = new IntersectionObserver((entries) => {
       for (const entry of entries) {
         if (entry.isIntersecting) setActiveStep(entry.target);
@@ -514,6 +591,7 @@
     (async function init() {
       try {
         await loadIcons();
+        applyStepColors();
         dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
         resizeCanvas();
         setActiveStep(steps[0]);

@@ -1,0 +1,88 @@
+[
+  {
+    "image": "2026-01-01-lastfm.png",
+     "date": "2026-01-01",
+    "article_url": "../charts/lastfm.html",
+    "keywords": ["music", "interactive", "lastfm", "Modest Mouse", "Spaghetti chart", "Electrelane", "The Walkmen", "Beach House"],
+     "accessibility_title": "My music listening habits",
+    "accessibility_description": "An interactive visualization taking my last.fm data since 2008 and plotting out what the cumulitive total of my scrobbles looks like over time, with the ability to filter by artist and see how my listening habits have changed over the years."
+  },
+  {
+    "image": "2026-01-13-Trump-Santuary-Cities.png",
+     "date": "2026-01-13",
+    "keywords": ["Donald Trump", "USA", "Map", "Sanctuary Cities"],
+        "accessibility_title": "Where Trump is threatening to withold federal payments",
+    "accessibility_description": "A map of the United States showing which cities, states, and counties are considered 'sanctuary'."
+  },
+
+    {
+    "image": "2026-03-01-Trump-ended-eight-wars-2.png",
+     "date": "2026-03-01",
+    "article_url": "https://www.linkedin.com/posts/ari-winkleman_thinking-about-conflict-words-and-peace-activity-7433894788191481856-d-PM?utm_source=share&utm_medium=member_desktop&rcm=ACoAAAQTCq4BICpNIb-a8WNB1W56BY1z6ZpQXrY",
+    "keywords": ["Donald Trump", "State of the Union", "USA", "war", "military", "foreign policy", "Iran", "Israel", "Armenia", "Azerbaijan", "Cambodia", "Thailand", "Democratic Republic of the Congo", "Rwanda", "Hamas", "India", "Pakistan", "Egypt", "Ethiopia", "Kosovo", "Serbia"],
+     "accessibility_title": "I ended eight wars - Donald Trump",
+    "accessibility_description": "A list of the eight wars that Donald Trump claimed to have ended in his 2026 State of the Union address, with a brief description of each conflict and its current status."
+  },
+
+  {
+    "image": "2026-03-02-Oil-breakeven.png",
+     "date": "2026-03-02",
+    "keywords": ["oil", "energy", "economics", "market analysis", "breakeven points", "production costs", "global oil industry", "supply and demand", "Algeria", "Bahrain", "Iran", "Iraq", "Kuwait", "Libya", "Oman", "Qatar", "Saudi Arabia", "United Arab Emirates", "UAE"],
+     "accessibility_title": "Breakeven oil prices",
+    "accessibility_description": "A visualization of the breakeven points for oil prices across different countries in the Middle East"
+  },
+    {
+    "image": "2026-03-02-Oil-Reserves.png",
+     "date": "2026-03-02",
+    "keywords": ["pie chart", "oil", "energy", "economics", "reserves", "USA", "Russia", "Saudi Arabia", "Canada", "Iran", "Iraq", "Kuwait", "United Arab Emirates", "Venezuela"],
+     "accessibility_title": "Oil reserves in 2025",
+    "accessibility_description": "A pie chart showing oil reserves across different countries around the world"
+  },
+    {
+    "image": "2026-03-02-Oil-Scatter.png",
+     "date": "2026-03-02",
+    "keywords": ["scatter plot", "oil", "energy", "economics", "reserves", "USA", "Russia", "Saudi Arabia", "Canada", "Iran", "Iraq", "Kuwait", "United Arab Emirates","UAE", "production", "Venezuela", "Brazil", "China"],
+     "accessibility_title": "Oil reserves vs production",
+    "accessibility_description": "A scatter plot showing the relationship between oil reserves and production across different countries around the world"
+  },
+     {
+    "image": "2026-03-05-The-NHL's-50-Goal-Club.png",
+     "date": "2026-03-05",
+        "article_url": "../nhl/nhl-50-goals-story.html",
+     "keywords": ["NHL", "hockey", "goals", "players", "sports", "statistics", "joy plot", "ridgeline plot", "age", "season", "Wayne Gretzky", "Mario Lemieux", "Brett Hull", "Alexander Ovechkin"],
+     "accessibility_title": "The NHL's 50 Goal Club",
+    "accessibility_description": "A visualization of the NHL's 50 goal club, showing the top players who have achieved 50 goals in a season"
+  },
+    {
+    "image": "2026-03-08-Trump-attacks-Oil-Scatter.png",
+     "date": "2026-03-08",
+        "article_url": "https://www.linkedin.com/posts/ari-winkleman_while-building-this-oil-reserves-vs-production-activity-7436750194496589824-s-1M?utm_source=share&utm_medium=member_desktop&rcm=ACoAAAQTCq4BICpNIb-a8WNB1W56BY1z6ZpQXrY",
+    "keywords": ["scatter plot", "oil", "energy", "economics", "reserves", "USA", "Russia", "Saudi Arabia", "Canada", "Iran", "Iraq", "Kuwait", "United Arab Emirates","UAE", "production", "Venezuela", "Brazil", "China"],
+     "accessibility_title": "Trump goes after biggest oil reserves",
+    "accessibility_description": "A scatter plot showing the relationship between oil reserves and production across different countries around the world highlighting the countries Trump has attacked or threatened"
+  },
+  {
+    "image": "2026-03-09-Oil-Chokepoints.png",
+     "date": "2026-03-09",
+        "article_url": "https://www.linkedin.com/posts/ari-winkleman_one-word-that-keeps-showing-up-in-geopolitics-activity-7437112567162007552-UIKQ?utm_source=share&utm_medium=member_desktop&rcm=ACoAAAQTCq4BICpNIb-a8WNB1W56BY1z6ZpQXrY",
+    "keywords": ["oil", "map", "energy", "economics", "geopolitics", "chokepoints", "strait of hormuz", "suez canal", "strait of malacca", "bab el-mandeb strait", "Panama Canal", "Danish straits", "Turkish straits", "Cape of Good Hope"],
+     "accessibility_title": "Oil transit chokepoints",
+    "accessibility_description": "A map of the world showing how much oil went through various chokepoints in 2025"
+  },
+    {
+    "image": "2026-03-10-Nuclear-Power-vs-Bombs.png",
+     "date": "2026-03-10",
+    "keywords": ["map", "nuclear", "power", "bombs", "energy", "economics", "geopolitics"],
+     "accessibility_title": "Gone Nuclear",
+    "accessibility_description": "A map comparing the development of nuclear power and atomic bombs"
+  },
+
+  {
+    "image": "2026-03-11-Biden-Trump.gif",
+     "date": "2026-03-11",
+    "keywords": ["gif", "animation", "Donald Trump", "Joe Biden", "politics", "USA"],
+     "accessibility_title": "One common charting error to avoid",
+    "accessibility_description": "A graphic reminding people the presidents are elected one year and are sworn in the next year"
+  }
+
+]

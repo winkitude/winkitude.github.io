@@ -92,7 +92,13 @@
     "keywords": ["interactive", "SAVE act", "Voting", "USA", "politics", "election", "identification"],
      "accessibility_title": "Who will be affected by the SAVE Act",
     "accessibility_description": "An interactive graphic showing what percentage of the population will be affected by the SAVE Act"
+  },
+
+   {
+    "image": "2026-03-12-Russia.png",
+     "date": "2026-03-12",
+    "keywords": ["sketch", "war", "Russia", "USA", "Iran", "Oil", "Sanctions", "Geopolitics", "Mojtaba Khamenei", "Vladimir Putin"],
+     "accessibility_title": "Trump removes sanctions against Russia",
+    "accessibility_description": "Diagram showing Trump with an arrow showing the US attacked Iran. An arrow from Mojtaba Khamenei to Putin showing they stopped the flow of oil and are getting intelligence support from Russia. An arrow from Putin to Trump showing he removed sanctions on Russia."
   }
-
-
 ]

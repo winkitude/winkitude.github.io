@@ -100,5 +100,28 @@
     "keywords": ["sketch", "war", "Russia", "USA", "Iran", "Oil", "Sanctions", "Geopolitics", "Mojtaba Khamenei", "Vladimir Putin"],
      "accessibility_title": "Trump removes sanctions against Russia",
     "accessibility_description": "Diagram showing Trump with an arrow showing the US attacked Iran. An arrow from Mojtaba Khamenei to Putin showing they stopped the flow of oil and are getting intelligence support from Russia. An arrow from Putin to Trump showing he removed sanctions on Russia."
+  },
+
+  {
+    "image": "2026-03-13-electricity-generation-change-01.png",
+     "date": "2026-03-13",
+    "keywords": ["electricity", "generation", "energy", "economics", "geopolitics", "map", "nuclear"],
+     "accessibility_title": "Nuclear share of electricity generation",
+    "accessibility_description": "A map showing the change in the share of electricity generation from nuclear power from 2000 to 2025 across different countries around the world"
+  },
+    {
+    "image": "2026-03-13-electricity-generation-change-02.png",
+     "date": "2026-03-13",
+    "keywords": ["electricity", "generation",  "fossil fuels", "energy", "economics", "geopolitics", "map"],
+     "accessibility_title": "Fossil fuels share of electricity generation",
+    "accessibility_description": "A map showing the change in the share of electricity generation from fossil fuels from 2000 to 2025 across different countries around the world"
+  },
+
+{
+    "image": "2026-03-13-electricity-generation-change-03.png",
+     "date": "2026-03-13",
+    "keywords": ["electricity", "generation",  "renewables", "energy", "economics", "geopolitics", "map"],
+     "accessibility_title": "Renewables share of electricity generation",
+    "accessibility_description": "A map showing the change in the share of electricity generation from renewables from 2000 to 2025 across different countries around the world"
   }
 ]

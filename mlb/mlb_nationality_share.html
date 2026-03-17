@@ -61,16 +61,13 @@
   .swatch{width:12px;height:12px;border-radius:999px;flex:0 0 12px}
   .name{flex:1;font-size:13px}
   .val{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
-  .era-band{fill:rgba(31,36,48,.03);stroke:rgba(31,36,48,.08)}
-  .era-label{fill:var(--muted);font-size:11px;font-weight:600}
-  .annot-line{stroke:rgba(31,36,48,.18);stroke-width:1}
-  .annot-label{fill:var(--muted);font-size:11px}
-  .toplabel{fill:var(--ink);font-size:12px;paint-order:stroke;stroke:rgba(255,253,248,.95);stroke-width:4px;stroke-linejoin:round}
+  .end-label text{fill:#fff;font-size:11px;font-weight:700;pointer-events:none}
+  .end-label rect{stroke:rgba(31,36,48,.12);stroke-width:1}
+  
   .foot{margin-top:14px;color:var(--muted);font-size:12px;line-height:1.45}
   a{color:var(--accent)}
   @media (max-width:760px){
     .chart{height:560px}
-    .hide-mobile{display:none}
   }
 </style>
 </head>
@@ -83,7 +80,7 @@
 
 <div class="wrap">
   <h1>MLB roster share by player nationality</h1>
-  <div class="sub">A lighter, cleaner version of the nationality area chart. Built from the season-level player appearance dataset you generated, grouped into the categories that tell the globalization story most clearly.</div>
+  <div class="sub">How the league’s nationality mix shifted from a largely U.S.-born player base to a more global roster, with the Dominican Republic and Venezuela accounting for much of the modern change.</div>
   <div class="chart-card">
     <div class="controls">
       <label for="yearSearch">Go to year:</label>
@@ -93,7 +90,7 @@
     </div>
     <div id="chart" class="chart"></div>
     <div id="legend" class="legend"></div>
-    <div class="foot">Source: custom dataset derived from Lahman <code>Appearances.csv</code> + <code>People.csv</code>. Shares reflect players appearing in each season, not formal Opening Day rosters.</div>
+    <div class="foot">Source: Lahman database on SABR</div>
   </div>
 </div>
 
@@ -110,18 +107,6 @@ const COLORS = {
   "Other":"var(--other)"
 };
 const ORDER = ["USA","Dominican Republic","Venezuela","Puerto Rico","Cuba","Canada","Japan","Mexico","Other"];
-const ERA_BANDS = [
-  {start:1871,end:1900,label:"19th century roots"},
-  {start:1901,end:1946,label:"Modern MLB forms"},
-  {start:1947,end:1976,label:"Integration era"},
-  {start:1977,end:1991,label:"Early globalization"},
-  {start:1992,end:2025,label:"Global game"}
-];
-const ANNOTATIONS = [
-  {year:1947,label:"Robinson debuts"},
-  {year:1990,label:"Puerto Rico draft change"},
-  {year:1995,label:"Dominican + Venezuela surge"}
-];
 
 function fallbackColor(name){
   let h=0; for(let i=0;i<name.length;i++) h=(h*31 + name.charCodeAt(i))|0;
@@ -141,29 +126,23 @@ function fallbackColor(name){
   const W = container.node().clientWidth;
   const H = container.node().clientHeight;
   const isMobile = W <= 760;
-  const margin = {top:62, right:isMobile?20:120, bottom:48, left:54};
+  const margin = {top:18, right:isMobile?18:170, bottom:48, left:54};
   const innerW = W - margin.left - margin.right;
   const innerH = H - margin.top - margin.bottom;
 
   const svg = container.append('svg').attr('width', W).attr('height', H);
   const g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
 
-  let xDomain = d3.extent(data, d=>d.year);
-
-  const x = d3.scaleLinear().domain(xDomain).range([0, innerW]);
+  const minYear = d3.min(data, d=>d.year);
+  const maxYear = d3.max(data, d=>d.year);
+  const x = d3.scaleLinear().domain([minYear, maxYear]).range([0, innerW]);
   const y = d3.scaleLinear().domain([0,1]).range([innerH, 0]);
 
   const grid = g.append('g').attr('class','grid');
-  grid.selectAll('line').data(d3.range(0,1.001,.1)).join('line')
-    .attr('x1',0).attr('x2',innerW)
-    .attr('y1',d=>y(d)).attr('y2',d=>y(d));
-
   const xAxisG = g.append('g').attr('class','axis').attr('transform', `translate(0,${innerH})`);
   const yAxisG = g.append('g').attr('class','axis');
-  const eraG = g.append('g');
   const areasG = g.append('g').attr('class','areas');
-  const labelsG = g.append('g');
-  const annotG = g.append('g');
+  const labelsG = g.append('g').attr('class','end-labels');
   const marker = g.append('g').attr('class','year-marker').style('display','none');
   marker.append('line').attr('y1',0).attr('y2',innerH);
   const badge = marker.append('g');
@@ -171,59 +150,99 @@ function fallbackColor(name){
   badge.append('text').attr('class','year-text').attr('x',22).attr('y',12).attr('text-anchor','middle');
 
   let activeKey = null;
+  let latestSeries = [];
+  let latestFiltered = [];
+
+  grid.selectAll('line').data(d3.range(0,1.001,.1)).join('line')
+    .attr('x1',0).attr('x2',innerW)
+    .attr('y1',d=>y(d)).attr('y2',d=>y(d));
 
   function updateAxes(){
     xAxisG.call(d3.axisBottom(x).ticks(isMobile ? 6 : 10).tickFormat(d3.format('d')));
     yAxisG.call(d3.axisLeft(y).tickValues(d3.range(0,1.001,.1)).tickFormat(d3.format('.0%')));
   }
 
-  function drawEras(){
-    const visible = ERA_BANDS.filter(b => b.end >= x.domain()[0] && b.start <= x.domain()[1]);
-    const bands = eraG.selectAll('g.era').data(visible, d=>d.label).join(enter => {
-      const gg = enter.append('g').attr('class','era');
-      gg.append('rect').attr('class','era-band').attr('rx',4);
-      gg.append('text').attr('class','era-label').attr('text-anchor','middle').attr('dominant-baseline','middle');
-      return gg;
+  function updateLegendValues(row){
+    legend.selectAll('.item').each(function(key){
+      const val = row ? ((row[key] || 0) * 100).toFixed(1) + '%' : '—';
+      d3.select(this).select('.val').text(val);
     });
-    bands.select('rect')
-      .attr('x', d => x(Math.max(d.start, x.domain()[0])))
-      .attr('y', -38)
-      .attr('width', d => Math.max(0, x(Math.min(d.end, x.domain()[1])) - x(Math.max(d.start, x.domain()[0]))))
-      .attr('height', 24);
-    bands.select('text')
-      .attr('x', d => {
-        const a = Math.max(d.start, x.domain()[0]), b = Math.min(d.end, x.domain()[1]);
-        return (x(a)+x(b))/2;
-      })
-      .attr('y', -26)
-      .text(d => d.label);
   }
 
-  function drawAnnotations(){
-    const visible = ANNOTATIONS.filter(a => a.year >= x.domain()[0] && a.year <= x.domain()[1]);
-    const anns = annotG.selectAll('g.annot').data(visible, d=>d.label).join(enter => {
-      const gg = enter.append('g').attr('class','annot');
-      gg.append('line').attr('class','annot-line');
-      gg.append('text').attr('class','annot-label');
-      return gg;
+  function drawEndLabels(series, filtered){
+    if(isMobile){
+      labelsG.selectAll('*').remove();
+      return;
+    }
+
+    const lastIndex = filtered.length - 1;
+    const minShare = 0.007;
+    let labelData = ORDER.map(country => {
+      const s = series.find(v => v.key === country);
+      const seg = s[lastIndex];
+      const share = seg[1] - seg[0];
+      return {
+        country,
+        share,
+        yValue: (seg[0] + seg[1]) / 2
+      };
+    }).filter(d => d.share >= minShare);
+
+    const minGap = 22;
+    const topBound = 12;
+
+    // Stack labels as a compact list at the top-right in reverse stack order.
+    // ORDER is bottom-to-top, so reversing it gives the visual top-to-bottom order.
+    const reverseOrder = [...ORDER].reverse();
+    labelData.sort((a,b) => reverseOrder.indexOf(a.country) - reverseOrder.indexOf(b.country));
+    labelData = labelData.map((d, i) => ({
+      ...d,
+      yPos: topBound + (i * minGap)
+    }));
+
+    const label = labelsG.selectAll('g.end-label')
+      .data(labelData, d => d.country)
+      .join(enter => {
+        const gg = enter.append('g').attr('class','end-label');
+        
+        gg.append('rect').attr('rx',7).attr('ry',7).attr('height',18);
+        gg.append('text').attr('dominant-baseline','middle');
+        return gg;
+      });
+
+    label.each(function(d){
+      const gLabel = d3.select(this);
+      const color = COLORS[d.country] || fallbackColor(d.country);
+      const text = gLabel.select('text')
+        .attr('x', innerW + 8)
+        .attr('y', d.yPos)
+        .text(d.country);
+
+      const textNode = text.node();
+      const bbox = textNode.getBBox();
+
+      gLabel.select('rect')
+        .attr('x', bbox.x - 8)
+        .attr('y', bbox.y - 2)
+        .attr('width', bbox.width + 16)
+        .attr('fill', color);
+
+      g
+
+      text.attr('y', d.yPos);
     });
-    anns.select('line')
-      .attr('x1', d=>x(d.year)).attr('x2', d=>x(d.year))
-      .attr('y1', 0).attr('y2', innerH);
-    anns.select('text')
-      .attr('x', d=>x(d.year)+5)
-      .attr('y', (d,i)=>14 + (i*14))
-      .text(d=>d.label);
   }
 
   function render(){
     updateAxes();
-    drawEras();
-    drawAnnotations();
 
     const filtered = data.filter(d => d.year >= x.domain()[0] && d.year <= x.domain()[1]);
+    latestFiltered = filtered;
+
     const stack = d3.stack().keys(ORDER).order(d3.stackOrderNone).offset(d3.stackOffsetExpand);
     const series = stack(filtered);
+    latestSeries = series;
+
     const area = d3.area()
       .x(d => x(d.data.year))
       .y0(d => y(d[0]))
@@ -238,60 +257,8 @@ function fallbackColor(name){
       .attr('d', d => area(d))
       .classed('dim', d => activeKey && d.key !== activeKey);
 
-    if(!isMobile){
-      const last = filtered[filtered.length-1];
-      const labels = ORDER.map(c => ({country:c, share:last[c] || 0})).filter(d=>d.share>0.007);
-      const labelData = labels.map(d => {
-        const s = series.find(x => x.key === d.country);
-        const seg = s[s.length-1];
-        return {country:d.country, y:(seg[0]+seg[1])/2};
-      }).sort((a,b)=>a.y-b.y);
-      labelsG.selectAll('text.toplabel')
-        .data(labelData, d=>d.country)
-        .join('text')
-        .attr('class','toplabel')
-        .attr('x', innerW + 8)
-        .attr('y', d => y(d.y)+4)
-        .text(d => d.country);
-    }
-
-    const bisect = d3.bisector(d=>d.year).center;
-    const overlay = g.selectAll('rect.overlay').data([null]).join('rect')
-      .attr('class','overlay')
-      .attr('fill','transparent')
-      .attr('x',0).attr('y',0)
-      .attr('width',innerW).attr('height',innerH);
-
-    function updateLegendValues(idx){
-      const row = filtered[idx ?? filtered.length-1];
-      d3.select('#legend').selectAll('.item .val').text(d => ((row[d]||0)*100).toFixed(1) + '%');
-    }
-
-    overlay.on('mousemove', (event) => {
-      const [mx,my] = d3.pointer(event, g.node());
-      const yr = x.invert(mx);
-      const idx = Math.max(0, Math.min(filtered.length-1, bisect(filtered, yr)));
-      const row = filtered[idx];
-      marker.style('display', null).attr('transform', `translate(${x(row.year)},0)`);
-      badge.attr('transform', `translate(${Math.max(0, Math.min(innerW-44, x(row.year)-22))}, -24)`);
-      badge.select('text').text(row.year);
-      let found = null;
-      const yNorm = y.invert(my);
-      for(const s of series){
-        const seg = s[idx];
-        if(yNorm >= seg[0] && yNorm <= seg[1]){ found = {country:s.key, pct:(seg[1]-seg[0])*100}; break; }
-      }
-      updateLegendValues(idx);
-      let html = `<strong>${row.year}</strong>`;
-      if(found) html += `<br>${found.country}: ${found.pct.toFixed(1)}%`;
-      tooltip.style('opacity',1).html(html).style('left', (event.offsetX + 14) + 'px').style('top', (event.offsetY - 28) + 'px');
-    }).on('mouseleave', () => {
-      marker.style('display','none');
-      tooltip.style('opacity',0);
-      updateLegendValues();
-    });
-
-    updateLegendValues();
+    drawEndLabels(series, filtered);
+    updateLegendValues(filtered[filtered.length - 1]);
   }
 
   const legend = d3.select('#legend');
@@ -306,24 +273,85 @@ function fallbackColor(name){
     })
     .html(d => `<span class="swatch" style="background:${COLORS[d] || fallbackColor(d)}"></span><span class="name">${d}</span><span class="val">—</span>`);
 
+  const bisect = d3.bisector(d=>d.year).center;
+  const overlay = g.append('rect')
+    .attr('class','overlay')
+    .attr('fill','transparent')
+    .attr('x',0).attr('y',0)
+    .attr('width',innerW).attr('height',innerH)
+    .style('touch-action', 'none');
+
+  function handlePointer(event){
+    const [mx,my] = d3.pointer(event, g.node());
+    const yr = x.invert(mx);
+    const idx = Math.max(0, Math.min(latestFiltered.length - 1, bisect(latestFiltered, yr)));
+    const row = latestFiltered[idx];
+
+    marker.style('display', null).attr('transform', `translate(${x(row.year)},0)`);
+    badge.attr('transform', `translate(${Math.max(0, Math.min(innerW-44, x(row.year)-22))}, -6)`);
+    badge.select('text').text(row.year);
+
+    let found = null;
+    const yNorm = y.invert(my);
+    for(const s of latestSeries){
+      const seg = s[idx];
+      if(yNorm >= seg[0] && yNorm <= seg[1]){
+        found = {country:s.key, pct:(seg[1]-seg[0])*100};
+        break;
+      }
+    }
+
+    updateLegendValues(row);
+
+    let html = `<strong>${row.year}</strong>`;
+    if(found) html += `<br>${found.country}: ${found.pct.toFixed(1)}%`;
+    tooltip.style('opacity',1)
+      .html(html)
+      .style('left', (event.offsetX + 14) + 'px')
+      .style('top', (event.offsetY - 28) + 'px');
+  }
+
+  overlay
+    .on('pointermove', handlePointer)
+    .on('pointerleave', () => {
+      marker.style('display','none');
+      tooltip.style('opacity',0);
+      updateLegendValues(latestFiltered[latestFiltered.length - 1]);
+    });
+
   document.getElementById('yearSearch').addEventListener('change', e => {
     const year = +e.target.value;
     if(!Number.isFinite(year)) return;
-    const half = (x.domain()[1]-x.domain()[0]) / 2;
-    const min = d3.min(data,d=>d.year), max = d3.max(data,d=>d.year);
-    let start = Math.max(min, year-half), end = Math.min(max, year+half);
-    if(end-start < half*2){
-      if(start===min) end = Math.min(max, start+half*2);
-      else start = Math.max(min, end-half*2);
+    const half = (x.domain()[1] - x.domain()[0]) / 2;
+    let start = Math.max(minYear, year - half), end = Math.min(maxYear, year + half);
+    if(end - start < half * 2){
+      if(start === minYear) end = Math.min(maxYear, start + half * 2);
+      else start = Math.max(minYear, end - half * 2);
     }
     x.domain([Math.round(start), Math.round(end)]);
     render();
   });
-  document.getElementById('start1947').addEventListener('click', () => { x.domain([1947, d3.max(data,d=>d.year)]); render(); });
-  document.getElementById('showAll').addEventListener('click', () => { x.domain(d3.extent(data,d=>d.year)); render(); });
+
+  document.getElementById('start1947').addEventListener('click', () => {
+    x.domain([1947, maxYear]);
+    render();
+  });
+
+  document.getElementById('showAll').addEventListener('click', () => {
+    x.domain([minYear, maxYear]);
+    render();
+  });
 
   render();
 })();
 </script>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8FK0VXYYGX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-8FK0VXYYGX');
+  </script>
 </body>
 </html>

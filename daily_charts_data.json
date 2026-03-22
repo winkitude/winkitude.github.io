@@ -123,5 +123,39 @@
     "keywords": ["electricity", "generation",  "renewables", "energy", "economics", "geopolitics", "map"],
      "accessibility_title": "Renewables share of electricity generation",
     "accessibility_description": "A map showing the change in the share of electricity generation from renewables from 2000 to 2025 across different countries around the world"
+  },
+  {
+    "image": "2026-03-16-wbc-01.png",
+     "date": "2026-03-16",
+                       "article_url": "https://winkitude.com/mlb/wbc_birthplace.html",
+    "keywords": ["bubble chart", "world baseball classic", "WBC", "baseball", "sports", "Japan", "USA", "Mexico", "Venezuela", "Puerto Rico", "Dominican Republic", "Cuba", "Netherlands", "Italy", "Australia", "South Korea", "Taiwan", "Colombia", "Nicaragua", "Panama", "Israel", "Great Britain", "Brazil", "Czechia", "Canada", "2026"],
+     "accessibility_title": "World Baseball Classic 2026",
+    "accessibility_description": "A bubble chart showing the global roots of each team in the World Baseball Classic 2026, with the size of the left bubble representing the number of players from each country on each team and the size of the right bubble representing the number of players born in a different country."
+  },
+   {
+    "image": "2026-03-16-wbc-02.png",
+     "date": "2026-03-16",
+                       "article_url": "https://winkitude.com/mlb/wbc_birthplace.html",
+    "keywords": ["heatmap", "world baseball classic", "WBC", "baseball", "sports", "Japan", "USA", "Mexico", "Venezuela", "Puerto Rico", "Dominican Republic", "Cuba", "Netherlands", "Italy", "Australia", "South Korea", "Taiwan", "Colombia", "Nicaragua", "Panama", "Israel", "Great Britain", "Brazil", "Czechia", "Canada", "2026"],
+     "accessibility_title": "World Baseball Classic 2026",
+    "accessibility_description": "A heatmap showing the global roots of each team in the World Baseball Classic 2026."
+  },
+    {
+    "image": "2026-03-16-wbc-03.png",
+     "date": "2026-03-16",
+                  "article_url": "https://winkitude.com/mlb/wbc_birthplace.html",
+
+    "keywords": ["treemap", "world baseball classic", "WBC", "baseball", "sports", "Japan", "USA", "Mexico", "Venezuela", "Puerto Rico", "Dominican Republic", "Cuba", "Netherlands", "Italy", "Australia", "South Korea", "Taiwan", "Colombia", "Nicaragua", "Panama", "Israel", "Great Britain", "Brazil", "Czechia", "Canada", "2026"],
+     "accessibility_title": "World Baseball Classic 2026",
+    "accessibility_description": "A treemap showing the global roots of each team in the World Baseball Classic 2026."
+  },
+   {
+    "image": "2026-03-17-mlb-share.png",
+     "date": "2026-03-17",
+             "article_url": "https://winkitude.com/mlb/mlb_nationality_share.html",
+    "keywords": ["area chart", "MLB", "nationality", "baseball", "sports", "Japan", "USA", "Mexico", "Venezuela", "Puerto Rico", "Dominican Republic", "Canada", "2024"],
+     "accessibility_title": "MLB Roster Share by Player Nationality",
+    "accessibility_description": "An area chart showing the share of players from each country in the MLB roster."
   }
+
 ]

@@ -156,6 +156,16 @@
     "keywords": ["area chart", "MLB", "nationality", "baseball", "sports", "Japan", "USA", "Mexico", "Venezuela", "Puerto Rico", "Dominican Republic", "Canada", "2024"],
      "accessibility_title": "MLB Roster Share by Player Nationality",
     "accessibility_description": "An area chart showing the share of players from each country in the MLB roster."
+  },
+
+     {
+    "image": "2026-03-21-US-Sanctions.png",
+     "date": "2026-03-21",
+    "keywords": ["Sanctions, USA, Russia, Iran, North Korea, Venezuela, Cuba, Belarus, Myanmar", "map", "geopolitics"],
+     "accessibility_title": "US Sanctions around the world",
+    "accessibility_description": "A map and table showing the countries that are currently under US sanctions, including Russia, Iran, North Korea, Venezuela, Cuba, Belarus, and Myanmar."
   }
 
 ]
+
+

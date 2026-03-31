@@ -116,18 +116,9 @@
   width:140px;
   aspect-ratio:3/4;
   margin:0 0 16px 28px;
-  background:rgba(17,24,39,.04);
-  border:1px dashed rgba(17,24,39,.18);
-  border-radius:6px;
   display:flex;
   align-items:center;
   justify-content:center;
-  font-family:"Poppins", sans-serif;
-  font-size:11px;
-  color:rgba(17,24,39,.35);
-  letter-spacing:.04em;
-  text-align:center;
-  padding:8px;
   box-sizing:border-box;
   transform-origin:center 10%;
   transition:transform .05s linear;
@@ -491,12 +482,13 @@
 }
 
 /* --- Near Misses section --- */
+.nearMissHeader{
+  margin-top:80px !important;
+}
 .nearMissSection{
   max-width:900px;
-  margin:80px auto 80px;
+  margin:40px auto 20px;
   padding:0 18px;
-  border-top:1px solid rgba(17,24,39,.08);
-  padding-top:60px;
 }
 .nearMissSection .sectionTitle{
   font-family:"adobe-caslon-pro", serif;
@@ -715,6 +707,275 @@
 .sniper-tip-name{ font-weight:700; margin-bottom:3px; }
 .sniper-tip-row{ color:rgba(17,24,39,.55); }
 .sniper-tip-row span{ color:rgba(17,24,39,.88); font-weight:600; }
+
+/* --- Specialists section --- */
+.specialistsSection{
+  max-width:900px;
+  margin:80px auto 0;
+  padding:0 18px 0;
+  border-top:1px solid rgba(17,24,39,.08);
+  padding-top:60px;
+}
+.specialistsTitle{
+  font-family:"adobe-caslon-pro", serif;
+  font-size:52px;
+  line-height:1.05;
+  margin:0 0 6px;
+  letter-spacing:-0.5px;
+}
+
+/* --- Shared section styles --- */
+.pageSection{
+  max-width:900px;
+  margin:80px auto 0;
+  padding:60px 18px 0;
+  border-top:1px solid rgba(17,24,39,.08);
+}
+.pageSection h1{
+  font-family:"adobe-caslon-pro", serif;
+  font-size:52px;
+  line-height:1.05;
+  margin:0 0 6px;
+  letter-spacing:-0.5px;
+}
+.pageSection h2{
+  font-family:"adobe-caslon-pro", serif;
+  font-size:36px;
+  line-height:1.1;
+  margin:0 0 8px;
+  letter-spacing:-0.3px;
+}
+.pageSection.no-border{
+  border-top:none;
+  padding-top:20px;
+  margin-top:0;
+}
+
+/* --- Chart placeholder --- */
+.chartPlaceholder{
+  width:100%;
+  aspect-ratio:16/6;
+  background:rgba(17,24,39,.03);
+  border:1px dashed rgba(17,24,39,.15);
+  border-radius:6px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-family:"Poppins", sans-serif;
+  font-size:12px;
+  color:rgba(17,24,39,.30);
+  letter-spacing:.04em;
+  margin:28px 0 8px;
+}
+
+/* --- Image placeholder --- */
+.imgPlaceholder{
+  background:rgba(17,24,39,.03);
+  border:1px dashed rgba(17,24,39,.15);
+  border-radius:6px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-family:"Poppins", sans-serif;
+  font-size:11px;
+  color:rgba(17,24,39,.28);
+  letter-spacing:.04em;
+  text-align:center;
+  padding:8px;
+  box-sizing:border-box;
+}
+
+/* --- 50 in 50 section --- */
+.fiftyIn50Grid{
+  display:flex;
+  gap:24px;
+  margin:32px 0 0;
+  flex-wrap:wrap;
+}
+.fiftyIn50Group{
+  flex:1;
+  min-width:280px;
+}
+.fiftyIn50GroupLabel{
+  font-family:"Poppins", sans-serif;
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  color:rgba(17,24,39,.40);
+  margin-bottom:14px;
+  padding-bottom:8px;
+  border-bottom:2px solid rgba(17,24,39,.10);
+}
+.fiftyIn50GroupLabel.strong{
+  color:var(--accent);
+  border-bottom-color:var(--accent);
+}
+.fiftyIn50Players{
+  display:flex;
+  flex-wrap:wrap;
+  gap:16px;
+  justify-content:center;
+}
+.fiftyIn50Player{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:8px;
+  width:110px;
+}
+.fiftyIn50Avatar{
+  width:90px;
+  height:90px;
+  border-radius:50%;
+  background:rgba(17,24,39,.08);
+  border:2px solid rgba(17,24,39,.12);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:9px;
+  color:rgba(17,24,39,.35);
+  text-align:center;
+  overflow:hidden;
+  flex-shrink:0;
+}
+.fiftyIn50Avatar img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+.fiftyIn50Avatar.strong{
+  border-color:var(--accent);
+  background:rgba(210,31,43,.06);
+}
+.fiftyIn50Name{
+  font-family:"Poppins", sans-serif;
+  font-size:11px;
+  font-weight:600;
+  text-align:center;
+  color:rgba(17,24,39,.88);
+  line-height:1.2;
+}
+.fiftyIn50Season{
+  font-family:"Poppins", sans-serif;
+  font-size:9px;
+  text-align:center;
+  color:rgba(17,24,39,.55);
+  line-height:1.3;
+}
+
+/* --- Never Made It --- */
+.neverMadeItGrid{
+  display:flex;
+  gap:20px;
+  margin:32px 0 0;
+  flex-wrap:wrap;
+}
+.neverMadeItCard{
+  flex:1;
+  min-width:140px;
+  padding:18px;
+  background:rgba(17,24,39,.03);
+  border:1px solid rgba(17,24,39,.08);
+  border-radius:8px;
+}
+.neverMadeItName{
+  font-family:"adobe-caslon-pro", serif;
+  font-size:18px;
+  margin:0 0 4px;
+}
+.neverMadeItStat{
+  font-family:"Poppins", sans-serif;
+  font-size:11px;
+  color:rgba(17,24,39,.50);
+  line-height:1.5;
+}
+.neverMadeItPeak{
+  font-family:"Poppins", sans-serif;
+  font-size:13px;
+  font-weight:700;
+  color:rgba(17,24,39,.75);
+  margin-top:8px;
+}
+
+/* --- One Hit Wonders table --- */
+.oHWTable{
+  width:100%;
+  border-collapse:collapse;
+  font-family:"Poppins", sans-serif;
+  font-size:13px;
+  margin-top:28px;
+}
+.oHWTable th{
+  text-align:left;
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:rgba(17,24,39,.40);
+  padding:0 12px 10px 0;
+  border-bottom:1px solid rgba(17,24,39,.10);
+}
+.oHWTable td{
+  padding:10px 12px 10px 0;
+  border-bottom:1px solid rgba(17,24,39,.06);
+  color:rgba(17,24,39,.80);
+  vertical-align:middle;
+}
+.oHWTable tr:last-child td{ border-bottom:none; }
+.oHWTable .tdName{ font-weight:600; color:rgba(17,24,39,.90); }
+.oHWTable .tdGoals{ font-weight:700; font-size:15px; color:var(--accent); }
+.oHWTable .tdFaded{ color:rgba(17,24,39,.40); }
+
+/* --- Age curve chart --- */
+#ageCurveSvg{
+  display:block;
+  width:100%;
+  height:auto;
+}
+.age-bar{ fill:rgba(17,24,39,.12); }
+.age-bar-peak{ fill:var(--accent); opacity:0.7; }
+.age-axis-label{
+  font-family:"Poppins", sans-serif;
+  font-size:9px;
+  fill:rgba(17,24,39,.40);
+}
+.age-gridline{ stroke:rgba(17,24,39,.07); stroke-width:1; }
+
+/* --- OVECHKIN FLY-IN ANIMATION --- */
+.ovechkin-flyin{
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:400px;
+  overflow:visible;
+  margin-bottom:0;
+}
+.ovechkin-flyin img{
+  position:absolute;
+  width:700px;
+  height:auto;
+  left:-1000px;
+  top:50%;
+  transform:translateY(-50%);
+  opacity:0;
+  transition:all 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  filter:drop-shadow(0 4px 12px rgba(0,0,0,0.3));
+  z-index:9999;
+}
+.ovechkin-flyin.animate img{
+  left:50%;
+  transform:translate(-50%, -50%);
+  opacity:1;
+}
+
+.snipersSection[aria-label="Snipers"] {
+  padding-top: 400px !important;
+  margin-top: 0 !important;
+  position:relative;
+}
 </style>
 </head>
 
@@ -760,9 +1021,6 @@
       </section>
 
 <section class="introCopy" aria-label="Intro copy">
-    <p><em>Hi! You've found my in progress story. If you can see this message, I am actively building this out. Let me know what you think!</em></p>
-
-
   <p>
     Since the NHL’s first season in 1917-18, more than 8,000 players have laced up skates in the league. Only 99 of them have scored 50 goals in a single season.
   </p>
@@ -771,8 +1029,8 @@
     I’ve had this data set in the back of my mind for years. Partly because it’s a great cross-section of NHL history. Partly because I always thought there was some version of the timeline where I could still make it happen. Sure, I can’t skate and haven’t exercised since before COVID. But Johnny Bucyk scored 51 at age 35. Ovechkin was still doing it at 37. The dream was alive.
   </p>
 
-  <div class="trophyPlaceholder" role="img" aria-label="Rocket Richard Trophy image placeholder" id="trophyImg">
-    Rocket Richard Trophy &mdash; image placeholder
+  <div class="trophyPlaceholder" role="img" aria-label="Rocket Richard Trophy" id="trophyImg">
+    <img src="images/50_goals/Rocket-Richard.png" alt="Rocket Richard Trophy" style="width:100%; height:auto; display:block; border-radius:6px;">
   </div>
 
   <p>
@@ -788,7 +1046,6 @@
 <section class="gamesSection" aria-label="NHL games per season history">
   <p class="gamesChartTitle">Games per NHL season, 1917–18 to 2024–25</p>
   <svg id="gamesSvg" viewBox="0 0 864 150" preserveAspectRatio="xMidYMid meet"></svg>
-  <p class="gamesNote">Each bar = one season. Richard's 1944-45 season shown in red. Shortened seasons (lockouts, COVID) appear shorter.</p>
 </section>
 
 <section class="introCopy" aria-label="Intro copy continued">
@@ -804,7 +1061,7 @@
 
 
 <!-- ===== NEAR MISSES ===== -->
-<section class="nearMissSection" aria-label="Near misses">
+<section class="nearMissSection nearMissHeader" aria-label="Near misses">
   <h2 class="sectionTitle">Pour one out</h2>
 </section>
 
@@ -824,8 +1081,23 @@
 </section>
 <!-- ===== END NEAR MISSES ===== -->
 
+<!-- ===== SPECIALISTS ===== -->
+<section class="specialistsSection" aria-label="The Specialists">
+  <h1 class="specialistsTitle">The Specialists</h1>
+</section>
+<!-- ===== END SPECIALISTS ===== -->
+
+<section class="introCopy" aria-label="Specialists intro">
+  <p>
+    You have to be pretty special to score 50 goals in the NHL. Out of over 7,000 players who laced up, only 99 were able to accomplish this incredible feat.
+  </p>
+</section>
+
 <!-- ===== SNIPERS ===== -->
-<section class="snipersSection" aria-label="Snipers">
+<section class="snipersSection" style="border-top:none; padding-top:0; margin-top:0;" aria-label="Snipers">
+  <div class="ovechkin-flyin" id="ovechkinFlyin">
+    <img src="images/50_goals/alexander_ovechkin.png" alt="Alexander Ovechkin" />
+  </div>
   <h2 class="sectionTitle">The Snipers</h2>
 </section>
 
@@ -855,7 +1127,193 @@
 </section>
 <!-- ===== END SNIPERS ===== -->
 
+<!-- ===== SPECIALIST SUBSECTIONS ===== -->
+<section class="snipersSection" style="border-top:none; padding-top:40px; margin-top:0;" aria-label="Power Play Hawks">
+  <h2 class="sectionTitle">Power Play Hawks</h2>
+</section>
+<section class="introCopy">
+  <p>
+    Some of these 50-goal seasons were built heavily on the power play. Coming soon.
+  </p>
+</section>
+<section class="snipersSection" style="border-top:none; padding-top:0; margin-top:0;">
+  <div class="chartPlaceholder">Chart placeholder &mdash; power play goals in 50-goal seasons</div>
+</section>
 
+<section class="snipersSection" style="border-top:none; padding-top:40px; margin-top:0;" aria-label="Empty Net Merchants">
+  <h2 class="sectionTitle">Empty Net Merchants</h2>
+</section>
+<section class="introCopy">
+  <p>
+    Who padded their totals most with empty-net goals in their 50-goal season? Coming soon.
+  </p>
+</section>
+<section class="snipersSection" style="border-top:none; padding-top:0; margin-top:0;">
+  <div class="chartPlaceholder">Chart placeholder &mdash; empty net goals in 50-goal seasons</div>
+</section>
+
+<section class="snipersSection" style="border-top:none; padding-top:40px; margin-top:0;" aria-label="Two-Way Killers">
+  <h2 class="sectionTitle">The Two-Way Killers</h2>
+</section>
+<section class="introCopy">
+  <p>
+    A small and elite group scored shorthanded goals in the same season they hit 50. Coming soon.
+  </p>
+</section>
+<section class="snipersSection" style="border-top:none; padding-top:0; margin-top:0;">
+  <div class="chartPlaceholder">Chart placeholder &mdash; shorthanded goals in 50-goal seasons</div>
+</section>
+
+<section class="snipersSection" style="border-top:none; padding-top:40px; margin-top:0;" aria-label="Bruisers">
+  <h2 class="sectionTitle">Bruisers</h2>
+</section>
+<section class="introCopy">
+  <p>
+    Guys with the most penalty minutes in their 50-goal season. Coming soon.
+  </p>
+</section>
+<section class="snipersSection" style="border-top:none; padding-top:0; margin-top:0;">
+  <div class="chartPlaceholder">Chart placeholder &mdash; penalty minutes in 50-goal seasons</div>
+</section>
+<!-- ===== END SPECIALIST SUBSECTIONS ===== -->
+
+
+
+
+
+<!-- ===== 50 IN 50 ===== -->
+<section class="pageSection" aria-label="50 in 50">
+  <h1>The Impossible: 50 in 50</h1>
+</section>
+<section class="introCopy">
+  <p>
+    Richard’s achievement created an even more exclusive club. He was the first of only five players to score 50 goals in 50 games or fewer. There’s an extended family of three more who completed the milestone in fewer than 50 personal games played — meaning they were injured or suspended for some games, but still hit 50 before the team played its 50th.
+  </p>
+</section>
+<section class="pageSection no-border" aria-label="50 in 50 players">
+  <div class="fiftyIn50Grid">
+    <div class="fiftyIn50Group">
+      <div class="fiftyIn50GroupLabel strong">50 goals in 50 games</div>
+      <div class="fiftyIn50Players">
+        <div class="fiftyIn50Player">
+          <img class="fiftyIn50Avatar strong" src="images/50_goals/head_richard.png" alt="Maurice Richard" />
+          <div class="fiftyIn50Name">Maurice Richard</div>
+          <div class="fiftyIn50Season">1944–45</div>
+        </div>
+        <div class="fiftyIn50Player">
+          <img class="fiftyIn50Avatar strong" src="images/50_goals/head_bossy.png" alt="Mike Bossy" />
+          <div class="fiftyIn50Name">Mike Bossy</div>
+          <div class="fiftyIn50Season">1980–81</div>
+        </div>
+        <div class="fiftyIn50Player">
+          <img class="fiftyIn50Avatar strong" src="images/50_goals/head_gretzky.png" alt="Wayne Gretzky" />
+          <div class="fiftyIn50Name">Wayne Gretzky</div>
+          <div class="fiftyIn50Season">1981–82<br>1983–84<br>1984–85</div>
+        </div>
+        <div class="fiftyIn50Player">
+          <img class="fiftyIn50Avatar strong" src="images/50_goals/head_hull.png" alt="Brett Hull" />
+          <div class="fiftyIn50Name">Brett Hull</div>
+          <div class="fiftyIn50Season">1990–91<br>1991–92</div>
+        </div>
+        <div class="fiftyIn50Player">
+          <img class="fiftyIn50Avatar strong" src="images/50_goals/head_lemieux.png" alt="Mario Lemieux" />
+          <div class="fiftyIn50Name">Mario Lemieux</div>
+          <div class="fiftyIn50Season">1992–93</div>
+        </div>
+      </div>
+    </div>
+    <div class="fiftyIn50Group">
+      <div class="fiftyIn50GroupLabel">50 goals in &lt;50 personal games*</div>
+      <div class="fiftyIn50Players">
+        <div class="fiftyIn50Player">
+          <img class="fiftyIn50Avatar" src="images/50_goals/head_kurri.png" alt="Jari Kurri" />
+          <div class="fiftyIn50Name">Jari Kurri</div>
+          <div class="fiftyIn50Season">1984–85</div>
+        </div>
+        <div class="fiftyIn50Player">
+          <img class="fiftyIn50Avatar" src="images/50_goals/head_mogilny.png" alt="Alexander Mogilny" />
+          <div class="fiftyIn50Name">Alexander Mogilny</div>
+          <div class="fiftyIn50Season">1992–93</div>
+        </div>
+        <div class="fiftyIn50Player">
+          <img class="fiftyIn50Avatar" src="images/50_goals/head_lemieux.png" alt="Mario Lemieux" />
+          <div class="fiftyIn50Name">Mario Lemieux</div>
+          <div class="fiftyIn50Season">1992–93<br>1995–96</div>
+        </div>
+        <div class="fiftyIn50Player">
+          <img class="fiftyIn50Avatar" src="images/50_goals/head_neely.png" alt="Cam Neely" />
+          <div class="fiftyIn50Name">Cam Neely</div>
+          <div class="fiftyIn50Season">1993–94</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p style="font-family:'Poppins',sans-serif; font-size:11px; color:rgba(17,24,39,.40); margin-top:20px;">*pg = personal games. Data reflects player's personal games played vs. team games played that season.</p>
+</section>
+
+<!-- ===== THE BEST WHO NEVER MADE IT ===== -->
+<section class="pageSection" aria-label="Never made it">
+  <h1>The Best Who Never Made It</h1>
+</section>
+<section class="introCopy">
+  <p>
+    Some of the greatest goal scorers in NHL history never hit 50. Here are five who came closest — career totals that put them in the conversation with anyone, peak seasons that make you wonder what might have been.
+  </p>
+</section>
+<section class="pageSection no-border" aria-label="Never made it players">
+  <div class="neverMadeItGrid">
+    <div class="neverMadeItCard">
+      <div class="neverMadeItName">Marcel Dionne</div>
+      <div class="neverMadeItStat">731 career goals<br>No. 6 all-time</div>
+      <div class="neverMadeItPeak">Best: 59 goals</div>
+    </div>
+    <div class="neverMadeItCard">
+      <div class="neverMadeItName">Joe Sakic</div>
+      <div class="neverMadeItStat">625 career goals<br>Hall of Fame</div>
+      <div class="neverMadeItPeak">Best: 54 goals</div>
+    </div>
+    <div class="neverMadeItCard">
+      <div class="neverMadeItName">Jarome Iginla</div>
+      <div class="neverMadeItStat">625 career goals<br>Hall of Fame</div>
+      <div class="neverMadeItPeak">Best: 52 goals</div>
+    </div>
+    <div class="neverMadeItCard">
+      <div class="neverMadeItName">Patrick Kane</div>
+      <div class="neverMadeItStat">504 career goals<br>Active</div>
+      <div class="neverMadeItPeak">Best: 46 goals</div>
+    </div>
+    <div class="neverMadeItCard">
+      <div class="neverMadeItName">Mats Sundin</div>
+      <div class="neverMadeItStat">564 career goals<br>Hall of Fame</div>
+      <div class="neverMadeItPeak">Best: 47 goals</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== DEFENSEMEN ===== -->
+<section class="pageSection" aria-label="Defensemen">
+  <h1>Defensemen Are Staying Home for This One</h1>
+</section>
+<section class="introCopy">
+  <p>
+    No defenseman has ever scored 50 goals in an NHL season. The closest anyone has come is Paul Coffey, who scored 48 in 1985–86. Bobby Orr topped out at 46. Doug Wilson hit 39. It is one of the few records in this sport that has never seriously been threatened, and given how the game has evolved defensively, it may never be.
+  </p>
+</section>
+<section class="pageSection no-border">
+  <div class="chartPlaceholder">Chart placeholder — Defensemen goal records vs 50-goal line</div>
+</section>
+
+<!-- ===== ERA EFFECT ===== -->
+<!-- ===== ERA EFFECT HEADER ===== -->
+<section class="pageSection" aria-label="Era effect">
+  <h1>The Era Effect</h1>
+</section>
+<section class="introCopy">
+  <p>
+    The 1980s were a different sport. High-flying, wide-open, and apparently populated entirely by players who had not heard of defensive zone coverage. Then came the dead puck era — big goalies with seemingly small five-holes, the trap shutting down the neutral zone, and scoring falling off a cliff. We’re over halfway through the 2020s and on pace to have the most 50-goal seasons since 2000.
+  </p>
+</section>
+<section class="pageSection no-border">
 <!-- ===== DECADE HISTOGRAM ===== -->
 <section class="decadeSection" aria-label="50-goal seasons by decade">
   <h2 class="sectionTitle">When 50 goals happened</h2>
@@ -869,6 +1327,108 @@
   </div>
   <p class="decadeNote">
     Seasons are assigned to the decade in which they occurred. The <em>1980s</em> figure includes the extraordinary 1981–82 season, when Wayne Gretzky scored 92 goals — still the all-time record by a margin of 19. The 2020s are still in progress.
+  </p>
+</section>
+
+
+<!-- ===== AGE CURVES ===== -->
+<section class="pageSection" aria-label="Age curves">
+  <h1>A Younger Man’s Game</h1>
+</section>
+<section class="introCopy">
+  <p>
+    I have to be honest. The 50-goal club has always been interesting to me partly because I always thought there was some version of the timeline where I could still make it happen. Sure, I can’t skate and haven’t exercised since before COVID. But Johnny Bucyk scored 51 at 35. Ovechkin was still doing it at 37. The dream was alive.
+  </p>
+  <p>
+    It wasn’t. The data is pretty clear on when this tends to happen.
+  </p>
+</section>
+<section class="pageSection no-border">
+  <p class="snipersChartTitle">Among players who scored 50+ at least once, how many did it at each age?</p>
+  <svg id="ageCurveSvg" viewBox="0 0 864 200" preserveAspectRatio="xMidYMid meet"></svg>
+</section>
+
+<!-- ===== TEAMS ===== -->
+<section class="pageSection" aria-label="Teams">
+  <h1>The Teams That Produced Them</h1>
+</section>
+<section class="introCopy">
+  <p>
+    Not every franchise has been equally good at developing elite goal scorers. The Oilers, Islanders, and Penguins punch well above their weight. Some teams have never produced a 50-goal season at all.
+  </p>
+</section>
+<section class="pageSection no-border">
+  <div class="chartPlaceholder">Chart placeholder — 50-goal seasons by franchise</div>
+</section>
+
+<!-- ===== LINEMATE EFFECT ===== -->
+<section class="pageSection" aria-label="Linemate effect">
+  <h1>The Linemate Effect</h1>
+</section>
+<section class="introCopy">
+  <p>
+    Some players had a significant assist machine feeding them the puck. Bossy had Trottier. Kurri had Gretzky. The question worth asking is how many of these 50-goal seasons were really about the scorer — and how many were about who was on their line.
+  </p>
+</section>
+<section class="pageSection no-border">
+  <div class="chartPlaceholder">Chart placeholder — linemate assists in 50-goal seasons</div>
+</section>
+
+<!-- ===== SHOT VOLUME ===== -->
+<section class="pageSection" aria-label="Shot volume">
+  <h1>Shot Volume</h1>
+</section>
+<section class="introCopy">
+  <p>
+    There are two ways to score 50 goals: shoot a lot, or shoot efficiently. Some players in this club were volume shooters who overwhelmed goalies with quantity. Others were remarkably precise — getting fewer looks but converting at a higher rate.
+  </p>
+</section>
+<section class="pageSection no-border">
+  <div class="chartPlaceholder">Chart placeholder — shots vs goals in 50-goal seasons</div>
+</section>
+
+<!-- ===== ONE HIT WONDERS ===== -->
+<section class="pageSection" aria-label="One hit wonders">
+  <h1>The One Hit Wonders</h1>
+</section>
+<section class="introCopy">
+  <p>
+    Most players who score 50 goals never do it again. Some had one magical season surrounded by years that looked nothing like it. Others just ran out of time. A few you’ll recognize. A few might surprise you.
+  </p>
+</section>
+<section class="pageSection no-border">
+  <table class="oHWTable">
+    <thead>
+      <tr>
+        <th>Player</th>
+        <th>Season</th>
+        <th>Goals</th>
+        <th>Career</th>
+        <th>Best other season</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td class="tdName">Jonathan Cheechoo</td><td>2005–06</td><td class="tdGoals">56</td><td class="tdFaded">170</td><td class="tdFaded">37</td></tr>
+      <tr><td class="tdName">Lanny McDonald</td><td>1982–83</td><td class="tdGoals">66</td><td class="tdFaded">500</td><td class="tdFaded">47</td></tr>
+      <tr><td class="tdName">Pierre Turgeon</td><td>1992–93</td><td class="tdGoals">58</td><td class="tdFaded">515</td><td class="tdFaded">40</td></tr>
+      <tr><td class="tdName">Kevin Stevens</td><td>1992–93</td><td class="tdGoals">55</td><td class="tdFaded">329</td><td class="tdFaded">54</td></tr>
+      <tr><td class="tdName">Sergei Fedorov</td><td>1993–94</td><td class="tdGoals">56</td><td class="tdFaded">483</td><td class="tdFaded">39</td></tr>
+      <tr><td class="tdName">Brian Bellows</td><td>1989–90</td><td class="tdGoals">55</td><td class="tdFaded">485</td><td class="tdFaded">41</td></tr>
+      <tr><td class="tdName">Craig Simpson</td><td>1987–88</td><td class="tdGoals">56</td><td class="tdFaded">247</td><td class="tdFaded">35</td></tr>
+      <tr><td class="tdName">Mike Modano</td><td>1993–94</td><td class="tdGoals">50</td><td class="tdFaded">561</td><td class="tdFaded">38</td></tr>
+      <tr><td class="tdName">Evgeni Malkin</td><td>2011–12</td><td class="tdGoals">50</td><td class="tdFaded">514</td><td class="tdFaded">47</td></tr>
+      <tr><td class="tdName">Jimmy Carson</td><td>1988–89</td><td class="tdGoals">55</td><td class="tdFaded">275</td><td class="tdFaded">49</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ===== APPENDIX ===== -->
+<section class="pageSection" aria-label="Appendix">
+  <h1>Appendix</h1>
+</section>
+<section class="introCopy">
+  <p>
+    The following two charts are what started me on this journey. The first chart I made to show me when a player hit 50 goals was a simple heatmap. I would update that thing by hand every year. Thank god for better tools. More recently, I decided to play around with this data set and see if I could build anything fun. I love the ridge plot. Unfortunately, I posted it to Reddit and they did not. While the feedback was mainly "this is the worst chart I’ve ever seen," I understood that the chart is a lot more art than it is legible, especially if you’re viewing it as a static image. Either way, it did help me understand that I was missing the context of the chart and why I made it. It’s a fun data set and I hope you enjoyed your time looking at this collection.
   </p>
 </section>
 
@@ -918,10 +1478,13 @@
 </div>
 
 <div class="footnote">
-  Source: 
-  <a href="https://en.wikipedia.org/wiki/List_of_NHL_players_with_50-goal_seasons" target="_blank">
-    List of NHL players with 50-goal seasons – Wikipedia
-  </a>
+  <strong>Sources:</strong>
+  <ul style="margin:8px 0 0 18px; font-size:13px; line-height:1.6;">
+    <li><a href="https://en.wikipedia.org/wiki/List_of_NHL_players_with_50-goal_seasons" target="_blank">List of NHL players with 50-goal seasons – Wikipedia</a></li>
+    <li><a href="https://www.hhof.com/" target="_blank">Hockey Hall of Fame Official Database</a></li>
+    <li><a href="https://www.nhl.com/" target="_blank">NHL Official Statistics & Records</a></li>
+    <li>Individual player Wikipedia pages for career and season-specific data</li>
+  </ul>
 </div>
       <section class="data-notes">
 
@@ -940,7 +1503,7 @@ Some early-career ages may be off by a year due to birthdate cutoffs and mid-sea
 </p>
 
 <p>
-<a href="nhl_50.csv" download>Download the dataset (CSV)</a>
+<a href="data/nhl_50.csv" download>Download the dataset (CSV)</a>
 </p>
 
 </section>
@@ -995,7 +1558,7 @@ Some early-career ages may be off by a year due to birthdate cutoffs and mid-sea
       return row;
     };
 
-    const all = await d3.csv("nhl_50.csv", parseRow);
+    const all = await d3.csv("data/nhl_50.csv", parseRow);
 
     const W = 1200;
     const leftNamesW = 230;
@@ -1253,7 +1816,7 @@ Some early-career ages may be off by a year due to birthdate cutoffs and mid-sea
 
 const heatSvg = d3.select("#heatmap")
 
-const raw = await d3.csv("nhl_50.csv")
+const raw = await d3.csv("data/nhl_50.csv")
 
 const ages = d3.range(18,46)
 
@@ -1345,39 +1908,16 @@ heatSvg.append("g")
 
 <script>
 // ===== GAMES PER SEASON CHART (SVG bar chart) =====
-(function(){
+(async function(){
   const svg = document.getElementById("gamesSvg");
   if (!svg) return;
 
-  const seasons = [
-    {y:1917,g:22},{y:1918,g:18},{y:1919,g:24},{y:1920,g:24},{y:1921,g:24},
-    {y:1922,g:24},{y:1923,g:24},{y:1924,g:30},{y:1925,g:36},{y:1926,g:44},
-    {y:1927,g:44},{y:1928,g:44},{y:1929,g:44},{y:1930,g:44},{y:1931,g:48},
-    {y:1932,g:48},{y:1933,g:48},{y:1934,g:48},{y:1935,g:48},{y:1936,g:48},
-    {y:1937,g:48},{y:1938,g:48},{y:1939,g:48},{y:1940,g:48},{y:1941,g:48},
-    {y:1942,g:50},{y:1943,g:50},
-    {y:1944,g:50,richard:true},
-    {y:1945,g:50},{y:1946,g:60},{y:1947,g:60},{y:1948,g:60},{y:1949,g:70},
-    {y:1950,g:70},{y:1951,g:70},{y:1952,g:70},{y:1953,g:70},{y:1954,g:70},
-    {y:1955,g:70},{y:1956,g:70},{y:1957,g:70},{y:1958,g:70},{y:1959,g:70},
-    {y:1960,g:70},{y:1961,g:70},{y:1962,g:70},{y:1963,g:70},{y:1964,g:70},
-    {y:1965,g:70},{y:1966,g:70},{y:1967,g:74},{y:1968,g:76},{y:1969,g:76},
-    {y:1970,g:78},{y:1971,g:78},{y:1972,g:78},{y:1973,g:78},{y:1974,g:80},
-    {y:1975,g:80},{y:1976,g:80},{y:1977,g:80},{y:1978,g:80},{y:1979,g:80},
-    {y:1980,g:80},{y:1981,g:80},{y:1982,g:80},{y:1983,g:80},{y:1984,g:80},
-    {y:1985,g:80},{y:1986,g:80},{y:1987,g:80},{y:1988,g:80},{y:1989,g:80},
-    {y:1990,g:80},{y:1991,g:80},{y:1992,g:84},{y:1993,g:84},
-    {y:1994,g:48},
-    {y:1995,g:82},{y:1996,g:82},{y:1997,g:82},{y:1998,g:82},{y:1999,g:82},
-    {y:2000,g:82},{y:2001,g:82},{y:2002,g:82},{y:2003,g:82},
-    {y:2005,g:82},{y:2006,g:82},{y:2007,g:82},{y:2008,g:82},{y:2009,g:82},
-    {y:2010,g:82},{y:2011,g:82},
-    {y:2012,g:48},
-    {y:2013,g:82},{y:2014,g:82},{y:2015,g:82},{y:2016,g:82},{y:2017,g:82},
-    {y:2018,g:82},{y:2019,g:70},
-    {y:2020,g:56},
-    {y:2021,g:82},{y:2022,g:82},{y:2023,g:82},{y:2024,g:82}
-  ];
+  const raw = await d3.csv("data/chart_games_per_season.csv");
+  const seasons = raw.map(d => ({
+    y: +d.season_start_year,
+    g: +d.games,
+    richard: d.richard === "Y"
+  }));
 
   const W = 864, H = 150;
   const padL = 28, padR = 0, padT = 28, padB = 20;
@@ -1405,13 +1945,11 @@ heatSvg.append("g")
     rect.setAttribute("height", bh.toFixed(2));
     rect.setAttribute("rx", "0.5");
 
-    // Tooltip via title
     const title = document.createElementNS(ns, "title");
     title.textContent = s.y + "-" + String(s.y + 1).slice(2) + ": " + s.g + " games";
     rect.appendChild(title);
     svg.appendChild(rect);
 
-    // Decade x-axis labels
     const cx = bx + barW / 2;
     if (decadeStarts.has(s.y)) {
       const t = document.createElementNS(ns, "text");
@@ -1423,12 +1961,11 @@ heatSvg.append("g")
       svg.appendChild(t);
     }
 
-    // Richard callout: right-aligned, sits to the left of the bar
     if (s.richard) {
       const lbl = document.createElementNS(ns, "text");
       lbl.setAttribute("class", "g-callout");
       lbl.setAttribute("x", (bx - 4).toFixed(2));
-      lbl.setAttribute("y", (by - 10).toFixed(2));
+      lbl.setAttribute("y", (by - 20).toFixed(2));
       lbl.setAttribute("text-anchor", "end");
       lbl.textContent = "1944-45";
       svg.appendChild(lbl);
@@ -1436,12 +1973,11 @@ heatSvg.append("g")
       const sub = document.createElementNS(ns, "text");
       sub.setAttribute("class", "g-callout-sub");
       sub.setAttribute("x", (bx - 4).toFixed(2));
-      sub.setAttribute("y", (by + 2).toFixed(2));
+      sub.setAttribute("y", (by - 8).toFixed(2));
       sub.setAttribute("text-anchor", "end");
       sub.textContent = "Richard’s 50-game season";
       svg.appendChild(sub);
 
-      // Small leader line from label to bar top
       const line = document.createElementNS(ns, "line");
       line.setAttribute("x1", (bx - 3).toFixed(2));
       line.setAttribute("y1", (by - 4).toFixed(2));
@@ -1454,16 +1990,12 @@ heatSvg.append("g")
     }
   });
 
-  // Y-axis gridlines at every 10, labels only at 0,20,40,60,80
   const labeledValues = new Set([0,20,40,60,80]);
   [10,20,30,40,50,60,70,80].forEach(v => {
     const gy = padT + innerH - (v / maxG) * innerH;
-
     const gridLine = document.createElementNS(ns, "line");
-    gridLine.setAttribute("x1", padL);
-    gridLine.setAttribute("x2", padL + innerW);
-    gridLine.setAttribute("y1", gy.toFixed(2));
-    gridLine.setAttribute("y2", gy.toFixed(2));
+    gridLine.setAttribute("x1", padL); gridLine.setAttribute("x2", padL + innerW);
+    gridLine.setAttribute("y1", gy.toFixed(2)); gridLine.setAttribute("y2", gy.toFixed(2));
     gridLine.setAttribute("stroke", v === 50 ? "rgba(17,24,39,.18)" : "rgba(17,24,39,.07)");
     gridLine.setAttribute("stroke-width", v === 50 ? "1" : "0.75");
     svg.insertBefore(gridLine, svg.firstChild);
@@ -1479,7 +2011,6 @@ heatSvg.append("g")
     }
   });
 
-  // 0 label at baseline
   const zeroLabel = document.createElementNS(ns, "text");
   zeroLabel.setAttribute("class", "g-axis-label");
   zeroLabel.setAttribute("x", (padL - 4).toFixed(2));
@@ -1488,31 +2019,24 @@ heatSvg.append("g")
   zeroLabel.textContent = "0";
   svg.appendChild(zeroLabel);
 
-  // Bottom axis line
   const axisLine = document.createElementNS(ns, "line");
-  axisLine.setAttribute("x1", padL);
-  axisLine.setAttribute("x2", padL + innerW);
-  axisLine.setAttribute("y1", padT + innerH);
-  axisLine.setAttribute("y2", padT + innerH);
-  axisLine.setAttribute("stroke", "rgba(17,24,39,.12)");
-  axisLine.setAttribute("stroke-width", "1");
+  axisLine.setAttribute("x1", padL); axisLine.setAttribute("x2", padL + innerW);
+  axisLine.setAttribute("y1", padT + innerH); axisLine.setAttribute("y2", padT + innerH);
+  axisLine.setAttribute("stroke", "rgba(17,24,39,.12)"); axisLine.setAttribute("stroke-width", "1");
   svg.appendChild(axisLine);
 })();
 </script>
 
 <script>
 // ===== DECADE HISTOGRAM =====
-(function(){
-  const decadeData = [
-    { decade:"1940s", count:1 },
-    { decade:"1960s", count:5 },
-    { decade:"1970s", count:40 },
-    { decade:"1980s", count:75 },
-    { decade:"1990s", count:48 },
-    { decade:"2000s", count:19 },
-    { decade:"2010s", count:8 },
-    { decade:"2020s", count:14, note:"†" },
-  ];
+(async function(){
+  const raw = await d3.csv("data/chart_decades.csv");
+  const decadeData = raw.map(d => ({
+    decade: d.decade,
+    count: +d.fifty_goal_seasons,
+    note: d.decade === "2020s" ? "†" : ""
+  }));
+
   const maxCount = Math.max(...decadeData.map(d => d.count));
   const bar = document.getElementById("decadeBar");
   if (!bar) return;
@@ -1522,7 +2046,7 @@ heatSvg.append("g")
     col.className = "decadeCol";
     const fill = document.createElement("div");
     fill.className = "decadeBarFill";
-    fill.dataset.count = d.count + (d.note||"");
+    fill.dataset.count = d.count + (d.note || "");
     fill.style.height = "0px";
     fill.dataset.target = Math.round((d.count / maxCount) * 240);
     const label = document.createElement("div");
@@ -1591,94 +2115,18 @@ heatSvg.append("g")
 
 <script>
 // ===== NEAR MISSES STRIP CHART =====
-(function(){
+(async function(){
   const chart = document.getElementById("nearMissChart");
   const tooltip = document.getElementById("nmTooltip");
   if (!chart || !tooltip) return;
 
-  // Verified dataset from NHL records + CSV
-  const seasons = [
-    // 49 goals
-    {player:"Phil Esposito",       season:"1967-68", goals:49},
-    {player:"Rick Martin",         season:"1974-75", goals:49},
-    {player:"Rick MacLeish",       season:"1975-76", goals:49},
-    {player:"Steve Shutt",         season:"1976-77", goals:49},
-    {player:"Rick Middleton",      season:"1980-81", goals:49},
-    {player:"Michel Goulet",       season:"1985-86", goals:49},
-    {player:"Jimmy Carson",        season:"1987-88", goals:49},
-    {player:"Mike Gartner",        season:"1989-90", goals:49},
-    {player:"Alexander Ovechkin",  season:"2016-17", goals:49},
-    // 48 goals
-    {player:"Mike Gartner",        season:"1979-80", goals:48},
-    {player:"Mark Messier",        season:"1981-82", goals:48},
-    {player:"Glenn Anderson",      season:"1981-82", goals:48},
-    {player:"Pierre Larouche",     season:"1982-83", goals:48},
-    {player:"Mario Lemieux",       season:"1984-85", goals:48},
-    {player:"Mike Gartner",        season:"1986-87", goals:48},
-    {player:"Michel Goulet",       season:"1986-87", goals:48},
-    {player:"Mike Bullard",        season:"1986-87", goals:48},
-    {player:"Tim Kerr",            season:"1987-88", goals:48},
-    {player:"Joe Sakic",           season:"1989-90", goals:48},
-    {player:"Joe Sakic",           season:"1991-92", goals:48},
-    {player:"Teemu Selanne",       season:"2005-06", goals:48},
-    {player:"Alexander Ovechkin",  season:"2018-19", goals:48},
-    {player:"David Pastrnak",      season:"2018-19", goals:48},
-    // 47 goals
-    {player:"Marcel Dionne",       season:"1973-74", goals:47},
-    {player:"Lanny McDonald",      season:"1976-77", goals:47},
-    {player:"Bryan Trottier",      season:"1977-78", goals:47},
-    {player:"Steve Shutt",         season:"1978-79", goals:47},
-    {player:"Rick Middleton",      season:"1981-82", goals:47},
-    {player:"Dale Hawerchuk",      season:"1985-86", goals:47},
-    {player:"Joe Mullen",          season:"1985-86", goals:47},
-    {player:"Pat LaFontaine",      season:"1986-87", goals:47},
-    {player:"Mark Messier",        season:"1994-95", goals:47},
-    {player:"Jaromir Jagr",        season:"1995-96", goals:47},
-    {player:"Brendan Shanahan",    season:"1995-96", goals:47},
-    {player:"Teemu Selanne",       season:"1997-98", goals:47},
-    {player:"Evgeni Malkin",       season:"2006-07", goals:47},
-    {player:"Auston Matthews",     season:"2018-19", goals:47},
-    {player:"David Pastrnak",      season:"2022-23", goals:47},
-    // 46 goals
-    {player:"Lanny McDonald",      season:"1975-76", goals:46},
-    {player:"Bryan Trottier",      season:"1976-77", goals:46},
-    {player:"Danny Gare",          season:"1979-80", goals:46},
-    {player:"Marcel Dionne",       season:"1983-84", goals:46},
-    {player:"Bernie Nicholls",     season:"1983-84", goals:46},
-    {player:"Dale Hawerchuk",      season:"1984-85", goals:46},
-    {player:"Luc Robitaille",      season:"1987-88", goals:46},
-    {player:"Pat LaFontaine",      season:"1990-91", goals:46},
-    {player:"Jeremy Roenick",      season:"1992-93", goals:46},
-    {player:"Theoren Fleury",      season:"1994-95", goals:46},
-    {player:"Peter Bondra",        season:"1995-96", goals:46},
-    {player:"Alexander Ovechkin",  season:"2005-06", goals:46},
-    {player:"Brayden Point",       season:"2022-23", goals:46},
-    // 45 goals
-    {player:"Maurice Richard",     season:"1945-46", goals:45},
-    {player:"Ken Hodge",           season:"1967-68", goals:45},
-    {player:"Reggie Leach",        season:"1973-74", goals:45},
-    {player:"Steve Shutt",         season:"1974-75", goals:45},
-    {player:"Rick Martin",         season:"1978-79", goals:45},
-    {player:"Dale Hawerchuk",      season:"1980-81", goals:45},
-    {player:"Bill Barber",         season:"1980-81", goals:45},
-    {player:"Jari Kurri",          season:"1981-82", goals:45},
-    {player:"Blaine Stoughton",    season:"1981-82", goals:45},
-    {player:"Luc Robitaille",      season:"1985-86", goals:45},
-    {player:"Pat LaFontaine",      season:"1987-88", goals:45},
-    {player:"Mike Gartner",        season:"1988-89", goals:45},
-    {player:"Mark Messier",        season:"1988-89", goals:45},
-    {player:"Mario Lemieux",       season:"1988-89", goals:45},
-    {player:"Joe Nieuwendyk",      season:"1988-89", goals:45},
-    {player:"Luc Robitaille",      season:"1989-90", goals:45},
-    {player:"Joe Nieuwendyk",      season:"1989-90", goals:45},
-    {player:"Steve Yzerman",       season:"1990-91", goals:45},
-    {player:"Mike Gartner",        season:"1991-92", goals:45},
-    {player:"Peter Bondra",        season:"1999-00", goals:45},
-    {player:"Steven Stamkos",      season:"2009-10", goals:45},
-    {player:"Steven Stamkos",      season:"2017-18", goals:45},
-  ];
+  const raw = await d3.csv("data/chart_near_misses.csv");
+  const seasons = raw.map(d => ({
+    player: d.player,
+    season: d.season,
+    goals: +d.goals
+  }));
 
-  // Group by goal total, highest first (49 at top, closest to the line)
   const groups = [49, 48, 47, 46, 45];
 
   groups.forEach(g => {
@@ -1693,8 +2141,7 @@ heatSvg.append("g")
     const dotsWrap = document.createElement("div");
     dotsWrap.className = "nm-dots";
 
-    const inGroup = seasons.filter(s => s.goals === g);
-    inGroup.forEach(s => {
+    seasons.filter(s => s.goals === g).forEach(s => {
       const dot = document.createElement("div");
       dot.className = "nm-dot" + (g === 49 ? " forty-nine" : "");
 
@@ -1704,9 +2151,7 @@ heatSvg.append("g")
         moveTip(e);
       });
       dot.addEventListener("mousemove", moveTip);
-      dot.addEventListener("mouseleave", () => {
-        tooltip.style.display = "none";
-      });
+      dot.addEventListener("mouseleave", () => { tooltip.style.display = "none"; });
 
       dotsWrap.appendChild(dot);
     });
@@ -1748,29 +2193,65 @@ heatSvg.append("g")
 
 
 <script>
-// ===== SNIPERS BUBBLE CHART =====
+// ===== OVECHKIN FLY-IN ANIMATION =====
 (function(){
+  const flyinElement = document.getElementById("ovechkinFlyin");
+  if (!flyinElement) return;
+
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        flyinElement.classList.add("animate");
+        io.disconnect(); // Only animate once
+      }
+    });
+  }, { threshold: 0.3 }); // Trigger when 30% visible
+
+  io.observe(flyinElement);
+})();
+// ===== END OVECHKIN FLY-IN =====
+</script>
+
+
+<script>
+// ===== 50-IN-50 AVATAR TILT ON SCROLL =====
+(function(){
+  const avatars = document.querySelectorAll("img.fiftyIn50Avatar");
+  if (!avatars.length) return;
+
+  const MAX_DEG = 30; // +/- 30 = 60 degree total swing
+  const SPEED   = 0.008; // faster tilt (radians per px scrolled)
+
+  function update() {
+    const scrollY = window.scrollY || window.pageYOffset;
+    const angle = Math.sin(scrollY * SPEED) * MAX_DEG;
+    avatars.forEach(avatar => {
+      avatar.style.transform = "rotate(" + angle.toFixed(2) + "deg)";
+    });
+  }
+
+  window.addEventListener("scroll", update, { passive: true });
+  update();
+})();
+// ===== END 50-IN-50 AVATAR TILT =====
+</script>
+
+
+<script>
+// ===== SNIPERS BUBBLE CHART =====
+(async function(){
   const svg = document.getElementById("snipersSvg");
   const tooltip = document.getElementById("sniperTooltip");
   if (!svg || !tooltip) return;
 
-  const players = [
-    {name:"Wayne Gretzky",      count:9, peak:92, career:894, active:false},
-    {name:"Mike Bossy",         count:9, peak:69, career:573, active:false},
-    {name:"Alexander Ovechkin", count:9, peak:65, career:897, active:true},
-    {name:"Mario Lemieux",      count:6, peak:85, career:690, active:false},
-    {name:"Guy Lafleur",        count:6, peak:60, career:560, active:false},
-    {name:"Marcel Dionne",      count:6, peak:59, career:731, active:false},
-    {name:"Brett Hull",         count:5, peak:86, career:741, active:false},
-    {name:"Phil Esposito",      count:5, peak:76, career:717, active:false},
-    {name:"Steve Yzerman",      count:5, peak:65, career:692, active:false},
-    {name:"Pavel Bure",         count:5, peak:60, career:437, active:false},
-    {name:"Bobby Hull",         count:5, peak:58, career:610, active:false},
-    {name:"Jari Kurri",         count:4, peak:71, career:601, active:false},
-    {name:"Tim Kerr",           count:4, peak:58, career:370, active:false},
-    {name:"Michel Goulet",      count:4, peak:57, career:548, active:false},
-    {name:"Leon Draisaitl",     count:4, peak:55, career:399, active:true},
-  ];
+  const raw = await d3.csv("data/chart_snipers.csv");
+  const players = raw.map(d => ({
+    name:   d.player,
+    count:  +d.fifty_goal_seasons,
+    peak:   +d.peak_season,
+    career: +d.career_goals,
+    active: d.active === "Y"
+  }));
 
   const W = 864, H = 420;
   const padL = 52, padR = 24, padT = 24, padB = 48;
@@ -1778,7 +2259,6 @@ heatSvg.append("g")
   const innerH = H - padT - padB;
   const ns = "http://www.w3.org/2000/svg";
 
-  // Scales
   const minCount = 4, maxCount = 9;
   const minPeak  = 50, maxPeak  = 95;
   const minCar   = Math.min(...players.map(p => p.career));
@@ -1788,7 +2268,6 @@ heatSvg.append("g")
   function yScale(v){ return padT + innerH - ((v - minPeak) / (maxPeak - minPeak)) * innerH; }
   function rScale(v){ return 8 + ((v - minCar) / (maxCar - minCar)) * 28; }
 
-  // X gridlines + labels (count values 4-9)
   for (let c = minCount; c <= maxCount; c++) {
     const gx = xScale(c);
     const gl = document.createElementNS(ns, "line");
@@ -1805,7 +2284,6 @@ heatSvg.append("g")
     svg.appendChild(gt);
   }
 
-  // X axis title
   const xTitle = document.createElementNS(ns, "text");
   xTitle.setAttribute("class", "sniper-axis-title");
   xTitle.setAttribute("x", padL + innerW / 2);
@@ -1814,7 +2292,6 @@ heatSvg.append("g")
   xTitle.textContent = "50-goal seasons";
   svg.appendChild(xTitle);
 
-  // Y gridlines + labels at every 10
   [60,70,80,90].forEach(v => {
     const gy = yScale(v);
     const gl = document.createElementNS(ns, "line");
@@ -1831,7 +2308,6 @@ heatSvg.append("g")
     svg.appendChild(gt);
   });
 
-  // Y axis title
   const yTitle = document.createElementNS(ns, "text");
   yTitle.setAttribute("class", "sniper-axis-title");
   yTitle.setAttribute("x", 12);
@@ -1841,17 +2317,13 @@ heatSvg.append("g")
   yTitle.textContent = "Peak season goals";
   svg.appendChild(yTitle);
 
-  // Bottom axis line
   const ax = document.createElementNS(ns, "line");
   ax.setAttribute("stroke", "rgba(17,24,39,.12)"); ax.setAttribute("stroke-width", "1");
   ax.setAttribute("x1", padL); ax.setAttribute("x2", padL + innerW);
   ax.setAttribute("y1", padT + innerH); ax.setAttribute("y2", padT + innerH);
   svg.appendChild(ax);
 
-  // Sort so larger bubbles render first (behind smaller ones)
-  const sorted = [...players].sort((a, b) => b.career - a.career);
-
-  sorted.forEach(p => {
+  [...players].sort((a, b) => b.career - a.career).forEach(p => {
     const cx = xScale(p.count);
     const cy = yScale(p.peak);
     const r  = rScale(p.career);
@@ -1873,18 +2345,14 @@ heatSvg.append("g")
     });
     circle.addEventListener("mousemove", moveTip);
     circle.addEventListener("mouseleave", () => { tooltip.style.display = "none"; });
-
     svg.appendChild(circle);
 
-    // Name label — nudge to avoid overlap
     const lbl = document.createElementNS(ns, "text");
     lbl.setAttribute("class", "sniper-label" + (p.active ? " active" : ""));
     lbl.setAttribute("x", (cx + r + 4).toFixed(1));
     lbl.setAttribute("y", (cy + 3).toFixed(1));
     lbl.setAttribute("text-anchor", "start");
-    // Last name only to keep it clean
-    const lastName = p.name.split(" ").slice(1).join(" ");
-    lbl.textContent = lastName;
+    lbl.textContent = p.name.split(" ").slice(1).join(" ");
     svg.appendChild(lbl);
   });
 
@@ -1894,6 +2362,92 @@ heatSvg.append("g")
   }
 })();
 // ===== END SNIPERS BUBBLE CHART =====
+</script>
+
+
+<script>
+// ===== AGE CURVE CHART =====
+(async function(){
+  const svg = document.getElementById("ageCurveSvg");
+  if (!svg) return;
+
+  const raw = await d3.csv("data/chart_age_curve.csv");
+  const data = raw.map(d => ({ age: +d.age, count: +d.fifty_goal_seasons }));
+
+  const allAges = Array.from({length: 23}, (_, i) => i + 18);
+  const dataMap = {};
+  data.forEach(d => dataMap[d.age] = d.count);
+
+  const W=864, H=200, padL=36, padR=20, padT=20, padB=36;
+  const innerW=W-padL-padR, innerH=H-padT-padB;
+  const maxCount = Math.max(...data.map(d => d.count));
+  const ns="http://www.w3.org/2000/svg";
+  const barW = (innerW - (allAges.length - 1)) / allAges.length;
+
+  [5,10,15,20,25].forEach(v => {
+    const gy = padT + innerH - (v/maxCount)*innerH;
+    const gl = document.createElementNS(ns,"line");
+    gl.setAttribute("class","age-gridline");
+    gl.setAttribute("x1",padL); gl.setAttribute("x2",padL+innerW);
+    gl.setAttribute("y1",gy); gl.setAttribute("y2",gy);
+    svg.appendChild(gl);
+    if (v % 10 === 0) {
+      const t = document.createElementNS(ns,"text");
+      t.setAttribute("class","age-axis-label");
+      t.setAttribute("x",padL-4); t.setAttribute("y",gy+3);
+      t.setAttribute("text-anchor","end"); t.textContent=v;
+      svg.appendChild(t);
+    }
+  });
+
+  const peakAge = data.reduce((a, b) => b.count > a.count ? b : a).age;
+
+  allAges.forEach((age, i) => {
+    const count = dataMap[age] || 0;
+    const bx = padL + i*(barW+1);
+    const bh = (count/maxCount)*innerH;
+    const by = padT + innerH - bh;
+
+    const rect = document.createElementNS(ns,"rect");
+    rect.setAttribute("class", age === peakAge ? "age-bar-peak" : "age-bar");
+    rect.setAttribute("x",bx.toFixed(1)); rect.setAttribute("y",by.toFixed(1));
+    rect.setAttribute("width",Math.max(barW,1).toFixed(1)); rect.setAttribute("height",Math.max(bh,0).toFixed(1));
+    rect.setAttribute("rx","1");
+    const title = document.createElementNS(ns,"title");
+    title.textContent = "Age " + age + ": " + count + " seasons";
+    rect.appendChild(title);
+    svg.appendChild(rect);
+
+    if (age % 5 === 0 || age === 18) {
+      const t = document.createElementNS(ns,"text");
+      t.setAttribute("class","age-axis-label");
+      t.setAttribute("x",(bx+barW/2).toFixed(1));
+      t.setAttribute("y",padT+innerH+14);
+      t.setAttribute("text-anchor","middle");
+      t.textContent=age;
+      svg.appendChild(t);
+    }
+  });
+
+  const peakIdx = allAges.indexOf(peakAge);
+  const peakX = padL + peakIdx*(barW+1) + barW/2;
+  const peakCount = dataMap[peakAge] || 0;
+  const peakY = padT + innerH - (peakCount/maxCount)*innerH - 8;
+  const pl = document.createElementNS(ns,"text");
+  pl.setAttribute("font-family","Poppins, sans-serif");
+  pl.setAttribute("font-size","10"); pl.setAttribute("font-weight","700");
+  pl.setAttribute("fill","#d21f2b"); pl.setAttribute("text-anchor","middle");
+  pl.setAttribute("x",peakX); pl.setAttribute("y",peakY);
+  pl.textContent="Peak: " + peakAge;
+  svg.appendChild(pl);
+
+  const al = document.createElementNS(ns,"line");
+  al.setAttribute("x1",padL); al.setAttribute("x2",padL+innerW);
+  al.setAttribute("y1",padT+innerH); al.setAttribute("y2",padT+innerH);
+  al.setAttribute("stroke","rgba(17,24,39,.12)"); al.setAttribute("stroke-width","1");
+  svg.appendChild(al);
+})();
+// ===== END AGE CURVE =====
 </script>
 
 </body>

@@ -127,10 +127,12 @@
 @media(max-width:600px){
   .trophyPlaceholder{
     float:none;
-    width:50%;
-    aspect-ratio:3/2;
-    margin:16px 0;
-    transition:none;
+    width:160px;
+    aspect-ratio:3/4;
+    margin:16px auto;
+    display:flex;
+    transform:none !important;
+    transition:none !important;
     will-change:auto;
   }
 }
@@ -356,47 +358,49 @@
   margin:0 auto 60px;
   padding:0 18px;
 }
-#gamesSvg{
+#gamesSvg, #gamesSvgMobile{
   display:block;
   width:100%;
   height:auto;
   overflow:visible;
 }
+.games-mobile{ display:none !important; }
+.games-desktop{ display:block !important; }
 @media(max-width:700px){
-  #gamesSvg{
-    height:250px;
-  }
+  .games-mobile{ display:block !important; }
+  .games-desktop{ display:none !important; }
 }
+
 .g-bar-default{ fill:rgba(17,24,39,.11); }
 .g-bar-richard{ fill:#d21f2b; opacity:0.80; }
 .g-axis-label{
   font-family:"Poppins", sans-serif;
-  font-size:9px;
+  font-size:12px;
   fill:rgba(17,24,39,.40);
 }
 .g-axis-label-decade{
   font-family:"Poppins", sans-serif;
-  font-size:9px;
+  font-size:12px;
   font-weight:600;
   fill:rgba(17,24,39,.55);
 }
 .g-callout{
   font-family:"Poppins", sans-serif;
-  font-size:11px;
+  font-size:14px;
   font-weight:700;
   fill:#d21f2b;
 }
 .g-callout-sub{
   font-family:"Poppins", sans-serif;
-  font-size:10px;
+  font-size:12px;
   fill:rgba(17,24,39,.45);
 }
 .gamesChartTitle{
   font-family:"Poppins", sans-serif;
-  font-size:11px;
+  font-size:13px;
   font-weight:600;
   color:rgba(17,24,39,.55);
-  margin:0 0 8px;
+  margin:0 0 10px;
   letter-spacing:.01em;
 }
 .gamesNote{
@@ -960,6 +964,29 @@
   overflow:visible;
   margin-bottom:0;
 }
+@media(max-width:700px){
+  /* Clip only the right side — use clip-path so left bleed is unrestricted */
+  .ovechkin-flyin{
+    overflow:visible;
+    clip-path: inset(0 0 0 -9999px);
+  }
+  body{
+    overflow-x:hidden;
+    max-width:100vw;
+  }
+  html{
+    overflow-x:hidden;
+  }
+  /* Anchor to left so he bleeds off the right */
+  .ovechkin-flyin img{
+    width:480px;
+    left:-600px;
+  }
+  .ovechkin-flyin.animate img{
+    left:-40px;
+    transform:translateY(-50%);
+  }
+}
 .ovechkin-flyin img{
   position:absolute;
   width:700px;
@@ -1052,7 +1079,8 @@
 <!-- ===== GAMES PER SEASON CHART ===== -->
 <section class="gamesSection" aria-label="NHL games per season history">
   <p class="gamesChartTitle">Games per NHL season, 1917–18 to 2024–25</p>
-  <svg id="gamesSvg" viewBox="0 0 864 150" preserveAspectRatio="xMidYMid meet"></svg>
+  <svg id="gamesSvg" class="games-desktop" viewBox="0 0 864 280" preserveAspectRatio="xMidYMid meet"></svg>
+  <svg id="gamesSvgMobile" class="games-mobile" viewBox="0 0 864 720" preserveAspectRatio="xMidYMid meet"></svg>
 </section>
 
 <section class="introCopy" aria-label="Intro copy continued">
@@ -1916,9 +1944,6 @@ heatSvg.append("g")
 <script>
 // ===== GAMES PER SEASON CHART (SVG bar chart) =====
 (async function(){
-  const svg = document.getElementById("gamesSvg");
-  if (!svg) return;
-
   const raw = await d3.csv("data/chart_games_per_season.csv");
   const seasons = raw.map(d => ({
     y: +d.season_start_year,
@@ -1926,114 +1951,122 @@ heatSvg.append("g")
     richard: d.richard === "Y"
   }));
 
-  const W = 864, H = 150;
-  const padL = 28, padR = 0, padT = 28, padB = 20;
-  const innerW = W - padL - padR;
-  const innerH = H - padT - padB;
-  const maxG = 90;
-  const ns = "http://www.w3.org/2000/svg";
-
-  const n = seasons.length;
-  const gap = 1;
-  const barW = (innerW - gap * (n - 1)) / n;
-
   const decadeStarts = new Set([1920,1930,1940,1950,1960,1970,1980,1990,2000,2010,2020]);
-  const decadeStartsMobile = new Set([1920,1940,1960,1980,2000,2020]); // Every 20 years
-
-  seasons.forEach((s, i) => {
-    const bh = (s.g / maxG) * innerH;
-    const bx = padL + i * (barW + gap);
-    const by = padT + innerH - bh;
-
-    const rect = document.createElementNS(ns, "rect");
-    rect.setAttribute("class", s.richard ? "g-bar-richard" : "g-bar-default");
-    rect.setAttribute("x",      bx.toFixed(2));
-    rect.setAttribute("y",      by.toFixed(2));
-    rect.setAttribute("width",  Math.max(barW, 0.5).toFixed(2));
-    rect.setAttribute("height", bh.toFixed(2));
-    rect.setAttribute("rx", "0.5");
-
-    const title = document.createElementNS(ns, "title");
-    title.textContent = s.y + "-" + String(s.y + 1).slice(2) + ": " + s.g + " games";
-    rect.appendChild(title);
-    svg.appendChild(rect);
-
-    const cx = bx + barW / 2;
-    const isMobile = window.innerWidth <= 700;
-    const labelSet = isMobile ? decadeStartsMobile : decadeStarts;
-    if (labelSet.has(s.y)) {
-      const t = document.createElementNS(ns, "text");
-      t.setAttribute("class", "g-axis-label-decade");
-      t.setAttribute("x", cx.toFixed(2));
-      t.setAttribute("y", (padT + innerH + 14).toFixed(2));
-      t.setAttribute("text-anchor", "middle");
-      t.textContent = "'" + String(s.y).slice(2);
-      svg.appendChild(t);
-    }
-
-    if (s.richard) {
-      const lbl = document.createElementNS(ns, "text");
-      lbl.setAttribute("class", "g-callout");
-      lbl.setAttribute("x", (bx - 4).toFixed(2));
-      lbl.setAttribute("y", (by - 20).toFixed(2));
-      lbl.setAttribute("text-anchor", "end");
-      lbl.textContent = "1944-45";
-      svg.appendChild(lbl);
-
-      const sub = document.createElementNS(ns, "text");
-      sub.setAttribute("class", "g-callout-sub");
-      sub.setAttribute("x", (bx - 4).toFixed(2));
-      sub.setAttribute("y", (by - 8).toFixed(2));
-      sub.setAttribute("text-anchor", "end");
-      sub.textContent = "Richard’s 50-game season";
-      svg.appendChild(sub);
-
-      const line = document.createElementNS(ns, "line");
-      line.setAttribute("x1", (bx - 3).toFixed(2));
-      line.setAttribute("y1", (by - 4).toFixed(2));
-      line.setAttribute("x2", bx.toFixed(2));
-      line.setAttribute("y2", by.toFixed(2));
-      line.setAttribute("stroke", "#d21f2b");
-      line.setAttribute("stroke-width", "0.8");
-      line.setAttribute("opacity", "0.5");
-      svg.appendChild(line);
-    }
-  });
-
   const labeledValues = new Set([0,20,40,60,80]);
-  [10,20,30,40,50,60,70,80].forEach(v => {
-    const gy = padT + innerH - (v / maxG) * innerH;
-    const gridLine = document.createElementNS(ns, "line");
-    gridLine.setAttribute("x1", padL); gridLine.setAttribute("x2", padL + innerW);
-    gridLine.setAttribute("y1", gy.toFixed(2)); gridLine.setAttribute("y2", gy.toFixed(2));
-    gridLine.setAttribute("stroke", v === 50 ? "rgba(17,24,39,.18)" : "rgba(17,24,39,.07)");
-    gridLine.setAttribute("stroke-width", v === 50 ? "1" : "0.75");
-    svg.insertBefore(gridLine, svg.firstChild);
 
-    if (labeledValues.has(v)) {
-      const gridLabel = document.createElementNS(ns, "text");
-      gridLabel.setAttribute("class", "g-axis-label");
-      gridLabel.setAttribute("x", (padL - 4).toFixed(2));
-      gridLabel.setAttribute("y", (gy + 3).toFixed(2));
-      gridLabel.setAttribute("text-anchor", "end");
-      gridLabel.textContent = v;
-      svg.appendChild(gridLabel);
-    }
-  });
+  function drawChart(svgEl, W, H, padL, padR, padT, padB, fontSize, calloutSize, calloutSubSize, calloutOffsetY, calloutOffsetSub) {
+    const ns = "http://www.w3.org/2000/svg";
+    const innerW = W - padL - padR;
+    const innerH = H - padT - padB;
+    const maxG = 90;
+    const n = seasons.length;
+    const gap = 1;
+    const barW = (innerW - gap * (n - 1)) / n;
 
-  const zeroLabel = document.createElementNS(ns, "text");
-  zeroLabel.setAttribute("class", "g-axis-label");
-  zeroLabel.setAttribute("x", (padL - 4).toFixed(2));
-  zeroLabel.setAttribute("y", (padT + innerH + 3).toFixed(2));
-  zeroLabel.setAttribute("text-anchor", "end");
-  zeroLabel.textContent = "0";
-  svg.appendChild(zeroLabel);
+    seasons.forEach((s, i) => {
+      const bh = (s.g / maxG) * innerH;
+      const bx = padL + i * (barW + gap);
+      const by = padT + innerH - bh;
 
-  const axisLine = document.createElementNS(ns, "line");
-  axisLine.setAttribute("x1", padL); axisLine.setAttribute("x2", padL + innerW);
-  axisLine.setAttribute("y1", padT + innerH); axisLine.setAttribute("y2", padT + innerH);
-  axisLine.setAttribute("stroke", "rgba(17,24,39,.12)"); axisLine.setAttribute("stroke-width", "1");
-  svg.appendChild(axisLine);
+      const rect = document.createElementNS(ns, "rect");
+      rect.setAttribute("class", s.richard ? "g-bar-richard" : "g-bar-default");
+      rect.setAttribute("x",      bx.toFixed(2));
+      rect.setAttribute("y",      by.toFixed(2));
+      rect.setAttribute("width",  Math.max(barW, 0.5).toFixed(2));
+      rect.setAttribute("height", bh.toFixed(2));
+      rect.setAttribute("rx", "0.5");
+      const title = document.createElementNS(ns, "title");
+      title.textContent = s.y + "-" + String(s.y + 1).slice(2) + ": " + s.g + " games";
+      rect.appendChild(title);
+      svgEl.appendChild(rect);
+
+      const cx = bx + barW / 2;
+      if (decadeStarts.has(s.y)) {
+        const t = document.createElementNS(ns, "text");
+        t.setAttribute("class", "g-axis-label-decade");
+        t.setAttribute("x", cx.toFixed(2));
+        t.setAttribute("y", (padT + innerH + fontSize + 4).toFixed(2));
+        t.setAttribute("text-anchor", "middle");
+        t.setAttribute("font-size", fontSize);
+        t.textContent = "'" + String(s.y).slice(2);
+        svgEl.appendChild(t);
+      }
+
+      if (s.richard) {
+        const lbl = document.createElementNS(ns, "text");
+        lbl.setAttribute("class", "g-callout");
+        lbl.setAttribute("x", (bx - 4).toFixed(2));
+        lbl.setAttribute("y", (by - calloutOffsetY).toFixed(2));
+        lbl.setAttribute("text-anchor", "end");
+        lbl.setAttribute("font-size", calloutSize);
+        lbl.textContent = "1944-45";
+        svgEl.appendChild(lbl);
+
+        const sub = document.createElementNS(ns, "text");
+        sub.setAttribute("class", "g-callout-sub");
+        sub.setAttribute("x", (bx - 4).toFixed(2));
+        sub.setAttribute("y", (by - calloutOffsetSub).toFixed(2));
+        sub.setAttribute("text-anchor", "end");
+        sub.setAttribute("font-size", calloutSubSize);
+        sub.textContent = "Richard’s 50-game season";
+        svgEl.appendChild(sub);
+
+        const line = document.createElementNS(ns, "line");
+        line.setAttribute("x1", (bx - 3).toFixed(2));
+        line.setAttribute("y1", (by - 4).toFixed(2));
+        line.setAttribute("x2", bx.toFixed(2));
+        line.setAttribute("y2", by.toFixed(2));
+        line.setAttribute("stroke", "#d21f2b");
+        line.setAttribute("stroke-width", "1.2");
+        line.setAttribute("opacity", "0.5");
+        svgEl.appendChild(line);
+      }
+    });
+
+    [10,20,30,40,50,60,70,80].forEach(v => {
+      const gy = padT + innerH - (v / maxG) * innerH;
+      const gridLine = document.createElementNS(ns, "line");
+      gridLine.setAttribute("x1", padL); gridLine.setAttribute("x2", padL + innerW);
+      gridLine.setAttribute("y1", gy.toFixed(2)); gridLine.setAttribute("y2", gy.toFixed(2));
+      gridLine.setAttribute("stroke", v === 50 ? "rgba(17,24,39,.18)" : "rgba(17,24,39,.07)");
+      gridLine.setAttribute("stroke-width", v === 50 ? "1" : "0.75");
+      svgEl.insertBefore(gridLine, svgEl.firstChild);
+
+      if (labeledValues.has(v)) {
+        const gridLabel = document.createElementNS(ns, "text");
+        gridLabel.setAttribute("class", "g-axis-label");
+        gridLabel.setAttribute("x", (padL - 6).toFixed(2));
+        gridLabel.setAttribute("y", (gy + 4).toFixed(2));
+        gridLabel.setAttribute("text-anchor", "end");
+        gridLabel.setAttribute("font-size", fontSize);
+        gridLabel.textContent = v;
+        svgEl.appendChild(gridLabel);
+      }
+    });
+
+    const zeroLabel = document.createElementNS(ns, "text");
+    zeroLabel.setAttribute("class", "g-axis-label");
+    zeroLabel.setAttribute("x", (padL - 6).toFixed(2));
+    zeroLabel.setAttribute("y", (padT + innerH + 4).toFixed(2));
+    zeroLabel.setAttribute("text-anchor", "end");
+    zeroLabel.setAttribute("font-size", fontSize);
+    zeroLabel.textContent = "0";
+    svgEl.appendChild(zeroLabel);
+
+    const axisLine = document.createElementNS(ns, "line");
+    axisLine.setAttribute("x1", padL); axisLine.setAttribute("x2", padL + innerW);
+    axisLine.setAttribute("y1", padT + innerH); axisLine.setAttribute("y2", padT + innerH);
+    axisLine.setAttribute("stroke", "rgba(17,24,39,.12)"); axisLine.setAttribute("stroke-width", "1");
+    svgEl.appendChild(axisLine);
+  }
+
+  // Desktop: W=864, H=280
+  const desktop = document.getElementById("gamesSvg");
+  if (desktop) drawChart(desktop, 864, 280, 40, 20, 36, 28, 12, 14, 12, 20, 8);
+
+  // Mobile: W=864, H=560 (2x everything)
+  const mobile = document.getElementById("gamesSvgMobile");
+  if (mobile) drawChart(mobile, 864, 720, 80, 40, 80, 60, 48, 56, 48, 70, 20);
 })();
 </script>
 
@@ -2189,13 +2222,17 @@ heatSvg.append("g")
   const SPEED   = 0.003; // how fast it rocks (radians per px scrolled)
 
   function update() {
+    if (window.innerWidth <= 600) {
+      trophy.style.transform = "none";
+      return;
+    }
     const scrollY = window.scrollY || window.pageYOffset;
-    // Smooth sine wave based on scroll position
     const angle = Math.sin(scrollY * SPEED) * MAX_DEG;
     trophy.style.transform = "rotate(" + angle.toFixed(2) + "deg)";
   }
 
   window.addEventListener("scroll", update, { passive: true });
+  window.addEventListener("resize", update, { passive: true });
   update();
 })();
 // ===== END TROPHY ROCKING =====

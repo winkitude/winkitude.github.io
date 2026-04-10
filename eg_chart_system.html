@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <title>Ari Winkleman — EG Data Visualization System</title>
+  <meta name="description" content="How I built a chart system for Eurasia Group from the ground up." />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <link rel="shortcut icon" href="favicon.ico" />
+
+  <!-- FONTS -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.typekit.net/hty3kgh.css">
+
+  <!-- Base styles -->
+  <link href="css/normalize.css" rel="stylesheet" />
+  <link href="css/screen.css" rel="stylesheet" />
+
+  <style>
+    .cs-tag {
+      font: 700 12px/1 'Poppins', Arial, sans-serif;
+      color: var(--muted);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .cs-intro {
+      font: 400 clamp(16px, 1.45vw, 19px)/1.5 'Poppins', Arial, sans-serif;
+      max-width: 75ch;
+      margin: 0 auto 6px;
+    }
+
+    .meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      padding: 1.25rem 0;
+      border-top: 1px solid #ccc;
+      border-bottom: 1px solid #ccc;
+      margin: 1.5rem 0 2rem;
+    }
+
+    .meta-item {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .meta-label {
+      font: 700 11px/1 'Poppins', Arial, sans-serif;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .meta-value {
+      font: 500 13px/1.3 'Poppins', Arial, sans-serif;
+      color: var(--ink);
+    }
+
+    .img-placeholder {
+      width: 100%;
+      background: #ede8e0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font: 400 12px/1 'Poppins', Arial, sans-serif;
+      color: #999;
+      letter-spacing: .04em;
+      border-radius: 6px;
+    }
+    .img-placeholder.hero   { height: 400px; }
+    .img-placeholder.medium { height: 260px; }
+    .img-placeholder.small  { height: 180px; }
+
+    .img-caption {
+      font: 400 12px/1.5 'Poppins', Arial, sans-serif;
+      color: var(--muted);
+      margin-top: 8px;
+      margin-bottom: 2rem;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+      margin-bottom: 2rem;
+    }
+
+    .three-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .col-caption {
+      font: 400 12px/1.5 'Poppins', Arial, sans-serif;
+      color: var(--muted);
+      margin-top: 8px;
+    }
+
+    @media (max-width: 600px) {
+      .two-col, .three-col { grid-template-columns: 1fr; }
+    }
+
+    .section-label {
+      font: 700 12px/1 'Poppins', Arial, sans-serif;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    .body-copy {
+      font: 400 16px/1.6 'Poppins', Arial, sans-serif;
+      color: #2a2a2a;
+      max-width: 65ch;
+      margin-bottom: 1.25rem;
+    }
+
+    .pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 2rem;
+    }
+
+    .pill {
+      font: 400 12px/1 'Poppins', Arial, sans-serif;
+      border: 1px solid #ccc;
+      border-radius: 99px;
+      padding: 5px 14px;
+      color: var(--muted);
+    }
+
+    .callout {
+      border-left: 3px solid var(--ink);
+      padding: 0.5rem 1.25rem;
+      margin: 2rem 0;
+      max-width: 58ch;
+    }
+
+    .callout p {
+      font: 400 italic clamp(16px, 1.4vw, 18px)/1.65 "adobe-caslon-pro", serif;
+      color: var(--ink);
+      margin: 0;
+    }
+
+    .cs-section { padding: 2rem 0; }
+  </style>
+</head>
+
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="wrap" style="display:flex; justify-content:space-between; align-items:center;">
+      <div class="masthead">
+        <a href="index.html">Ari Winkleman</a>
+      </div>
+      <div class="contact-icons" style="display:flex; gap:16px; align-items:center;">
+        <a href="https://www.linkedin.com/in/ari-winkleman/" target="_blank" rel="noopener" aria-label="LinkedIn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M19 0h-14c-2.76 0-5 2.24-5 5v14c0 2.76 2.24 5 5 5h14c2.76 0 5-2.24 5-5v-14c0-2.76-2.24-5-5-5zm-11 19h-3v-10h3v10zm-1.5-11.27c-.97 0-1.75-.79-1.75-1.76 0-.97.78-1.76 1.75-1.76s1.75.79 1.75 1.76c0 .97-.78 1.76-1.75 1.76zm13.5 11.27h-3v-5.6c0-1.34-.03-3.07-1.87-3.07-1.87 0-2.16 1.46-2.16 2.97v5.7h-3v-10h2.88v1.36h.04c.4-.75 1.38-1.54 2.84-1.54 3.04 0 3.6 2 3.6 4.6v5.6z"/>
+          </svg>
+        </a>
+        <a href="mailto:ariswinkleman@gmail.com" aria-label="Email">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 13.065l-11.99-7.065h23.98l-11.99 7.065zm0 2.935l-12-7.065v11.065h24v-11.065l-12 7.065z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <br><br>
+
+  <main id="main">
+
+    <section class="intro">
+      <div class="wrap">
+        <p class="cs-tag">Case study</p>
+        <h2 class="prelede">EG Data Visualization System</h2>
+        <p class="cs-intro">Building a chart system from the ground up, simultaneously with a full rebrand, across multiple environments, for a team of 30-plus analysts.</p>
+
+        <div class="meta-row">
+          <div class="meta-item">
+            <span class="meta-label">Role</span>
+            <span class="meta-value">Art Director</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Scope</span>
+            <span class="meta-value">System design, guidelines, templates</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Team</span>
+            <span class="meta-value">2 to 5 designers</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Flagship</span>
+            <span class="meta-value">Top Risks</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap">
+        <img src="images/case/chart/chart-header.png" alt="EG chart system art" class="img-placeholder hero" />
+        <p class="img-caption">Top Risks, EG's flagship annual publication — the most visible application of the chart system.</p>
+      </div>
+    </section>
+
+    <hr class="rule" />
+
+    <section class="cs-section">
+      <div class="wrap">
+        <p class="section-label">The situation</p>
+        <p class="body-copy">Eurasia Group had just gone through a full rebrand. New identity, new colors, new direction. But none of that had made its way into the data work yet. I came in right as the rebrand was landing, which meant there was no clean starting point. We were figuring out the standards as the organization was already moving.</p>
+      </div>
+    </section>
+
+    <hr class="rule" />
+
+    <section class="cs-section">
+      <div class="wrap">
+        <p class="section-label">The problem</p>
+        <p class="body-copy">The charts felt dated. Technically they were fine, but they looked like something out of a financial terminal. Dense, generic, no real point of view. They weren't keeping up with where EG was trying to go.</p>
+        <p class="body-copy">On top of that, the same charts had to work in very different places. A PDF is fixed. An email gets opened on a desktop, a phone, a tablet, a web browser, and each one renders it differently. Getting that right meant figuring out the exact sizes where a chart would hold up everywhere, then building the typography around those numbers so nothing fell apart at smaller sizes.</p>
+        <p class="body-copy">The scale problem was harder. My team was two to five people. There were 30-plus analysts across the organization building their own charts, mostly outside our workflow. I couldn't review everything. Whatever we built had to be usable by people who weren't designers.</p>
+
+        <div class="two-col">
+          <div>
+           <img src="images/case/chart/old-chart.png" alt="Before EG chart example" class="img-placeholder medium" />
+            <p class="col-caption">Before: dense, generic, no editorial voice.</p>
+          </div>
+          <div>
+            <img src="images/case/chart/new-chart.png" alt="After EG chart example" class="img-placeholder medium" />
+            <p class="col-caption">After: cleaner, on-brand, direct headline.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="rule" />
+
+    <section class="cs-section">
+      <div class="wrap">
+        <p class="section-label">What I built</p>
+        <p class="body-copy">I started with sizing. Before color, before anything else, I worked out the dimensions a chart needed to survive every environment it would show up in. Typography followed from those numbers so that text stayed legible without anyone having to make judgment calls about it.</p>
+        <p class="body-copy">Color came later, through a lot of trial and error. We worked through combinations until we had a palette that felt right for the new brand, held up across different chart types, and met accessibility standards for contrast and colorblind use.</p>
+        <p class="body-copy">From there we started making calls about clarity. Spaghetti charts went away. We added light horizontal reference lines so readers could track across an axis without losing their place. Chart type selection became more intentional rather than defaulting to whatever was easiest.</p>
+
+        <div class="three-col">
+          <div>
+            <div class="img-placeholder small">Sizing specs</div>
+            <p class="col-caption">Calculated sizes across PDF, email, and web.</p>
+          </div>
+          <div>
+            <div class="img-placeholder small">Color palette</div>
+            <p class="col-caption">Accessible palette derived from the rebrand.</p>
+          </div>
+          <div>
+            <div class="img-placeholder small">Clarity rules</div>
+            <p class="col-caption">Before and after — spaghetti to structured.</p>
+          </div>
+        </div>
+
+        <p class="body-copy">For analysts using Macrobond, I built out specifications that kept their work structurally in line with ours. That tool actually helped enforce things because its constraints worked in our favor. Excel was a different story. Without any automation to hold the format in place, charts drifted. I built templates and documented the standards, but without finishing the macro toolkit we had started, there was nothing keeping it consistent beyond someone choosing to follow the rules.</p>
+        <p class="body-copy">Accessibility was part of the system too. Contrast ratios, colorblind-safe pairings, legibility at small sizes. Getting consistent adoption across the analyst team was tough. It required time and organizational attention that was hard to come by.</p>
+
+        <div class="pills">
+          <span class="pill">Sizing specifications</span>
+          <span class="pill">Accessibility standards</span>
+          <span class="pill">Color system</span>
+          <span class="pill">Chart clarity rules</span>
+          <span class="pill">Analyst tools — Macrobond</span>
+          <span class="pill">Analyst tools — Excel</span>
+        </div>
+      </div>
+    </section>
+
+    <hr class="rule" />
+
+    <section class="cs-section">
+      <div class="wrap">
+        <p class="section-label">What it touched</p>
+        <p class="body-copy">The system ran through everything we produced. The most visible place was Top Risks, EG's flagship annual publication. It gets read by heads of state, C-suite executives, and senior policymakers. Getting the visual language right there mattered in a way that's hard to quantify. Top Risks is not just a research product. It's a credibility signal. It has to look like it belongs in the room where it ends up.</p>
+
+        <div class="img-placeholder medium">Top Risks chart sample or spread</div>
+        <p class="img-caption">Top Risks 2024 — charts produced under the system.</p>
+      </div>
+    </section>
+
+    <hr class="rule" />
+
+    <section class="cs-section">
+      <div class="wrap">
+        <p class="section-label">What I learned</p>
+        <p class="body-copy">Designer adoption was solid. Analyst adoption was mixed, and the reason was structural. Macrobond kept people in line because the tool itself enforced the constraints. Excel didn't, and without finished automation there was no mechanism beyond personal discipline.</p>
+
+        <div class="callout">
+          <p>The gap between building a design system and getting people to actually use it is the real problem most organizations have. It's not usually a design problem. It's an infrastructure problem. That's where a lot of my focus is now.</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <a href="eg.html" class="dek">Back to Eurasia Group &rarr;</a><br />
+      <small class="dek" style="color:#6b6b6b;">&copy; <span id="year"></span> Ari Winkleman</small>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>

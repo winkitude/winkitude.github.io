@@ -364,7 +364,7 @@
           </svg>
         </a>
 
-        <a href="mailto:ariswinkleman@gmail.com" aria-label="Email">
+        <a href="/cdn-cgi/l/email-protection#6a0b1803191d030401060f070b042a0d070b030644090507" aria-label="Email">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
             <path d="M12 13.065l-11.99-7.065h23.98l-11.99 7.065zm0
                      2.935l-12-7.065v11.065h24v-11.065l-12
@@ -472,7 +472,7 @@ Some early-career ages may be off by a year due to birthdate cutoffs and mid-sea
 </p>
 
 <p>
-<a href="nhl_50.csv" download>Download the dataset (CSV)</a>
+<a href="data/nhl_50.csv" download>Download the dataset (CSV)</a>
 </p>
 
 </section>
@@ -482,7 +482,7 @@ Some early-career ages may be off by a year due to birthdate cutoffs and mid-sea
 
   <div class="tooltip" id="tooltip"></div>
 
-  <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
   <script>
   (async function () {
     const svg = d3.select("#svg");
@@ -527,7 +527,7 @@ Some early-career ages may be off by a year due to birthdate cutoffs and mid-sea
       return row;
     };
 
-    const all = await d3.csv("nhl_50.csv", parseRow);
+    const all = await d3.csv("data/nhl_50.csv", parseRow);
 
     const W = 1200;
     const leftNamesW = 230;
@@ -785,7 +785,7 @@ Some early-career ages may be off by a year due to birthdate cutoffs and mid-sea
 
 const heatSvg = d3.select("#heatmap")
 
-const raw = await d3.csv("nhl_50.csv")
+const raw = await d3.csv("data/nhl_50.csv")
 
 const ages = d3.range(18,46)
 
@@ -922,11 +922,4 @@ heatSvg.append("g")
  <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-8FK0VXYYGX"></script>
   <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-8FK0VXYYGX');
-  </script>
-
-</body>
-</html>
+    window.dataLayer = window.dat

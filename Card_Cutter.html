@@ -4,8 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Card Cutter — Plate Archive Tool</title>
-<script src="https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js"></script>
-
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -18,190 +16,81 @@
     align-items: center;
     padding: 32px 24px 60px;
   }
-  h1 {
-    font-size: 13px;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: #888;
-    margin-bottom: 6px;
-  }
-  .subtitle {
-    font-size: 11px;
-    color: #555;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    margin-bottom: 32px;
-  }
+  h1 { font-size: 13px; letter-spacing: 0.18em; text-transform: uppercase; color: #888; margin-bottom: 6px; }
+  .subtitle { font-size: 11px; color: #555; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 32px; }
 
-  /* Drop zone */
   #dropzone {
-    width: 480px;
-    max-width: 100%;
-    border: 1px dashed #444;
-    border-radius: 4px;
-    padding: 48px 24px;
-    text-align: center;
-    cursor: pointer;
-    transition: border-color 0.2s, background 0.2s;
-    margin-bottom: 32px;
+    width: 480px; max-width: 100%;
+    border: 1px dashed #444; border-radius: 4px;
+    padding: 48px 24px; text-align: center; cursor: pointer;
+    transition: border-color 0.2s, background 0.2s; margin-bottom: 32px;
   }
-  #dropzone:hover, #dropzone.drag-over {
-    border-color: #aaa;
-    background: #1a1a1a;
-  }
+  #dropzone:hover, #dropzone.drag-over { border-color: #aaa; background: #1a1a1a; }
   #dropzone p { font-size: 12px; color: #777; letter-spacing: 0.1em; }
   #dropzone p strong { color: #ccc; }
   #file-input { display: none; }
 
-  /* Main workspace */
-  #workspace { display: none; width: 100%; max-width: 1200px; }
-
-  .workspace-cols {
-    display: grid;
-    grid-template-columns: 1fr 340px;
-    gap: 24px;
-    align-items: start;
+  #status-bar {
+    display: none;
+    width: 480px; max-width: 100%;
+    background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 4px;
+    padding: 16px 20px; text-align: center;
+    font-size: 12px; color: #888; letter-spacing: 0.1em;
+    margin-bottom: 32px;
   }
+  .progress-bar { height: 2px; background: #222; border-radius: 1px; margin-top: 10px; }
+  .progress-fill { height: 100%; background: #c8b97a; border-radius: 1px; transition: width 0.3s; width: 0%; }
 
-  /* Canvas area */
+  #workspace { display: none; width: 100%; max-width: 1200px; }
+  .workspace-cols { display: grid; grid-template-columns: 1fr 340px; gap: 24px; align-items: start; }
+
   .canvas-wrap {
-    position: relative;
-    background: #1a1a1a;
-    border: 1px solid #2a2a2a;
-    border-radius: 4px;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    position: relative; background: #1a1a1a;
+    border: 1px solid #2a2a2a; border-radius: 4px;
+    overflow: hidden; display: flex; align-items: center; justify-content: center;
   }
   #main-canvas { display: block; max-width: 100%; cursor: crosshair; }
 
-  /* Panel */
-  .panel {
-    background: #161616;
-    border: 1px solid #2a2a2a;
-    border-radius: 4px;
-    padding: 20px;
-  }
-  .panel-section {
-    margin-bottom: 20px;
-    padding-bottom: 20px;
-    border-bottom: 1px solid #222;
-  }
+  .panel { background: #161616; border: 1px solid #2a2a2a; border-radius: 4px; padding: 20px; }
+  .panel-section { margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid #222; }
   .panel-section:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
-  .panel-label {
-    font-size: 10px;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: #666;
-    margin-bottom: 12px;
+  .panel-label { font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: #666; margin-bottom: 12px; }
+
+  .control-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; gap: 10px; }
+  .control-row label { font-size: 11px; color: #999; flex: 1; letter-spacing: 0.05em; }
+  .control-row input[type=range] { flex: 2; accent-color: #c8b97a; cursor: pointer; }
+  .control-row .val { font-size: 11px; color: #ccc; width: 36px; text-align: right; }
+  .control-row input[type=text] {
+    background: #222; border: 1px solid #333; border-radius: 3px;
+    color: #ccc; font-family: 'Courier New', monospace; font-size: 11px;
+    padding: 4px 6px; width: 100px;
   }
 
-  .control-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 10px;
-    gap: 10px;
-  }
-  .control-row label {
-    font-size: 11px;
-    color: #999;
-    flex: 1;
-    letter-spacing: 0.05em;
-  }
-  .control-row input[type=range] {
-    flex: 2;
-    accent-color: #c8b97a;
-    cursor: pointer;
-  }
-  .control-row .val {
-    font-size: 11px;
-    color: #ccc;
-    width: 36px;
-    text-align: right;
-  }
-  .control-row input[type=number] {
-    background: #222;
-    border: 1px solid #333;
-    border-radius: 3px;
-    color: #ccc;
-    font-family: 'Courier New', monospace;
-    font-size: 11px;
-    padding: 4px 6px;
-    width: 70px;
-    text-align: right;
-  }
-
-  /* Preview grid */
-  #preview-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 6px;
-    margin-top: 12px;
-  }
+  #preview-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 12px; }
   .preview-cell {
     background: repeating-conic-gradient(#2a2a2a 0% 25%, #1e1e1e 0% 50%) 0 0 / 10px 10px;
-    border-radius: 3px;
-    aspect-ratio: 1.58;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    cursor: pointer;
-    transition: outline 0.1s;
+    border-radius: 3px; aspect-ratio: 1.58; overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+    position: relative; cursor: pointer; transition: outline 0.1s;
   }
   .preview-cell:hover { outline: 1px solid #c8b97a; }
   .preview-cell canvas { max-width: 100%; max-height: 100%; display: block; }
-  .preview-cell .cell-num {
-    position: absolute;
-    bottom: 3px;
-    right: 5px;
-    font-size: 9px;
-    color: rgba(255,255,255,0.4);
-  }
+  .preview-cell .cell-num { position: absolute; bottom: 3px; right: 5px; font-size: 9px; color: rgba(255,255,255,0.4); }
 
-  /* Buttons */
   .btn {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    background: #c8b97a;
-    color: #111;
-    border: none;
-    border-radius: 3px;
-    font-family: 'Courier New', monospace;
-    font-size: 11px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: background 0.2s;
-    margin-bottom: 8px;
+    display: block; width: 100%; padding: 10px;
+    background: #c8b97a; color: #111; border: none; border-radius: 3px;
+    font-family: 'Courier New', monospace; font-size: 11px;
+    letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer;
+    transition: background 0.2s; margin-bottom: 8px;
   }
   .btn:hover { background: #ddd09a; }
-  .btn.secondary {
-    background: transparent;
-    border: 1px solid #333;
-    color: #888;
-  }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .btn.secondary { background: transparent; border: 1px solid #333; color: #888; }
   .btn.secondary:hover { border-color: #666; color: #ccc; }
 
-  /* BG removal */
-  .bg-swatch {
-    display: inline-block;
-    width: 16px;
-    height: 16px;
-    border-radius: 3px;
-    border: 1px solid #444;
-    vertical-align: middle;
-    margin-right: 6px;
-    cursor: pointer;
-  }
-
+  .bg-swatch { display: inline-block; width: 16px; height: 16px; border-radius: 3px; border: 1px solid #444; vertical-align: middle; margin-right: 6px; cursor: pointer; }
   .hint { font-size: 10px; color: #555; letter-spacing: 0.05em; line-height: 1.5; margin-top: 6px; }
-
-  #new-file-btn { margin-top: 16px; }
 </style>
 </head>
 <body>
@@ -216,86 +105,50 @@
   <input type="file" id="file-input" accept="image/*,.heif,.heic">
 </div>
 
+<div id="status-bar">
+  <span id="status-text">Loading…</span>
+  <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+</div>
+
 <div id="workspace">
   <div class="workspace-cols">
     <div class="canvas-wrap">
       <canvas id="main-canvas"></canvas>
     </div>
-
     <div class="panel">
-
-      <!-- Grid controls -->
       <div class="panel-section">
         <div class="panel-label">Grid Position</div>
-
-        <div class="control-row">
-          <label>Left margin</label>
-          <input type="range" id="margin-left" min="0" max="500" value="60">
-          <span class="val" id="val-ml">60</span>
-        </div>
-        <div class="control-row">
-          <label>Top margin</label>
-          <input type="range" id="margin-top" min="0" max="500" value="60">
-          <span class="val" id="val-mt">60</span>
-        </div>
-        <div class="control-row">
-          <label>Right margin</label>
-          <input type="range" id="margin-right" min="0" max="500" value="60">
-          <span class="val" id="val-mr">60</span>
-        </div>
-        <div class="control-row">
-          <label>Bottom margin</label>
-          <input type="range" id="margin-bottom" min="0" max="500" value="60">
-          <span class="val" id="val-mb">60</span>
-        </div>
-        <div class="control-row">
-          <label>H gap</label>
-          <input type="range" id="gap-h" min="0" max="200" value="40">
-          <span class="val" id="val-gh">40</span>
-        </div>
-        <div class="control-row">
-          <label>V gap</label>
-          <input type="range" id="gap-v" min="0" max="200" value="40">
-          <span class="val" id="val-gv">40</span>
-        </div>
-        <p class="hint">Drag the orange grid lines to adjust, or use sliders.</p>
+        <div class="control-row"><label>Left margin</label><input type="range" id="margin-left" min="0" max="500" value="60"><span class="val" id="val-ml">60</span></div>
+        <div class="control-row"><label>Top margin</label><input type="range" id="margin-top" min="0" max="500" value="60"><span class="val" id="val-mt">60</span></div>
+        <div class="control-row"><label>Right margin</label><input type="range" id="margin-right" min="0" max="500" value="60"><span class="val" id="val-mr">60</span></div>
+        <div class="control-row"><label>Bottom margin</label><input type="range" id="margin-bottom" min="0" max="500" value="60"><span class="val" id="val-mb">60</span></div>
+        <div class="control-row"><label>H gap</label><input type="range" id="gap-h" min="0" max="200" value="40"><span class="val" id="val-gh">40</span></div>
+        <div class="control-row"><label>V gap</label><input type="range" id="gap-v" min="0" max="200" value="40"><span class="val" id="val-gv">40</span></div>
+        <p class="hint">Drag the orange handles to adjust, or use sliders.</p>
       </div>
 
-      <!-- Corner radius -->
       <div class="panel-section">
         <div class="panel-label">Card Shape</div>
-        <div class="control-row">
-          <label>Corner radius</label>
-          <input type="range" id="corner-radius" min="0" max="80" value="22">
-          <span class="val" id="val-cr">22</span>
-        </div>
-        <p class="hint">Match the rounded corners of the physical plates.</p>
+        <div class="control-row"><label>Corner radius</label><input type="range" id="corner-radius" min="0" max="80" value="22"><span class="val" id="val-cr">22</span></div>
+        <p class="hint">Adjust to match rounded corners of the physical plates.</p>
       </div>
 
-      <!-- BG removal -->
       <div class="panel-section">
         <div class="panel-label">Background Removal</div>
-        <div class="control-row">
-          <label>Threshold</label>
-          <input type="range" id="bg-threshold" min="0" max="120" value="40">
-          <span class="val" id="val-bt">40</span>
-        </div>
+        <div class="control-row"><label>Threshold</label><input type="range" id="bg-threshold" min="0" max="120" value="40"><span class="val" id="val-bt">40</span></div>
         <div style="margin-bottom:8px;">
           <span style="font-size:11px;color:#999;">Sample color: </span>
           <span id="bg-swatch" class="bg-swatch" style="background:#fff;"></span>
           <span id="bg-hex" style="font-size:11px;color:#888;">#ffffff</span>
-          <span style="font-size:10px;color:#555; margin-left:8px;">← click image to pick</span>
         </div>
-        <p class="hint">Click any background area on the image to sample the exact color to remove.</p>
+        <p class="hint">Click any background area on the image to sample its color.</p>
       </div>
 
-      <!-- Previews -->
       <div class="panel-section">
-        <div class="panel-label">Preview (click to download single)</div>
+        <div class="panel-label">Preview <span style="color:#444">(click card to download single)</span></div>
         <div id="preview-grid"></div>
       </div>
 
-      <!-- Export -->
       <div class="panel-section">
         <div class="panel-label">Export</div>
         <div class="control-row">
@@ -304,11 +157,11 @@
           <span class="val" id="val-wq">95%</span>
         </div>
         <div class="control-row">
-          <label>Prefix</label>
-          <input type="text" id="name-prefix" value="plate" style="background:#222;border:1px solid #333;border-radius:3px;color:#ccc;font-family:'Courier New',monospace;font-size:11px;padding:4px 6px;width:100px;">
+          <label>File prefix</label>
+          <input type="text" id="name-prefix" value="plate">
         </div>
         <button class="btn" id="export-all-btn">↓ Export All 9 Cards</button>
-        <p class="hint" style="margin-top:4px;">Each card saved as plate-01.webp … plate-09.webp with transparent background.</p>
+        <p class="hint">Saves plate-01.webp … plate-09.webp at full scan resolution with transparent background.</p>
       </div>
 
       <button class="btn secondary" id="new-file-btn">Load New Scan</button>
@@ -318,333 +171,297 @@
 
 <script>
 // ─── State ────────────────────────────────────────────────────────────────────
-let sourceImage = null;
-let sourceCanvas = null; // full-res offscreen
+let sourceImage = null;      // HTMLImageElement — full res, never re-rasterized
+let thumbCanvas = null;      // small canvas for auto-detect sampling only
 let displayScale = 1;
 let bgColor = { r: 255, g: 255, b: 255 };
 
-let grid = {
-  marginLeft: 60,
-  marginTop: 60,
-  marginRight: 60,
-  marginBottom: 60,
-  gapH: 40,
-  gapV: 40,
-};
-
+let grid = { marginLeft: 60, marginTop: 60, marginRight: 60, marginBottom: 60, gapH: 40, gapV: 40 };
 let cornerRadius = 22;
 let bgThreshold = 40;
 let webpQuality = 0.95;
-
-// Drag state
 let dragging = null;
 
 // ─── Elements ─────────────────────────────────────────────────────────────────
-const dropzone = document.getElementById('dropzone');
-const fileInput = document.getElementById('file-input');
-const workspace = document.getElementById('workspace');
-const mainCanvas = document.getElementById('main-canvas');
-const ctx = mainCanvas.getContext('2d');
+const dropzone    = document.getElementById('dropzone');
+const fileInput   = document.getElementById('file-input');
+const statusBar   = document.getElementById('status-bar');
+const statusText  = document.getElementById('status-text');
+const progressFill = document.getElementById('progress-fill');
+const workspace   = document.getElementById('workspace');
+const mainCanvas  = document.getElementById('main-canvas');
+const ctx         = mainCanvas.getContext('2d');
 
-// ─── Drop zone ────────────────────────────────────────────────────────────────
+function setStatus(msg, pct) {
+  statusText.textContent = msg;
+  if (pct !== undefined) progressFill.style.width = pct + '%';
+}
+
+// ─── Drop / file input ────────────────────────────────────────────────────────
 dropzone.addEventListener('click', () => fileInput.click());
 dropzone.addEventListener('dragover', e => { e.preventDefault(); dropzone.classList.add('drag-over'); });
 dropzone.addEventListener('dragleave', () => dropzone.classList.remove('drag-over'));
-dropzone.addEventListener('drop', e => {
-  e.preventDefault();
-  dropzone.classList.remove('drag-over');
-  const file = e.dataTransfer.files[0];
-  if (file) loadFile(file);
-});
+dropzone.addEventListener('drop', e => { e.preventDefault(); dropzone.classList.remove('drag-over'); if (e.dataTransfer.files[0]) loadFile(e.dataTransfer.files[0]); });
 fileInput.addEventListener('change', () => { if (fileInput.files[0]) loadFile(fileInput.files[0]); });
-
 document.getElementById('new-file-btn').addEventListener('click', () => {
   workspace.style.display = 'none';
+  statusBar.style.display = 'none';
   dropzone.style.display = '';
-  sourceImage = null;
+  sourceImage = null; thumbCanvas = null;
   fileInput.value = '';
 });
 
 // ─── Load file ────────────────────────────────────────────────────────────────
-function setStatus(msg) {
-  const p = dropzone.querySelector('p');
-  if (p) p.textContent = msg;
-}
-
 async function loadFile(file) {
+  dropzone.style.display = 'none';
+  statusBar.style.display = '';
+  setStatus('Loading image…', 10);
+
+  // HEIF conversion via heic2any if available
   const isHeif = /\.(heic|heif)$/i.test(file.name) || file.type === 'image/heic' || file.type === 'image/heif';
   if (isHeif) {
-    setStatus('Converting HEIF… please wait');
+    if (typeof heic2any === 'undefined') {
+      alert('HEIF converter not loaded. Try refreshing, or export as JPEG first.');
+      resetToDropzone(); return;
+    }
+    setStatus('Converting HEIF… this may take a moment', 20);
     try {
-      let result = await heic2any({ blob: file, toType: 'image/jpeg', quality: 1 });
+      let result = await heic2any({ blob: file, toType: 'image/jpeg', quality: 0.98 });
       if (Array.isArray(result)) result = result[0];
       file = new File([result], file.name.replace(/\.(heic|heif)$/i, '.jpg'), { type: 'image/jpeg' });
     } catch(e) {
-      setStatus('Drop scan here');
-      alert('Could not convert HEIF file: ' + (e.message || e));
-      return;
+      alert('Could not convert HEIF: ' + (e.message || e));
+      resetToDropzone(); return;
     }
   }
-  setStatus('Loading…');
+
+  // Use createImageBitmap directly on the file blob.
+  // Pass resizeWidth to cap decode resolution — never loads full image into memory.
+  setStatus('Decoding image…', 30);
+
+  // First get the natural dimensions without full decode
   const url = URL.createObjectURL(file);
-  const img = new Image();
-  img.onerror = () => {
-    setStatus('Drop scan here');
-    alert('Could not load image. Try exporting it as JPEG or PNG first.');
+  const probe = new Image();
+  probe.onerror = () => { URL.revokeObjectURL(url); alert('Could not read image.'); resetToDropzone(); };
+  probe.onload = async () => {
     URL.revokeObjectURL(url);
+    const iw = probe.width, ih = probe.height;
+    probe.src = ''; // free it
+    console.log(`Image dimensions: ${iw}×${ih} (${(iw*ih/1e6).toFixed(1)} MP)`);
+
+    // Cap working resolution: 6000px max side = ~2000px per card = excellent quality
+    const MAX_DIM = 6000;
+    const scale = Math.min(MAX_DIM / iw, MAX_DIM / ih, 1);
+    const workW = Math.round(iw * scale);
+    const workH = Math.round(ih * scale);
+    console.log(`Working at: ${workW}×${workH}`);
+
+    setStatus('Resizing to working resolution…', 50);
+    try {
+      const bitmap = await createImageBitmap(file, { resizeWidth: workW, resizeHeight: workH, resizeQuality: 'high' });
+
+      setStatus('Building canvas…', 65);
+      sourceCanvas = document.createElement('canvas');
+      sourceCanvas.width = workW;
+      sourceCanvas.height = workH;
+      sourceCanvas.getContext('2d').drawImage(bitmap, 0, 0);
+      bitmap.close();
+      sourceImage = sourceCanvas; // sourceImage now points to the capped canvas
+
+      // Build small thumb for grid detection
+      const THUMB = 1500;
+      const ts = Math.min(THUMB / workW, THUMB / workH, 1);
+      thumbCanvas = document.createElement('canvas');
+      thumbCanvas.width  = Math.round(workW * ts);
+      thumbCanvas.height = Math.round(workH * ts);
+      thumbCanvas.getContext('2d').drawImage(sourceCanvas, 0, 0, thumbCanvas.width, thumbCanvas.height);
+
+      setStatus('Detecting grid…', 80);
+      setTimeout(() => {
+        try {
+          autoDetectGrid(thumbCanvas.width, thumbCanvas.height, ts);
+
+          document.getElementById('margin-left').max   = Math.floor(workW / 4);
+          document.getElementById('margin-right').max  = Math.floor(workW / 4);
+          document.getElementById('margin-top').max    = Math.floor(workH / 4);
+          document.getElementById('margin-bottom').max = Math.floor(workH / 4);
+          document.getElementById('gap-h').max = Math.floor(workW / 6);
+          document.getElementById('gap-v').max = Math.floor(workH / 6);
+
+          statusBar.style.display = 'none';
+          workspace.style.display = '';
+          syncSlidersFromGrid();
+          fitCanvas();
+          renderAll();
+        } catch(err) {
+          console.error(err);
+          alert('Error detecting grid: ' + (err.message || err));
+          resetToDropzone();
+        }
+      }, 50);
+    } catch(err) {
+      console.error(err);
+      alert('Could not process image: ' + (err.message || err) + '\n\nTry exporting as JPEG first.');
+      resetToDropzone();
+    }
   };
-  img.onload = () => {
-    sourceImage = img;
-
-    // Full-res offscreen canvas
-    sourceCanvas = document.createElement('canvas');
-    sourceCanvas.width = img.width;
-    sourceCanvas.height = img.height;
-    sourceCanvas.getContext('2d').drawImage(img, 0, 0);
-
-    // Auto-detect margins by scanning for non-white
-    autoDetectGrid(img.width, img.height);
-
-    // Set slider maxes based on image size
-    document.getElementById('margin-left').max = Math.floor(img.width / 4);
-    document.getElementById('margin-right').max = Math.floor(img.width / 4);
-    document.getElementById('margin-top').max = Math.floor(img.height / 4);
-    document.getElementById('margin-bottom').max = Math.floor(img.height / 4);
-    document.getElementById('gap-h').max = Math.floor(img.width / 6);
-    document.getElementById('gap-v').max = Math.floor(img.height / 6);
-
-    dropzone.style.display = 'none';
-    workspace.style.display = '';
-
-    syncSlidersFromGrid();
-    fitCanvas();
-    renderAll();
-    URL.revokeObjectURL(url);
-  };
-  img.src = url;
+  probe.src = url;
 }
 
-function autoDetectGrid(w, h) {
-  // Sample the image to find non-white content bounds
-  const sc = sourceCanvas;
-  const sCtx = sc.getContext('2d');
-  const data = sCtx.getImageData(0, 0, w, h).data;
-  const threshold = 200; // treat as white if all channels > threshold
+function resetToDropzone() {
+  statusBar.style.display = 'none';
+  dropzone.style.display = '';
+  fileInput.value = '';
+}
+
+// ─── Auto detect grid ─────────────────────────────────────────────────────────
+// Operates on the small thumbCanvas; results scaled back to source coords
+function autoDetectGrid(tw, th, thumbScale) {
+  const tCtx = thumbCanvas.getContext('2d');
+  const data = tCtx.getImageData(0, 0, tw, th).data;
+  const WH = 200; // white threshold
 
   const isWhite = (x, y) => {
-    const i = (y * w + x) * 4;
-    return data[i] > threshold && data[i+1] > threshold && data[i+2] > threshold;
+    const i = (y * tw + x) * 4;
+    return data[i] > WH && data[i+1] > WH && data[i+2] > WH;
   };
 
-  // Find leftmost non-white col
-  let left = 0;
-  outer: for (let x = 0; x < w/3; x++) {
-    for (let y = 0; y < h; y++) {
-      if (!isWhite(x, y)) { left = x; break outer; }
-    }
-  }
-  let right = 0;
-  outer2: for (let x = w-1; x > w*2/3; x--) {
-    for (let y = 0; y < h; y++) {
-      if (!isWhite(x, y)) { right = w - x; break outer2; }
-    }
-  }
-  let top = 0;
-  outer3: for (let y = 0; y < h/3; y++) {
-    for (let x = 0; x < w; x++) {
-      if (!isWhite(x, y)) { top = y; break outer3; }
-    }
-  }
-  let bottom = 0;
-  outer4: for (let y = h-1; y > h*2/3; y--) {
-    for (let x = 0; x < w; x++) {
-      if (!isWhite(x, y)) { bottom = h - y; break outer4; }
-    }
-  }
+  let left = 0, right = 0, top = 0, bottom = 0;
+  outer_l: for (let x = 0; x < tw/3; x++)  for (let y = 0; y < th; y++)  if (!isWhite(x,y)) { left=x; break outer_l; }
+  outer_r: for (let x = tw-1; x > tw*2/3; x--) for (let y = 0; y < th; y++) if (!isWhite(x,y)) { right=tw-x; break outer_r; }
+  outer_t: for (let y = 0; y < th/3; y++)  for (let x = 0; x < tw; x++)  if (!isWhite(x,y)) { top=y; break outer_t; }
+  outer_b: for (let y = th-1; y > th*2/3; y--) for (let x = 0; x < tw; x++) if (!isWhite(x,y)) { bottom=th-y; break outer_b; }
 
-  // Content area
-  const contentW = w - left - right;
-  const contentH = h - top - bottom;
+  // Gap detection — horizontal scan at midpoint
+  const midY = Math.floor(th / 2);
+  const midX = Math.floor(tw / 2);
+  let runsH = [], runsV = [];
+  let inW = false, rs = 0;
+  for (let x = left; x < tw-right; x++) {
+    const w = isWhite(x, midY);
+    if (w && !inW) { inW=true; rs=x; }
+    else if (!w && inW) { inW=false; const l=x-rs; if (l>3) runsH.push(l); }
+  }
+  inW = false;
+  for (let y = top; y < th-bottom; y++) {
+    const w = isWhite(midX, y);
+    if (w && !inW) { inW=true; rs=y; }
+    else if (!w && inW) { inW=false; const l=y-rs; if (l>3) runsV.push(l); }
+  }
+  const median = arr => { const s=[...arr].sort((a,b)=>a-b); return s[Math.floor(s.length/2)] || 0; };
+  const gapH = Math.max(8, median(runsH));
+  const gapV = Math.max(8, median(runsV));
 
-  // Estimate gap by scanning horizontally in middle row
-  const midY = Math.floor(h / 2);
-  let whiteRuns = [];
-  let inWhite = false, runStart = 0;
-  for (let x = left; x < w - right; x++) {
-    const w_ = isWhite(x, midY);
-    if (w_ && !inWhite) { inWhite = true; runStart = x; }
-    else if (!w_ && inWhite) { 
-      inWhite = false; 
-      const len = x - runStart;
-      if (len > 5) whiteRuns.push(len); 
-    }
-  }
-  // Take median of interior white runs as gap estimate
-  let gapH = 40;
-  if (whiteRuns.length >= 2) {
-    const sorted = [...whiteRuns].sort((a,b) => a-b);
-    gapH = sorted[Math.floor(sorted.length/2)];
-  }
-
-  // Vertical gap similarly
-  const midX = Math.floor(w / 2);
-  let whiteRunsV = [];
-  let inWhiteV = false, runStartV = 0;
-  for (let y = top; y < h - bottom; y++) {
-    const wv = isWhite(midX, y);
-    if (wv && !inWhiteV) { inWhiteV = true; runStartV = y; }
-    else if (!wv && inWhiteV) {
-      inWhiteV = false;
-      const len = y - runStartV;
-      if (len > 5) whiteRunsV.push(len);
-    }
-  }
-  let gapV = 40;
-  if (whiteRunsV.length >= 2) {
-    const sorted = [...whiteRunsV].sort((a,b) => a-b);
-    gapV = sorted[Math.floor(sorted.length/2)];
-  }
-
-  grid.marginLeft = Math.max(0, left - 5);
-  grid.marginTop = Math.max(0, top - 5);
-  grid.marginRight = Math.max(0, right - 5);
-  grid.marginBottom = Math.max(0, bottom - 5);
-  grid.gapH = Math.max(8, gapH);
-  grid.gapV = Math.max(8, gapV);
+  // Scale back to source image coordinates
+  const S = 1 / thumbScale;
+  grid.marginLeft   = Math.max(0, Math.round((left   - 3) * S));
+  grid.marginTop    = Math.max(0, Math.round((top    - 3) * S));
+  grid.marginRight  = Math.max(0, Math.round((right  - 3) * S));
+  grid.marginBottom = Math.max(0, Math.round((bottom - 3) * S));
+  grid.gapH = Math.max(8, Math.round(gapH * S));
+  grid.gapV = Math.max(8, Math.round(gapV * S));
 }
 
-// ─── Fit canvas to container ──────────────────────────────────────────────────
+// ─── Fit display canvas ───────────────────────────────────────────────────────
 function fitCanvas() {
   if (!sourceImage) return;
   const maxW = mainCanvas.parentElement.clientWidth - 2;
   const maxH = window.innerHeight * 0.85;
   const ratio = Math.min(maxW / sourceImage.width, maxH / sourceImage.height, 1);
   displayScale = ratio;
-  mainCanvas.width = Math.round(sourceImage.width * ratio);
+  mainCanvas.width  = Math.round(sourceImage.width  * ratio);
   mainCanvas.height = Math.round(sourceImage.height * ratio);
 }
-
 window.addEventListener('resize', () => { if (sourceImage) { fitCanvas(); renderAll(); } });
 
-// ─── Render main canvas ───────────────────────────────────────────────────────
+// ─── Render display canvas ────────────────────────────────────────────────────
 function renderAll() {
   if (!sourceImage) return;
-  const w = mainCanvas.width;
-  const h = mainCanvas.height;
-  ctx.clearRect(0, 0, w, h);
-
-  // Draw image
-  ctx.drawImage(sourceImage, 0, 0, w, h);
-
-  // Draw grid overlay
-  drawGrid();
-
-  // Update previews
+  ctx.clearRect(0, 0, mainCanvas.width, mainCanvas.height);
+  ctx.drawImage(sourceImage, 0, 0, mainCanvas.width, mainCanvas.height);
+  drawGridOverlay();
   updatePreviews();
 }
 
-function drawGrid() {
+function drawGridOverlay() {
   const s = displayScale;
-  const iw = sourceImage.width;
-  const ih = sourceImage.height;
-
-  const ml = grid.marginLeft * s;
-  const mt = grid.marginTop * s;
-  const mr = grid.marginRight * s;
-  const mb = grid.marginBottom * s;
-  const gh = grid.gapH * s;
-  const gv = grid.gapV * s;
-
-  const totalW = mainCanvas.width;
-  const totalH = mainCanvas.height;
-
-  const contentW = totalW - ml - mr;
-  const contentH = totalH - mt - mb;
-  const cellW = (contentW - 2 * gh) / 3;
-  const cellH = (contentH - 2 * gv) / 3;
+  const { ml, mt, mr, mb, gh, gv, cellW, cellH } = getDisplayDims();
 
   ctx.save();
-  ctx.strokeStyle = 'rgba(200, 185, 122, 0.85)';
+  ctx.strokeStyle = 'rgba(200,185,122,0.85)';
   ctx.lineWidth = 1.5;
-  ctx.setLineDash([4, 3]);
-
+  ctx.setLineDash([4,3]);
   for (let row = 0; row < 3; row++) {
     for (let col = 0; col < 3; col++) {
       const x = ml + col * (cellW + gh);
       const y = mt + row * (cellH + gv);
-      const cr = cornerRadius * s;
-
       ctx.beginPath();
-      roundRect(ctx, x, y, cellW, cellH, cr);
+      roundRect(ctx, x, y, cellW, cellH, cornerRadius * s);
       ctx.stroke();
     }
   }
-
   ctx.restore();
 
-  // Draw drag handles
-  const handles = getHandles(s, cellW, cellH, ml, mt, gh, gv);
+  // Handles
+  const handles = getHandles();
   handles.forEach(h => {
     ctx.save();
     ctx.fillStyle = '#c8b97a';
     ctx.beginPath();
-    ctx.arc(h.x, h.y, 5, 0, Math.PI * 2);
+    ctx.arc(h.x, h.y, 5, 0, Math.PI*2);
     ctx.fill();
     ctx.restore();
   });
 }
 
-function roundRect(ctx, x, y, w, h, r) {
-  r = Math.min(r, w/2, h/2);
-  ctx.moveTo(x + r, y);
-  ctx.lineTo(x + w - r, y);
-  ctx.quadraticCurveTo(x + w, y, x + w, y + r);
-  ctx.lineTo(x + w, y + h - r);
-  ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
-  ctx.lineTo(x + r, y + h);
-  ctx.quadraticCurveTo(x, y + h, x, y + h - r);
-  ctx.lineTo(x, y + r);
-  ctx.quadraticCurveTo(x, y, x + r, y);
-  ctx.closePath();
+function getDisplayDims() {
+  const s = displayScale;
+  const ml = grid.marginLeft * s, mt = grid.marginTop * s;
+  const mr = grid.marginRight * s, mb = grid.marginBottom * s;
+  const gh = grid.gapH * s, gv = grid.gapV * s;
+  const cellW = (mainCanvas.width  - ml - mr - 2*gh) / 3;
+  const cellH = (mainCanvas.height - mt - mb - 2*gv) / 3;
+  return { ml, mt, mr, mb, gh, gv, cellW, cellH };
 }
 
-function getHandles(s, cellW, cellH, ml, mt, gh, gv) {
-  const totalW = mainCanvas.width;
-  const totalH = mainCanvas.height;
+function getHandles() {
+  const { ml, mt, mr, mb, gh, gv, cellW, cellH } = getDisplayDims();
+  const W = mainCanvas.width, H = mainCanvas.height;
   return [
-    { id: 'ml', x: ml, y: totalH/2, axis: 'x', key: 'marginLeft', dir: 1 },
-    { id: 'mr', x: totalW - grid.marginRight*s, y: totalH/2, axis: 'x', key: 'marginRight', dir: -1 },
-    { id: 'mt', x: totalW/2, y: mt, axis: 'y', key: 'marginTop', dir: 1 },
-    { id: 'mb', x: totalW/2, y: totalH - grid.marginBottom*s, axis: 'y', key: 'marginBottom', dir: -1 },
-    { id: 'gh', x: ml + cellW + gh/2, y: totalH/2, axis: 'x', key: 'gapH', dir: 1, gap: true },
-    { id: 'gv', x: totalW/2, y: mt + cellH + gv/2, axis: 'y', key: 'gapV', dir: 1, gap: true },
+    { id:'ml', x:ml,   y:H/2, axis:'x', key:'marginLeft',   dir:1 },
+    { id:'mr', x:W-mr, y:H/2, axis:'x', key:'marginRight',  dir:-1 },
+    { id:'mt', x:W/2,  y:mt,  axis:'y', key:'marginTop',    dir:1 },
+    { id:'mb', x:W/2,  y:H-mb,axis:'y', key:'marginBottom', dir:-1 },
+    { id:'gh', x:ml+cellW+gh/2, y:H/2, axis:'x', key:'gapH', dir:1, gap:true },
+    { id:'gv', x:W/2, y:mt+cellH+gv/2, axis:'y', key:'gapV', dir:1, gap:true },
   ];
+}
+
+function roundRect(ctx, x, y, w, h, r) {
+  r = Math.min(r, w/2, h/2);
+  ctx.moveTo(x+r, y); ctx.lineTo(x+w-r, y);
+  ctx.quadraticCurveTo(x+w, y, x+w, y+r); ctx.lineTo(x+w, y+h-r);
+  ctx.quadraticCurveTo(x+w, y+h, x+w-r, y+h); ctx.lineTo(x+r, y+h);
+  ctx.quadraticCurveTo(x, y+h, x, y+h-r); ctx.lineTo(x, y+r);
+  ctx.quadraticCurveTo(x, y, x+r, y); ctx.closePath();
 }
 
 // ─── Drag handles ─────────────────────────────────────────────────────────────
 mainCanvas.addEventListener('mousedown', e => {
-  const rect = mainCanvas.getBoundingClientRect();
-  const mx = e.clientX - rect.left;
-  const my = e.clientY - rect.top;
-  const s = displayScale;
-  const { cellW, cellH, ml, mt, gh, gv } = getCellDims(s);
-  const handles = getHandles(s, cellW, cellH, ml, mt, gh, gv);
-
-  // Check handle hits
+  const {x: mx, y: my} = canvasPos(e);
+  const handles = getHandles();
   for (const h of handles) {
-    const dist = Math.hypot(mx - h.x, my - h.y);
-    if (dist < 12) {
-      dragging = { handle: h, startX: mx, startY: my, startVal: grid[h.key] };
+    if (Math.hypot(mx-h.x, my-h.y) < 12) {
+      dragging = { handle:h, startX:mx, startY:my, startVal:grid[h.key] };
       return;
     }
   }
-
-  // BG color pick
-  const imgX = Math.round(mx / s);
-  const imgY = Math.round(my / s);
-  const px = sourceCanvas.getContext('2d').getImageData(imgX, imgY, 1, 1).data;
-  bgColor = { r: px[0], g: px[1], b: px[2] };
-  const hex = '#' + [px[0],px[1],px[2]].map(v => v.toString(16).padStart(2,'0')).join('');
+  // BG color pick from thumb canvas
+  const tx = Math.round((mx / mainCanvas.width)  * thumbCanvas.width);
+  const ty = Math.round((my / mainCanvas.height) * thumbCanvas.height);
+  const px = thumbCanvas.getContext('2d').getImageData(tx, ty, 1, 1).data;
+  bgColor = { r:px[0], g:px[1], b:px[2] };
+  const hex = '#' + [px[0],px[1],px[2]].map(v=>v.toString(16).padStart(2,'0')).join('');
   document.getElementById('bg-swatch').style.background = hex;
   document.getElementById('bg-hex').textContent = hex;
   renderAll();
@@ -652,163 +469,114 @@ mainCanvas.addEventListener('mousedown', e => {
 
 mainCanvas.addEventListener('mousemove', e => {
   if (!dragging) return;
-  const rect = mainCanvas.getBoundingClientRect();
-  const mx = e.clientX - rect.left;
-  const my = e.clientY - rect.top;
-  const s = displayScale;
+  const {x: mx, y: my} = canvasPos(e);
   const h = dragging.handle;
-  let delta = h.axis === 'x' ? (mx - dragging.startX) : (my - dragging.startY);
-  delta = delta / s * h.dir;
-  if (h.gap) {
-    grid[h.key] = Math.max(0, Math.round(dragging.startVal + delta * 2));
-  } else {
-    grid[h.key] = Math.max(0, Math.round(dragging.startVal + delta));
-  }
+  const s = displayScale;
+  let delta = (h.axis==='x' ? mx-dragging.startX : my-dragging.startY) / s * h.dir;
+  if (h.gap) delta *= 2;
+  grid[h.key] = Math.max(0, Math.round(dragging.startVal + delta));
   syncSlidersFromGrid();
   renderAll();
 });
-
-mainCanvas.addEventListener('mouseup', () => { dragging = null; });
+mainCanvas.addEventListener('mouseup',    () => { dragging = null; });
 mainCanvas.addEventListener('mouseleave', () => { dragging = null; });
 
-function getCellDims(s) {
-  const ml = grid.marginLeft * s;
-  const mt = grid.marginTop * s;
-  const mr = grid.marginRight * s;
-  const mb = grid.marginBottom * s;
-  const gh = grid.gapH * s;
-  const gv = grid.gapV * s;
-  const totalW = mainCanvas.width;
-  const totalH = mainCanvas.height;
-  const contentW = totalW - ml - mr;
-  const contentH = totalH - mt - mb;
-  const cellW = (contentW - 2 * gh) / 3;
-  const cellH = (contentH - 2 * gv) / 3;
-  return { cellW, cellH, ml, mt, gh, gv };
+function canvasPos(e) {
+  const r = mainCanvas.getBoundingClientRect();
+  return { x: e.clientX - r.left, y: e.clientY - r.top };
 }
 
 // ─── Sliders ──────────────────────────────────────────────────────────────────
 function syncSlidersFromGrid() {
-  const map = {
-    'margin-left': ['marginLeft', 'val-ml'],
-    'margin-top': ['marginTop', 'val-mt'],
-    'margin-right': ['marginRight', 'val-mr'],
-    'margin-bottom': ['marginBottom', 'val-mb'],
-    'gap-h': ['gapH', 'val-gh'],
-    'gap-v': ['gapV', 'val-gv'],
-  };
-  for (const [id, [key, valId]] of Object.entries(map)) {
-    const el = document.getElementById(id);
-    el.value = grid[key];
-    document.getElementById(valId).textContent = grid[key];
-  }
+  const map = [
+    ['margin-left','marginLeft','val-ml'],['margin-top','marginTop','val-mt'],
+    ['margin-right','marginRight','val-mr'],['margin-bottom','marginBottom','val-mb'],
+    ['gap-h','gapH','val-gh'],['gap-v','gapV','val-gv'],
+  ];
+  map.forEach(([id,key,vid]) => {
+    document.getElementById(id).value = grid[key];
+    document.getElementById(vid).textContent = grid[key];
+  });
 }
-
-['margin-left','margin-top','margin-right','margin-bottom','gap-h','gap-v'].forEach(id => {
-  const el = document.getElementById(id);
-  const keyMap = {
-    'margin-left': 'marginLeft','margin-top': 'marginTop',
-    'margin-right': 'marginRight','margin-bottom': 'marginBottom',
-    'gap-h': 'gapH','gap-v': 'gapV'
-  };
-  const valMap = {
-    'margin-left':'val-ml','margin-top':'val-mt','margin-right':'val-mr',
-    'margin-bottom':'val-mb','gap-h':'val-gh','gap-v':'val-gv'
-  };
-  el.addEventListener('input', () => {
-    grid[keyMap[id]] = parseInt(el.value);
-    document.getElementById(valMap[id]).textContent = el.value;
+[
+  ['margin-left','marginLeft','val-ml'],['margin-top','marginTop','val-mt'],
+  ['margin-right','marginRight','val-mr'],['margin-bottom','marginBottom','val-mb'],
+  ['gap-h','gapH','val-gh'],['gap-v','gapV','val-gv'],
+].forEach(([id,key,vid]) => {
+  document.getElementById(id).addEventListener('input', function() {
+    grid[key] = parseInt(this.value);
+    document.getElementById(vid).textContent = this.value;
     renderAll();
   });
 });
-
 document.getElementById('corner-radius').addEventListener('input', function() {
   cornerRadius = parseInt(this.value);
   document.getElementById('val-cr').textContent = this.value;
   renderAll();
 });
-
 document.getElementById('bg-threshold').addEventListener('input', function() {
   bgThreshold = parseInt(this.value);
   document.getElementById('val-bt').textContent = this.value;
   renderAll();
 });
-
 document.getElementById('webp-quality').addEventListener('input', function() {
   webpQuality = parseFloat(this.value);
-  document.getElementById('val-wq').textContent = Math.round(webpQuality * 100) + '%';
+  document.getElementById('val-wq').textContent = Math.round(webpQuality*100)+'%';
 });
 
 // ─── Card extraction ──────────────────────────────────────────────────────────
+// Draws directly from sourceImage — no full-res canvas ever held in memory
 function extractCard(row, col) {
-  if (!sourceCanvas) return null;
-  const iw = sourceImage.width;
-  const ih = sourceImage.height;
+  if (!sourceImage) return null;
+  const iw = sourceImage.width, ih = sourceImage.height;
+  const { marginLeft:ml, marginTop:mt, marginRight:mr, marginBottom:mb, gapH:gh, gapV:gv } = grid;
+  const contentW = iw - ml - mr, contentH = ih - mt - mb;
+  const cellW = Math.floor((contentW - 2*gh) / 3);
+  const cellH = Math.floor((contentH - 2*gv) / 3);
+  const sx = Math.round(ml + col*(cellW+gh));
+  const sy = Math.round(mt + row*(cellH+gv));
 
-  const ml = grid.marginLeft;
-  const mt = grid.marginTop;
-  const mr = grid.marginRight;
-  const mb = grid.marginBottom;
-  const gh = grid.gapH;
-  const gv = grid.gapV;
-
-  const contentW = iw - ml - mr;
-  const contentH = ih - mt - mb;
-  const cellW = Math.floor((contentW - 2 * gh) / 3);
-  const cellH = Math.floor((contentH - 2 * gv) / 3);
-
-  const x = Math.round(ml + col * (cellW + gh));
-  const y = Math.round(mt + row * (cellH + gv));
-
-  // Create output canvas
   const out = document.createElement('canvas');
-  out.width = cellW;
-  out.height = cellH;
-  const octx = out.getContext('2d');
+  out.width = cellW; out.height = cellH;
+  const oc = out.getContext('2d');
 
-  // Clip to rounded rect
-  octx.save();
-  octx.beginPath();
-  roundRect(octx, 0, 0, cellW, cellH, cornerRadius);
-  octx.clip();
+  // Clip to rounded rect, then draw just this crop from the source image
+  oc.save();
+  oc.beginPath();
+  roundRect(oc, 0, 0, cellW, cellH, cornerRadius);
+  oc.clip();
+  oc.drawImage(sourceImage, sx, sy, cellW, cellH, 0, 0, cellW, cellH);
+  oc.restore();
 
-  // Draw card region
-  octx.drawImage(sourceCanvas, x, y, cellW, cellH, 0, 0, cellW, cellH);
-  octx.restore();
-
-  // Remove background color
-  removeBackground(octx, cellW, cellH);
-
+  // BG removal — operates on a small preview-sized version of the card for the preview,
+  // but here we do it on full-res for export
+  removeBackground(oc, cellW, cellH);
   return out;
 }
 
-function colorDist(r1, g1, b1, r2, g2, b2) {
-  return Math.sqrt((r1-r2)**2 + (g1-g2)**2 + (b1-b2)**2);
+function colorDist(r1,g1,b1,r2,g2,b2) {
+  return Math.sqrt((r1-r2)**2+(g1-g2)**2+(b1-b2)**2);
 }
 
-function removeBackground(octx, w, h) {
-  const imgData = octx.getImageData(0, 0, w, h);
-  const data = imgData.data;
-  const { r: br, g: bg, b: bb } = bgColor;
-
-  for (let i = 0; i < data.length; i += 4) {
-    const r = data[i], g = data[i+1], b = data[i+2];
-    const dist = colorDist(r, g, b, br, bg, bb);
+function removeBackground(oc, w, h) {
+  const id = oc.getImageData(0, 0, w, h);
+  const d = id.data;
+  const {r:br,g:bg,b:bb} = bgColor;
+  for (let i = 0; i < d.length; i += 4) {
+    const dist = colorDist(d[i],d[i+1],d[i+2],br,bg,bb);
     if (dist < bgThreshold) {
-      data[i+3] = 0; // transparent
-    } else if (dist < bgThreshold * 1.5) {
-      // Feather edges
-      const alpha = Math.round(((dist - bgThreshold) / (bgThreshold * 0.5)) * 255);
-      data[i+3] = Math.min(data[i+3], alpha);
+      d[i+3] = 0;
+    } else if (dist < bgThreshold*1.5) {
+      d[i+3] = Math.min(d[i+3], Math.round(((dist-bgThreshold)/(bgThreshold*0.5))*255));
     }
   }
-  octx.putImageData(imgData, 0, 0);
+  oc.putImageData(id, 0, 0);
 }
 
 // ─── Preview grid ─────────────────────────────────────────────────────────────
+// Previews use a downsampled version to stay fast
 function updatePreviews() {
   const grid_el = document.getElementById('preview-grid');
-  
   if (grid_el.children.length === 0) {
     for (let i = 0; i < 9; i++) {
       const cell = document.createElement('div');
@@ -817,34 +585,55 @@ function updatePreviews() {
       cell.appendChild(c);
       const num = document.createElement('span');
       num.className = 'cell-num';
-      num.textContent = String(i + 1).padStart(2, '0');
+      num.textContent = String(i+1).padStart(2,'0');
       cell.appendChild(num);
-      const idx = i;
-      cell.addEventListener('click', () => downloadCard(Math.floor(idx/3), idx%3, idx+1));
+      cell.addEventListener('click', () => downloadCard(Math.floor(i/3), i%3, i+1));
       grid_el.appendChild(cell);
     }
   }
-
   for (let i = 0; i < 9; i++) {
-    const row = Math.floor(i / 3);
-    const col = i % 3;
-    const card = extractCard(row, col);
-    if (!card) continue;
+    const row = Math.floor(i/3), col = i%3;
+    // For preview use thumb canvas to extract (fast, low-memory)
+    const thumbCard = extractCardFromThumb(row, col);
+    if (!thumbCard) continue;
     const cell = grid_el.children[i];
     const c = cell.querySelector('canvas');
-    c.width = card.width;
-    c.height = card.height;
-    c.style.maxWidth = '100%';
-    c.style.maxHeight = '100%';
-    c.getContext('2d').drawImage(card, 0, 0);
+    c.width = thumbCard.width; c.height = thumbCard.height;
+    c.getContext('2d').drawImage(thumbCard, 0, 0);
   }
+}
+
+function extractCardFromThumb(row, col) {
+  if (!thumbCanvas) return null;
+  const tw = thumbCanvas.width, th = thumbCanvas.height;
+  const iw = sourceImage.width, ih = sourceImage.height;
+  const ts = tw / iw; // thumb scale
+  const ml = grid.marginLeft*ts, mt = grid.marginTop*ts;
+  const mr = grid.marginRight*ts, mb = grid.marginBottom*ts;
+  const gh = grid.gapH*ts, gv = grid.gapV*ts;
+  const cellW = Math.floor((tw-ml-mr-2*gh)/3);
+  const cellH = Math.floor((th-mt-mb-2*gv)/3);
+  const sx = Math.round(ml + col*(cellW+gh));
+  const sy = Math.round(mt + row*(cellH+gv));
+
+  const out = document.createElement('canvas');
+  out.width = cellW; out.height = cellH;
+  const oc = out.getContext('2d');
+  oc.save();
+  oc.beginPath();
+  roundRect(oc, 0, 0, cellW, cellH, cornerRadius*ts);
+  oc.clip();
+  oc.drawImage(thumbCanvas, sx, sy, cellW, cellH, 0, 0, cellW, cellH);
+  oc.restore();
+  removeBackground(oc, cellW, cellH);
+  return out;
 }
 
 // ─── Download ─────────────────────────────────────────────────────────────────
 function downloadCard(row, col, num) {
-  const card = extractCard(row, col);
-  if (!card) return;
   const prefix = document.getElementById('name-prefix').value || 'plate';
+  const card = extractCard(row, col); // full-res extraction
+  if (!card) return;
   card.toBlob(blob => {
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
@@ -856,31 +645,27 @@ function downloadCard(row, col, num) {
 
 document.getElementById('export-all-btn').addEventListener('click', async () => {
   const btn = document.getElementById('export-all-btn');
-  btn.textContent = 'Exporting…';
-  btn.disabled = true;
+  btn.textContent = 'Exporting…'; btn.disabled = true;
   const prefix = document.getElementById('name-prefix').value || 'plate';
-
   for (let i = 0; i < 9; i++) {
-    const row = Math.floor(i / 3);
-    const col = i % 3;
+    const row = Math.floor(i/3), col = i%3;
     await new Promise(resolve => {
       const card = extractCard(row, col);
       card.toBlob(blob => {
         const a = document.createElement('a');
         a.href = URL.createObjectURL(blob);
         a.download = `${prefix}-${String(i+1).padStart(2,'0')}.webp`;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
+        document.body.appendChild(a); a.click(); document.body.removeChild(a);
         setTimeout(() => { URL.revokeObjectURL(a.href); resolve(); }, 300);
       }, 'image/webp', webpQuality);
     });
-    await new Promise(r => setTimeout(r, 150));
+    await new Promise(r => setTimeout(r, 100));
   }
-
-  btn.textContent = '↓ Export All 9 Cards';
-  btn.disabled = false;
+  btn.textContent = '↓ Export All 9 Cards'; btn.disabled = false;
 });
 </script>
+
+<!-- Load heic2any after page is ready -->
+<script src="https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js" async></script>
 </body>
 </html>

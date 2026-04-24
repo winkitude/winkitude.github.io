@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Winkleman Travel — Print Ads</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css">
+<style>
+  /* ============================================================
+     ADS.HTML — page-specific styles (Print Ads corkboard)
+     All shared styles (masthead, page nav, footer, intro section,
+     color system, etc.) live in site.css.
+     ============================================================ */
+
+  /* Corkboard-specific palette */
+  :root {
+    --cork: #c9a877;
+    --cork-dark: #8a6a3d;
+    --cork-deep: #6b4f2a;
+    --pin-red: #c0392b;
+    --tape: rgba(241, 230, 181, 0.75);
+  }
+
+  /* Reduced-motion override: straighten the ads so they don't tilt */
+  @media (prefers-reduced-motion: reduce) {
+    .ad { transform: none !important; }
+    .ad:hover { transform: none !important; }
+  }
+
+  /* ========== CORKBOARD ==========
+     Warm cork-textured section. Individual ads are arranged with CSS
+     columns (masonry-style) so different sizes mix naturally. Each ad
+     reads a tilt + offset from CSS variables set inline by the JS. */
+  .board {
+    background:
+      radial-gradient(circle at 15% 20%, rgba(107, 79, 42, 0.22) 0%, transparent 25%),
+      radial-gradient(circle at 85% 60%, rgba(107, 79, 42, 0.2) 0%, transparent 30%),
+      radial-gradient(circle at 50% 85%, rgba(107, 79, 42, 0.18) 0%, transparent 22%),
+      radial-gradient(circle at 10% 10%, rgba(60, 40, 20, 0.08) 0%, transparent 4%),
+      radial-gradient(circle at 32% 28%, rgba(60, 40, 20, 0.06) 0%, transparent 3%),
+      radial-gradient(circle at 57% 14%, rgba(60, 40, 20, 0.07) 0%, transparent 3%),
+      radial-gradient(circle at 78% 42%, rgba(60, 40, 20, 0.06) 0%, transparent 4%),
+      radial-gradient(circle at 23% 72%, rgba(60, 40, 20, 0.08) 0%, transparent 3%),
+      radial-gradient(circle at 69% 88%, rgba(60, 40, 20, 0.06) 0%, transparent 4%),
+      radial-gradient(circle at 91% 77%, rgba(60, 40, 20, 0.07) 0%, transparent 3%),
+      linear-gradient(135deg, #b89468 0%, #c9a877 50%, #b89468 100%);
+    padding: 80px 40px 120px;
+    position: relative;
+    border-top: 1px solid var(--ink);
+    border-bottom: 1px solid var(--ink);
+    box-shadow: inset 0 4px 12px rgba(60, 40, 20, 0.2),
+                inset 0 -4px 12px rgba(60, 40, 20, 0.2);
+  }
+
+  .board-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    column-count: 3;
+    column-gap: 48px;
+  }
+
+  /* Each ad is a tilted paper card. Tilt + vertical nudge are CSS vars
+     so each row in ads.csv can specify its own without needing new classes. */
+  .ad {
+    --tilt: 0deg;
+    --offset-y: 0px;
+    display: inline-block;
+    width: 100%;
+    margin: 0 0 52px;
+    break-inside: avoid;
+    -webkit-column-break-inside: avoid;
+    page-break-inside: avoid;
+    position: relative;
+    transform: rotate(var(--tilt)) translateY(var(--offset-y));
+    transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
+                filter 0.35s ease,
+                z-index 0s 0.35s;
+    cursor: zoom-in;
+    background: transparent;
+    border: none;
+    padding: 0;
+    font: inherit;
+    color: inherit;
+    text-align: left;
+  }
+  .ad:hover,
+  .ad:focus-visible {
+    transform: rotate(0deg) translateY(-4px) scale(1.03);
+    z-index: 5;
+    transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
+                filter 0.35s ease,
+                z-index 0s;
+  }
+  .ad:focus-visible {
+    outline: 3px solid var(--gold);
+    outline-offset: 6px;
+  }
+
+  .ad-paper {
+    background: #fdfaf0;
+    padding: 14px 14px 10px;
+    box-shadow:
+      0 1px 2px rgba(0, 0, 0, 0.15),
+      0 6px 14px rgba(60, 40, 20, 0.35),
+      0 14px 28px rgba(60, 40, 20, 0.25);
+    position: relative;
+  }
+
+  /* Red thumbtack pin */
+  .ad.style-pin .ad-paper::before {
+    content: '';
+    position: absolute;
+    top: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, #e05a4d 0%, var(--pin-red) 55%, #7a1e16 100%);
+    box-shadow:
+      0 2px 3px rgba(0, 0, 0, 0.4),
+      inset -1px -1px 2px rgba(0, 0, 0, 0.25),
+      inset 1px 1px 2px rgba(255, 255, 255, 0.4);
+    z-index: 3;
+  }
+
+  /* Masking-tape corners */
+  .ad.style-tape .ad-paper::before,
+  .ad.style-tape .ad-paper::after {
+    content: '';
+    position: absolute;
+    top: -10px;
+    width: 70px;
+    height: 22px;
+    background: var(--tape);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    z-index: 3;
+    background-image:
+      linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.2) 50%, transparent 100%),
+      var(--tape);
+  }
+  .ad.style-tape .ad-paper::before { left: 12px; transform: rotate(-8deg); }
+  .ad.style-tape .ad-paper::after { right: 12px; transform: rotate(6deg); }
+
+  .ad-img {
+    display: block;
+    width: 100%;
+    height: auto;
+    background: #eee;
+  }
+
+  .ad-caption {
+    margin-top: 10px;
+    padding-top: 8px;
+    border-top: 1px solid rgba(27, 20, 100, 0.12);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    line-height: 1.5;
+  }
+  .ad-caption strong {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-style: italic;
+    font-size: 12px;
+    text-transform: none;
+    letter-spacing: 0;
+    color: var(--ink);
+    display: block;
+    margin-bottom: 2px;
+  }
+
+  .ad-placeholder {
+    aspect-ratio: 3 / 4;
+    background:
+      repeating-linear-gradient(
+        45deg,
+        #e8e1cb,
+        #e8e1cb 10px,
+        #ddd4b8 10px,
+        #ddd4b8 20px
+      );
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ink-soft);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    text-align: center;
+    padding: 20px;
+    line-height: 1.5;
+  }
+
+  /* ========== ZOOM MODAL ========== */
+  .zoom-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(27, 20, 100, 0.92);
+    z-index: 1000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    cursor: zoom-out;
+  }
+  .zoom-modal.open { display: flex; }
+  .zoom-img {
+    max-width: 90%;
+    max-height: 90vh;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    background: #fdfaf0;
+    padding: 12px;
+  }
+  .zoom-caption {
+    position: absolute;
+    left: 32px;
+    bottom: 28px;
+    color: var(--paper);
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    font-weight: 400;
+    letter-spacing: -0.005em;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+    pointer-events: none;
+    max-width: 60%;
+  }
+  .zoom-caption .meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold);
+    display: block;
+    margin-top: 4px;
+  }
+  .zoom-close {
+    position: absolute;
+    top: 24px;
+    right: 28px;
+    width: 44px;
+    height: 44px;
+    background: transparent;
+    border: 1px solid rgba(246, 242, 233, 0.3);
+    border-radius: 50%;
+    color: var(--paper);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 20px;
+    line-height: 1;
+    transition: background 0.2s ease, border-color 0.2s ease;
+  }
+  .zoom-close:hover {
+    background: rgba(246, 242, 233, 0.1);
+    border-color: var(--paper);
+  }
+  .zoom-close:focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 3px;
+  }
+  body.modal-open { overflow: hidden; }
+
+  /* ========== Responsive — page-specific ========== */
+  @media (max-width: 1100px) {
+    .board-inner { column-count: 2; column-gap: 36px; }
+    .ad { margin-bottom: 40px; }
+  }
+  @media (max-width: 780px) {
+    .board { padding: 40px 20px 80px; }
+    .board-inner { column-count: 1; }
+    .ad {
+      /* On mobile, straighten the ads — tilt doesn't work in a single column */
+      transform: translateY(var(--offset-y)) !important;
+    }
+  }
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#main-content">Skip to content</a>
+
+<header class="masthead">
+  <div class="masthead-top">
+    <span>◎ &nbsp;Winkleman Travel</span>
+    <span>In memory of [Father's Name]</span>
+    <span>A life's work, remembered</span>
+  </div>
+  <div class="masthead-main">
+    <div class="masthead-flank left">
+      The ads that<br>
+      ran in papers,<br>
+      magazines, and<br>
+      travel trades.
+    </div>
+    <div class="logo-block">
+      <div class="logo-placeholder">Winkleman Travel Logo</div>
+      <h1 class="wordmark">Winkleman <em>Travel</em></h1>
+      <div class="subtitle">Print Ads</div>
+    </div>
+    <div class="masthead-flank right">
+      Pinned up just<br>
+      as they looked<br>
+      on the corkboard<br>
+      by his desk.
+    </div>
+  </div>
+</header>
+
+<nav class="page-nav" aria-label="Site sections">
+  <div class="page-nav-inner">
+    <a href="index.html">The Plates</a>
+    <a href="ads.html" class="current">Print Ads</a>
+    <a href="eulogy.html">Eulogy</a>
+    <a href="memories.html">Share a Memory</a>
+  </div>
+</nav>
+
+<main id="main-content">
+
+<section class="intro-section" aria-labelledby="intro-heading">
+  <div class="intro-inner">
+    <h2 class="intro-kicker" id="intro-heading">— Print Ads —</h2>
+    <p>Travel agencies used to live and die by the print ad. These are the ones my father wrote, designed, or placed — in local papers, trade magazines, and the backs of airline timetables. Click any one to see it full-size.</p>
+  </div>
+</section>
+
+<section class="board" aria-labelledby="board-heading">
+  <h2 class="sr-only" id="board-heading">Print advertisements</h2>
+  <div class="board-inner" id="board"></div>
+</section>
+
+</main>
+
+<footer class="colophon">
+  <div>
+    <div class="colophon-mark">Winkleman Travel</div>
+    <p>My father worked in travel for roughly three decades — Boston, then Philadelphia. He kept what mattered. This site is for the things he saved, and for the people who remember him.</p>
+  </div>
+  <div>
+    <h3>More</h3>
+    <nav class="foot-nav" aria-label="Site sections">
+      <a href="index.html">The Plates</a>
+      <a href="ads.html" class="current">Print Ads</a>
+      <a href="eulogy.html">Eulogy</a>
+      <a href="memories.html">Share a Memory</a>
+    </nav>
+  </div>
+  <div>
+    <h3>Credits</h3>
+    <div class="mono">
+      Design · Winkitude<br>
+      winkitude.com<br>
+      © MMXXVI<br>
+      In loving memory
+    </div>
+  </div>
+</footer>
+
+<!-- Zoom modal -->
+<div class="zoom-modal" id="zoomModal" role="dialog" aria-modal="true" aria-label="Ad detail view">
+  <button class="zoom-close" id="zoomClose" aria-label="Close">×</button>
+  <img class="zoom-img" id="zoomImg" alt="" />
+  <div class="zoom-caption" id="zoomCaption"></div>
+</div>
+
+<script>
+  /* ------------------------------------------------------------------
+   * WINKLEMAN TRAVEL — PRINT ADS
+   * ------------------------------------------------------------------
+   * Ad data lives in ./ads.csv. Each row describes one ad.
+   * See ads.csv for the expected columns and tips on tilt / style.
+   * ---------------------------------------------------------------- */
+
+  const CSV_URL = 'ads.csv';
+  const board = document.getElementById('board');
+
+  function parseCSV(text) {
+    text = text.replace(/\r\n?/g, '\n');
+    const rows = [];
+    let row = [], field = '', inQuotes = false;
+    for (let i = 0; i < text.length; i++) {
+      const c = text[i];
+      if (inQuotes) {
+        if (c === '"') {
+          if (text[i + 1] === '"') { field += '"'; i++; }
+          else inQuotes = false;
+        } else field += c;
+      } else {
+        if (c === '"') inQuotes = true;
+        else if (c === ',') { row.push(field); field = ''; }
+        else if (c === '\n') { row.push(field); rows.push(row); row = []; field = ''; }
+        else field += c;
+      }
+    }
+    if (field !== '' || row.length) { row.push(field); rows.push(row); }
+    const clean = rows.filter(r => {
+      const first = (r[0] || '').trim();
+      return r.length > 0 && !(r.length === 1 && first === '') && !first.startsWith('#');
+    });
+    if (clean.length < 2) return [];
+    const headers = clean[0].map(h => h.trim());
+    return clean.slice(1).map(r => {
+      const obj = {};
+      headers.forEach((h, i) => { obj[h] = (r[i] || '').trim(); });
+      return obj;
+    });
+  }
+
+  function buildAds(ads) {
+    board.innerHTML = '';
+    ads.forEach((ad) => {
+      const tilt = clamp(parseFloat(ad.tilt) || 0, -6, 6);
+      const offsetY = clamp(parseFloat(ad.offset_y) || 0, -40, 40);
+      const style = (ad.style || 'pin').toLowerCase() === 'tape' ? 'tape' : 'pin';
+
+      const el = document.createElement('button');
+      el.type = 'button';
+      el.className = `ad style-${style}`;
+      el.style.setProperty('--tilt', tilt + 'deg');
+      el.style.setProperty('--offset-y', offsetY + 'px');
+      el.setAttribute('aria-label', `Open ${ad.title || 'ad'} full-size`);
+
+      const hasImage = ad.slug && ad.ext;
+      const imgSrc = hasImage ? `images/ads/${ad.slug}.${ad.ext}` : '';
+
+      el.innerHTML = `
+        <div class="ad-paper">
+          ${hasImage
+            ? `<img class="ad-img" src="${imgSrc}" alt="${escapeHtml(ad.title || 'Print ad')}" loading="lazy" />`
+            : `<div class="ad-placeholder">Ad image<br>not yet scanned</div>`}
+          <div class="ad-caption">
+            ${ad.title ? `<strong>${escapeHtml(ad.title)}</strong>` : ''}
+            ${[ad.publication, ad.year].filter(Boolean).map(escapeHtml).join(' · ')}
+          </div>
+        </div>
+      `;
+
+      el.addEventListener('click', () => openZoom(ad, imgSrc));
+      board.appendChild(el);
+    });
+  }
+
+  function clamp(n, min, max) { return Math.max(min, Math.min(max, n)); }
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, m => ({
+      '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+    })[m]);
+  }
+
+  function renderError(message) {
+    board.innerHTML = `<div style="color: var(--ink); background: #fdfaf0; padding: 32px; text-align: center; font-family: 'Fraunces', serif; font-style: italic;">
+      <p style="font-size: 18px; margin-bottom: 12px;">${message}</p>
+      <p style="font-size: 13px; font-family: 'JetBrains Mono', monospace; font-style: normal;">
+        Create an <code>ads.csv</code> file next to this page.
+      </p>
+    </div>`;
+  }
+
+  /* Zoom modal */
+  const modal = document.getElementById('zoomModal');
+  const zoomImg = document.getElementById('zoomImg');
+  const zoomCaption = document.getElementById('zoomCaption');
+  let lastTrigger = null;
+
+  function openZoom(ad, src) {
+    if (!src) return;
+    lastTrigger = document.activeElement;
+    zoomImg.src = src;
+    zoomImg.alt = ad.title || 'Print ad';
+    zoomCaption.innerHTML = `${escapeHtml(ad.title || '')}<span class="meta">${[ad.publication, ad.year].filter(Boolean).map(escapeHtml).join(' · ')}</span>`;
+    modal.classList.add('open');
+    document.body.classList.add('modal-open');
+    setTimeout(() => document.getElementById('zoomClose').focus(), 50);
+  }
+  function closeZoom() {
+    modal.classList.remove('open');
+    document.body.classList.remove('modal-open');
+    if (lastTrigger && typeof lastTrigger.focus === 'function') lastTrigger.focus();
+  }
+  modal.addEventListener('click', e => { if (e.target === modal) closeZoom(); });
+  document.getElementById('zoomClose').addEventListener('click', closeZoom);
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && modal.classList.contains('open')) closeZoom();
+  });
+
+  fetch(CSV_URL)
+    .then(resp => {
+      if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+      return resp.text();
+    })
+    .then(text => {
+      const ads = parseCSV(text);
+      if (ads.length === 0) {
+        renderError('No ads found in ads.csv yet.');
+        return;
+      }
+      buildAds(ads);
+    })
+    .catch(err => {
+      console.error('Could not load ads.csv:', err);
+      renderError('Could not load ads.csv.');
+    });
+</script>
+
+</body>
+</html>

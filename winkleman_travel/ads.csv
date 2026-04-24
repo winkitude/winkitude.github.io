@@ -1,0 +1,23 @@
+# ads.csv — Winkleman Travel Print Ads
+#
+# Each row below is one print ad. Columns:
+#   slug         filename stem. Image must be at images/ads/{slug}.{ext}
+#   ext          "jpg", "png", "webp", etc.
+#   title        headline shown in caption. Use quotes if it contains a comma.
+#   publication  where it ran (e.g. "Boston Globe")
+#   year         optional, shown in caption after publication
+#   tilt         rotation in degrees. Keep between -6 and 6.
+#                Mix subtle tilts (-2, 1.5, -3) for a natural look.
+#   offset_y     vertical nudge in pixels to stagger columns (-40 to 40).
+#   style        "pin" (red thumbtack) or "tape" (masking tape corners)
+#   notes        ignored — use for your own tracking
+#
+# Lines starting with # are ignored. Blank lines are ignored.
+# Reorder rows to rearrange the collage.
+#
+# REMOVE these three sample rows once you have real ads:
+
+slug,ext,title,publication,year,tilt,offset_y,style,notes
+sample-1,jpg,"Fly Away This Winter",Boston Globe,1968,-2,0,pin,Replace with real ad
+sample-2,jpg,"See the Islands",Travel Weekly,1972,1.5,20,tape,Replace with real ad
+sample-3,jpg,"Around the World in 30 Days",Philadelphia Inquirer,1975,-3,10,pin,Replace with real ad

@@ -58,21 +58,76 @@
   .board-inner {
     max-width: 1400px;
     margin: 0 auto;
-    column-count: 3;
-    column-gap: 48px;
+    /* CSS Grid with auto-fit gives reliable 3-up at desktop, 2-up at tablet,
+       1-up at mobile, without the "balance the columns" quirk that multicol
+       has when there are only a few items. minmax(360px, 1fr) means each
+       column is at least 360px wide; at our 1400px container we get 3 columns
+       (3 × 360 + 2 × 40 = 1160, fits with room). align-items: start prevents
+       the rotated/offset cards from stretching to match each other. */
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+    gap: 56px 40px;
+    align-items: start;
+    justify-items: stretch;
+  }
+
+  /* ========== FEATURE TILES ==========
+     Long-form articles need to be readable, not just larger thumbnails.
+     They render in their own container ABOVE the column grid, at a width
+     where the original newsprint columns can still be parsed.
+
+     A standard ad on the board lives in CSS columns and gets a tilt; a
+     feature lives in normal flow at a generous max-width and stays
+     mostly upright (a small tilt is fine, big tilts make column-set
+     newsprint hard to read). */
+  .board-features {
+    max-width: 1400px;
+    margin: 0 auto 48px;
+    display: flex;
+    flex-direction: column;
+    gap: 64px;
+    align-items: center;
+  }
+
+  .ad.is-feature {
+    width: 100%;
+    max-width: 880px;
+    margin: 0;
+    /* Features ignore the steep tilt the regular ads use; clamp to ±2deg max */
+  }
+  .ad.is-feature .ad-paper {
+    padding: 22px 22px 18px;
+  }
+  .ad.is-feature .ad-caption {
+    margin-top: 16px;
+    padding-top: 12px;
+  }
+  .ad.is-feature .ad-caption strong {
+    font-size: 17px;
+    font-style: normal;
+    font-weight: 500;
+    margin-bottom: 4px;
+  }
+  /* Byline shown only on features */
+  .ad.is-feature .ad-byline {
+    display: block;
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 12px;
+    color: var(--ink);
+    margin: 2px 0 6px;
+    text-transform: none;
+    letter-spacing: 0;
   }
 
   /* Each ad is a tilted paper card. Tilt + vertical nudge are CSS vars
-     so each row in ads.csv can specify its own without needing new classes. */
+     so each row in newspaper.csv can specify its own without needing new classes. */
   .ad {
     --tilt: 0deg;
     --offset-y: 0px;
-    display: inline-block;
+    display: block;
     width: 100%;
-    margin: 0 0 52px;
-    break-inside: avoid;
-    -webkit-column-break-inside: avoid;
-    page-break-inside: avoid;
+    margin: 0;
     position: relative;
     transform: rotate(var(--tilt)) translateY(var(--offset-y));
     transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
@@ -272,12 +327,11 @@
 
   /* ========== Responsive — page-specific ========== */
   @media (max-width: 1100px) {
-    .board-inner { column-count: 2; column-gap: 36px; }
-    .ad { margin-bottom: 40px; }
+    .board-inner { gap: 48px 32px; }
   }
   @media (max-width: 780px) {
     .board { padding: 40px 20px 80px; }
-    .board-inner { column-count: 1; }
+    .board-inner { grid-template-columns: 1fr; gap: 56px; }
     .ad {
       /* On mobile, straighten the ads — tilt doesn't work in a single column */
       transform: translateY(var(--offset-y)) !important;
@@ -297,21 +351,15 @@
   </div>
   <div class="masthead-main">
     <div class="masthead-flank left">
-      The ads that<br>
-      ran in papers,<br>
-      magazines, and<br>
-      travel trades.
+ 
     </div>
     <div class="logo-block">
-      <div class="logo-placeholder">Winkleman Travel Logo</div>
-      <h1 class="wordmark">Winkleman <em>Travel</em></h1>
+      <img src="images/winkleman-travel.svg" alt="Winkleman Travel logo" class="logo" width="80px" />
+      <h1 class="wordmark">Winkleman Travel</h1>
       <div class="subtitle">Print Ads</div>
     </div>
     <div class="masthead-flank right">
-      Pinned up just<br>
-      as they looked<br>
-      on the corkboard<br>
-      by his desk.
+    
     </div>
   </div>
 </header>
@@ -330,12 +378,13 @@
 <section class="intro-section" aria-labelledby="intro-heading">
   <div class="intro-inner">
     <h2 class="intro-kicker" id="intro-heading">— Print Ads —</h2>
-    <p>Travel agencies used to live and die by the print ad. These are the ones my father wrote, designed, or placed — in local papers, trade magazines, and the backs of airline timetables. Click any one to see it full-size.</p>
+    <p>Newspaper clippings from across the years — ads my father ran, articles written about him, and the occasional headline he saved. Click any one to see it full-size.</p>
   </div>
 </section>
 
 <section class="board" aria-labelledby="board-heading">
-  <h2 class="sr-only" id="board-heading">Print advertisements</h2>
+  <h2 class="sr-only" id="board-heading">Newspaper clippings</h2>
+  <div class="board-features" id="boardFeatures"></div>
   <div class="board-inner" id="board"></div>
 </section>
 
@@ -344,7 +393,7 @@
 <footer class="colophon">
   <div>
     <div class="colophon-mark">Winkleman Travel</div>
-    <p>My father, Joseph Winkleman, ran Winkleman Travel in Cranston, Rhode Island, for over thirty years. He kept what mattered. This site is for the things he saved, and for the people who remember him.</p>
+    <p>My father, Joseph Winkleman, ran Winkleman Travel in Cranston, Rhode Island, for over thirty years. This site is for the things he had that inspired me, and for the people who remember him.</p>
   </div>
   <div>
     <h3>More</h3>
@@ -375,13 +424,16 @@
 
 <script>
   /* ------------------------------------------------------------------
-   * WINKLEMAN TRAVEL — PRINT ADS
+   * WINKLEMAN TRAVEL — NEWSPAPER CLIPPINGS
    * ------------------------------------------------------------------
-   * Ad data lives in ./ads.csv. Each row describes one ad.
-   * See ads.csv for the expected columns and tips on tilt / style.
+   * Clipping data lives in ./newspaper.csv. Each row is one clipping —
+   * an ad, a feature article, or any printed piece about/from
+   * Winkleman Travel. Set size=feature to give an article centerpiece
+   * treatment above the corkboard grid.
+   * See newspaper.csv for column descriptions and tilt/style tips.
    * ---------------------------------------------------------------- */
 
-  const CSV_URL = 'ads.csv';
+  const CSV_URL = 'newspaper.csv';
   const board = document.getElementById('board');
 
   function parseCSV(text) {
@@ -416,38 +468,90 @@
     });
   }
 
+  /* Map publication codes from CSV (rih, jvh) to display names.
+     Add a new code here when a new publication shows up. */
+  const PUBLICATION_NAMES = {
+    rih: 'Rhode Island Herald',
+    jvh: 'Jewish Voice and Herald',
+  };
+
+  /* Format an ISO-style date (YYYY-MM-DD) into a spelled-out display date.
+     Falls back to whatever was given if the format isn't recognized. */
+  function formatDate(dateStr) {
+    if (!dateStr) return '';
+    const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(dateStr.trim());
+    if (!m) return dateStr;
+    const [, y, mo, d] = m;
+    const months = ['January','February','March','April','May','June',
+                    'July','August','September','October','November','December'];
+    const monthName = months[parseInt(mo, 10) - 1] || mo;
+    // Strip leading zero on day
+    return `${monthName} ${parseInt(d, 10)}, ${y}`;
+  }
+
+  /* Resolve a publication code to its full name, or pass through if unrecognized. */
+  function publicationName(code) {
+    if (!code) return '';
+    const key = code.trim().toLowerCase();
+    return PUBLICATION_NAMES[key] || code.trim();
+  }
+
+  /* Build the caption metadata line: "Rhode Island Herald · September 7, 1984" */
+  function buildMeta(ad) {
+    const parts = [publicationName(ad.publication), formatDate(ad.date)];
+    return parts.filter(Boolean).map(escapeHtml).join(' · ');
+  }
+
   function buildAds(ads) {
+    const features = ads.filter(a => (a.size || '').toLowerCase() === 'feature');
+    const regulars = ads.filter(a => (a.size || '').toLowerCase() !== 'feature');
+
+    const featuresContainer = document.getElementById('boardFeatures');
+    featuresContainer.innerHTML = '';
     board.innerHTML = '';
-    ads.forEach((ad) => {
-      const tilt = clamp(parseFloat(ad.tilt) || 0, -6, 6);
-      const offsetY = clamp(parseFloat(ad.offset_y) || 0, -40, 40);
-      const style = (ad.style || 'pin').toLowerCase() === 'tape' ? 'tape' : 'pin';
 
-      const el = document.createElement('button');
-      el.type = 'button';
-      el.className = `ad style-${style}`;
-      el.style.setProperty('--tilt', tilt + 'deg');
-      el.style.setProperty('--offset-y', offsetY + 'px');
-      el.setAttribute('aria-label', `Open ${ad.title || 'ad'} full-size`);
+    features.forEach(ad => featuresContainer.appendChild(buildAdElement(ad, true)));
+    regulars.forEach(ad => board.appendChild(buildAdElement(ad, false)));
+  }
 
-      const hasImage = ad.slug && ad.ext;
-      const imgSrc = hasImage ? `images/ads/${ad.slug}.${ad.ext}` : '';
+  function buildAdElement(ad, isFeature) {
+    // Features get a much smaller tilt range; steep tilts make newsprint
+    // columns frustrating to read.
+    const tiltRange = isFeature ? 2 : 6;
+    const tilt = clamp(parseFloat(ad.tilt) || 0, -tiltRange, tiltRange);
+    const offsetY = clamp(parseFloat(ad.offset_y) || 0, -40, 40);
+    const style = (ad.style || 'pin').toLowerCase() === 'tape' ? 'tape' : 'pin';
 
-      el.innerHTML = `
-        <div class="ad-paper">
-          ${hasImage
-            ? `<img class="ad-img" src="${imgSrc}" alt="${escapeHtml(ad.title || 'Print ad')}" loading="lazy" />`
-            : `<div class="ad-placeholder">Ad image<br>not yet scanned</div>`}
-          <div class="ad-caption">
-            ${ad.title ? `<strong>${escapeHtml(ad.title)}</strong>` : ''}
-            ${[ad.publication, ad.year].filter(Boolean).map(escapeHtml).join(' · ')}
-          </div>
+    const el = document.createElement('button');
+    el.type = 'button';
+    el.className = `ad style-${style}${isFeature ? ' is-feature' : ''}`;
+    el.style.setProperty('--tilt', tilt + 'deg');
+    el.style.setProperty('--offset-y', offsetY + 'px');
+    el.setAttribute('aria-label', `Open ${ad.title || 'clipping'} full-size`);
+
+    const hasImage = ad.slug && ad.ext;
+    const imgSrc = hasImage ? `images/newspaper/${ad.slug}.${ad.ext}` : '';
+    const meta = buildMeta(ad);
+    const titleHtml = ad.title ? `<strong>${escapeHtml(ad.title)}</strong>` : '';
+    const bylineHtml = (isFeature && ad.byline)
+      ? `<span class="ad-byline">${escapeHtml(ad.byline)}</span>`
+      : '';
+
+    el.innerHTML = `
+      <div class="ad-paper">
+        ${hasImage
+          ? `<img class="ad-img" src="${imgSrc}" alt="${escapeHtml(ad.title || 'Newspaper clipping')}" loading="lazy" />`
+          : `<div class="ad-placeholder">Image<br>not yet scanned</div>`}
+        <div class="ad-caption">
+          ${titleHtml}
+          ${bylineHtml}
+          ${meta}
         </div>
-      `;
+      </div>
+    `;
 
-      el.addEventListener('click', () => openZoom(ad, imgSrc));
-      board.appendChild(el);
-    });
+    el.addEventListener('click', () => openZoom(ad, imgSrc));
+    return el;
   }
 
   function clamp(n, min, max) { return Math.max(min, Math.min(max, n)); }
@@ -461,7 +565,7 @@
     board.innerHTML = `<div style="color: var(--ink); background: #fdfaf0; padding: 32px; text-align: center; font-family: 'Fraunces', serif; font-style: italic;">
       <p style="font-size: 18px; margin-bottom: 12px;">${message}</p>
       <p style="font-size: 13px; font-family: 'JetBrains Mono', monospace; font-style: normal;">
-        Create an <code>ads.csv</code> file next to this page.
+        Create a <code>newspaper.csv</code> file next to this page.
       </p>
     </div>`;
   }
@@ -477,7 +581,7 @@
     lastTrigger = document.activeElement;
     zoomImg.src = src;
     zoomImg.alt = ad.title || 'Print ad';
-    zoomCaption.innerHTML = `${escapeHtml(ad.title || '')}<span class="meta">${[ad.publication, ad.year].filter(Boolean).map(escapeHtml).join(' · ')}</span>`;
+    zoomCaption.innerHTML = `${escapeHtml(ad.title || '')}<span class="meta">${buildMeta(ad)}</span>`;
     modal.classList.add('open');
     document.body.classList.add('modal-open');
     setTimeout(() => document.getElementById('zoomClose').focus(), 50);
@@ -501,14 +605,14 @@
     .then(text => {
       const ads = parseCSV(text);
       if (ads.length === 0) {
-        renderError('No ads found in ads.csv yet.');
+        renderError('No clippings found in newspaper.csv yet.');
         return;
       }
       buildAds(ads);
     })
     .catch(err => {
-      console.error('Could not load ads.csv:', err);
-      renderError('Could not load ads.csv.');
+      console.error('Could not load newspaper.csv:', err);
+      renderError('Could not load newspaper.csv.');
     });
 </script>
 

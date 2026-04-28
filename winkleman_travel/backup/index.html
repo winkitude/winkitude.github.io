@@ -636,70 +636,11 @@
   let allPlates = [];
   let currentRegion = 'all';
 
-  /* ------------------------------------------------------------------
-   * LAZY IMAGE LOADER
-   * ------------------------------------------------------------------
-   * With ~117 plates × 2 sides, eagerly loading everything at page open
-   * would push 175MB+ of data on first paint. Two layers of defense:
-   *
-   *   1. The HTML uses data-src instead of src on every image, so the
-   *      browser doesn't queue them. We assign src only when needed.
-   *
-   *   2. An IntersectionObserver watches each FRONT image and assigns
-   *      its src when the card is within ~600px of the viewport. That
-   *      means cards above the fold load immediately, cards a couple
-   *      screens below load as the user scrolls, and cards far down
-   *      never load if the user never reaches them.
-   *
-   *   3. BACK images load just-in-time on first flip (handled inline
-   *      in the click handler), since most users never flip most plates.
-   *
-   * Older browsers without IntersectionObserver get a graceful fallback:
-   * we just assign all srcs at once. They'll still get the native
-   * loading="lazy" attribute as a backup.
-   * ---------------------------------------------------------------- */
-  const imageLoader = ('IntersectionObserver' in window)
-    ? new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            const img = entry.target;
-            if (img._needsLoad && img.dataset.src) {
-              img.src = img.dataset.src;
-              img._needsLoad = false;
-            }
-            observer.unobserve(img);
-          }
-        });
-      }, {
-        // Start loading when image is within ~600px of the viewport.
-        // Tunes the trade-off between "load too eagerly = slow" and
-        // "load too late = visible flash of empty plate".
-        rootMargin: '600px 0px',
-        threshold: 0.01,
-      })
-    : null;
-
-  function setupLazyLoading() {
-    const fronts = document.querySelectorAll('.plate-face.front img[data-src]');
-    if (imageLoader) {
-      fronts.forEach(img => imageLoader.observe(img));
-    } else {
-      // Fallback for very old browsers: load everything.
-      fronts.forEach(img => {
-        if (img._needsLoad && img.dataset.src) {
-          img.src = img.dataset.src;
-          img._needsLoad = false;
-        }
-      });
-    }
-  }
-
   function renderPlates(plates) {
     plates.sort((a, b) => a.name.localeCompare(b.name, undefined, { sensitivity: 'base' }));
     allPlates = plates;
     buildRegionChips(plates);
     buildCards(plates);
-    setupLazyLoading();
     applyFilter();
     countEl.textContent = plates.length;
     totalCountEl.textContent = plates.length;
@@ -759,13 +700,13 @@
                 aria-label="${hasBack ? `Flip ${p.name} plate to see the other side` : p.name}"
                 ${hasBack ? '' : 'data-no-back="1"'}>
           <div class="plate-face front">
-            <img class="plate-img" data-src="${frontSrc}"
+            <img class="plate-img" src="${frontSrc}"
                  alt="${p.name} validation plate, front — embossed metal with airline name"
-                 loading="lazy" decoding="async" />
+                 loading="lazy" />
           </div>
           <div class="plate-face back" aria-hidden="true">
             ${hasBack
-              ? `<img class="plate-img" data-src="${backSrc}" alt="" loading="lazy" decoding="async" />`
+              ? `<img class="plate-img" src="${backSrc}" alt="" loading="lazy" />`
               : `<div class="no-back">Back not yet scanned</div>`}
           </div>
         </button>
@@ -779,15 +720,6 @@
       const plateBtn = el.querySelector('.plate');
       const frontFace = el.querySelector('.plate-face.front');
       const backFace = el.querySelector('.plate-face.back');
-      const frontImg = frontFace.querySelector('img');
-      const backImg = backFace.querySelector('img');
-
-      // Track whether each side has been loaded — assign src only when needed.
-      // This is the main perf optimization: backs never load until first flip,
-      // and fronts only load when the card is about to enter the viewport.
-      frontImg._needsLoad = true;
-      if (backImg) backImg._needsLoad = true;
-
       if (hasBack) {
         plateBtn.addEventListener('click', () => {
           const wasFlipped = plateBtn.classList.toggle('flipped-state');
@@ -795,12 +727,8 @@
           el.classList.toggle('flipped', wasFlipped);
           frontFace.setAttribute('aria-hidden', wasFlipped ? 'true' : 'false');
           backFace.setAttribute('aria-hidden', wasFlipped ? 'false' : 'true');
+          const backImg = backFace.querySelector('img');
           if (backImg) {
-            // Just-in-time load: assign src only when the user actually flips
-            if (backImg._needsLoad) {
-              backImg.src = backImg.dataset.src;
-              backImg._needsLoad = false;
-            }
             backImg.alt = wasFlipped ? `${p.name} validation plate, back — protective sleeve` : '';
           }
         });

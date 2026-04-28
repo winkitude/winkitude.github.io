@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Winkleman Travel — Obituary for Joseph Winkleman</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css">
+<style>
+  /* ============================================================
+     OBITUARY.HTML — page-specific styles
+     An obituary wants different typography than a eulogy. A eulogy
+     is prose (drop caps, block quotes, section breaks). An obituary
+     is structured: title block, lead paragraph, biographical notes,
+     a list of survivors, services. The page reflects that.
+     Shared styles (masthead, nav, footer) live in site.css.
+     ============================================================ */
+
+  /* Title block — centered on the page, generous breathing room */
+  .obit-header {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 88px 40px 24px;
+    text-align: center;
+  }
+
+  /* Portrait — a framed photograph above his name. Matted in cream,
+     with a soft drop shadow to lift it off the page. The aspect ratio
+     matches the source image (1080:925 ≈ 1.17:1) so there's no crop.
+     Sized to personal-photograph scale — around 300px wide on desktop —
+     rather than hero-banner scale, so it doesn't overwhelm the type. */
+  .obit-portrait {
+    display: block;
+    width: 300px;
+    max-width: 100%;
+    aspect-ratio: 1080 / 925;
+    margin: 0 auto 36px;
+    padding: 12px;
+    background: var(--paper-pure);
+    border: 1px solid var(--rule);
+    box-shadow:
+      0 1px 2px rgba(27, 20, 100, 0.06),
+      0 8px 16px rgba(27, 20, 100, 0.1),
+      0 20px 40px -10px rgba(27, 20, 100, 0.12);
+  }
+  .obit-portrait img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .obit-kicker {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold-deep);
+    margin: 0 0 24px 0;
+    line-height: 1;
+  }
+  .obit-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-variation-settings: "opsz" 144;
+    font-size: clamp(40px, 6vw, 64px);
+    letter-spacing: -0.015em;
+    line-height: 1.05;
+    color: var(--ink);
+    margin-bottom: 20px;
+  }
+  .obit-title em {
+    font-style: italic;
+    font-weight: 300;
+    color: var(--gold-deep);
+  }
+  .obit-dates {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+  .obit-dates::before,
+  .obit-dates::after {
+    content: '·';
+    margin: 0 10px;
+    color: var(--gold-deep);
+  }
+
+  /* Gold-dot divider between title block and body */
+  .divider {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 40px 48px;
+  }
+  .divider::before,
+  .divider::after {
+    content: '';
+    height: 1px;
+    background: var(--rule);
+    flex: 0 0 100px;
+  }
+  .divider-dot {
+    width: 8px; height: 8px;
+    background: var(--gold-deep);
+    border-radius: 50%;
+    margin: 0 20px;
+  }
+
+  /* Body container — narrow measure for easy reading, not as wide
+     as a prose page; obituaries have more line breaks and structure. */
+  .obit-body {
+    max-width: 620px;
+    margin: 0 auto;
+    padding: 0 40px 32px;
+    font-size: 18px;
+    line-height: 1.7;
+    font-weight: 300;
+    font-variation-settings: "opsz" 36;
+    color: var(--ink);
+  }
+  .obit-body p { margin-bottom: 1.35em; }
+  .obit-body em { font-style: italic; font-weight: 400; }
+  .obit-body a {
+    color: var(--ink);
+    text-decoration: none;
+    border-bottom: 1px solid var(--gold-deep);
+    transition: color 0.15s ease;
+  }
+  .obit-body a:hover { color: var(--gold-deep); }
+
+  /* Lead paragraph — the first sentences that carry the news.
+     Slightly larger than the rest, with a soft weight. */
+  .obit-lead {
+    font-size: 21px;
+    line-height: 1.6;
+    font-weight: 400;
+    color: var(--ink);
+    margin-bottom: 1.6em !important;
+    font-variation-settings: "opsz" 36;
+  }
+
+  /* Section headings — for Survivors, Services. Small, uppercased,
+     like a card divider rather than a big header. */
+  .obit-section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--gold-deep);
+    font-weight: 500;
+    margin: 2em 0 1em;
+    padding-top: 1.5em;
+    border-top: 1px solid var(--rule);
+    text-align: center;
+  }
+
+  /* Survivors / family block — tighter leading so the family tree
+     reads as a formal listing rather than running prose. */
+  .obit-survivors {
+    font-size: 17px;
+    line-height: 1.8;
+  }
+  .obit-survivors strong {
+    font-weight: 500;
+    color: var(--ink);
+  }
+
+  /* Grandchildren born after Joseph's passing — a separate line,
+     styled gently to signal this is an addendum, not part of the
+     original "survived by" list. Italic opener does most of the
+     semantic work; the rest inherits from .obit-survivors. */
+  .grandchildren-after {
+    font-size: 16px;
+    color: var(--ink-soft);
+    margin-top: 0.6em !important;
+    padding-left: 20px;
+    border-left: 2px solid var(--gold-deep);
+    font-style: italic;
+  }
+  .grandchildren-after strong {
+    font-style: normal;
+    font-weight: 500;
+    color: var(--ink);
+  }
+
+  /* Closing footer line for the page */
+  .obit-footer-line {
+    max-width: 620px;
+    margin: 48px auto 120px;
+    padding: 0 40px;
+    text-align: center;
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 15px;
+    color: var(--ink-soft);
+    line-height: 1.6;
+  }
+  .obit-footer-line::before,
+  .obit-footer-line::after {
+    content: '—';
+    color: var(--gold-deep);
+    margin: 0 14px;
+    font-style: normal;
+  }
+
+  /* Responsive */
+  @media (max-width: 780px) {
+    .obit-header { padding: 56px 24px 20px; }
+    .obit-portrait {
+      width: 220px;
+      padding: 10px;
+      margin-bottom: 28px;
+    }
+    .obit-body {
+      padding: 0 24px 24px;
+      font-size: 16px;
+      line-height: 1.65;
+    }
+    .obit-lead { font-size: 18px; }
+    .obit-footer-line { padding: 0 24px; margin-bottom: 80px; }
+  }
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#main-content">Skip to content</a>
+
+<header class="masthead">
+  <div class="masthead-top">
+    <span>◎ &nbsp;Winkleman Travel</span>
+    <span>In memory of Joseph Winkleman</span>
+    <span>A life's work, remembered</span>
+  </div>
+  <div class="masthead-main">
+    <div class="masthead-flank left">
+      The notice<br>
+      published at<br>
+      the time of his<br>
+      passing.
+    </div>
+    <div class="logo-block">
+      <div class="logo-placeholder">Winkleman Travel Logo</div>
+      <h1 class="wordmark">Winkleman <em>Travel</em></h1>
+      <div class="subtitle">Obituary</div>
+    </div>
+    <div class="masthead-flank right">
+      Providence, RI ·<br>
+      November 2018.<br>
+      A husband, father,<br>
+      and travel agent.
+    </div>
+  </div>
+</header>
+
+<nav class="page-nav" aria-label="Site sections">
+  <div class="page-nav-inner">
+    <a href="index.html">The Plates</a>
+    <a href="ads.html">Print Ads</a>
+    <a href="obituary.html" class="current">Obituary</a>
+    <a href="memories.html">Share a Memory</a>
+  </div>
+</nav>
+
+<main id="main-content">
+
+<header class="obit-header">
+  <p class="obit-kicker">— In Loving Memory —</p>
+  <figure class="obit-portrait">
+    <img src="images/joe_winkleman.jpg" alt="Photograph of Joseph M. Winkleman" />
+  </figure>
+  <h1 class="obit-title">Joseph M. <em>Winkleman</em></h1>
+  <p class="obit-dates">May 13, 1949&nbsp;–&nbsp;November 3, 2018</p>
+</header>
+
+<div class="divider" aria-hidden="true">
+  <span class="divider-dot"></span>
+</div>
+
+<article class="obit-body" aria-label="Obituary for Joseph M. Winkleman">
+
+  <p class="obit-lead">Joseph M. Winkleman, 69, passed away Saturday, November 3, 2018. He was the husband of Roberta (Zeltzer) Winkleman; they were married for 40 years.</p>
+
+  <p>He was born in Providence, a son of the late Charles and Jennett (Wainer) Winkleman. Joseph was a graduate of Classical High School and George Washington University.</p>
+
+  <p>He was the owner of Winkleman Travel in Cranston for over 30 years.</p>
+
+  <p>Joseph was a faithful member of Touro Fraternal and Congregation Beth Sholom, was a former member of the Masons and Shriner, and was a Cub Scout Master of Pack 104. He was a past president of the Rhode Island Vaad.</p>
+
+  <p>He was a big sports fan, following the Providence Bruins, Pawtucket Red Sox, and four Boston teams.</p>
+
+  <h2 class="obit-section-label">Survived By</h2>
+
+  <div class="obit-survivors">
+    <p>Besides his wife, <strong>Roberta</strong>, he is survived by his children <strong>Dov Winkleman</strong>, <strong>Freda Ronkin</strong> (Daniel), <strong>Abby Cohen</strong> (Reuven), <strong>Ari Winkleman</strong> (Kelly), and <strong>Emily Winkleman</strong> (Margaret); his brother <strong>Henry Winkleman</strong> and sister-in-law <strong>Arlene</strong>; and his grandchildren <strong>Atira</strong>, <strong>Maor</strong>, and <strong>Naava Baer</strong>, and <strong>Binyamin</strong>, <strong>Yaakov</strong>, <strong>Tehilla</strong>, <strong>Shmuel</strong>, and <strong>Ayelet Cohen</strong>, along with over a dozen nieces, nephews, and great nieces and nephews.</p>
+
+    <p class="grandchildren-after">And grandchildren born after his passing: <strong>Joseph Winkleman</strong>, <strong>Rosie Winkleman</strong>, and <strong>Yosef Cohen</strong>.</p>
+  </div>
+
+  <h2 class="obit-section-label">Services &amp; Contributions</h2>
+
+  <p>Funeral services were held on Monday, November 5, 2018 at Congregation Beth Sholom, 275 Camp Street, Providence, with burial at Lincoln Park Cemetery, Warwick.</p>
+
+  <p>In lieu of flowers, contributions in his memory may be made to the <a href="https://www.kidney.org/support" target="_blank" rel="noopener">National Kidney Foundation</a>, Congregation Beth Sholom, or any charity of your choice.</p>
+
+</article>
+
+<p class="obit-footer-line">May his memory be a blessing</p>
+
+</main>
+
+<footer class="colophon">
+  <div>
+    <div class="colophon-mark">Winkleman Travel</div>
+    <p>My father, Joseph Winkleman, ran Winkleman Travel in Cranston, Rhode Island, for over thirty years. He kept what mattered. This site is for the things he saved, and for the people who remember him.</p>
+  </div>
+  <div>
+    <h3>More</h3>
+    <nav class="foot-nav" aria-label="Site sections">
+      <a href="index.html">The Plates</a>
+      <a href="ads.html">Print Ads</a>
+      <a href="obituary.html" class="current">Obituary</a>
+      <a href="memories.html">Share a Memory</a>
+    </nav>
+  </div>
+  <div>
+    <h3>Credits</h3>
+    <div class="mono">
+      Design · Winkitude<br>
+      winkitude.com<br>
+      © MMXXVI<br>
+      In loving memory
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

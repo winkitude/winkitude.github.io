@@ -1,26 +1,30 @@
-# plates.csv — The Winkleman Travel Plate Archive,,,,,,
-#,,,,,,
-# Each row below is one validation plate. Columns:,,,,,,
-#   slug       filename stem. Images must be at:,,,,,,
-#                  images/plates/{slug}.{front_ext},,,,,,
-#                  images/plates/{slug}_back.{back_ext},,,,,,
-#   name       displayed airline name,,,,,,
-#   years      operating years shown in the caption," e.g. ""1945 – 1972"" or ""1971 – present""",,,,,
-#   region     short code for the region filter (see list below),,,,,,
-"#   front_ext  ""webp"" or ""png""",,,,,,
-"#   back_ext   ""webp"""," ""png""", or blank if the back hasn't been scanned yet,,,,
-#   notes      optional internal notes — ignored by the site,,,,,,
-#,,,,,,
-# Region codes:,,,,,,
-#   na  N. America           eu  Europe               sa  Latin America,,,,,,
-#   as  Asia                 me  Middle East          af  Africa,,,,,,
-#   oc  Oceania              misc Miscellaneous (rail, hotels, unknowns),,,,
-#,,,,,,
-# Lines starting with # are comments and are ignored. Blank lines are also ignored.,,,,,,
-# The site sorts plates alphabetically by name, so the order here doesn't matter.,,,,,
-# The filter bar only shows region chips for regions that have at least one plate.,,,,,,
-# Adding a new plate: drop the two image files into /images/plates/, append one row below.,,,,,
-#,,,,,,
+# plates.csv — The Winkleman Travel Plate Archive
+#
+# Each row below is one validation plate. Columns:
+#   slug       filename stem. Images must be at:
+#                  images/plates/{slug}.{front_ext}
+#                  images/plates/{slug}_back.{back_ext}
+#   name       displayed airline name
+#   years      operating years shown in the caption (e.g. 1945 – 1972, or 1971 – present)
+#   region     short code for the region filter (see list below)
+#   front_ext  image extension for the front: webp, png, or jpg
+#   back_ext   image extension for the back, or blank if not yet scanned
+#   notes      optional internal notes — ignored by the site
+#
+# Region codes:
+#   na  N. America           eu  Europe               sa  Latin America
+#   as  Asia                 me  Middle East          af  Africa
+#   oc  Oceania              misc Miscellaneous (rail, hotels, unknowns)
+#
+# Lines starting with # are comments and are ignored. Blank lines are also ignored.
+# The site sorts plates alphabetically by name, so the order here doesn't matter.
+# The filter bar only shows region chips for regions that have at least one plate.
+# Adding a new plate: drop the two image files into /images/plates/, append one row below.
+#
+# IMPORTANT: avoid editing this file in Excel or Numbers if you can.
+# Spreadsheet apps mangle CSV comments and add extra trailing commas.
+# Edit in a plain text editor (VS Code, Notepad++, BBEdit) for cleanest results.
+#
 slug,name,years,region,front_ext,back_ext,notes
 action_tours,Action Tours,?,misc,webp,webp,
 aero_coach,Aero Coach Aviation,1981 – 1992,na,webp,webp,

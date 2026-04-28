@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Winkleman Travel — Eulogy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css">
+<style>
+  /* ============================================================
+     EULOGY.HTML — page-specific styles (long-form reading page)
+     All shared styles (masthead, page nav, footer, intro section,
+     color system) live in site.css.
+     ============================================================ */
+
+  /* The eulogy's own header — larger than the standard intro, and
+     without the blue wash because the eulogy wants a calm, focused
+     white-paper feel. */
+  .eulogy-header {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 88px 40px 32px;
+    text-align: center;
+  }
+  .eulogy-kicker {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold-deep);
+    margin: 0 0 24px 0;
+    line-height: 1;
+  }
+  .eulogy-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-variation-settings: "opsz" 144;
+    font-size: clamp(40px, 6vw, 64px);
+    letter-spacing: -0.015em;
+    line-height: 1.05;
+    color: var(--ink);
+    margin-bottom: 18px;
+  }
+  .eulogy-title em {
+    font-style: italic;
+    font-weight: 300;
+    color: var(--gold-deep);
+  }
+  .eulogy-dates {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+  .eulogy-dates::before,
+  .eulogy-dates::after {
+    content: '·';
+    margin: 0 10px;
+    color: var(--gold-deep);
+  }
+
+  /* Thin rule with gold dot between header and body */
+  .divider {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 40px 56px;
+  }
+  .divider::before,
+  .divider::after {
+    content: '';
+    height: 1px;
+    background: var(--rule);
+    flex: 0 0 100px;
+  }
+  .divider-dot {
+    width: 8px; height: 8px;
+    background: var(--gold-deep);
+    border-radius: 50%;
+    margin: 0 20px;
+  }
+
+  /* The eulogy body — narrow measure, generous leading, larger text */
+  .eulogy-body {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 0 40px 120px;
+    font-size: 20px;
+    line-height: 1.75;
+    font-weight: 300;
+    font-variation-settings: "opsz" 36;
+    color: var(--ink);
+  }
+
+  .eulogy-body p { margin-bottom: 1.35em; }
+
+  /* Drop cap on the opening paragraph */
+  .eulogy-body > p:first-of-type::first-letter {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 72px;
+    float: left;
+    line-height: 0.85;
+    margin: 8px 14px 0 0;
+    color: var(--gold-deep);
+  }
+
+  .eulogy-body em { font-style: italic; font-weight: 400; }
+
+  /* Block quote for any lifted phrasing */
+  .eulogy-body blockquote {
+    margin: 2em 0;
+    padding: 0 0 0 28px;
+    border-left: 2px solid var(--gold-deep);
+    font-style: italic;
+    font-size: 22px;
+    line-height: 1.55;
+    color: var(--ink);
+    font-weight: 300;
+  }
+
+  /* Section breaks — three centered dots */
+  .eulogy-body hr,
+  .eulogy-body .break {
+    border: none;
+    margin: 2.5em 0;
+    text-align: center;
+    color: var(--gold-deep);
+    font-family: 'Fraunces', serif;
+    font-size: 18px;
+    letter-spacing: 1.2em;
+  }
+  .eulogy-body hr::after,
+  .eulogy-body .break::after {
+    content: '· · ·';
+  }
+
+  /* Closing signature block */
+  .eulogy-signoff {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 0 40px 120px;
+    text-align: right;
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 17px;
+    color: var(--ink-soft);
+    line-height: 1.6;
+  }
+  .eulogy-signoff strong {
+    font-weight: 500;
+    font-style: normal;
+    color: var(--ink);
+    display: block;
+    margin-top: 4px;
+  }
+
+  /* ========== Responsive — page-specific ========== */
+  @media (max-width: 780px) {
+    .eulogy-header { padding: 56px 24px 24px; }
+    .eulogy-body {
+      padding: 0 24px 80px;
+      font-size: 17px;
+      line-height: 1.7;
+    }
+    .eulogy-body > p:first-of-type::first-letter { font-size: 56px; }
+    .eulogy-body blockquote { font-size: 18px; padding-left: 20px; }
+    .eulogy-signoff { padding: 0 24px 80px; }
+  }
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#main-content">Skip to content</a>
+
+<header class="masthead">
+  <div class="masthead-top">
+    <span>◎ &nbsp;Winkleman Travel</span>
+    <span>In memory of [Father's Name]</span>
+    <span>A life's work, remembered</span>
+  </div>
+  <div class="masthead-main">
+    <div class="masthead-flank left">
+      The words<br>
+      spoken at his<br>
+      service, kept<br>
+      here for keeping.
+    </div>
+    <div class="logo-block">
+      <div class="logo-placeholder">Winkleman Travel Logo</div>
+      <h1 class="wordmark">Winkleman <em>Travel</em></h1>
+      <div class="subtitle">Eulogy</div>
+    </div>
+    <div class="masthead-flank right">
+      Read at<br>
+      the service on<br>
+      [Date], by<br>
+      [Speaker].
+    </div>
+  </div>
+</header>
+
+<nav class="page-nav" aria-label="Site sections">
+  <div class="page-nav-inner">
+    <a href="index.html">The Plates</a>
+    <a href="ads.html">Print Ads</a>
+    <a href="eulogy.html" class="current">Eulogy</a>
+    <a href="memories.html">Share a Memory</a>
+  </div>
+</nav>
+
+<main id="main-content">
+
+<!-- ============================================================
+     EULOGY HEADER
+     Replace [Father's Full Name] and the dates below.
+     ============================================================ -->
+<header class="eulogy-header">
+  <p class="eulogy-kicker">— In Loving Memory —</p>
+  <h1 class="eulogy-title">[Father's <em>Full Name</em>]</h1>
+  <p class="eulogy-dates">[Birth Year]&nbsp;–&nbsp;[Year]</p>
+</header>
+
+<div class="divider" aria-hidden="true">
+  <span class="divider-dot"></span>
+</div>
+
+<!-- ============================================================
+     EULOGY BODY
+     Replace everything between here and the end comment with the
+     actual eulogy. A few formatting tips:
+       - Wrap paragraphs in <p>...</p>
+       - Use <em>...</em> for italics
+       - Use <blockquote>...</blockquote> for any lifted or quoted text
+       - Use <hr> to drop a three-dot section break
+     The opening paragraph automatically gets a drop cap.
+     ============================================================ -->
+<article class="eulogy-body" aria-label="Eulogy">
+
+  <p>This is a placeholder for the eulogy. Replace this text with the actual words spoken at the service. The opening paragraph will receive a drop cap automatically — so make sure your real opening line is something you'd want to begin big.</p>
+
+  <p>Keep paragraphs at a comfortable length. The type is set at a generous size and leading for easy reading on any device. Line breaks between paragraphs will space out naturally.</p>
+
+  <blockquote>Block quotes like this one work well for any lifted phrase — a line he often said, a sentence from a letter, a passage of scripture if that's part of the service.</blockquote>
+
+  <p>You can use <em>italics for emphasis</em> or for titles of things — books, planes, cities. The typeface handles italic beautifully.</p>
+
+  <hr>
+
+  <p>Three dots like the break above mark a section transition — useful if the eulogy has distinct parts (early life, career, family, closing). Just drop an hr tag between sections.</p>
+
+  <p>This last paragraph is where the eulogy usually lands softly — a blessing, a hope, a thank you. Replace all of this with the real text, and sign it below.</p>
+
+</article>
+<!-- ============================================================
+     END EULOGY BODY
+     ============================================================ -->
+
+<p class="eulogy-signoff">
+  Delivered at the service by<br>
+  <strong>[Speaker's Name]</strong>
+</p>
+
+</main>
+
+<footer class="colophon">
+  <div>
+    <div class="colophon-mark">Winkleman Travel</div>
+    <p>My father worked in travel for roughly three decades — Boston, then Philadelphia. He kept what mattered. This site is for the things he saved, and for the people who remember him.</p>
+  </div>
+  <div>
+    <h3>More</h3>
+    <nav class="foot-nav" aria-label="Site sections">
+      <a href="index.html">The Plates</a>
+      <a href="ads.html">Print Ads</a>
+      <a href="eulogy.html" class="current">Eulogy</a>
+      <a href="memories.html">Share a Memory</a>
+    </nav>
+  </div>
+  <div>
+    <h3>Credits</h3>
+    <div class="mono">
+      Design · Winkitude<br>
+      winkitude.com<br>
+      © MMXXVI<br>
+      In loving memory
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

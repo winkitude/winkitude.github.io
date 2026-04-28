@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Winkleman Travel — Share a Memory</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css">
+<style>
+  /* ============================================================
+     MEMORIES.HTML — page-specific styles (form page)
+     All shared styles (masthead, page nav, footer, intro section,
+     color system) live in site.css.
+     ============================================================ */
+
+  /* ========== FORM ========== */
+  .form-section {
+    max-width: 620px;
+    margin: 0 auto;
+    padding: 48px 40px 80px;
+  }
+
+  .form-card {
+    background: var(--paper-pure);
+    border: 1px solid var(--ink);
+    padding: 44px 44px 36px;
+    position: relative;
+    box-shadow:
+      0 1px 0 rgba(27, 20, 100, 0.06),
+      0 20px 40px -20px rgba(27, 20, 100, 0.15);
+  }
+
+  /* Gold L-brackets at the corners — decorative flourish */
+  .form-card::before {
+    content: '';
+    position: absolute;
+    top: 12px; left: 12px;
+    width: 24px; height: 24px;
+    border-top: 1.5px solid var(--gold-deep);
+    border-left: 1.5px solid var(--gold-deep);
+  }
+  .form-card::after {
+    content: '';
+    position: absolute;
+    bottom: 12px; right: 12px;
+    width: 24px; height: 24px;
+    border-bottom: 1.5px solid var(--gold-deep);
+    border-right: 1.5px solid var(--gold-deep);
+  }
+
+  .form-label {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+  .form-label .required {
+    color: var(--gold-deep);
+    margin-left: 2px;
+  }
+
+  .form-field { margin-bottom: 24px; }
+
+  .form-input,
+  .form-textarea {
+    width: 100%;
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    padding: 12px 14px;
+    font-family: 'Fraunces', serif;
+    font-size: 17px;
+    font-weight: 300;
+    font-variation-settings: "opsz" 24;
+    color: var(--ink);
+    line-height: 1.5;
+    transition: border-color 0.15s ease, background 0.15s ease;
+    border-radius: 2px;
+  }
+  .form-input:focus,
+  .form-textarea:focus {
+    outline: none;
+    border-color: var(--ink);
+    background: var(--paper-pure);
+  }
+  .form-input::placeholder,
+  .form-textarea::placeholder {
+    color: rgba(27, 20, 100, 0.4);
+    font-style: italic;
+  }
+
+  .form-textarea {
+    min-height: 180px;
+    resize: vertical;
+    font-size: 17px;
+    line-height: 1.65;
+  }
+
+  .form-hint {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin-top: 6px;
+    line-height: 1.5;
+  }
+
+  .form-submit {
+    background: var(--ink);
+    color: var(--paper);
+    border: 1px solid var(--ink);
+    padding: 14px 32px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease;
+    font-weight: 500;
+    border-radius: 2px;
+    margin-top: 8px;
+  }
+  .form-submit:hover:not(:disabled) {
+    background: var(--gold-deep);
+    border-color: var(--gold-deep);
+  }
+  .form-submit:disabled {
+    opacity: 0.6;
+    cursor: wait;
+  }
+
+  /* Submit status feedback */
+  .form-status {
+    margin-top: 20px;
+    padding: 16px 20px;
+    font-family: 'Fraunces', serif;
+    font-size: 16px;
+    font-style: italic;
+    line-height: 1.5;
+    border-left: 3px solid var(--gold-deep);
+    background: rgba(154, 111, 9, 0.1);
+    display: none;
+  }
+  .form-status.visible { display: block; }
+  .form-status.error {
+    border-left-color: #a33;
+    background: rgba(163, 51, 51, 0.08);
+  }
+
+  /* Privacy note below the form */
+  .privacy-note {
+    margin-top: 32px;
+    padding-top: 20px;
+    border-top: 1px solid var(--rule);
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--ink-soft);
+    text-align: center;
+    line-height: 1.6;
+  }
+
+  .mailto-link {
+    color: var(--ink);
+    text-decoration: none;
+    border-bottom: 1px solid var(--gold-deep);
+    font-style: normal;
+    font-weight: 400;
+  }
+  .mailto-link:hover { color: var(--gold-deep); }
+
+  /* ========== Responsive — page-specific ========== */
+  @media (max-width: 780px) {
+    .form-section { padding: 32px 20px 64px; }
+    .form-card { padding: 32px 24px 28px; }
+  }
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#main-content">Skip to content</a>
+
+<header class="masthead">
+  <div class="masthead-top">
+    <span>◎ &nbsp;Winkleman Travel</span>
+    <span>In memory of Joseph Winkleman</span>
+    <span>A life's work, remembered</span>
+  </div>
+  <div class="masthead-main">
+    <div class="masthead-flank left">
+      If you knew<br>
+      him, worked<br>
+      with him, or<br>
+      traveled with him.
+    </div>
+    <div class="logo-block">
+      <div class="logo-placeholder">Winkleman Travel Logo</div>
+      <h1 class="wordmark">Winkleman <em>Travel</em></h1>
+      <div class="subtitle">Share a Memory</div>
+    </div>
+    <div class="masthead-flank right">
+      Leave a note.<br>
+      It goes straight<br>
+      to the family.<br>
+      Nothing is public.
+    </div>
+  </div>
+</header>
+
+<nav class="page-nav" aria-label="Site sections">
+  <div class="page-nav-inner">
+    <a href="index.html">The Plates</a>
+    <a href="ads.html">Print Ads</a>
+    <a href="obituary.html">Obituary</a>
+    <a href="memories.html" class="current">Share a Memory</a>
+  </div>
+</nav>
+
+<main id="main-content">
+
+<section class="intro-section" aria-labelledby="intro-heading">
+  <div class="intro-inner">
+    <p class="intro-kicker">— For the family —</p>
+    <h1 id="intro-heading">Tell us a <em>memory</em></h1>
+    <p>If you knew my father — worked alongside him, booked a trip through him, sat across from him at a long dinner — we'd love to hear a story. Anything. A one-liner he used to say, a trip he planned that went sideways, the way he answered the phone. These go straight to me.</p>
+  </div>
+</section>
+
+<section class="form-section" aria-labelledby="form-heading">
+  <h2 class="sr-only" id="form-heading">Memory submission form</h2>
+  <div class="form-card">
+
+    <!-- ============================================================
+         FORM BACKEND CONFIGURATION
+         ============================================================
+         This form works two ways:
+
+         OPTION A — Formspree (recommended)
+           1. Sign up free at https://formspree.io (50 submissions/month free)
+           2. Create a new form, they'll give you an endpoint URL that looks
+              like: https://formspree.io/f/xyzabc123
+           3. Paste that URL into the `action` attribute on the <form> below
+              AND update FORMSPREE_CONFIGURED to true in the script at the
+              bottom of this file.
+
+         OPTION B — Mailto fallback (works immediately, no signup)
+           Leave the form as-is. Update YOUR_EMAIL in the script at the bottom
+           of this file to your real email address. When someone submits the
+           form, their browser will open their email client with a pre-filled
+           message addressed to you.
+         ============================================================ -->
+    <form id="memoryForm"
+          action="https://formspree.io/f/REPLACE_ME"
+          method="POST"
+          novalidate>
+
+      <div class="form-field">
+        <label class="form-label" for="name">Your name <span class="required">*</span></label>
+        <input class="form-input" type="text" id="name" name="name" required
+               placeholder="e.g. Jane Smith" autocomplete="name" />
+      </div>
+
+      <div class="form-field">
+        <label class="form-label" for="email">Your email <span class="required">*</span></label>
+        <input class="form-input" type="email" id="email" name="email" required
+               placeholder="So we can write back" autocomplete="email" />
+      </div>
+
+      <div class="form-field">
+        <label class="form-label" for="relation">How did you know him?</label>
+        <input class="form-input" type="text" id="relation" name="relation"
+               placeholder="e.g. Client for 15 years, colleague at Winkleman Travel, neighbor" />
+      </div>
+
+      <div class="form-field">
+        <label class="form-label" for="memory">Your memory <span class="required">*</span></label>
+        <textarea class="form-textarea" id="memory" name="memory" required
+                  placeholder="Anything — a story, a phrase he used to say, a trip he helped you with. Take as much space as you like."></textarea>
+        <p class="form-hint">There is no length limit. Write as little or as much as you want.</p>
+      </div>
+
+      <!-- Honeypot — hidden from humans, bots fill it in. If it has a value, silently drop. -->
+      <div style="position: absolute; left: -10000px;" aria-hidden="true">
+        <label>Leave this field blank <input type="text" name="_gotcha" tabindex="-1" /></label>
+      </div>
+
+      <button class="form-submit" type="submit" id="submitBtn">Send Memory</button>
+
+      <div class="form-status" id="formStatus" role="status" aria-live="polite"></div>
+    </form>
+
+    <p class="privacy-note">
+      Your memory goes privately to the family. Nothing from this form is published
+      on the website. If you'd prefer, you can also email directly —
+      <a class="mailto-link" id="directMailto" href="mailto:REPLACE_WITH_YOUR_EMAIL@example.com?subject=A memory of my father">send a note</a>.
+    </p>
+  </div>
+</section>
+
+</main>
+
+<footer class="colophon">
+  <div>
+    <div class="colophon-mark">Winkleman Travel</div>
+    <p>My father, Joseph Winkleman, ran Winkleman Travel in Cranston, Rhode Island, for over thirty years. He kept what mattered. This site is for the things he saved, and for the people who remember him.</p>
+  </div>
+  <div>
+    <h3>More</h3>
+    <nav class="foot-nav" aria-label="Site sections">
+      <a href="index.html">The Plates</a>
+      <a href="ads.html">Print Ads</a>
+      <a href="obituary.html">Obituary</a>
+      <a href="memories.html" class="current">Share a Memory</a>
+    </nav>
+  </div>
+  <div>
+    <h3>Credits</h3>
+    <div class="mono">
+      Design · Winkitude<br>
+      winkitude.com<br>
+      © MMXXVI<br>
+      In loving memory
+    </div>
+  </div>
+</footer>
+
+<script>
+  /* ==========================================================
+   * FORM HANDLER — Formspree with mailto fallback
+   * ==========================================================
+   * CONFIGURE THESE TWO LINES:
+   */
+
+  // Set to true once you've signed up for Formspree and pasted your
+  // endpoint URL into the <form action="..."> attribute above.
+  const FORMSPREE_CONFIGURED = false;
+
+  // Your email address — used by the mailto fallback and the
+  // "send a note" link in the privacy note.
+  const YOUR_EMAIL = 'REPLACE_WITH_YOUR_EMAIL@example.com';
+
+  /* ========================================================== */
+
+  const form = document.getElementById('memoryForm');
+  const submitBtn = document.getElementById('submitBtn');
+  const statusEl = document.getElementById('formStatus');
+  const directMailto = document.getElementById('directMailto');
+
+  if (YOUR_EMAIL && YOUR_EMAIL.indexOf('REPLACE') === -1) {
+    directMailto.href = `mailto:${YOUR_EMAIL}?subject=${encodeURIComponent('A memory of my father')}`;
+  }
+
+  function showStatus(message, isError) {
+    statusEl.textContent = message;
+    statusEl.classList.add('visible');
+    statusEl.classList.toggle('error', !!isError);
+  }
+
+  function hideStatus() {
+    statusEl.classList.remove('visible', 'error');
+    statusEl.textContent = '';
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    hideStatus();
+
+    // Honeypot — silently drop bot submissions
+    if (form.elements._gotcha.value.trim() !== '') {
+      showStatus('Thank you — your memory has been sent.');
+      form.reset();
+      return;
+    }
+
+    const name = form.elements.name.value.trim();
+    const email = form.elements.email.value.trim();
+    const memory = form.elements.memory.value.trim();
+    if (!name || !email || !memory) {
+      showStatus('Please fill in your name, email, and memory.', true);
+      return;
+    }
+
+    if (FORMSPREE_CONFIGURED) {
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Sending…';
+      try {
+        const resp = await fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { 'Accept': 'application/json' }
+        });
+        if (resp.ok) {
+          showStatus('Thank you — your memory has been sent. It means more than you know.');
+          form.reset();
+        } else {
+          throw new Error('Non-OK response');
+        }
+      } catch (err) {
+        console.error('Formspree submit failed:', err);
+        openMailto(name, email, form.elements.relation.value.trim(), memory);
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Send Memory';
+      }
+    } else {
+      openMailto(name, email, form.elements.relation.value.trim(), memory);
+    }
+  });
+
+  function openMailto(name, email, relation, memory) {
+    const subject = `A memory of my father — from ${name}`;
+    const body = [
+      `From: ${name} <${email}>`,
+      relation ? `How they knew him: ${relation}` : '',
+      '',
+      memory
+    ].filter(Boolean).join('\n');
+
+    const mailtoUrl = `mailto:${YOUR_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    window.location.href = mailtoUrl;
+
+    showStatus(
+      'Your email client should now open with the memory filled in. Just hit send. ' +
+      'If nothing happened, please copy your memory and email it to ' + YOUR_EMAIL + '.'
+    );
+  }
+</script>
+
+</body>
+</html>

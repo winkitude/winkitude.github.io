@@ -1,0 +1,35 @@
+# newspaper.csv — Winkleman Travel Newspaper Clippings
+#
+# Each row is one clipping — an ad, a feature article, a brief mention,
+# anything in print about or from Winkleman Travel. Image files live in
+# images/newspaper/{slug}.{ext}.
+#
+# Columns:
+#   slug         filename stem (no extension). e.g. "1984-09-07-rih"
+#   ext          image extension: "png", "jpg", "webp"
+#   title        short headline shown in caption
+#   byline       optional, only shown on feature articles
+#   publication  publication code (rih, jvh, etc.) or full name
+#   date         YYYY-MM-DD; gets formatted to "September 7, 1984"
+#   size         "feature" for centerpiece treatment, blank/normal otherwise
+#   tilt         rotation in degrees. Normal ads -6 to 6, features -2 to 2.
+#   offset_y     vertical nudge (-40 to 40) to stagger column layout
+#   style        "pin" (red thumbtack) or "tape" (masking tape corners)
+#   notes        optional internal notes — ignored by the site
+#
+# Publication codes recognized today (add more in PUBLICATION_NAMES in ads.html):
+#   rih  Rhode Island Herald
+#   jvh  Jewish Voice and Herald
+#
+# Lines starting with # are ignored. Reorder rows to rearrange the corkboard.
+# Features always render together above the regular ad grid.
+#
+# IMPORTANT: avoid editing this file in Excel or Numbers if you can.
+# Spreadsheet apps mangle CSV comments. Use a plain text editor.
+#
+slug,ext,title,byline,publication,date,size,tilt,offset_y,style,notes
+1984-09-07b-rih,png,"Joseph Winkleman: Travel Agent, Dedicated Community Worker",by Karen A. Coughlin,rih,1984-09-07,feature,-1,0,tape,Long-form feature article
+1984-09-07-rih,png,Join A Winkleman Travel Group to Israel,,rih,1984-09-07,,-2,0,pin,Touro Fraternal / Beth Sholom group trip
+2006-02-03-jvh,png,Honeymoons All Over The World,,jvh,2006-02-03,,1.5,15,tape,
+2005-08-19-jvh,png,Go to Israel This Year,,jvh,2005-08-19,,-3,0,pin,
+2005-09-02-jvh,png,Go to Israel This Year,,jvh,2005-09-02,,2.5,25,pin,Same ad as 8/19 — ran again two weeks later

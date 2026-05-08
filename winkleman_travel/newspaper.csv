@@ -19,7 +19,9 @@
 #
 # Publication codes recognized today (add more in PUBLICATION_NAMES in ads.html):
 #   rih  Rhode Island Herald
+#   rijh Rhode Island Jewish Herald
 #   jvh  Jewish Voice and Herald
+#   options  Options Rhode Island LGBTQ+ Magazine
 #
 # Lines starting with # are ignored. Reorder rows to rearrange the corkboard.
 # Features always render together above the regular ad grid.
@@ -28,8 +30,68 @@
 # Spreadsheet apps mangle CSV comments. Use a plain text editor.
 #
 slug,ext,title,byline,publication,date,size,tilt,offset_y,style,notes
+1975-10-10-rih,png,Maimi Beach,,rih,1975-10-10,,0,0,pin,Ad for Winkleman Travel's Miami Beach packages
+1975-11-07-rih,png,Charter Tours,,rih,1975-11-07,,0,0,pin,Ad for Winkleman Travel's charter tours
+1975-12-05-rih,png,Hawaii,,rih,1975-12-05,,0,0,pin,Ad for Winkleman Travel's Hawaii packages
+1975-12-16-rih,png,Book Now,,rih,1975-12-16,,0,0,pin,Ad for Winkleman Travel's Florida and islands packages
+1976-02-13-rih,png,Book Now,,rih,1976-02-13,,0,0,pin,Ad for Winkleman Travel's Florida and islands packages
+1976-03-26-rih,png,For all your travel needs,,rih,1976-03-26,,0,0,pin,Ad for Winkleman Travel's general services
+1976-04-23-rih,png,We're moving,,rih,1976-04-23,,0,0,pin,Ad for Winkleman Travel's New Location
+1976-06-04-rih,png,We've moved,,rih,1976-06-04,,0,0,pin,Ad for Winkleman Travel's New Location
+1976-09-17-rih,png,Jewish Travel Guide,,rih,1976-09-17,,0,0,pin,Ad for Winkleman Travel's Jewish Travel Guide
+1976-10-01-rih,png,Happy New Year,,rih,1976-10-01,,0,0,pin,Winkleman Travel wishes you a Happy New Year
+1976-12-24-rih,png,Israel Travel,,rih,1976-12-24,,0,0,pin,Ad for Winkleman Travel's Israel Travel packages
+1978-04-13-rih,png,Israel Tours,,rih,1978-04-13,,0,0,pin,Ad for Winkleman Travel's Israel Tour
+1978-06-22-rih,png,Last chance for Israel tours,,rih,1978-06-22,,0,0,pin,Ad for Winkleman Travel's Israel Tour
+1978-11-09-rih,png,Even lower fairs to Israel,,rih,1978-11-09,,0,0,pin,Ad for Winkleman Travel's Israel Tour
+1978-12-07-rih,png,Tours,,rih,1978-12-07,,0,0,pin,Ad for Winkleman Travel's Israel Tour
+1980-11-27-rih,png,We're Moving Again,,rih,1980-11-27,,0,0,pin,Ad for Winkleman Travel's new location at 720 Reservoir Ave
+1981-04-30-rih,png,Boston to Tel Aviv,,rih,1981-04-30,,0,0,pin,Ad for Winkleman Travel's Boston to Tel Aviv route
+1981-08-13-rih,png,New Winter Charters,,rih,1981-08-13,,0,0,pin,Ad for Winkleman Travel's winter charter tours
+1982-01-11-rih,png,Passover in the Catskills,,rih,1982-01-11,,0,0,pin,Ad for Winkleman Travel's Passover in the Catskills tour
 1984-09-07b-rih,png,"Joseph Winkleman: Travel Agent, Dedicated Community Worker",by Karen A. Coughlin,rih,1984-09-07,feature,-1,0,tape,Long-form feature article
 1984-09-07-rih,png,Join A Winkleman Travel Group to Israel,,rih,1984-09-07,,-2,0,pin,Touro Fraternal / Beth Sholom group trip
-2006-02-03-jvh,png,Honeymoons All Over The World,,jvh,2006-02-03,,1.5,15,tape,
+1985-09-27-rih,png,Unbelievable new fare to Israel,,rih,1985-09-27,,0,0,pin,Ad for Winkleman Travel's Israel Tour
+1986-04-25-rih,png,Passover Specials,,rih,1986-04-25,,0,0,pin,Ad for Winkleman Travel's Passover specials
+1986-09-19-rih,png,Now is the best time to visit Israel,,rih,1986-09-19,,0,0,pin,Ad for Winkleman Travel's Israel Tour
+1987-04-17-rih,png,El Al coupon,,rih,1987-04-17,,0,0,pin,Ad for Winkleman Travel's Israel tours with El Al
+1988-03-17-rih,png,El Al rate lock in,,rih,1988-03-17,,0,0,pin,Ad for Winkleman Travel's Israel tours with El Al
+1988-10-27-rih,png,Fly El Al to Israel,,rih,1988-10-27,,0,0,pin,Ad for Winkleman Travel's Israel tours with El Al
+1989-08-31-rijh,png,Spend a month this winter in Israel,,rijh,1989-08-31,,0,0,pin,Ad for Winkleman Travel's Israel tours
+1989-09-14-rijh,png,Spend a month this winter in Israel (updated ad),,rijh,1989-08-31,,0,0,pin,Ad for Winkleman Travel's Israel tours
+1990-01-04-rijh,png,Last Call for Israel Tours,,rijh,1990-01-04,,0,0,pin,Ad for Winkleman Travel's Israel tours
+1990-02-08-rijh,png,Coupon for El Al,,rijh,1990-02-08,,0,0,pin,Ad for Winkleman Travel's Israel tours with El Al
+1990-04-12-rijh,png,Winkleman Travel Group,,rijh,1990-04-12,feature,0,0,pin,Info about the Winkleman Travel Group
+1990-07-26-rijh,png,Here we go again,,rijh,1990-07-26,,0,0,pin,Ad for Winkleman Travel's Israel tours
+1990-10-18-rijh,png,Here we go again v2,,rijh,1990-10-18,,0,0,pin,Ad for Winkleman Travel's Israel tours
+1990-10-30-rijh,png,Caribbean Deal,,rijh,1990-10-30,,0,0,pin,Ad for Winkleman Travel's Caribbean packages
+1990-11-08-rijh,png,Harvey Cohen Invite,,rijh,1990-11-08,,0,0,pin,Ad for Winkleman Travel's Harvey Cohen invite
+1990-11-22-rijh,png,Israel Tours,,rijh,1990-11-22,,0,0,pin,Ad for Winkleman Travel's Israel tours
+1991-01-03-rijh,png,Last Call for Israel Tours,,rijh,1991-01-03,,0,0,pin,Ad for Winkleman Travel's Israel tours
+1991-02-28-rijh,png,Fly non-stop El Al,,rijh,1991-02-28,,0,0,pin,Ad for Winkleman Travel's Israel tours with El Al
+1991-03-14-rijh,png,Winkleman Travel Home Of The Special Agents,Kathy Cohen,rijh,1991-03-14,feature,0,0,pin,Article about Winkleman Travel
+1991-07-25-rijh,png,Israel Tours,,rijh,1991-07-25,,0,0,pin,Ad for Winkleman Travel's Israel tours
+1991-10-10-rijh,png,Round trip Boston to london,,rijh,1991-10-10,,0,0,pin,Ad for Winkleman Travel's Boston to London route
+1991-10-31-rijh,png,Listen to the Winkleman Travel Radio Show,,rijh,1991-10-31,,0,0,pin,Ad for Winkleman Travel's radio show
+1991-11-14-rijh,png,Misc Tours,,rijh,1991-11-14,,0,0,pin,Ad for Winkleman Travel's miscellaneous tours
+1992-01-02-rijh,png,Last Call for Israel Tours,,rijh,1992-01-02,,0,0,pin,Ad for Winkleman Travel's Israel tours
+1992-09-17-rijh,png,This Year See Israel,,rijh,1992-09-17,,0,0,pin,Ad for Winkleman Travel's Israel tours
+1993-08-19-rijh,png,Israel Tours,,rijh,1993-08-19,,0,0,pin,Ad for Winkleman Travel's Israel tours
+1993-09-23-rijh,png,New Price for Israel Tours,,rijh,1993-09-23,,0,0,pin,Ad for Winkleman Travel's Israel tours
+1993-11-18-rijh,png,Low Winter Airfares to Israel,,rijh,1993-11-18,,0,0,pin,Ad for Winkleman Travel's Israel tours
+1994-01-06-rijh,png,Airfare sale,,rijh,1994-01-06,,0,0,pin,Ad for Winkleman Travel's airfare sale
+1994-02-17-rijh,png,This year... take a delux tour to Europe,,rijh,1994-02-17,,0,0,pin,Ad for Winkleman Travel's deluxe tours to Europe
+1994-04-07-rijh,png,Happy 46th birthday Israel,,rijh,1994-04-07,,0,0,pin,Coupon for Winkleman Travel's Israel tours
+1995-01-05-rijh,png,Israel tours,,rijh,1995-01-05,,0,0,pin,Ad for Winkleman Travel's Israel tours
+1995-02-16-rijh,png,New York to Israel,,rijh,1995-02-16,,0,0,pin,Ad for Winkleman Travel's Israel tours
+1995-04-20-rijh,png,New York to Israel,,rijh,1995-04-20,,0,0,pin,Ad for Winkleman Travel's Israel tours
+1995-10-05-rijh,png,Last minute cruise spectacular,,rijh,1995-10-05,,0,0,pin,Ad for Winkleman Travel's last minute cruise packages
+1996-04-18-rijh,png,Israel Election Day special,,rijh,1996-04-18,,0,0,pin,Ad for Winkleman Travel's Israel tours
+1996-12-19-rijh,png,Las Vegas tours,,rijh,1996-12-19,,0,0,pin,Ad for Winkleman Travel's Las Vegas tour packages
+1997-03-options-lgbtq,png,Travel with Pride,,options,1997-03-01,,0,0,pin,Ad for Winkleman Travel's LGBTQ+ travel services
+1998-11-05-rijh,png,Israel tours,,rijh,1998-11-05,,0,0,pin,Ad for Winkleman Travel's Israel tours
+1999-03-11-rijh,png,Kosher Alaska Cruise,,rijh,1999-03-11,,0,0,pin,Ad for Winkleman Travel's kosher Alaska cruise
+1999-10-27-rijh,png,Israel tours,,rijh,1999-10-27,,0,0,pin,Ad for Winkleman Travel's Israel tours
+2004-11-19-jvh,png,Swiss Air Israel Package,,jvh,2004-11-19,,0,0,pin,Ad for Winkleman Travel's Swiss Air Israel package
 2005-08-19-jvh,png,Go to Israel This Year,,jvh,2005-08-19,,-3,0,pin,
-2005-09-02-jvh,png,Go to Israel This Year,,jvh,2005-09-02,,2.5,25,pin,Same ad as 8/19 — ran again two weeks later
+2006-02-03-jvh,png,Honeymoons All Over The World,,jvh,2006-02-03,,1.5,15,tape,

@@ -105,6 +105,118 @@
     margin: 0 4px;
   }
 
+  /* ========== SEARCH ==========
+     A small inline search input, sized to feel like part of the filter bar
+     rather than a separate UI feature. Borderless until focused, then a
+     gold underline lights up. The magnifier and clear button are inline
+     so the input stays a single visual unit. */
+  .search-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 18px 0;
+    /* Push search to the middle-ish of the bar */
+    flex: 0 1 auto;
+  }
+  .search-input-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid var(--rule);
+    transition: border-color 0.15s ease;
+    /* The wrap, not the input, owns the underline so the magnifier sits "inside" it */
+  }
+  .search-input-wrap:focus-within {
+    border-bottom-color: var(--gold-deep);
+  }
+  .search-icon {
+    color: var(--ink-soft);
+    width: 14px;
+    height: 14px;
+    margin-right: 8px;
+    flex-shrink: 0;
+  }
+  .search-input {
+    background: transparent;
+    border: none;
+    outline: none;
+    font-family: 'Fraunces', serif;
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--ink);
+    padding: 4px 24px 4px 0;
+    width: 180px;
+    transition: width 0.2s ease;
+  }
+  .search-input::placeholder {
+    color: var(--ink-soft);
+    font-style: italic;
+    opacity: 0.7;
+  }
+  .search-input:focus {
+    width: 240px;
+  }
+  /* Clear-search button — shown only when input has text */
+  .search-clear {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 18px;
+    height: 18px;
+    border: none;
+    background: var(--rule-strong);
+    color: var(--paper);
+    border-radius: 50%;
+    cursor: pointer;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    line-height: 1;
+    padding: 0;
+    transition: background 0.15s ease;
+  }
+  .search-clear:hover { background: var(--ink); }
+  .search-clear.visible { display: flex; }
+
+  /* No-results message inside the grid when search/filter returns nothing */
+  .grid-empty {
+    grid-column: 1 / -1;
+    padding: 80px 40px;
+    text-align: center;
+    color: var(--ink-soft);
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 18px;
+    line-height: 1.6;
+  }
+  .grid-empty strong {
+    font-weight: 500;
+    font-style: normal;
+    color: var(--ink);
+  }
+  .grid-empty .reset-search {
+    margin-top: 16px;
+    background: transparent;
+    border: 1px solid var(--rule-strong);
+    color: var(--ink);
+    padding: 8px 18px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.15s ease;
+  }
+  .grid-empty .reset-search:hover {
+    background: var(--ink);
+    color: var(--paper);
+    border-color: var(--ink);
+  }
+
   /* ========== CATALOG GRID ========== */
   .catalog {
     padding: 56px 40px 120px;
@@ -426,6 +538,14 @@
     .filter-inner { flex-direction: column; gap: 0; padding: 0 20px; }
     .filter-group { padding: 12px 0; border-bottom: 1px solid var(--rule); }
     .filter-group:last-child { border-bottom: none; }
+    .search-group {
+      width: 100%;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--rule);
+    }
+    .search-input-wrap { flex: 1; }
+    .search-input { width: 100%; }
+    .search-input:focus { width: 100%; }
     .catalog { padding: 32px 20px 80px; }
     .catalog-header { flex-direction: column; align-items: flex-start; gap: 14px; }
     .catalog-title { font-size: 30px; }
@@ -476,11 +596,35 @@
   </div>
 </section>
 
-<nav class="filter-bar" aria-label="Filter plates by region">
+<nav class="filter-bar" aria-label="Filter and search plates">
   <div class="filter-inner">
     <div class="filter-group">
       <span class="filter-label" id="region-label">Region</span>
       <div class="filter-chips" data-group="region" role="group" aria-labelledby="region-label"></div>
+    </div>
+    <div class="search-group">
+      <label class="filter-label" for="search-input">Search</label>
+      <div class="search-input-wrap">
+        <svg class="search-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
+          <circle cx="7" cy="7" r="4.5"/>
+          <line x1="10.2" y1="10.2" x2="13.5" y2="13.5" stroke-linecap="round"/>
+        </svg>
+        <input
+          id="search-input"
+          class="search-input"
+          type="search"
+          placeholder="Airline name…"
+          autocomplete="off"
+          aria-label="Search plates by airline name"
+        />
+        <button
+          type="button"
+          class="search-clear"
+          id="search-clear"
+          aria-label="Clear search"
+          tabindex="-1"
+        >×</button>
+      </div>
     </div>
     <div class="count-display" aria-live="polite" aria-atomic="true">
       Showing <strong id="visible-count">36</strong> of <strong id="total-count">36</strong>
@@ -629,6 +773,20 @@
 
   let allPlates = [];
   let currentRegion = 'all';
+  let currentSearch = '';
+
+  /* Normalize a string for forgiving search matching: lowercase, drop
+     diacritics, drop everything that isn't a letter or digit. So "Pan Am",
+     "Pan-Am", "PANAM", and "panam" all normalize to "panam" — and a search
+     for "panam" finds "Pan American". This is more forgiving than substring
+     match alone but still fast enough to run on every keystroke. */
+  function normalize(s) {
+    return (s || '')
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')  // strip combining diacritics
+      .replace(/[^a-z0-9]/g, '');
+  }
 
   /* ------------------------------------------------------------------
    * LAZY IMAGE LOADER
@@ -719,13 +877,63 @@
   }
 
   function applyFilter() {
+    const search = currentSearch;  // already normalized
     let shown = 0;
     document.querySelectorAll('.specimen').forEach(el => {
-      const matches = currentRegion === 'all' || el.dataset.region === currentRegion;
+      const regionOk = currentRegion === 'all' || el.dataset.region === currentRegion;
+      const searchOk = !search || (el.dataset.searchKey || '').includes(search);
+      const matches = regionOk && searchOk;
       el.style.display = matches ? '' : 'none';
       if (matches) shown++;
     });
     visibleCountEl.textContent = shown;
+
+    // Show or hide the empty-state message
+    const emptyMsg = document.getElementById('grid-empty');
+    if (shown === 0 && allPlates.length > 0) {
+      if (!emptyMsg) {
+        const el = document.createElement('div');
+        el.id = 'grid-empty';
+        el.className = 'grid-empty';
+        const searchLabel = currentSearch
+          ? ` matching "${escapeForHtml(document.getElementById('search-input').value)}"`
+          : '';
+        const regionLabel = currentRegion !== 'all'
+          ? ` in ${REGION_LABELS[currentRegion] || currentRegion}`
+          : '';
+        el.innerHTML = `
+          <p>No plates found${escapeForHtml(searchLabel)}${escapeForHtml(regionLabel)}.</p>
+          <button type="button" class="reset-search">Reset filters</button>
+        `;
+        el.querySelector('.reset-search').addEventListener('click', resetFilters);
+        grid.appendChild(el);
+      }
+    } else if (emptyMsg) {
+      emptyMsg.remove();
+    }
+  }
+
+  function resetFilters() {
+    // Clear region back to All
+    currentRegion = 'all';
+    document.querySelectorAll('.filter-chips[data-group="region"] .chip').forEach(c => {
+      c.classList.toggle('active', c.dataset.filter === 'all');
+    });
+    // Clear search
+    const input = document.getElementById('search-input');
+    input.value = '';
+    currentSearch = '';
+    document.getElementById('search-clear').classList.remove('visible');
+    applyFilter();
+    input.focus();
+  }
+
+  // Tiny HTML-escape helper, separate from the existing escapeHtml
+  // (which doesn't exist in this file — just being defensive)
+  function escapeForHtml(s) {
+    return String(s).replace(/[&<>"']/g, m => ({
+      '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+    })[m]);
   }
 
   function buildCards(plates) {
@@ -735,6 +943,11 @@
       el.className = 'specimen';
       el.dataset.slug = p.slug;
       el.dataset.region = p.region || '';
+      // Precomputed search key: name + slug normalized once at render time
+      // so every keystroke is just an O(N) string-includes check, not N
+      // string-normalizations. Slug is included so technical searches like
+      // "tw" find "twa" even if the displayed name is "Trans World Airlines".
+      el.dataset.searchKey = normalize(p.name + ' ' + p.slug);
 
       const frontSrc = `images/plates/${p.slug}.${p.front_ext}`;
       const hasBack = !!p.back_ext;
@@ -822,6 +1035,58 @@
     if (totalCountEl) totalCountEl.textContent = '0';
     if (visibleCountEl) visibleCountEl.textContent = '0';
   }
+
+  /* ------------------------------------------------------------------
+   * SEARCH WIRING
+   * ------------------------------------------------------------------
+   * The input fires on every keystroke. We don't debounce because
+   * applyFilter() is cheap — it walks ~120 DOM elements and toggles
+   * display:none, which the browser handles fast. If the catalog grows
+   * to thousands of items, add a 100ms debounce here.
+   *
+   * Keyboard niceties:
+   *   - Escape inside the input clears it
+   *   - "/" anywhere on the page focuses the search (a common pattern)
+   *   - The clear button is tabindex="-1" so Tab stays linear past it
+   * ---------------------------------------------------------------- */
+  (function setupSearch() {
+    const input = document.getElementById('search-input');
+    const clearBtn = document.getElementById('search-clear');
+    if (!input) return;
+
+    function update() {
+      currentSearch = normalize(input.value);
+      clearBtn.classList.toggle('visible', input.value.length > 0);
+      applyFilter();
+    }
+
+    input.addEventListener('input', update);
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && input.value) {
+        input.value = '';
+        update();
+        e.preventDefault();
+      }
+    });
+
+    clearBtn.addEventListener('click', () => {
+      input.value = '';
+      update();
+      input.focus();
+    });
+
+    // Press "/" anywhere to focus search (common keyboard shortcut).
+    // Skip if the user is already typing in some other input.
+    document.addEventListener('keydown', (e) => {
+      if (e.key === '/' && !e.metaKey && !e.ctrlKey && !e.altKey) {
+        const active = document.activeElement;
+        if (active && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA')) return;
+        e.preventDefault();
+        input.focus();
+        input.select();
+      }
+    });
+  })();
 
   fetch(CSV_URL)
     .then(resp => {

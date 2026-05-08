@@ -63,37 +63,33 @@
        has when there are only a few items. minmax(360px, 1fr) means each
        column is at least 360px wide; at our 1400px container we get 3 columns
        (3 × 360 + 2 × 40 = 1160, fits with room). align-items: start prevents
-       the rotated/offset cards from stretching to match each other. */
+       the rotated/offset cards from stretching to match each other.
+
+       grid-auto-flow: dense lets ads after a full-width feature backfill
+       any column gaps the feature created — this keeps the corkboard packed
+       even when features sit mid-timeline. */
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+    grid-auto-flow: dense;
     gap: 56px 40px;
     align-items: start;
     justify-items: stretch;
   }
 
   /* ========== FEATURE TILES ==========
-     Long-form articles need to be readable, not just larger thumbnails.
-     They render in their own container ABOVE the column grid, at a width
-     where the original newsprint columns can still be parsed.
+     Long-form articles like the 1984 Karen Coughlin profile need to be
+     readable, not just larger thumbnails. They live in the same chronological
+     grid as the ad tiles, but span the full row width so the original
+     newsprint columns can still be parsed.
 
-     A standard ad on the board lives in CSS columns and gets a tilt; a
-     feature lives in normal flow at a generous max-width and stays
-     mostly upright (a small tilt is fine, big tilts make column-set
-     newsprint hard to read). */
-  .board-features {
-    max-width: 1400px;
-    margin: 0 auto 48px;
-    display: flex;
-    flex-direction: column;
-    gap: 64px;
-    align-items: center;
-  }
-
+     Features stay mostly upright — small tilts are fine, but a steep
+     rotation on column-set newsprint is just frustrating to read. */
   .ad.is-feature {
+    grid-column: 1 / -1;        /* span all columns of the grid */
+    justify-self: center;       /* don't stretch full-bleed; cap with max-width */
     width: 100%;
     max-width: 880px;
-    margin: 0;
-    /* Features ignore the steep tilt the regular ads use; clamp to ±2deg max */
+    margin: 12px 0;
   }
   .ad.is-feature .ad-paper {
     padding: 22px 22px 18px;
@@ -384,7 +380,6 @@
 
 <section class="board" aria-labelledby="board-heading">
   <h2 class="sr-only" id="board-heading">Newspaper clippings</h2>
-  <div class="board-features" id="boardFeatures"></div>
   <div class="board-inner" id="board"></div>
 </section>
 
@@ -472,7 +467,9 @@
      Add a new code here when a new publication shows up. */
   const PUBLICATION_NAMES = {
     rih: 'Rhode Island Herald',
+    rijh: 'Rhode Island Jewish Herald',
     jvh: 'Jewish Voice and Herald',
+    options: 'Options · Rhode Island LGBTQ+ Magazine',
   };
 
   /* Format an ISO-style date (YYYY-MM-DD) into a spelled-out display date.
@@ -502,25 +499,100 @@
     return parts.filter(Boolean).map(escapeHtml).join(' · ');
   }
 
+  /* Deterministic pseudo-random helpers — derive a stable number in [0, 1)
+     from a string. The same slug always produces the same number, so the
+     corkboard composition doesn't visually shuffle on every refresh. The
+     sequence is varied enough across different slugs that adjacent items
+     don't share tilts.
+
+     Two helpers because we want SEVERAL pseudo-random numbers per slug
+     (one for tilt, one for offset, one for style). hashSeed produces the
+     base hash; lcg() steps it forward to get the next value. */
+  function hashSeed(s) {
+    let h = 2166136261 >>> 0;  // FNV-1a seed
+    for (let i = 0; i < s.length; i++) {
+      h ^= s.charCodeAt(i);
+      h = Math.imul(h, 16777619) >>> 0;
+    }
+    return h;
+  }
+  /* Linear-congruential step. Given a state, return next state and a [0,1) value. */
+  function lcg(state) {
+    const next = (Math.imul(state, 1664525) + 1013904223) >>> 0;
+    return { state: next, value: next / 4294967296 };
+  }
+
+  /* Generate stable pseudo-random tilt/offset/style for an ad row.
+     CSV values, if explicitly set, win — but blank/zero values get
+     auto-generated so the user no longer has to babysit these fields. */
+  function deriveLayout(ad, isFeature) {
+    let s = hashSeed(ad.slug || ad.title || '');
+    let r;
+
+    // Tilt — features stay nearly upright (-2 to 2), ads can lean further (-5 to 5)
+    let tilt;
+    if (ad.tilt !== undefined && ad.tilt !== '' && parseFloat(ad.tilt) !== 0) {
+      const range = isFeature ? 2 : 6;
+      tilt = clamp(parseFloat(ad.tilt) || 0, -range, range);
+    } else {
+      r = lcg(s); s = r.state;
+      tilt = isFeature
+        ? (r.value * 4 - 2)        // -2 to +2
+        : (r.value * 10 - 5);      // -5 to +5
+      tilt = Math.round(tilt * 10) / 10;  // round to 1 decimal for cleaner look
+    }
+
+    // Vertical offset to stagger columns. Features don't get an offset
+    // (they're full-width and full-rows so it'd just add awkward gaps).
+    let offsetY;
+    if (isFeature) {
+      offsetY = 0;
+    } else if (ad.offset_y !== undefined && ad.offset_y !== '' && parseFloat(ad.offset_y) !== 0) {
+      offsetY = clamp(parseFloat(ad.offset_y) || 0, -40, 40);
+    } else {
+      r = lcg(s); s = r.state;
+      offsetY = Math.round(r.value * 50 - 15);  // -15 to +35, slight bias downward
+    }
+
+    // Pin or tape — derived if not specified, with tape slightly more common
+    // on features (they're more often "filed" articles than "pinned" ads).
+    let style;
+    const explicit = (ad.style || '').toLowerCase();
+    if (explicit === 'pin' || explicit === 'tape') {
+      style = explicit;
+    } else {
+      r = lcg(s); s = r.state;
+      const tapeOdds = isFeature ? 0.55 : 0.35;
+      style = r.value < tapeOdds ? 'tape' : 'pin';
+    }
+
+    return { tilt, offsetY, style };
+  }
+
+  /* Sort clippings chronologically by date (ascending). Rows missing a date
+     fall to the bottom in their CSV order. */
+  function sortByDate(ads) {
+    return ads.slice().sort((a, b) => {
+      const da = (a.date || '').trim();
+      const db = (b.date || '').trim();
+      if (!da && !db) return 0;
+      if (!da) return 1;
+      if (!db) return -1;
+      return da.localeCompare(db);
+    });
+  }
+
   function buildAds(ads) {
-    const features = ads.filter(a => (a.size || '').toLowerCase() === 'feature');
-    const regulars = ads.filter(a => (a.size || '').toLowerCase() !== 'feature');
-
-    const featuresContainer = document.getElementById('boardFeatures');
-    featuresContainer.innerHTML = '';
+    const sorted = sortByDate(ads);
     board.innerHTML = '';
-
-    features.forEach(ad => featuresContainer.appendChild(buildAdElement(ad, true)));
-    regulars.forEach(ad => board.appendChild(buildAdElement(ad, false)));
+    sorted.forEach(ad => {
+      const isFeature = (ad.size || '').toLowerCase() === 'feature';
+      board.appendChild(buildAdElement(ad, isFeature));
+    });
   }
 
   function buildAdElement(ad, isFeature) {
-    // Features get a much smaller tilt range; steep tilts make newsprint
-    // columns frustrating to read.
-    const tiltRange = isFeature ? 2 : 6;
-    const tilt = clamp(parseFloat(ad.tilt) || 0, -tiltRange, tiltRange);
-    const offsetY = clamp(parseFloat(ad.offset_y) || 0, -40, 40);
-    const style = (ad.style || 'pin').toLowerCase() === 'tape' ? 'tape' : 'pin';
+    const { tilt, offsetY, style } = deriveLayout(ad, isFeature);
 
     const el = document.createElement('button');
     el.type = 'button';

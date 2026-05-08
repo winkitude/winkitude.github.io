@@ -4,27 +4,35 @@
 # anything in print about or from Winkleman Travel. Image files live in
 # images/newspaper/{slug}.{ext}.
 #
+# The page renders all clippings in a single chronological grid sorted
+# by date. Feature articles span the full width of the grid; regular ads
+# fill the remaining columns. Tilts, offsets, and pin/tape styles are
+# auto-generated from each row's slug — same slug always produces the
+# same look, but the composition feels naturally varied.
+#
 # Columns:
 #   slug         filename stem (no extension). e.g. "1984-09-07-rih"
 #   ext          image extension: "png", "jpg", "webp"
 #   title        short headline shown in caption
 #   byline       optional, only shown on feature articles
-#   publication  publication code (rih, jvh, etc.) or full name
-#   date         YYYY-MM-DD; gets formatted to "September 7, 1984"
-#   size         "feature" for centerpiece treatment, blank/normal otherwise
-#   tilt         rotation in degrees. Normal ads -6 to 6, features -2 to 2.
-#   offset_y     vertical nudge (-40 to 40) to stagger column layout
-#   style        "pin" (red thumbtack) or "tape" (masking tape corners)
+#   publication  publication code (rih, rijh, jvh, options) or full name
+#   date         YYYY-MM-DD; sorts the corkboard and renders as
+#                "September 7, 1984" in the caption
+#   size         "feature" for full-width centerpiece treatment, blank otherwise
+#   tilt         OPTIONAL. Leave blank or 0 to auto-generate a stable random
+#                tilt from the slug. Set explicitly (e.g. -3) to override.
+#   offset_y     OPTIONAL. Same as tilt — blank or 0 auto-generates.
+#   style        OPTIONAL. "pin" or "tape". Blank auto-picks based on slug.
 #   notes        optional internal notes — ignored by the site
 #
 # Publication codes recognized today (add more in PUBLICATION_NAMES in ads.html):
-#   rih  Rhode Island Herald
-#   rijh Rhode Island Jewish Herald
-#   jvh  Jewish Voice and Herald
-#   options  Options Rhode Island LGBTQ+ Magazine
+#   rih      Rhode Island Herald
+#   rijh     Rhode Island Jewish Herald
+#   jvh      Jewish Voice and Herald
+#   options  Options · Rhode Island LGBTQ+ Magazine
 #
-# Lines starting with # are ignored. Reorder rows to rearrange the corkboard.
-# Features always render together above the regular ad grid.
+# Lines starting with # are ignored. The CSV row order doesn't matter —
+# the page sorts everything by date.
 #
 # IMPORTANT: avoid editing this file in Excel or Numbers if you can.
 # Spreadsheet apps mangle CSV comments. Use a plain text editor.

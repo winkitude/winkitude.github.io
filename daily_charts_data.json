@@ -164,6 +164,22 @@
     "keywords": ["Sanctions, USA, Russia, Iran, North Korea, Venezuela, Cuba, Belarus, Myanmar", "map", "geopolitics"],
      "accessibility_title": "US Sanctions around the world",
     "accessibility_description": "A map and table showing the countries that are currently under US sanctions, including Russia, Iran, North Korea, Venezuela, Cuba, Belarus, and Myanmar."
+  },
+
+   {
+    "image": "2026-05-01-Current-state-of-OPEC.png",
+     "date": "2026-05-01",
+    "keywords": ["OPEC", "oil", "geopolitics"],
+     "accessibility_title": "Current State of OPEC",
+    "accessibility_description": "A chart showing the current state of OPEC and its member countries."
+  },
+
+   {
+    "image": "2026-05-29-midterm-elections.png",
+     "date": "2026-05-29",
+    "keywords": ["midterm elections", "politics", "USA"],
+     "accessibility_title": "Midterm Elections 2026",
+    "accessibility_description": "A chart showing the results of midterm elections results for each president since 1946."
   }
 
 ]

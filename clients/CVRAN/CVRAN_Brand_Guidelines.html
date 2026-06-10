@@ -154,8 +154,9 @@
           </div>
           <div class="meta">
             <strong>Color (on white)</strong>
-            <span>img/CVRAN.svg · img/CVRAN.png</span>
-            <span style="color:var(--ink-2);font-size:12px;">Default — use on white or light backgrounds</span>
+            <span style="color:var(--ink-2);font-size:12px;margin-bottom:6px;display:block;">Default — use on white or light backgrounds</span>
+            <a href="img/CVRAN.svg" download="CVRAN.svg" class="btn" style="font-size:11px;padding:5px 10px;margin-right:6px;">↓ SVG</a>
+            <a href="img/CVRAN.png" download="CVRAN.png" class="btn" style="font-size:11px;padding:5px 10px;">↓ PNG</a>
           </div>
         </div>
         <div class="swatch">
@@ -163,9 +164,10 @@
             <img src="img/CVRAN_white.svg" alt="CVRAN white stacked mark on black">
           </div>
           <div class="meta">
-            <strong>White (on black or dark)</strong>
-            <span>img/CVRAN_white.svg · img/CVRAN_white.png</span>
-            <span style="color:var(--ink-2);font-size:12px;">Use on black, dark photography, or green backgrounds</span>
+            <strong>White (on green or dark backgrounds)</strong>
+            <span style="color:var(--ink-2);font-size:12px;margin-bottom:6px;display:block;">Use on green, black, or dark photography</span>
+            <a href="img/CVRAN_white.svg" download="CVRAN_white.svg" class="btn" style="font-size:11px;padding:5px 10px;margin-right:6px;">↓ SVG</a>
+            <a href="img/CVRAN_white.png" download="CVRAN_white.png" class="btn" style="font-size:11px;padding:5px 10px;">↓ PNG</a>
           </div>
         </div>
       </div>
@@ -178,8 +180,9 @@
           </div>
           <div class="meta">
             <strong>Color (on white)</strong>
-            <span>img/CVRAN-Full.svg · img/CVRAN-Full.png</span>
-            <span style="color:var(--ink-2);font-size:12px;">Preferred where horizontal space allows</span>
+            <span style="color:var(--ink-2);font-size:12px;margin-bottom:6px;display:block;">Preferred where horizontal space allows</span>
+            <a href="img/CVRAN-Full.svg" download="CVRAN-Full.svg" class="btn" style="font-size:11px;padding:5px 10px;margin-right:6px;">↓ SVG</a>
+            <a href="img/CVRAN-Full.png" download="CVRAN-Full.png" class="btn" style="font-size:11px;padding:5px 10px;">↓ PNG</a>
           </div>
         </div>
         <div class="swatch">
@@ -187,9 +190,10 @@
             <img src="img/CVRAN-Full_White.svg" alt="CVRAN white horizontal lockup on black">
           </div>
           <div class="meta">
-            <strong>White (on black or dark)</strong>
-            <span>img/CVRAN-Full_White.svg · img/CVRAN-Full_White.png</span>
-            <span style="color:var(--ink-2);font-size:12px;">Use on black, dark photography, or green backgrounds</span>
+            <strong>White (on green or dark backgrounds)</strong>
+            <span style="color:var(--ink-2);font-size:12px;margin-bottom:6px;display:block;">Use on green, black, or dark photography</span>
+            <a href="img/CVRAN-Full_White.svg" download="CVRAN-Full_White.svg" class="btn" style="font-size:11px;padding:5px 10px;margin-right:6px;">↓ SVG</a>
+            <a href="img/CVRAN-Full_White.png" download="CVRAN-Full_White.png" class="btn" style="font-size:11px;padding:5px 10px;">↓ PNG</a>
           </div>
         </div>
       </div>
@@ -247,7 +251,7 @@
                 <div class="example example--dont" style="background:var(--cvran-green);border-color:#49833d;">
                   <img src="img/CVRAN_white.svg" alt="" style="height:90px;width:auto;">
                 </div>
-                <p style="font-size:12px;color:var(--ink-2);margin:6px 0 0;">White logo on dark green</p>
+                <p style="font-size:12px;color:var(--ink-2);margin:6px 0 0;">White logo on green</p>
               </div>
             </div>
           </div>
@@ -259,7 +263,7 @@
     <section id="color" class="card" style="margin-top:16px">
       <div class="kicker">Identity</div>
       <h2>Color system</h2>
-      <p class="lede">The CVRAN palette is four colors: Green, Yellow, Black, and White. Accessibility ratios below are calculated for text on white (#FFFFFF).</p>
+      <p class="lede">The CVRAN palette is four colors: Green, Yellow, Black, and White. The contrast ratings below show which combinations are safe to use for text.</p>
 
       <h3>Primary palette</h3>
       <div class="grid cols-4" style="margin-top:12px">
@@ -302,7 +306,7 @@
       </div>
 
       <h3 style="margin-top:20px">Accessible combinations</h3>
-      <p class="lede" style="margin-bottom:14px">All approved text pairings. Yellow on white does not meet AA — use it only as a background color or large display accent.</p>
+      <p class="lede" style="margin-bottom:14px">These are the approved color pairings for text. Yellow on white doesn't have enough contrast for body text — use it as a background or large accent only.</p>
       <div class="grid cols-3">
         <div style="border:1px solid var(--border);border-radius:12px;overflow:hidden;">
           <div style="background:#0f0f0f;padding:20px;">
@@ -361,7 +365,7 @@
       </div>
 
       <div class="callout">
-        <strong>Yellow (#FFD248) as text:</strong> Yellow does not meet AA contrast on white. Use it only as a background, a decorative highlight, or a large display element (24px+) on black or green.
+        <strong>Yellow as text:</strong> Yellow doesn't stand out clearly enough on white backgrounds to use as text. Stick to using it as a background color, a highlight, or large display type on green or black.
       </div>
     </section>
 
@@ -399,13 +403,7 @@
         </div>
       </div>
 
-      <h3 style="margin-top:20px">Font stack (CSS)</h3>
-      <div style="background:#f8fafc;border:1px solid var(--border);border-radius:8px;padding:14px 16px;margin-top:8px;">
-        <code style="font-size:13px;color:#334155;line-height:1.8;">
-          font-family: "Avenir Next", "Avenir", "Nunito Sans", "Segoe UI", system-ui, Helvetica, Arial, sans-serif;
-        </code>
-      </div>
-      <p style="font-size:12px;color:var(--ink-2);margin-top:8px;">Avenir Next renders natively on macOS and iOS. On Windows and Android, Nunito Sans (Google Fonts) is the closest free alternative and should be loaded as a web font for those platforms.</p>
+      <p style="font-size:13px;color:var(--ink-2);margin-top:16px;">Avenir Next is built into Apple devices (Mac, iPhone, iPad) and will display automatically. On Windows and Android devices, <strong>Nunito Sans</strong> is the closest available alternative and should be used in its place — it's free and available via Google Fonts.</p>
     </section>
 
     <!-- IMAGERY -->
@@ -456,7 +454,7 @@
       </div>
 
       <h3 style="margin-top:20px">Icons</h3>
-      <p class="lede">Use line-style icons in Green or Black. Stroke weight: 1.5–2px. Avoid filled bubble icons, gradient icons, and drop shadows. Recommended libraries: Lucide, Phosphor (regular weight).</p>
+      <p class="lede">Use simple line-style icons in Green or Black. Avoid filled, colorful, or decorative icon styles — keep them clean and consistent with the overall brand.</p>
     </section>
 
     <!-- DOWNLOADS -->
@@ -464,14 +462,14 @@
       <div class="kicker">Resources</div>
       <h2>Downloads</h2>
       <div class="grid cols-2" style="margin-top:12px">
-        <a class="btn" href="img/CVRAN.svg">Stacked mark — Color (SVG)</a>
-        <a class="btn" href="img/CVRAN.png">Stacked mark — Color (PNG)</a>
-        <a class="btn" href="img/CVRAN_white.svg">Stacked mark — White (SVG)</a>
-        <a class="btn" href="img/CVRAN_white.png">Stacked mark — White (PNG)</a>
-        <a class="btn" href="img/CVRAN-Full.svg">Horizontal lockup — Color (SVG)</a>
-        <a class="btn" href="img/CVRAN-Full.png">Horizontal lockup — Color (PNG)</a>
-        <a class="btn" href="img/CVRAN-Full_White.svg">Horizontal lockup — White (SVG)</a>
-        <a class="btn" href="img/CVRAN-Full_White.png">Horizontal lockup — White (PNG)</a>
+        <a class="btn" href="img/CVRAN.svg" download="CVRAN.svg">Stacked mark — Color (SVG)</a>
+        <a class="btn" href="img/CVRAN.png" download="CVRAN.png">Stacked mark — Color (PNG)</a>
+        <a class="btn" href="img/CVRAN_white.svg" download="CVRAN_white.svg">Stacked mark — White (SVG)</a>
+        <a class="btn" href="img/CVRAN_white.png" download="CVRAN_white.png">Stacked mark — White (PNG)</a>
+        <a class="btn" href="img/CVRAN-Full.svg" download="CVRAN-Full.svg">Horizontal lockup — Color (SVG)</a>
+        <a class="btn" href="img/CVRAN-Full.png" download="CVRAN-Full.png">Horizontal lockup — Color (PNG)</a>
+        <a class="btn" href="img/CVRAN-Full_White.svg" download="CVRAN-Full_White.svg">Horizontal lockup — White (SVG)</a>
+        <a class="btn" href="img/CVRAN-Full_White.png" download="CVRAN-Full_White.png">Horizontal lockup — White (PNG)</a>
       </div>
     </section>
 

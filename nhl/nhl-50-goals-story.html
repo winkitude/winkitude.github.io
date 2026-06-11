@@ -199,7 +199,7 @@
   }
 
 
-  .chart{ margin-top:10px; background:#fff; }
+  .chart{ margin-top:10px; background:#fff; overflow-x:auto; -webkit-overflow-scrolling:touch; }
   svg{ display:block; width:100%; height:auto; }
 
   .axis text{
@@ -1496,8 +1496,16 @@
 }
 @media(max-width:700px){
   .orr-flyin{
-    width:160px;
-    margin:0 0 16px 20px;
+    width:120px;
+    margin:0 0 12px 16px;
+  }
+}
+@media(max-width:480px){
+  .orr-flyin{
+    float:none;
+    width:100px;
+    margin:0 auto 20px;
+    display:block;
   }
 }
 
@@ -1535,12 +1543,27 @@
   text-align:right;
   padding-right:14px;
 }
+.defTable .td-num-last{
+  padding-right:0;
+}
 .defTable .td-goals{
   font-weight:700;
   font-size:15px;
   color:rgba(17,24,39,.85);
   text-align:right;
-  padding-right:0;
+  padding-right:14px;
+}
+/* th inherits from class when applied */
+.defTable th.td-goals{
+  font-size:10px;
+  font-weight:700;
+  color:rgba(17,24,39,.45);
+  padding-bottom:10px;
+  border-bottom:1px solid rgba(17,24,39,.10);
+}
+.defTable th.td-num{
+  padding-bottom:10px;
+  border-bottom:1px solid rgba(17,24,39,.10);
 }
 @media(max-width:700px){
   .defTable{ font-size:12px; }
@@ -1548,6 +1571,12 @@
   .defTable td{ padding:9px 6px 9px 0; }
   .defTable .td-goals{ font-size:13px; }
   .orr-section-wrap{ padding:0 12px; }
+}
+@media(max-width:480px){
+  .defTable{ font-size:11px; }
+  .defTable th{ font-size:8px; padding:0 4px 6px 0; }
+  .defTable td{ padding:8px 4px 8px 0; }
+  .defTable .td-goals{ font-size:12px; }
 }
 .defTable tr.near-miss td{
   background:rgba(210,31,43,.04);
@@ -1944,10 +1973,10 @@
           <th scope="col">Player</th>
           <th scope="col">Season</th>
           <th scope="col">Team</th>
-          <th scope="col" style="text-align:right; padding-right:24px;">GP</th>
-          <th scope="col" style="text-align:right; padding-right:24px;">G</th>
-          <th scope="col" style="text-align:right; padding-right:24px;">A</th>
-          <th scope="col" style="text-align:right; padding-right:0;">P</th>
+          <th scope="col" class="td-num">GP</th>
+          <th scope="col" class="td-goals">G</th>
+          <th scope="col" class="td-num">A</th>
+          <th scope="col" class="td-num td-num-last">P</th>
         </tr>
       </thead>
       <tbody id="defTableBody"></tbody>
@@ -3720,7 +3749,7 @@ heatSvg.append("g")
       '<td class="td-num">' + d.GP + '</td>' +
       '<td class="td-goals">' + d.G + '</td>' +
       '<td class="td-num">' + d.A + '</td>' +
-      '<td class="td-num" style="padding-right:0;">' + d.P + '</td>';
+      '<td class="td-num td-num-last">' + d.P + '</td>';
 
     tbody.appendChild(tr);
   });

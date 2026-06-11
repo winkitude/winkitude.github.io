@@ -516,79 +516,66 @@
   margin:0 0 40px;
   max-width:620px;
 }
+/* ===== PYRAMID CHART ===== */
 #nearMissChart{
   position:relative;
   width:100%;
   overflow:visible;
 }
-.nm-row{
-  display:flex;
-  align-items:center;
-  margin-bottom:10px;
+.pyr-wrap{
   position:relative;
+  width:100%;
+  max-width:860px;
+  margin:0 auto;
+  user-select:none;
 }
-.nm-label{
-  font-family:"Poppins", sans-serif;
-  font-weight:700;
-  font-size:13px;
-  width:30px;
-  text-align:right;
-  margin-right:16px;
-  flex-shrink:0;
-  color:rgba(17,24,39,.70);
+.pyr-svg{
+  display:block;
+  width:100%;
+  overflow:visible;
 }
-.nm-label.forty-nine{
-  color:var(--accent);
+/* tier bands — uniform warm gray, slight step */
+.pyr-band-49{ fill:#fde8e8; }
+.pyr-band-48{ fill:#fbd5d5; }
+.pyr-band-47{ fill:#f9c2c2; }
+/* cut top edge */
+.pyr-cutline{
+  stroke:rgba(17,24,39,.22);
+  stroke-width:1.5;
+  stroke-dasharray:6 4;
 }
-.nm-dots{
-  display:flex;
-  flex-wrap:wrap;
-  gap:6px;
-  align-items:center;
-  flex:1;
-}
-.nm-dot{
-  width:10px;
-  height:10px;
-  border-radius:50%;
-  background:rgba(17,24,39,.15);
-  cursor:pointer;
-  position:relative;
-  transition:transform .12s ease, background .12s ease;
-  flex-shrink:0;
-}
-.nm-dot:hover{
-  transform:scale(1.6);
-  background:rgba(17,24,39,.40);
-  z-index:10;
-}
-.nm-dot.forty-nine{
-  background:var(--accent);
-  opacity:0.7;
-}
-.nm-dot.forty-nine:hover{
-  opacity:1;
-  background:var(--accent);
-}
-.nm-fifty-line{
-  border-top:2px dashed rgba(17,24,39,.20);
-  margin-bottom:8px;
-  position:relative;
-  display:flex;
-  align-items:center;
-}
-.nm-fifty-label{
-  font-family:"Poppins", sans-serif;
+/* 50-goal label above cut */
+.pyr-fifty-label{
+  font-family:"Poppins",sans-serif;
   font-size:11px;
   font-weight:700;
-  letter-spacing:.08em;
+  letter-spacing:.1em;
   text-transform:uppercase;
-  color:rgba(17,24,39,.35);
-  margin-left:46px;
-  position:absolute;
-  top:-20px;
-  left:0;
+  fill:rgba(17,24,39,.38);
 }
+/* tier number labels — all same weight/color */
+.pyr-tier-label{
+  font-family:"Poppins",sans-serif;
+  font-weight:700;
+  font-size:13px;
+  fill:rgba(17,24,39,.55);
+}
+/* dots: black = never hit 50, gray = also had a 50-goal season */
+.pyr-dot{
+  cursor:pointer;
+}
+.pyr-dot-never50{ fill:rgba(17,24,39,.82); }
+.pyr-dot-had50{   fill:rgba(17,24,39,.22); }
+.pyr-dot-never50:hover{ fill:#111827; }
+.pyr-dot-had50:hover{   fill:rgba(17,24,39,.45); }
+/* outline edge */
+.pyr-outline{
+  fill:none;
+  stroke:rgba(17,24,39,.20);
+  stroke-width:1.5;
+  stroke-linejoin:round;
+}
+/* tooltip */
 .nm-tooltip{
   position:fixed;
   pointer-events:none;
@@ -596,7 +583,7 @@
   border:1px solid rgba(17,24,39,.14);
   padding:9px 12px;
   border-radius:10px;
-  font-family:"Poppins", sans-serif;
+  font-family:"Poppins",sans-serif;
   font-size:12px;
   line-height:1.4;
   box-shadow:0 8px 24px rgba(0,0,0,.10);
@@ -607,6 +594,41 @@
 }
 .nm-tip-name{ font-weight:700; margin-bottom:2px; }
 .nm-tip-detail{ color:rgba(17,24,39,.55); }
+.nm-tip-badge{
+  display:inline-block;
+  margin-top:4px;
+  font-size:10px;
+  font-weight:600;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  color:rgba(17,24,39,.45);
+  background:rgba(17,24,39,.07);
+  border-radius:4px;
+  padding:1px 5px;
+}
+/* legend */
+.pyr-legend{
+  display:flex;
+  gap:20px;
+  margin-top:14px;
+  font-family:"Poppins",sans-serif;
+  font-size:11px;
+  color:rgba(17,24,39,.55);
+  align-items:center;
+  flex-wrap:wrap;
+}
+.pyr-legend-dot{
+  display:inline-block;
+  width:9px; height:9px;
+  border-radius:50%;
+  margin-right:5px;
+  vertical-align:middle;
+}
+/* mobile */
+@media(max-width:600px){
+  .pyr-tier-label{ font-size:11px; }
+  .pyr-fifty-label{ font-size:9px; }
+}
 
 /* --- Snipers bubble chart --- */
 .snipersSection{
@@ -718,6 +740,174 @@
 .sniper-tip-name{ font-weight:700; margin-bottom:3px; }
 .sniper-tip-row{ color:rgba(17,24,39,.55); }
 .sniper-tip-row span{ color:rgba(17,24,39,.88); font-weight:600; }
+
+/* --- Empty Net Merchants small multiples --- */
+.eng-grid{
+  display:flex;
+  flex-wrap:wrap;
+  gap:20px 16px;
+  margin-top:8px;
+}
+.eng-card{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  width:160px;
+  flex-shrink:0;
+}
+.eng-card-net{
+  position:relative;
+  width:160px;
+  height:107px;
+  border-radius:3px;
+  overflow:hidden;
+  cursor:pointer;
+}
+.eng-card-net img{
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+.eng-card-net svg{
+  position:absolute;
+  top:0; left:0;
+  width:100%; height:100%;
+  overflow:visible;
+}
+.eng-card-label{
+  margin-top:7px;
+  text-align:center;
+}
+.eng-card-name{
+  font-family:"Poppins",sans-serif;
+  font-weight:700;
+  font-size:10.5px;
+  color:rgba(17,24,39,.88);
+  line-height:1.3;
+}
+.eng-card-season{
+  font-family:"Poppins",sans-serif;
+  font-size:10px;
+  color:rgba(17,24,39,.48);
+  margin-top:1px;
+}
+.eng-card-stat{
+  font-family:"Poppins",sans-serif;
+  font-size:10px;
+  font-weight:600;
+  color:#d21f2b;
+  margin-top:2px;
+}
+.eng-tooltip{
+  position:fixed;
+  pointer-events:none;
+  background:rgba(255,255,255,.97);
+  border:1px solid rgba(17,24,39,.14);
+  padding:10px 13px;
+  border-radius:10px;
+  font-family:"Poppins",sans-serif;
+  font-size:12px;
+  line-height:1.5;
+  box-shadow:0 8px 24px rgba(0,0,0,.10);
+  display:none;
+  max-width:210px;
+  z-index:100;
+  transform:translate(14px,-50%);
+}
+.eng-tip-name{ font-weight:700; margin-bottom:3px; }
+.eng-tip-row{ color:rgba(17,24,39,.55); }
+.eng-tip-row span{ color:rgba(17,24,39,.88); font-weight:600; }
+
+/* --- Two-Way Killers waffle chart --- */
+.shg-legend{
+  display:flex;
+  gap:18px;
+  font-family:"Poppins",sans-serif;
+  font-size:11px;
+  color:rgba(17,24,39,.60);
+  margin-bottom:24px;
+  align-items:center;
+  flex-wrap:wrap;
+}
+.shg-swatch{
+  display:inline-block;
+  width:9px; height:9px;
+  border-radius:2px;
+  margin-right:5px;
+  vertical-align:middle;
+}
+.shg-swatch-sh{ background:#d21f2b; }
+.shg-swatch-pp{ background:rgba(17,24,39,.28); }
+.shg-swatch-ev{ background:rgba(17,24,39,.10); }
+.shg-grid{
+  display:flex;
+  flex-wrap:wrap;
+  gap:24px 20px;
+}
+.shg-card{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+}
+.shg-waffle{
+  display:grid;
+  grid-template-columns:repeat(10, 8px);
+  gap:2px;
+}
+.shg-sq{
+  width:8px; height:8px;
+  border-radius:1.5px;
+  transition:transform .1s ease;
+  cursor:default;
+}
+.shg-sq:hover{ transform:scale(1.5); z-index:5; position:relative; }
+.shg-sq-sh{ background:#d21f2b; }
+.shg-sq-pp{ background:rgba(17,24,39,.28); }
+.shg-sq-ev{ background:rgba(17,24,39,.10); }
+.shg-sq-empty{ background:transparent; }
+.shg-card-label{
+  margin-top:8px;
+}
+.shg-card-name{
+  font-family:"Poppins",sans-serif;
+  font-weight:700;
+  font-size:10.5px;
+  color:rgba(17,24,39,.88);
+  line-height:1.3;
+}
+.shg-card-season{
+  font-family:"Poppins",sans-serif;
+  font-size:10px;
+  color:rgba(17,24,39,.45);
+  margin-top:1px;
+}
+.shg-card-stat{
+  font-family:"Poppins",sans-serif;
+  font-size:10px;
+  font-weight:600;
+  color:#d21f2b;
+  margin-top:2px;
+}
+.shg-tooltip{
+  position:fixed;
+  pointer-events:none;
+  background:rgba(255,255,255,.97);
+  border:1px solid rgba(17,24,39,.14);
+  padding:9px 12px;
+  border-radius:10px;
+  font-family:"Poppins",sans-serif;
+  font-size:12px;
+  line-height:1.5;
+  box-shadow:0 8px 24px rgba(0,0,0,.10);
+  display:none;
+  max-width:210px;
+  z-index:100;
+  transform:translate(14px,-50%);
+}
+.shg-tip-name{ font-weight:700; margin-bottom:3px; }
+.shg-tip-row{ color:rgba(17,24,39,.55); }
+.shg-tip-row span{ color:rgba(17,24,39,.88); font-weight:600; }
 
 /* --- Specialists section --- */
 .specialistsSection{
@@ -1178,7 +1368,7 @@
 
 <!-- ===== GAMES PER SEASON CHART ===== -->
 <section class="gamesSection" aria-label="NHL games per season history">
-  <p class="gamesChartTitle">Games per NHL season, 1917–18 to 2024–25</p>
+  <p class="gamesChartTitle">Games per NHL season, 1917–18 to 2025–26</p>
   <svg id="gamesSvg" class="games-desktop" viewBox="0 0 864 280" preserveAspectRatio="xMidYMid meet"></svg>
   <svg id="gamesSvgMobile" class="games-mobile" viewBox="0 0 864 720" preserveAspectRatio="xMidYMid meet"></svg>
 </section>
@@ -1208,8 +1398,12 @@
 
 <section class="nearMissSection" style="border-top:none; padding-top:0; margin-top:0;" aria-label="Near misses chart">
   <div id="nearMissChart">
-    <div class="nm-fifty-line">
-      <span class="nm-fifty-label">50 goals</span>
+    <div class="pyr-wrap">
+      <svg id="pyrSvg" class="pyr-svg" viewBox="0 0 860 380" preserveAspectRatio="xMidYMid meet"></svg>
+      <div class="pyr-legend">
+        <span><span class="pyr-legend-dot" style="background:rgba(17,24,39,.82)"></span>never scored 50</span>
+        <span><span class="pyr-legend-dot" style="background:rgba(17,24,39,.22)"></span>also had a 50-goal season</span>
+      </div>
     </div>
   </div>
   <div class="nm-tooltip" id="nmTooltip"></div>
@@ -1280,11 +1474,12 @@
 </section>
 <section class="introCopy">
   <p>
-    Who padded their totals most with empty-net goals in their 50-goal season? Coming soon.
+    Only 11 times in NHL history has a 50-goal scorer put 10% or more of their total goals into an empty net. Each net below shows one of those seasons — the white slice is the empty-net share.
   </p>
 </section>
-<section class="snipersSection" style="border-top:none; padding-top:0; margin-top:0;">
-  <div class="chartPlaceholder">Chart placeholder &mdash; empty net goals in 50-goal seasons</div>
+<section class="snipersSection" style="border-top:none; padding-top:0; margin-top:0;" aria-label="Empty net chart">
+  <div class="eng-grid" id="engGrid"></div>
+  <div class="eng-tooltip" id="engTooltip"></div>
 </section>
 
 <section class="snipersSection" style="border-top:none; padding-top:40px; margin-top:0;" aria-label="Two-Way Killers">
@@ -1292,11 +1487,17 @@
 </section>
 <section class="introCopy">
   <p>
-    A small and elite group scored shorthanded goals in the same season they hit 50. Coming soon.
+    Only 33 times has a 50-goal scorer also notched 5 or more shorthanded goals in the same season. Each square below is one goal. Mario Lemieux's 1988–89 season — 13 shorthanded goals out of 85 — may be the most absurd two-way stat in NHL history.
   </p>
 </section>
-<section class="snipersSection" style="border-top:none; padding-top:0; margin-top:0;">
-  <div class="chartPlaceholder">Chart placeholder &mdash; shorthanded goals in 50-goal seasons</div>
+<section class="snipersSection" style="border-top:none; padding-top:0; margin-top:0;" aria-label="Two-Way Killers chart">
+  <div class="shg-legend">
+    <span><span class="shg-swatch shg-swatch-sh"></span>Shorthanded</span>
+    <span><span class="shg-swatch shg-swatch-pp"></span>Power play</span>
+    <span><span class="shg-swatch shg-swatch-ev"></span>Even strength</span>
+  </div>
+  <div class="shg-grid" id="shgGrid"></div>
+  <div class="shg-tooltip" id="shgTooltip"></div>
 </section>
 
 <section class="snipersSection" style="border-top:none; padding-top:40px; margin-top:0;" aria-label="Bruisers">
@@ -2275,50 +2476,166 @@ heatSvg.append("g")
 
 
 <script>
-// ===== NEAR MISSES STRIP CHART =====
+// ===== NEAR MISSES PYRAMID CHART =====
 (async function(){
-  const chart = document.getElementById("nearMissChart");
+  const svg = document.getElementById("pyrSvg");
   const tooltip = document.getElementById("nmTooltip");
-  if (!chart || !tooltip) return;
+  if (!svg || !tooltip) return;
 
   const raw = await d3.csv("data/chart_near_misses.csv");
   const seasons = raw.map(d => ({
     player: d.player,
     season: d.season,
-    goals: +d.goals
-  }));
+    goals: +d.goals,
+    had50: d.had_50_plus_season === "Y",
+    seasonSort: +d.season.replace("-","").slice(0,4)
+  })).sort((a,b) => a.seasonSort - b.seasonSort);
 
-  const groups = [49, 48, 47, 46, 45];
+  const ns = "http://www.w3.org/2000/svg";
+  const W = 860, H = 380;
 
-  groups.forEach(g => {
-    const row = document.createElement("div");
-    row.className = "nm-row";
+  // Pyramid geometry — truncated top
+  const baseY = 358, baseHalfW = 360;
+  const cutY = 52,  cutHalfW = 106;
 
-    const label = document.createElement("div");
-    label.className = "nm-label" + (g === 49 ? " forty-nine" : "");
-    label.textContent = g;
-    row.appendChild(label);
+  // Three equal-height tiers, 49 on top, 47 on bottom
+  const tierH = (baseY - cutY) / 3;
+  const tiers = [
+    { g: 49, y1: cutY,           y2: cutY + tierH },
+    { g: 48, y1: cutY + tierH,   y2: cutY + tierH * 2 },
+    { g: 47, y1: cutY + tierH*2, y2: baseY }
+  ];
 
-    const dotsWrap = document.createElement("div");
-    dotsWrap.className = "nm-dots";
+  function xLeft(y) {
+    const t = (y - cutY) / (baseY - cutY);
+    return W/2 - (cutHalfW + (baseHalfW - cutHalfW) * t);
+  }
+  function xRight(y) {
+    const t = (y - cutY) / (baseY - cutY);
+    return W/2 + (cutHalfW + (baseHalfW - cutHalfW) * t);
+  }
 
-    seasons.filter(s => s.goals === g).forEach(s => {
-      const dot = document.createElement("div");
-      dot.className = "nm-dot" + (g === 49 ? " forty-nine" : "");
+  // Draw tier bands
+  [...tiers].reverse().forEach(tier => {
+    const poly = document.createElementNS(ns, "polygon");
+    const xl1 = xLeft(tier.y1), xr1 = xRight(tier.y1);
+    const xl2 = xLeft(tier.y2), xr2 = xRight(tier.y2);
+    poly.setAttribute("points", `${xl1},${tier.y1} ${xr1},${tier.y1} ${xr2},${tier.y2} ${xl2},${tier.y2}`);
+    poly.setAttribute("class", `pyr-band-${tier.g}`);
+    svg.appendChild(poly);
+  });
 
-      dot.addEventListener("mouseenter", (e) => {
-        tooltip.innerHTML = '<div class="nm-tip-name">' + s.player + '</div><div class="nm-tip-detail">' + s.season + ' — ' + s.goals + ' goals</div>';
+  // Pyramid outline
+  const outline = document.createElementNS(ns, "polygon");
+  outline.setAttribute("points",
+    `${W/2 - cutHalfW},${cutY} ${W/2 + cutHalfW},${cutY} ${W/2 + baseHalfW},${baseY} ${W/2 - baseHalfW},${baseY}`
+  );
+  outline.setAttribute("class", "pyr-outline");
+  svg.appendChild(outline);
+
+  // Dashed cut line at top
+  const cutLine = document.createElementNS(ns, "line");
+  cutLine.setAttribute("x1", W/2 - cutHalfW - 18); cutLine.setAttribute("x2", W/2 + cutHalfW + 18);
+  cutLine.setAttribute("y1", cutY); cutLine.setAttribute("y2", cutY);
+  cutLine.setAttribute("class", "pyr-cutline");
+  svg.appendChild(cutLine);
+
+  // "50 goals" label above cut
+  const fiftyLabel = document.createElementNS(ns, "text");
+  fiftyLabel.setAttribute("x", W/2);
+  fiftyLabel.setAttribute("y", cutY - 10);
+  fiftyLabel.setAttribute("text-anchor", "middle");
+  fiftyLabel.setAttribute("class", "pyr-fifty-label");
+  fiftyLabel.textContent = "← 50 goals →";
+  svg.appendChild(fiftyLabel);
+
+  // Divider lines between tiers
+  [tiers[0].y2, tiers[1].y2].forEach(y => {
+    const div = document.createElementNS(ns, "line");
+    div.setAttribute("x1", xLeft(y)); div.setAttribute("x2", xRight(y));
+    div.setAttribute("y1", y); div.setAttribute("y2", y);
+    div.setAttribute("stroke", "rgba(17,24,39,.12)");
+    div.setAttribute("stroke-width", "1");
+    svg.appendChild(div);
+  });
+
+  // ── Dot placement: groups of 5 with a gap between groups ──
+  const r        = 5;      // dot radius
+  const dotGap   = 3.5;   // gap between dots within a group
+  const groupGap = 9;     // extra gap between groups of 5
+  const rowGap   = 3.5;   // vertical gap between rows
+  const labelPad = 38;    // left side: space for tier number label
+  const slopePad = 50;    // buffer from the sloped edge on each side
+
+  tiers.forEach(tier => {
+    const tierSeasons = seasons.filter(s => s.goals === tier.g);
+
+    // Dot zone: use the width at the tier's middle row for a conservative fit
+    const midY = (tier.y1 + tier.y2) / 2;
+    const zoneLeft  = xLeft(midY)  + labelPad + slopePad;
+    const zoneRight = xRight(midY) - slopePad;
+    const zoneW = zoneRight - zoneLeft;
+
+    const stride = r * 2 + dotGap;   // per-dot horizontal stride
+    // Width of one group of 5
+    const groupW = 5 * stride - dotGap;
+    // How many groups fit per row (at least 1)
+    const groupsPerRow = Math.max(1, Math.floor((zoneW + groupGap) / (groupW + groupGap)));
+    const dotsPerRow   = groupsPerRow * 5;
+
+    // Total rows needed
+    const nRows = Math.ceil(tierSeasons.length / dotsPerRow);
+    const totalH = nRows * (r * 2) + (nRows - 1) * rowGap;
+
+    // Vertically center the dot block in the tier
+    const bandH = tier.y2 - tier.y1;
+    let startY = tier.y1 + (bandH - totalH) / 2 + r;
+    // Clamp
+    if (startY < tier.y1 + 6 + r) startY = tier.y1 + 6 + r;
+
+    // Horizontally center the dot block
+    const totalRowW = groupsPerRow * groupW + (groupsPerRow - 1) * groupGap;
+    const startX = W/2 - totalRowW / 2;
+
+    tierSeasons.forEach((s, i) => {
+      const row   = Math.floor(i / dotsPerRow);
+      const posInRow = i % dotsPerRow;
+      const groupIdx = Math.floor(posInRow / 5);
+      const posInGrp = posInRow % 5;
+
+      const cx = startX + groupIdx * (groupW + groupGap) + posInGrp * stride + r;
+      const cy = startY + row * (r * 2 + rowGap);
+
+      // Skip if it'd overflow the band
+      if (cy + r > tier.y2 - 6) return;
+
+      const circle = document.createElementNS(ns, "circle");
+      circle.setAttribute("cx", cx.toFixed(1));
+      circle.setAttribute("cy", cy.toFixed(1));
+      circle.setAttribute("r", r);
+      circle.setAttribute("class", `pyr-dot ${s.had50 ? "pyr-dot-had50" : "pyr-dot-never50"}`);
+
+      circle.addEventListener("mouseenter", (e) => {
+        tooltip.innerHTML =
+          '<div class="nm-tip-name">' + s.player + '</div>' +
+          '<div class="nm-tip-detail">' + s.season + ' \u2014 ' + s.goals + ' goals</div>' +
+          (s.had50 ? '<div class="nm-tip-badge">also scored 50+ in another season</div>' : '');
         tooltip.style.display = "block";
         moveTip(e);
       });
-      dot.addEventListener("mousemove", moveTip);
-      dot.addEventListener("mouseleave", () => { tooltip.style.display = "none"; });
+      circle.addEventListener("mousemove", moveTip);
+      circle.addEventListener("mouseleave", () => { tooltip.style.display = "none"; });
 
-      dotsWrap.appendChild(dot);
+      svg.appendChild(circle);
     });
 
-    row.appendChild(dotsWrap);
-    chart.appendChild(row);
+    // Tier number label — vertically centered on left side of band
+    const lbl = document.createElementNS(ns, "text");
+    lbl.setAttribute("x", xLeft(midY) + 14);
+    lbl.setAttribute("y", (midY + 5).toFixed(1));
+    lbl.setAttribute("class", "pyr-tier-label");
+    lbl.textContent = tier.g;
+    svg.appendChild(lbl);
   });
 
   function moveTip(e) {
@@ -2326,7 +2643,7 @@ heatSvg.append("g")
     tooltip.style.top  = e.clientY + "px";
   }
 })();
-// ===== END NEAR MISSES =====
+// ===== END NEAR MISSES PYRAMID =====
 </script>
 
 
@@ -2527,6 +2844,279 @@ heatSvg.append("g")
   }
 })();
 // ===== END SNIPERS BUBBLE CHART =====
+</script>
+
+
+<script>
+// ===== EMPTY NET MERCHANTS SMALL MULTIPLES =====
+(async function(){
+  const grid    = document.getElementById("engGrid");
+  const tooltip = document.getElementById("engTooltip");
+  if (!grid || !tooltip) return;
+
+  const raw = await d3.csv("data/chart_empty_net.csv");
+
+  const data = raw
+    .map(d => ({
+      player:  d.player,
+      season:  d.season,
+      eng:     +d.eng,
+      goals:   +d.goals,
+      engPct:  +d.eng_pct
+    }))
+    .filter(d => d.engPct >= 10)
+    .sort((a, b) => b.engPct - a.engPct);
+
+  const NET_SRC = "images/50_goals/net.png";
+  const W = 160, H = 107;
+  const cx = 80, cy = 56, R = 26;
+  const HOLE_R = R * 0.58;   // bigger centre dot — covers ragged centre joins cleanly
+  const ns = "http://www.w3.org/2000/svg";
+  const DURATION = 900;
+
+  function easeOut(t) { return 1 - Math.pow(1 - t, 3); }
+
+  function pt(angleDeg, r) {
+    const rad = (angleDeg - 90) * Math.PI / 180;
+    return [cx + r * Math.cos(rad), cy + r * Math.sin(rad)];
+  }
+
+  function wedgePath(startDeg, endDeg, r) {
+    if (endDeg - startDeg >= 359.99) {
+      return `M ${cx} ${cy - r} A ${r} ${r} 0 1 1 ${cx - 0.001} ${cy - r} Z`;
+    }
+    const large = (endDeg - startDeg) > 180 ? 1 : 0;
+    const [x1, y1] = pt(startDeg, r);
+    const [x2, y2] = pt(endDeg,   r);
+    return `M ${cx} ${cy} L ${x1} ${y1} A ${r} ${r} 0 ${large} 1 ${x2} ${y2} Z`;
+  }
+
+  function moveTip(e) {
+    tooltip.style.left = e.clientX + "px";
+    tooltip.style.top  = e.clientY + "px";
+  }
+
+  const allCards = [];
+
+  data.forEach(d => {
+    const engFrac = d.eng / d.goals;
+    const engDeg  = engFrac * 360;
+
+    const card = document.createElement("div");
+    card.className = "eng-card";
+
+    const netDiv = document.createElement("div");
+    netDiv.className = "eng-card-net";
+
+    const img = document.createElement("img");
+    img.src = NET_SRC;
+    img.alt = "empty net";
+    netDiv.appendChild(img);
+
+    const svg = document.createElementNS(ns, "svg");
+    svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
+    svg.setAttribute("preserveAspectRatio", "xMidYMid meet");
+
+    // ── Grey "other goals" slice — highly visible, drawn first ──
+    const otherSlice = document.createElementNS(ns, "path");
+    otherSlice.setAttribute("d", wedgePath(engDeg, 360, R));
+    otherSlice.setAttribute("fill", "rgba(220,220,220,0.75)");
+    otherSlice.setAttribute("stroke", "rgba(255,255,255,0.80)");
+    otherSlice.setAttribute("stroke-width", "1");
+    svg.appendChild(otherSlice);
+
+    // ── Red ENG wedge with clip animation ──
+    const clipId = "engClip_" + Math.random().toString(36).slice(2,8);
+    const defs = document.createElementNS(ns, "defs");
+    const clipPath = document.createElementNS(ns, "clipPath");
+    clipPath.setAttribute("id", clipId);
+    const clipWedge = document.createElementNS(ns, "path");
+    clipWedge.setAttribute("d", wedgePath(0, 0.001, R + 2));
+    clipPath.appendChild(clipWedge);
+    defs.appendChild(clipPath);
+    svg.appendChild(defs);
+
+    const redSlice = document.createElementNS(ns, "path");
+    redSlice.setAttribute("d", wedgePath(0, engDeg, R));
+    redSlice.setAttribute("fill", "#d21f2b");
+    redSlice.setAttribute("stroke", "rgba(255,255,255,0.80)");
+    redSlice.setAttribute("stroke-width", "1");
+    redSlice.setAttribute("clip-path", `url(#${clipId})`);
+    svg.appendChild(redSlice);
+
+    // ── Solid black centre dot — large enough to hide all spoke lines ──
+    const centreDot = document.createElementNS(ns, "circle");
+    centreDot.setAttribute("cx", cx); centreDot.setAttribute("cy", cy);
+    centreDot.setAttribute("r", HOLE_R);
+    centreDot.setAttribute("fill", "#000000");
+    svg.appendChild(centreDot);
+
+    // ── Percentage label ──
+    const pctText = document.createElementNS(ns, "text");
+    pctText.setAttribute("x", cx);
+    pctText.setAttribute("y", cy + 1);
+    pctText.setAttribute("text-anchor", "middle");
+    pctText.setAttribute("dominant-baseline", "middle");
+    pctText.setAttribute("font-family", "Poppins, sans-serif");
+    pctText.setAttribute("font-size", "8");
+    pctText.setAttribute("font-weight", "700");
+    pctText.setAttribute("fill", "#ffffff");
+    pctText.setAttribute("opacity", "0");
+    pctText.textContent = d.engPct + "%";
+    svg.appendChild(pctText);
+
+    netDiv.appendChild(svg);
+
+    netDiv.addEventListener("mouseenter", (e) => {
+      tooltip.innerHTML =
+        '<div class="eng-tip-name">' + d.player + '</div>' +
+        '<div class="eng-tip-row">' + d.season + '</div>' +
+        '<div class="eng-tip-row">Empty-net: <span>' + d.eng + ' of ' + d.goals + ' goals</span></div>' +
+        '<div class="eng-tip-row">ENG rate: <span>' + d.engPct + '%</span></div>';
+      tooltip.style.display = "block";
+      moveTip(e);
+    });
+    netDiv.addEventListener("mousemove", moveTip);
+    netDiv.addEventListener("mouseleave", () => { tooltip.style.display = "none"; });
+
+    card.appendChild(netDiv);
+
+    const labelDiv = document.createElement("div");
+    labelDiv.className = "eng-card-label";
+    labelDiv.innerHTML =
+      '<div class="eng-card-name">' + d.player + '</div>' +
+      '<div class="eng-card-season">' + d.season + '</div>' +
+      '<div class="eng-card-stat">' + d.eng + ' EN / ' + d.goals + ' G</div>';
+    card.appendChild(labelDiv);
+
+    grid.appendChild(card);
+    allCards.push({ clipWedge, pctText, engDeg, animated: false });
+  });
+
+  function animateCard(item) {
+    if (item.animated) return;
+    item.animated = true;
+    const start = performance.now();
+    function frame(now) {
+      const t = Math.min((now - start) / DURATION, 1);
+      const deg = Math.max(easeOut(t) * item.engDeg, 0.001);
+      item.clipWedge.setAttribute("d", wedgePath(0, deg, R + 2));
+      if (t < 1) {
+        requestAnimationFrame(frame);
+      } else {
+        item.clipWedge.setAttribute("d", wedgePath(0, item.engDeg, R + 2));
+        const fadeStart = performance.now();
+        (function fadeFrame(now2) {
+          const ft = Math.min((now2 - fadeStart) / 250, 1);
+          item.pctText.setAttribute("opacity", ft);
+          if (ft < 1) requestAnimationFrame(fadeFrame);
+        })(performance.now());
+      }
+    }
+    requestAnimationFrame(frame);
+  }
+
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const idx = parseInt(entry.target.dataset.engIdx, 10);
+        setTimeout(() => animateCard(allCards[idx]), idx * 80);
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  grid.querySelectorAll(".eng-card").forEach((cardEl, i) => {
+    cardEl.dataset.engIdx = i;
+    io.observe(cardEl);
+  });
+})();
+// ===== END EMPTY NET MERCHANTS =====
+</script>
+
+
+<script>
+// ===== TWO-WAY KILLERS WAFFLE CHART =====
+(async function(){
+  const grid    = document.getElementById("shgGrid");
+  const tooltip = document.getElementById("shgTooltip");
+  if (!grid || !tooltip) return;
+
+  const raw = await d3.csv("data/chart_shorthanded.csv");
+  const data = raw.map(d => ({
+    player:  d.player,
+    season:  d.season,
+    goals:   +d.goals,
+    shg:     +d.shg,
+    ppg:     +d.ppg,
+    evg:     +d.evg,
+    shgPct:  +d.shg_pct
+  })).sort((a, b) => b.shg - a.shg || b.shgPct - a.shgPct);
+
+  const COLS = 10;
+
+  function moveTip(e) {
+    tooltip.style.left = e.clientX + "px";
+    tooltip.style.top  = e.clientY + "px";
+  }
+
+  data.forEach(d => {
+    // Build square sequence: SHG first (red), then EVG (light), then PPG (medium)
+    // Order makes SHG squares appear top-left — most visually prominent
+    const squares = [
+      ...Array(d.shg).fill("sh"),
+      ...Array(d.evg).fill("ev"),
+      ...Array(d.ppg).fill("pp"),
+    ];
+    // Pad to next full row
+    const rows = Math.ceil(squares.length / COLS);
+    const total = rows * COLS;
+    while (squares.length < total) squares.push("empty");
+
+    const card = document.createElement("div");
+    card.className = "shg-card";
+
+    const waffle = document.createElement("div");
+    waffle.className = "shg-waffle";
+    waffle.style.gridTemplateRows = `repeat(${rows}, 8px)`;
+
+    squares.forEach((type, i) => {
+      const sq = document.createElement("div");
+      sq.className = `shg-sq shg-sq-${type}`;
+
+      if (type !== "empty") {
+        const label = type === "sh" ? "Shorthanded"
+                    : type === "pp" ? "Power play"
+                    : "Even strength";
+        sq.addEventListener("mouseenter", (e) => {
+          tooltip.innerHTML =
+            `<div class="shg-tip-name">${d.player}</div>` +
+            `<div class="shg-tip-row">${d.season}</div>` +
+            `<div class="shg-tip-row">${label} goal &nbsp;·&nbsp; #${i + 1} of ${d.goals}</div>` +
+            `<div class="shg-tip-row">SHG: <span>${d.shg} (${d.shgPct}%)</span></div>`;
+          tooltip.style.display = "block";
+          moveTip(e);
+        });
+        sq.addEventListener("mousemove", moveTip);
+        sq.addEventListener("mouseleave", () => { tooltip.style.display = "none"; });
+      }
+      waffle.appendChild(sq);
+    });
+
+    card.appendChild(waffle);
+
+    const label = document.createElement("div");
+    label.className = "shg-card-label";
+    label.innerHTML =
+      `<div class="shg-card-name">${d.player}</div>` +
+      `<div class="shg-card-season">${d.season} &nbsp;·&nbsp; ${d.goals}G</div>` +
+      `<div class="shg-card-stat">${d.shg} SHG &nbsp;·&nbsp; ${d.shgPct}%</div>`;
+    card.appendChild(label);
+
+    grid.appendChild(card);
+  });
+})();
+// ===== END TWO-WAY KILLERS =====
 </script>
 
 

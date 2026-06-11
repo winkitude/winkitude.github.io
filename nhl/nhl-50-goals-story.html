@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="description" content="A data-driven story exploring every 50-goal season in NHL history — who did it, when, how, and who came close." />
 <title>The NHL's 50 Goal Club</title>
 
 <link rel="stylesheet" href="https://use.typekit.net/hty3kgh.css">
@@ -166,7 +167,37 @@
     color:rgba(17,24,39,.90);
     outline:none;
   }
-  select:focus{ border-color:rgba(17,24,39,.28); }
+  select:focus{ border-color:rgba(17,24,39,.28); outline:2px solid rgba(17,24,39,.28); outline-offset:1px; }
+
+  .skip-nav{
+    position:absolute;
+    top:-100%;
+    left:16px;
+    background:var(--fg);
+    color:#fff;
+    padding:8px 16px;
+    border-radius:0 0 6px 6px;
+    font-family:"Poppins",sans-serif;
+    font-size:14px;
+    font-weight:600;
+    text-decoration:none;
+    z-index:9999;
+    transition:top .15s ease;
+  }
+  .skip-nav:focus{
+    top:0;
+  }
+  /* Focus visible for keyboard navigation */
+  :focus-visible{
+    outline:2px solid var(--accent);
+    outline-offset:2px;
+    border-radius:2px;
+  }
+  a:focus-visible, button:focus-visible{
+    outline:2px solid var(--accent);
+    outline-offset:3px;
+  }
+
 
   .chart{ margin-top:10px; background:#fff; }
   svg{ display:block; width:100%; height:auto; }
@@ -366,6 +397,11 @@
   height:auto;
   overflow:visible;
 }
+@media(max-width:700px){
+  #gamesSvgMobile{ min-height:260px; }
+  .gamesChartTitle{ font-size:13px; }
+  .gamesNote{ font-size:13px; }
+}
 .games-mobile{ display:none !important; }
 .games-desktop{ display:block !important; }
 @media(max-width:700px){
@@ -401,14 +437,14 @@
   font-family:"Poppins", sans-serif;
   font-size:11px;
   font-weight:600;
-  color:rgba(17,24,39,.45);
+  color:rgba(17,24,39,.60);
   margin:0 0 10px;
   letter-spacing:.01em;
 }
 .gamesNote{
   font-family:"Poppins", sans-serif;
   font-size:11px;
-  color:rgba(17,24,39,.45);
+  color:rgba(17,24,39,.60);
   margin-top:10px;
 }
 
@@ -472,14 +508,14 @@
   font-family:"Poppins", sans-serif;
   font-size:11px;
   font-weight:600;
-  color:rgba(17,24,39,.45);
+  color:rgba(17,24,39,.60);
   letter-spacing:.02em;
 }
 .decadeNote{
   margin-top:32px;
   font-family:"Poppins", sans-serif;
   font-size:11px;
-  color:rgba(17,24,39,.45);
+  color:rgba(17,24,39,.60);
   line-height:1.55;
 }
 .decadeNote em{ font-style:normal; color:#d21f2b; font-weight:600; }
@@ -524,6 +560,12 @@
   display:block;
   width:100%;
   overflow:visible;
+}
+@media(max-width:700px){
+  .pyr-svg{ min-height:280px; }
+  .pyr-tier-label{ font-size:15px; }
+  .pyr-fifty-label{ font-size:11px; }
+  .pyr-legend{ font-size:12px; gap:14px; margin-top:10px; }
 }
 /* tier bands — uniform warm gray, slight step */
 .pyr-band-49{ fill:#fde8e8; }
@@ -592,7 +634,7 @@
   font-weight:600;
   letter-spacing:.06em;
   text-transform:uppercase;
-  color:rgba(17,24,39,.45);
+  color:rgba(17,24,39,.60);
   background:rgba(17,24,39,.07);
   border-radius:4px;
   padding:1px 5px;
@@ -604,7 +646,7 @@
   margin-top:14px;
   font-family:"Poppins",sans-serif;
   font-size:11px;
-  color:rgba(17,24,39,.45);
+  color:rgba(17,24,39,.60);
   align-items:center;
   flex-wrap:wrap;
 }
@@ -634,7 +676,7 @@
   font-family:"Poppins", sans-serif;
   font-size:11px;
   font-weight:600;
-  color:rgba(17,24,39,.45);
+  color:rgba(17,24,39,.60);
   margin:32px 0 6px;
   letter-spacing:.01em;
 }
@@ -643,6 +685,10 @@
   width:100%;
   height:auto;
   overflow:visible;
+}
+@media(max-width:700px){
+  #snipersSvg{ min-height:380px; }
+  .sniper-axis-label{ font-size:12px; }
 }
 .sniper-bubble{
   fill:rgba(17,24,39,.12);
@@ -693,7 +739,7 @@
   margin-top:10px;
   font-family:"Poppins", sans-serif;
   font-size:11px;
-  color:rgba(17,24,39,.45);
+  color:rgba(17,24,39,.60);
   align-items:center;
 }
 .snipers-legend-item{
@@ -774,7 +820,7 @@
 .eng-card-season{
   font-family:"Poppins",sans-serif;
   font-size:11px;
-  color:rgba(17,24,39,.45);
+  color:rgba(17,24,39,.60);
   margin-top:1px;
 }
 .eng-card-stat{
@@ -810,7 +856,7 @@
   gap:18px;
   font-family:"Poppins",sans-serif;
   font-size:11px;
-  color:rgba(17,24,39,.45);
+  color:rgba(17,24,39,.60);
   margin-bottom:24px;
   align-items:center;
   flex-wrap:wrap;
@@ -864,7 +910,7 @@
 .shg-card-season{
   font-family:"Poppins",sans-serif;
   font-size:11px;
-  color:rgba(17,24,39,.45);
+  color:rgba(17,24,39,.60);
   margin-top:1px;
 }
 .shg-card-stat{
@@ -901,7 +947,7 @@
   gap:18px;
   font-family:"Poppins",sans-serif;
   font-size:11px;
-  color:rgba(17,24,39,.45);
+  color:rgba(17,24,39,.60);
   margin-bottom:24px;
   align-items:center;
   flex-wrap:wrap;
@@ -953,7 +999,7 @@
 .ppg-card-season{
   font-family:"Poppins",sans-serif;
   font-size:11px;
-  color:rgba(17,24,39,.45);
+  color:rgba(17,24,39,.60);
   margin-top:1px;
 }
 .ppg-card-stat{
@@ -1009,7 +1055,7 @@
   font-weight:700;
   letter-spacing:.08em;
   text-transform:uppercase;
-  color:rgba(17,24,39,.45);
+  color:rgba(17,24,39,.60);
   padding:0 12px 10px 0;
 }
 .bruisers-table th.bruisers-pim-col,
@@ -1274,7 +1320,7 @@
 .neverMadeItStat{
   font-family:"Poppins", sans-serif;
   font-size:11px;
-  color:rgba(17,24,39,.45);
+  color:rgba(17,24,39,.60);
   line-height:1.5;
 }
 .neverMadeItPeak{
@@ -1288,7 +1334,7 @@
   font-family:"Poppins", sans-serif;
   font-size:11px;
   line-height:1.6;
-  color:rgba(17,24,39,.45);
+  color:rgba(17,24,39,.60);
   margin-top:6px;
 }
 
@@ -1339,7 +1385,7 @@
   font-family:"Poppins",sans-serif;
   font-size:11px;
   font-weight:700;
-  color:rgba(17,24,39,.45);
+  color:rgba(17,24,39,.60);
   width:24px;
   text-align:right;
   flex-shrink:0;
@@ -1350,12 +1396,13 @@
   display:block;
   width:100%;
   height:auto;
+  min-height:180px;
 }
 .age-bar{ fill:rgba(17,24,39,.12); }
 .age-bar-peak{ fill:var(--accent); }
 .age-axis-label{
   font-family:"Poppins", sans-serif;
-  font-size:9px;
+  font-size:13px;
   fill:rgba(17,24,39,.40);
 }
 .age-gridline{ stroke:rgba(17,24,39,.07); stroke-width:1; }
@@ -1469,12 +1516,12 @@
   letter-spacing:.08em;
   text-transform:uppercase;
   color:rgba(17,24,39,.40);
-  padding:0 16px 10px 0;
+  padding:0 10px 10px 0;
   border-bottom:1px solid rgba(17,24,39,.10);
 }
 .defTable th:last-child{ padding-right:0; }
 .defTable td{
-  padding:11px 16px 11px 0;
+  padding:11px 10px 11px 0;
   border-bottom:1px solid rgba(17,24,39,.06);
   color:rgba(17,24,39,.80);
   vertical-align:middle;
@@ -1482,18 +1529,25 @@
 .defTable td:last-child{ padding-right:0; }
 .defTable tr:last-child td{ border-bottom:none; }
 .defTable .td-name{ font-weight:600; color:rgba(17,24,39,.90); }
-.defTable .td-team{ color:rgba(17,24,39,.45); font-size:12px; }
+.defTable .td-team{ color:rgba(17,24,39,.60); font-size:12px; }
 .defTable .td-num{
   font-variant-numeric:tabular-nums;
   text-align:right;
-  padding-right:24px;
+  padding-right:14px;
 }
 .defTable .td-goals{
   font-weight:700;
   font-size:15px;
   color:rgba(17,24,39,.85);
   text-align:right;
-  padding-right:24px;
+  padding-right:0;
+}
+@media(max-width:700px){
+  .defTable{ font-size:12px; }
+  .defTable th{ font-size:9px; padding:0 6px 8px 0; }
+  .defTable td{ padding:9px 6px 9px 0; }
+  .defTable .td-goals{ font-size:13px; }
+  .orr-section-wrap{ padding:0 12px; }
 }
 .defTable tr.near-miss td{
   background:rgba(210,31,43,.04);
@@ -1513,13 +1567,14 @@
 .defTable-note{
   font-family:"Poppins", sans-serif;
   font-size:11px;
-  color:rgba(17,24,39,.45);
+  color:rgba(17,24,39,.60);
   margin-top:10px;
 }
 </style>
 </head>
 
 <body>
+<a href="#main-content" class="skip-nav">Skip to main content</a>
   <header class="site-header">
     <div class="wrap" style="display:flex; justify-content:space-between; align-items:center;">
       <div class="masthead">
@@ -1552,7 +1607,7 @@
     </div>
   </header>
 
-  <main>
+  <main id="main-content">
     <div class="wrap">
       <section class="hero">
         <h1 class="title">So you want to join the NHL's 50-goal club</h1>
@@ -1585,8 +1640,8 @@
 <!-- ===== GAMES PER SEASON CHART ===== -->
 <section class="gamesSection" aria-label="NHL games per season history">
   <p class="gamesChartTitle">Games per NHL season, 1917–18 to 2025–26</p>
-  <svg id="gamesSvg" class="games-desktop" viewBox="0 0 864 280" preserveAspectRatio="xMidYMid meet"></svg>
-  <svg id="gamesSvgMobile" class="games-mobile" viewBox="0 0 864 720" preserveAspectRatio="xMidYMid meet"></svg>
+  <svg id="gamesSvg" role="img" aria-label="Bar chart: NHL games played per season from 1917–18 to 2025–26" class="games-desktop" viewBox="0 0 864 280" preserveAspectRatio="xMidYMid meet"></svg>
+  <svg id="gamesSvgMobile" role="img" aria-label="Bar chart: NHL games played per season from 1917–18 to 2025–26" class="games-mobile" viewBox="0 0 864 720" preserveAspectRatio="xMidYMid meet"></svg>
 </section>
 
 <section class="introCopy" aria-label="Intro copy continued">
@@ -1615,7 +1670,7 @@
 <section class="nearMissSection" style="border-top:none; padding-top:0; margin-top:0;" aria-label="Near misses chart">
   <div id="nearMissChart">
     <div class="pyr-wrap">
-      <svg id="pyrSvg" class="pyr-svg" viewBox="0 0 860 380" preserveAspectRatio="xMidYMid meet"></svg>
+      <svg id="pyrSvg" role="img" aria-label="Pyramid chart: players who scored 47, 48 or 49 goals without reaching 50" class="pyr-svg" viewBox="0 0 860 380" preserveAspectRatio="xMidYMid meet"></svg>
       <div class="pyr-legend">
         <span><span class="pyr-legend-dot" style="background:rgba(17,24,39,.82)"></span>never scored 50</span>
         <span><span class="pyr-legend-dot" style="background:rgba(17,24,39,.22)"></span>also had a 50-goal season</span>
@@ -1628,7 +1683,7 @@
 
 <!-- ===== SPECIALISTS ===== -->
 <section class="specialistsSection" aria-label="The Specialists">
-  <h1 class="specialistsTitle">The Specialists</h1>
+  <h2 class="specialistsTitle">The Specialists</h2>
 </section>
 <!-- ===== END SPECIALISTS ===== -->
 
@@ -1654,7 +1709,7 @@
 
 <section class="snipersSection" style="border-top:none; padding-top:0; margin-top:0;" aria-label="Snipers chart">
   <p class="snipersChartTitle">50-goal seasons vs. peak season &mdash; bubble size = career goals</p>
-  <svg id="snipersSvg" viewBox="0 0 864 420" preserveAspectRatio="xMidYMid meet"></svg>
+  <svg id="snipersSvg" role="img" aria-label="Bubble chart: shooting percentage vs goals for 50-goal scorers" viewBox="0 0 864 520" preserveAspectRatio="xMidYMid meet"></svg>
   <div class="snipers-legend">
     <div class="snipers-legend-item">
       <div class="legend-bubble" style="width:14px;height:14px;background:rgba(17,24,39,.12);border:1px solid rgba(17,24,39,.18);"></div>
@@ -1735,11 +1790,11 @@
       <table class="bruisers-table" id="bruisersTable">
         <thead>
           <tr>
-            <th>Player</th>
-            <th>Season</th>
-            <th>Team</th>
-            <th>Goals</th>
-            <th class="bruisers-pim-col">PIM</th>
+            <th scope="col">Player</th>
+            <th scope="col">Season</th>
+            <th scope="col">Team</th>
+            <th scope="col">Goals</th>
+            <th scope="col" class="bruisers-pim-col">PIM</th>
           </tr>
         </thead>
         <tbody id="bruisersTbody"></tbody>
@@ -1758,7 +1813,7 @@
 
 <!-- ===== 50 IN 50 ===== -->
 <section class="pageSection" aria-label="50 in 50">
-  <h1>The Impossible: 50 in 50</h1>
+  <h2>The Impossible: 50 in 50</h2>
 </section>
 <section class="introCopy">
   <p>
@@ -1828,7 +1883,7 @@
 
 <!-- ===== THE BEST WHO NEVER MADE IT ===== -->
 <section class="pageSection" aria-label="Never made it">
-  <h1>The Best Who Never Made It</h1>
+  <h2>The Best Who Never Made It</h2>
 </section>
 <section class="introCopy">
   <p>
@@ -1872,7 +1927,7 @@
 
 <!-- ===== DEFENSEMEN ===== -->
 <section class="pageSection" aria-label="Defensemen">
-  <h1>Defensemen Are Staying Home for This One</h1>
+  <h2>Defensemen Are Staying Home for This One</h2>
 </section>
 <div class="orr-section-wrap" id="orrSectionWrap">
   <div class="orr-flyin" id="orrFlyin">
@@ -1886,13 +1941,13 @@
     <table class="defTable" id="defTable">
       <thead>
         <tr>
-          <th>Player</th>
-          <th>Season</th>
-          <th>Team</th>
-          <th style="text-align:right; padding-right:24px;">GP</th>
-          <th style="text-align:right; padding-right:24px;">G</th>
-          <th style="text-align:right; padding-right:24px;">A</th>
-          <th style="text-align:right; padding-right:0;">P</th>
+          <th scope="col">Player</th>
+          <th scope="col">Season</th>
+          <th scope="col">Team</th>
+          <th scope="col" style="text-align:right; padding-right:24px;">GP</th>
+          <th scope="col" style="text-align:right; padding-right:24px;">G</th>
+          <th scope="col" style="text-align:right; padding-right:24px;">A</th>
+          <th scope="col" style="text-align:right; padding-right:0;">P</th>
         </tr>
       </thead>
       <tbody id="defTableBody"></tbody>
@@ -1904,7 +1959,7 @@
 <!-- ===== ERA EFFECT ===== -->
 <!-- ===== ERA EFFECT HEADER ===== -->
 <section class="pageSection" aria-label="Era effect">
-  <h1>The Era Effect</h1>
+  <h2>The Era Effect</h2>
 </section>
 <section class="introCopy">
   <p>
@@ -1932,7 +1987,7 @@
 
 <!-- ===== AGE CURVES ===== -->
 <section class="pageSection" aria-label="Age curves">
-  <h1>A Younger Man’s Game</h1>
+  <h2>A Younger Man’s Game</h2>
 </section>
 <section class="introCopy">
   <p>
@@ -1944,12 +1999,12 @@
 </section>
 <section class="pageSection no-border">
   <p class="snipersChartTitle">Among players who scored 50+ at least once, how many did it at each age?</p>
-  <svg id="ageCurveSvg" viewBox="0 0 864 200" preserveAspectRatio="xMidYMid meet"></svg>
+  <svg id="ageCurveSvg" role="img" aria-label="Bar chart: age distribution of 50-goal seasons in NHL history" viewBox="0 0 864 280" preserveAspectRatio="xMidYMid meet"></svg>
 </section>
 
 <!-- ===== TEAMS ===== -->
 <section class="pageSection" aria-label="Teams">
-  <h1>The Teams That Produced Them</h1>
+  <h2>The Teams That Produced Them</h2>
 </section>
 <section class="introCopy">
   <p>
@@ -1964,7 +2019,7 @@
 
 <!-- ===== APPENDIX ===== -->
 <section class="pageSection" aria-label="Appendix">
-  <h1>Appendix</h1>
+  <h2>Appendix</h2>
 </section>
 <section class="introCopy">
   <p>
@@ -2011,7 +2066,7 @@
 <div class="heatmapSection">
   <h2 class="sectionTitle">Heatmap sorted by total goals scored</h2>
   <div class="chart">
-    <svg id="heatmap"></svg>
+    <svg id="heatmap" role="img" aria-label="Heatmap of 50-goal seasons by player and age"></svg>
   </div>
 
 <div class="ageNote">Ages shown are approximate and reflect the player’s age at roughly the start of each season. A few may be slightly off.</div>
@@ -2569,9 +2624,9 @@ heatSvg.append("g")
   const desktop = document.getElementById("gamesSvg");
   if (desktop) drawChart(desktop, 864, 280, 40, 20, 36, 28, 12, 14, 12, 20, 8);
 
-  // Mobile: W=864, H=560 (2x everything)
+  // Mobile: taller with readable labels
   const mobile = document.getElementById("gamesSvgMobile");
-  if (mobile) drawChart(mobile, 864, 720, 80, 40, 80, 60, 48, 56, 48, 70, 20);
+  if (mobile) drawChart(mobile, 864, 900, 80, 32, 100, 80, 36, 42, 34, 30, 14);
 })();
 </script>
 
@@ -2921,7 +2976,7 @@ heatSvg.append("g")
     active: d.active === "Y"
   }));
 
-  const W = 864, H = 420;
+  const W = 864, H = 520;
   const padL = 52, padR = 24, padT = 24, padB = 48;
   const innerW = W - padL - padR;
   const innerH = H - padT - padB;
@@ -3476,7 +3531,7 @@ heatSvg.append("g")
   const dataMap = {};
   data.forEach(d => dataMap[d.age] = d.count);
 
-  const W=864, H=200, padL=36, padR=20, padT=20, padB=36;
+  const W=864, H=280, padL=42, padR=20, padT=28, padB=44;
   const innerW=W-padL-padR, innerH=H-padT-padB;
   const maxCount = Math.max(...data.map(d => d.count));
   const ns="http://www.w3.org/2000/svg";
@@ -3492,7 +3547,8 @@ heatSvg.append("g")
     if (v % 10 === 0) {
       const t = document.createElementNS(ns,"text");
       t.setAttribute("class","age-axis-label");
-      t.setAttribute("x",padL-4); t.setAttribute("y",gy+3);
+      t.setAttribute("font-size","13");
+      t.setAttribute("x",padL-6); t.setAttribute("y",gy+4);
       t.setAttribute("text-anchor","end"); t.textContent=v;
       svg.appendChild(t);
     }
@@ -3519,8 +3575,9 @@ heatSvg.append("g")
     if (age % 5 === 0 || age === 18) {
       const t = document.createElementNS(ns,"text");
       t.setAttribute("class","age-axis-label");
+      t.setAttribute("font-size","13");
       t.setAttribute("x",(bx+barW/2).toFixed(1));
-      t.setAttribute("y",padT+innerH+14);
+      t.setAttribute("y",padT+innerH+18);
       t.setAttribute("text-anchor","middle");
       t.textContent=age;
       svg.appendChild(t);
@@ -3533,7 +3590,7 @@ heatSvg.append("g")
   const peakY = padT + innerH - (peakCount/maxCount)*innerH - 8;
   const pl = document.createElementNS(ns,"text");
   pl.setAttribute("font-family","Poppins, sans-serif");
-  pl.setAttribute("font-size","10"); pl.setAttribute("font-weight","700");
+  pl.setAttribute("font-size","14"); pl.setAttribute("font-weight","700");
   pl.setAttribute("fill","#d21f2b"); pl.setAttribute("text-anchor","middle");
   pl.setAttribute("x",peakX); pl.setAttribute("y",peakY);
   pl.textContent="Peak: " + peakAge;

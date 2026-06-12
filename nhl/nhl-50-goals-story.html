@@ -1398,6 +1398,9 @@
   height:auto;
   min-height:180px;
 }
+@media(max-width:700px){
+  #ageCurveSvg{ min-height:280px; }
+}
 .age-bar{ fill:rgba(17,24,39,.12); }
 .age-bar-peak{ fill:var(--accent); }
 .age-axis-label{
@@ -1670,7 +1673,7 @@
 <section class="gamesSection" aria-label="NHL games per season history">
   <p class="gamesChartTitle">Games per NHL season, 1917–18 to 2025–26</p>
   <svg id="gamesSvg" role="img" aria-label="Bar chart: NHL games played per season from 1917–18 to 2025–26" class="games-desktop" viewBox="0 0 864 280" preserveAspectRatio="xMidYMid meet"></svg>
-  <svg id="gamesSvgMobile" role="img" aria-label="Bar chart: NHL games played per season from 1917–18 to 2025–26" class="games-mobile" viewBox="0 0 864 720" preserveAspectRatio="xMidYMid meet"></svg>
+  <svg id="gamesSvgMobile" role="img" aria-label="Bar chart: NHL games played per season from 1917–18 to 2025–26" class="games-mobile" viewBox="0 0 864 900" preserveAspectRatio="xMidYMid meet"></svg>
 </section>
 
 <section class="introCopy" aria-label="Intro copy continued">
@@ -2762,11 +2765,13 @@ heatSvg.append("g")
   })).sort((a,b) => a.seasonSort - b.seasonSort);
 
   const ns = "http://www.w3.org/2000/svg";
-  const W = 860, H = 380;
+  const isMobile = window.innerWidth <= 700;
+  const W = 860, H = isMobile ? 560 : 380;
+  svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
 
-  // Pyramid geometry — truncated top
-  const baseY = 358, baseHalfW = 360;
-  const cutY = 52,  cutHalfW = 106;
+  // Pyramid geometry — scales with H
+  const baseY = H - 22, baseHalfW = isMobile ? 400 : 360;
+  const cutY = isMobile ? 70 : 52, cutHalfW = isMobile ? 120 : 106;
 
   // Three equal-height tiers, 49 on top, 47 on bottom
   const tierH = (baseY - cutY) / 3;
@@ -2830,11 +2835,11 @@ heatSvg.append("g")
   });
 
   // ── Dot placement: groups of 5 with a gap between groups ──
-  const r        = 5;      // dot radius
-  const dotGap   = 3.5;   // gap between dots within a group
-  const groupGap = 9;     // extra gap between groups of 5
-  const rowGap   = 3.5;   // vertical gap between rows
-  const labelPad = 38;    // left side: space for tier number label
+  const r        = isMobile ? 7 : 5;  // dot radius
+  const dotGap   = isMobile ? 4.5 : 3.5;
+  const groupGap = isMobile ? 12 : 9;
+  const rowGap   = isMobile ? 4.5 : 3.5;
+  const labelPad = isMobile ? 52 : 38;
   const slopePad = 50;    // buffer from the sloped edge on each side
 
   tiers.forEach(tier => {
@@ -2904,6 +2909,7 @@ heatSvg.append("g")
     lbl.setAttribute("x", xLeft(midY) + 14);
     lbl.setAttribute("y", (midY + 5).toFixed(1));
     lbl.setAttribute("class", "pyr-tier-label");
+    lbl.setAttribute("font-size", isMobile ? "20" : "11");
     lbl.textContent = tier.g;
     svg.appendChild(lbl);
   });
@@ -3005,7 +3011,9 @@ heatSvg.append("g")
     active: d.active === "Y"
   }));
 
-  const W = 864, H = 520;
+  const isMobile = window.innerWidth <= 700;
+  const W = 864, H = isMobile ? 680 : 520;
+  document.getElementById("snipersSvg").setAttribute("viewBox", `0 0 ${W} ${H}`);
   const padL = 52, padR = 24, padT = 24, padB = 48;
   const innerW = W - padL - padR;
   const innerH = H - padT - padB;
@@ -3560,7 +3568,10 @@ heatSvg.append("g")
   const dataMap = {};
   data.forEach(d => dataMap[d.age] = d.count);
 
-  const W=864, H=280, padL=42, padR=20, padT=28, padB=44;
+  const isMobile = window.innerWidth <= 700;
+  const W=864, H=isMobile ? 420 : 280;
+  const padL=isMobile?56:42, padR=20, padT=isMobile?36:28, padB=isMobile?60:44;
+  document.getElementById("ageCurveSvg").setAttribute("viewBox", `0 0 ${W} ${H}`);
   const innerW=W-padL-padR, innerH=H-padT-padB;
   const maxCount = Math.max(...data.map(d => d.count));
   const ns="http://www.w3.org/2000/svg";
@@ -3576,7 +3587,7 @@ heatSvg.append("g")
     if (v % 10 === 0) {
       const t = document.createElementNS(ns,"text");
       t.setAttribute("class","age-axis-label");
-      t.setAttribute("font-size","13");
+      t.setAttribute("font-size", isMobile ? "20" : "13");
       t.setAttribute("x",padL-6); t.setAttribute("y",gy+4);
       t.setAttribute("text-anchor","end"); t.textContent=v;
       svg.appendChild(t);
@@ -3601,12 +3612,12 @@ heatSvg.append("g")
     rect.appendChild(title);
     svg.appendChild(rect);
 
-    if (age % 5 === 0 || age === 18) {
+    if (isMobile || age % 5 === 0 || age === 18) {
       const t = document.createElementNS(ns,"text");
       t.setAttribute("class","age-axis-label");
-      t.setAttribute("font-size","13");
+      t.setAttribute("font-size", isMobile ? "20" : "13");
       t.setAttribute("x",(bx+barW/2).toFixed(1));
-      t.setAttribute("y",padT+innerH+18);
+      t.setAttribute("y",padT+innerH+22);
       t.setAttribute("text-anchor","middle");
       t.textContent=age;
       svg.appendChild(t);
@@ -3619,7 +3630,7 @@ heatSvg.append("g")
   const peakY = padT + innerH - (peakCount/maxCount)*innerH - 8;
   const pl = document.createElementNS(ns,"text");
   pl.setAttribute("font-family","Poppins, sans-serif");
-  pl.setAttribute("font-size","14"); pl.setAttribute("font-weight","700");
+  pl.setAttribute("font-size", isMobile ? "22" : "14"); pl.setAttribute("font-weight","700");
   pl.setAttribute("fill","#d21f2b"); pl.setAttribute("text-anchor","middle");
   pl.setAttribute("x",peakX); pl.setAttribute("y",peakY);
   pl.textContent="Peak: " + peakAge;

@@ -1603,155 +1603,6 @@
   margin-top:10px;
 }
 
-/* ===== MOBILE-ONLY CHART ALTERNATIVES ===== */
-.chart-mobile-only{ display:none; }
-.chart-desktop-only{ display:block; }
-@media(max-width:700px){
-  .chart-mobile-only{ display:block; }
-  .chart-desktop-only{ display:none; }
-}
-
-/* Pour one out mobile: horizontal bars */
-.pyr-mobile{
-  font-family:"Poppins",sans-serif;
-  padding:8px 0 0;
-}
-.pyr-mobile-row{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  margin-bottom:20px;
-}
-.pyr-mobile-label{
-  width:28px;
-  font-size:18px;
-  font-weight:700;
-  color:rgba(17,24,39,.80);
-  text-align:right;
-  flex-shrink:0;
-}
-.pyr-mobile-bar-wrap{
-  flex:1;
-  background:rgba(17,24,39,.06);
-  border-radius:4px;
-  height:28px;
-  position:relative;
-}
-.pyr-mobile-bar{
-  height:28px;
-  border-radius:4px;
-  background:rgba(17,24,39,.18);
-  display:flex;
-  align-items:center;
-  justify-content:flex-end;
-  padding-right:10px;
-  box-sizing:border-box;
-  min-width:40px;
-}
-.pyr-mobile-bar-49{ background:#fbd5d5; }
-.pyr-mobile-bar-48{ background:#f9c2c2; }
-.pyr-mobile-bar-47{ background:#f7b0b0; }
-.pyr-mobile-count{
-  font-size:13px;
-  font-weight:700;
-  color:rgba(17,24,39,.70);
-}
-.pyr-mobile-dots{
-  display:flex;
-  flex-wrap:wrap;
-  gap:5px;
-  margin-top:6px;
-  padding-left:40px;
-}
-.pyr-mobile-dot{
-  width:10px; height:10px;
-  border-radius:50%;
-  cursor:pointer;
-}
-.pyr-mobile-dot-never{ background:rgba(17,24,39,.75); }
-.pyr-mobile-dot-had50{ background:rgba(17,24,39,.18); }
-
-/* Snipers mobile: card list */
-.snipers-mobile-list{
-  display:flex;
-  flex-direction:column;
-  gap:1px;
-}
-.snipers-mobile-card{
-  display:flex;
-  align-items:center;
-  padding:12px 0;
-  border-bottom:1px solid rgba(17,24,39,.07);
-  gap:12px;
-}
-.snipers-mobile-name{
-  font-family:"adobe-caslon-pro",serif;
-  font-size:17px;
-  font-weight:600;
-  flex:1;
-  min-width:0;
-}
-.snipers-mobile-name.active-player{
-  color:var(--accent);
-}
-.snipers-mobile-stats{
-  font-family:"Poppins",sans-serif;
-  font-size:11px;
-  color:rgba(17,24,39,.55);
-  text-align:right;
-  flex-shrink:0;
-  line-height:1.6;
-}
-.snipers-mobile-stat-big{
-  font-size:15px;
-  font-weight:700;
-  color:rgba(17,24,39,.82);
-  display:block;
-}
-
-/* Age curve mobile: horizontal bars */
-.age-mobile{
-  font-family:"Poppins",sans-serif;
-  padding:4px 0 0;
-}
-.age-mobile-row{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  margin-bottom:6px;
-}
-.age-mobile-label{
-  width:34px;
-  font-size:13px;
-  font-weight:600;
-  color:rgba(17,24,39,.60);
-  text-align:right;
-  flex-shrink:0;
-}
-.age-mobile-bar-wrap{
-  flex:1;
-  background:rgba(17,24,39,.06);
-  border-radius:3px;
-  height:18px;
-}
-.age-mobile-bar{
-  height:18px;
-  border-radius:3px;
-  background:rgba(17,24,39,.15);
-  transition:width .4s ease;
-}
-.age-mobile-bar.peak{
-  background:var(--accent);
-}
-.age-mobile-count{
-  font-size:12px;
-  font-weight:700;
-  color:rgba(17,24,39,.50);
-  width:22px;
-  text-align:right;
-  flex-shrink:0;
-}
-/* ===== END MOBILE CHART ALTERNATIVES ===== */
 </style>
 </head>
 
@@ -1851,16 +1702,13 @@
 
 <section class="nearMissSection" style="border-top:none; padding-top:0; margin-top:0;" aria-label="Near misses chart">
   <div id="nearMissChart">
-    <!-- Desktop: pyramid SVG -->
-    <div class="pyr-wrap chart-desktop-only">
+    <div class="pyr-wrap">
       <svg id="pyrSvg" role="img" aria-label="Pyramid chart: players who scored 47, 48 or 49 goals without reaching 50" class="pyr-svg" viewBox="0 0 860 380" preserveAspectRatio="xMidYMid meet"></svg>
       <div class="pyr-legend">
         <span><span class="pyr-legend-dot" style="background:rgba(17,24,39,.82)"></span>never scored 50</span>
         <span><span class="pyr-legend-dot" style="background:rgba(17,24,39,.22)"></span>also had a 50-goal season</span>
       </div>
     </div>
-    <!-- Mobile: horizontal dot bars -->
-    <div class="pyr-mobile chart-mobile-only" id="pyrMobile"></div>
   </div>
   <div class="nm-tooltip" id="nmTooltip"></div>
 </section>
@@ -1894,10 +1742,7 @@
 
 <section class="snipersSection" style="border-top:none; padding-top:0; margin-top:0;" aria-label="Snipers chart">
   <p class="snipersChartTitle">50-goal seasons vs. peak season &mdash; bubble size = career goals</p>
-  <!-- Desktop: bubble chart -->
-  <svg id="snipersSvg" role="img" aria-label="Bubble chart: shooting percentage vs goals for 50-goal scorers" class="chart-desktop-only" viewBox="0 0 864 520" preserveAspectRatio="xMidYMid meet"></svg>
-  <!-- Mobile: card list -->
-  <div class="snipers-mobile-list chart-mobile-only" id="snipersMobile"></div>
+  <svg id="snipersSvg" role="img" aria-label="Bubble chart: shooting percentage vs goals for 50-goal scorers" viewBox="0 0 864 520" preserveAspectRatio="xMidYMid meet"></svg>
   <div class="snipers-legend">
     <div class="snipers-legend-item">
       <div class="legend-bubble" style="width:14px;height:14px;background:rgba(17,24,39,.12);border:1px solid rgba(17,24,39,.18);"></div>
@@ -2187,10 +2032,7 @@
 </section>
 <section class="pageSection no-border">
   <p class="snipersChartTitle">Among players who scored 50+ at least once, how many did it at each age?</p>
-  <!-- Desktop: vertical bar chart -->
-  <svg id="ageCurveSvg" role="img" aria-label="Bar chart: age distribution of 50-goal seasons in NHL history" class="chart-desktop-only" viewBox="0 0 864 280" preserveAspectRatio="xMidYMid meet"></svg>
-  <!-- Mobile: horizontal bar chart -->
-  <div class="age-mobile chart-mobile-only" id="ageMobile"></div>
+  <svg id="ageCurveSvg" role="img" aria-label="Bar chart: age distribution of 50-goal seasons in NHL history" viewBox="0 0 864 280" preserveAspectRatio="xMidYMid meet"></svg>
 </section>
 
 <!-- ===== TEAMS ===== -->
@@ -2910,7 +2752,6 @@ heatSvg.append("g")
 <script>
 // ===== NEAR MISSES PYRAMID CHART =====
 (async function(){
-  if (window.innerWidth <= 700) return; // mobile uses pyrMobile instead
   const svg = document.getElementById("pyrSvg");
   const tooltip = document.getElementById("nmTooltip");
   if (!svg || !tooltip) return;
@@ -3078,99 +2919,6 @@ heatSvg.append("g")
   }
 })();
 // ===== END NEAR MISSES PYRAMID =====
-
-// ===== POUR ONE OUT — MOBILE =====
-(async function(){
-  const wrap = document.getElementById("pyrMobile");
-  const tooltip = document.getElementById("nmTooltip");
-  if (!wrap || wrap.offsetParent === null) return; // only run if visible
-
-  const raw = await d3.csv("data/chart_near_misses.csv");
-  const seasons = raw.map(d => ({
-    player: d.player,
-    season: d.season,
-    goals: +d.goals,
-    had50: d.had_50_plus_season === "Y",
-    sortYear: +d.season.replace("-","").slice(0,4)
-  })).sort((a,b) => a.sortYear - b.sortYear);
-
-  const tiers = [49, 48, 47];
-  const maxCount = Math.max(...tiers.map(g => seasons.filter(s => s.goals === g).length));
-
-  // Legend
-  const legend = document.createElement("div");
-  legend.className = "pyr-legend";
-  legend.style.marginBottom = "16px";
-  legend.innerHTML =
-    '<span><span class="pyr-legend-dot" style="background:rgba(17,24,39,.75);display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px;vertical-align:middle;"></span>never scored 50</span>' +
-    '<span><span class="pyr-legend-dot" style="background:rgba(17,24,39,.18);display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px;vertical-align:middle;"></span>also scored 50+</span>';
-  wrap.appendChild(legend);
-
-  tiers.forEach(g => {
-    const group = seasons.filter(s => s.goals === g);
-    const pct = (group.length / maxCount * 100).toFixed(1);
-
-    const row = document.createElement("div");
-    row.className = "pyr-mobile-row";
-
-    const label = document.createElement("div");
-    label.className = "pyr-mobile-label";
-    label.textContent = g;
-
-    const barWrap = document.createElement("div");
-    barWrap.className = "pyr-mobile-bar-wrap";
-
-    const bar = document.createElement("div");
-    bar.className = `pyr-mobile-bar pyr-mobile-bar-${g}`;
-    bar.style.width = pct + "%";
-
-    // Dots inside the bar area — rendered below it
-    const dotsWrap = document.createElement("div");
-    dotsWrap.className = "pyr-mobile-dots";
-    dotsWrap.style.paddingLeft = "40px";
-    dotsWrap.style.display = "flex";
-    dotsWrap.style.flexWrap = "wrap";
-    dotsWrap.style.gap = "5px";
-    dotsWrap.style.marginTop = "6px";
-
-    group.forEach(s => {
-      const dot = document.createElement("div");
-      dot.className = `pyr-mobile-dot ${s.had50 ? "pyr-mobile-dot-had50" : "pyr-mobile-dot-never"}`;
-      dot.title = `${s.player} (${s.season})`;
-      dot.addEventListener("mouseenter", e => {
-        tooltip.innerHTML = `<div class="nm-tip-name">${s.player}</div><div class="nm-tip-detail">${s.season} — ${s.goals} goals</div>${s.had50 ? '<div class="nm-tip-badge">also scored 50+</div>' : ""}`;
-        tooltip.style.display = "block";
-      });
-      dot.addEventListener("click", e => {
-        tooltip.innerHTML = `<div class="nm-tip-name">${s.player}</div><div class="nm-tip-detail">${s.season} — ${s.goals} goals</div>${s.had50 ? '<div class="nm-tip-badge">also scored 50+</div>' : ""}`;
-        tooltip.style.display = tooltip.style.display === "block" ? "none" : "block";
-        tooltip.style.left = (e.clientX + 12) + "px";
-        tooltip.style.top = e.clientY + "px";
-      });
-      dot.addEventListener("mouseleave", () => { tooltip.style.display = "none"; });
-      dotsWrap.appendChild(dot);
-    });
-
-    const count = document.createElement("div");
-    count.className = "pyr-mobile-count";
-    count.textContent = group.length;
-    count.style.marginLeft = "8px";
-    count.style.fontSize = "14px";
-    count.style.fontWeight = "700";
-    count.style.color = "rgba(17,24,39,.60)";
-    count.style.flexShrink = "0";
-
-    bar.innerHTML = "";
-    barWrap.appendChild(bar);
-
-    row.appendChild(label);
-    row.appendChild(barWrap);
-    row.appendChild(count);
-    wrap.appendChild(row);
-    wrap.appendChild(dotsWrap);
-  });
-})();
-// ===== END POUR ONE OUT MOBILE =====
 </script>
 
 
@@ -3249,7 +2997,6 @@ heatSvg.append("g")
 <script>
 // ===== SNIPERS BUBBLE CHART =====
 (async function(){
-  if (window.innerWidth <= 700) return; // mobile uses snipersMobile instead
   const svg = document.getElementById("snipersSvg");
   const tooltip = document.getElementById("sniperTooltip");
   if (!svg || !tooltip) return;
@@ -3372,41 +3119,6 @@ heatSvg.append("g")
   }
 })();
 // ===== END SNIPERS BUBBLE CHART =====
-
-// ===== SNIPERS — MOBILE CARD LIST =====
-(async function(){
-  const wrap = document.getElementById("snipersMobile");
-  if (!wrap || wrap.offsetParent === null) return;
-
-  const raw = await d3.csv("data/chart_snipers.csv");
-  const players = raw.map(d => ({
-    name: d.player,
-    count: +d.fifty_goal_seasons,
-    peak: +d.peak_season,
-    career: +d.career_goals,
-    active: d.active === "Y"
-  })).sort((a,b) => b.count - a.count || b.peak - a.peak);
-
-  players.forEach(p => {
-    const card = document.createElement("div");
-    card.className = "snipers-mobile-card";
-
-    const name = document.createElement("div");
-    name.className = "snipers-mobile-name" + (p.active ? " active-player" : "");
-    name.textContent = p.name;
-
-    const stats = document.createElement("div");
-    stats.className = "snipers-mobile-stats";
-    stats.innerHTML =
-      `<span class="snipers-mobile-stat-big">${p.count}×</span>` +
-      `Peak ${p.peak}G<br>${p.career} career`;
-
-    card.appendChild(name);
-    card.appendChild(stats);
-    wrap.appendChild(card);
-  });
-})();
-// ===== END SNIPERS MOBILE =====
 </script>
 
 
@@ -3843,7 +3555,6 @@ heatSvg.append("g")
 <script>
 // ===== AGE CURVE CHART =====
 (async function(){
-  if (window.innerWidth <= 700) return; // mobile uses ageMobile instead
   const svg = document.getElementById("ageCurveSvg");
   if (!svg) return;
 
@@ -3927,46 +3638,6 @@ heatSvg.append("g")
   svg.appendChild(al);
 })();
 // ===== END AGE CURVE =====
-
-// ===== AGE CURVE — MOBILE HORIZONTAL BARS =====
-(async function(){
-  const wrap = document.getElementById("ageMobile");
-  if (!wrap || wrap.offsetParent === null) return;
-
-  const raw = await d3.csv("data/chart_age_curve.csv");
-  const data = raw.map(d => ({ age: +d.age, count: +d.fifty_goal_seasons }))
-                  .sort((a,b) => a.age - b.age);
-
-  const maxCount = Math.max(...data.map(d => d.count));
-  const peakAge = data.reduce((a,b) => b.count > a.count ? b : a).age;
-
-  data.forEach(d => {
-    const row = document.createElement("div");
-    row.className = "age-mobile-row";
-
-    const label = document.createElement("div");
-    label.className = "age-mobile-label";
-    label.textContent = d.age;
-
-    const barWrap = document.createElement("div");
-    barWrap.className = "age-mobile-bar-wrap";
-
-    const bar = document.createElement("div");
-    bar.className = "age-mobile-bar" + (d.age === peakAge ? " peak" : "");
-    bar.style.width = (d.count / maxCount * 100).toFixed(1) + "%";
-
-    const count = document.createElement("div");
-    count.className = "age-mobile-count";
-    count.textContent = d.count;
-
-    barWrap.appendChild(bar);
-    row.appendChild(label);
-    row.appendChild(barWrap);
-    row.appendChild(count);
-    wrap.appendChild(row);
-  });
-})();
-// ===== END AGE CURVE MOBILE =====
 </script>
 
 <script>

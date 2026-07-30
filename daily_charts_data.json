@@ -180,6 +180,38 @@
     "keywords": ["midterm elections", "politics", "USA"],
      "accessibility_title": "Midterm Elections 2026",
     "accessibility_description": "A chart showing the results of midterm elections results for each president since 1946."
+  },
+
+  {
+    "image": "2026-06-11_measles.png",
+     "date": "2026-06-11",
+    "keywords": ["measles", "vaccine", "CDC", "public health", "outbreak", "USA"],
+     "accessibility_title": "Measles cases on the rise",
+    "accessibility_description": "A three-panel chart showing US measles cases from 1963 to 2026, marking the vaccine's licensing, the 1989 second-dose recommendation, and elimination being declared in 2000, before zooming in on a recent resurgence in cases."
+  },
+
+  {
+    "image": "2026-06-22_Putin.png",
+     "date": "2026-06-22",
+    "keywords": ["Putin", "Russia", "China", "USA", "UK", "Japan", "leadership", "politics", "geopolitics"],
+     "accessibility_title": "Putin on the years",
+    "accessibility_description": "A timeline comparing how leadership has changed since 2000 in Russia, China, the US, the UK, and Japan, showing Vladimir Putin's tenure against the many leaders who have come and gone in other countries."
+  },
+
+  {
+    "image": "2026-07-15_Running Distance.png",
+     "date": "2026-07-15",
+    "keywords": ["sports", "running", "distance", "soccer", "hockey", "basketball", "tennis", "football", "baseball"],
+     "accessibility_title": "Born to run",
+    "accessibility_description": "A chart comparing the estimated average distance run by athletes across cross country, soccer, ice hockey, basketball, tennis, football, and baseball."
+  },
+
+  {
+    "image": "2026-07-16_NHL Schedule.png",
+     "date": "2026-07-16",
+    "keywords": ["NHL", "hockey", "schedule", "back-to-back games", "sports", "statistics"],
+     "accessibility_title": "NHL Schedule Woes",
+    "accessibility_description": "A pair of bar charts ranking NHL teams by how many back-to-back games they play, split by whether both games are on the road or at home."
   }
 
 ]

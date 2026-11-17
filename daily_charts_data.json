@@ -212,6 +212,30 @@
     "keywords": ["NHL", "hockey", "schedule", "back-to-back games", "sports", "statistics"],
      "accessibility_title": "NHL Schedule Woes",
     "accessibility_description": "A pair of bar charts ranking NHL teams by how many back-to-back games they play, split by whether both games are on the road or at home."
+  },
+
+  {
+    "image": "2026-08-25 US-Canada Trade.png",
+     "date": "2026-08-25",
+    "keywords": ["US-Canada", "trade", "economics", "politics"],
+     "accessibility_title": "US-Canada Trade Relations",
+    "accessibility_description": "A chart showing the trade relationship between the US and Canada, including exports, imports, and trade balances."
+  },
+
+   {
+    "image": "2026-08-31 Strategic Petroleum Reserves.png",
+     "date": "2026-08-31",
+    "keywords": ["Strategic Petroleum Reserves", "energy", "US", "oil"],
+     "accessibility_title": "Strategic Petroleum Reserves",
+    "accessibility_description": "A line chart showing the levels of strategic petroleum reserves in the US over time."
+  },
+
+     {
+    "image": "2026-11-14 measles.png",
+     "date": "2026-11-14",
+    "keywords": ["measles", "vaccine", "CDC", "public health", "outbreak", "USA"],
+     "accessibility_title": "Measles cases on the rise",
+    "accessibility_description": "A three-panel chart showing US measles cases from 1963 to 2026, marking the vaccine's licensing, the 1989 second-dose recommendation, and elimination being declared in 2000, before zooming in on a recent resurgence in cases."
   }
 
 ]
